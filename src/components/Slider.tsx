@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { useRef, useEffect } from 'react';
 import { Label } from './Label';
-import { FlexContainer } from './Containers';
 import { NORMAL_FONT_SIZE } from '../constants';
 
 export interface SliderProps {
@@ -13,6 +12,18 @@ export interface SliderProps {
   defaultValue?: number;
   step?: number;
 }
+
+const StyledSliderWrapper = styled.div<SliderProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  position: relative;
+  padding: 5px;
+  gap: 5px;
+
+  opacity: ${(props) => props.disabled ? 0.25 : 1};
+`;
 
 const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   appearance: none;
@@ -120,10 +131,6 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
       content: var(--display);
     }
   }
-
-  &:disabled {
-    opacity: 0.25;
-  }
 `;
 
 const Slider: React.FC<SliderProps> = (props: SliderProps) => {
@@ -155,11 +162,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
   });
 
   return (
-    <FlexContainer
-      {...props}
-      direction='column'
-      align='start'
-    >
+    <StyledSliderWrapper {...props}>
       <Label 
         visible={showLabel} 
         text={label} 
@@ -172,7 +175,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
         max={maxValue}
         step={step}
       />
-    </FlexContainer>
+    </StyledSliderWrapper>
   );
 };
 
