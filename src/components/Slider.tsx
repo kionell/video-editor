@@ -29,7 +29,17 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   &::-webkit-slider-runnable-track {
     appearance: none;
     border-radius: 4px;
-    height: 4px;
+    height: 6px;
+
+    background: ${(props) => {
+      const rangeColor = props.theme.primary.accent;
+      const trackColor = props.theme.input.normal;
+      
+      return css`
+        linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
+      `;
+    }};
+  }
 
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
@@ -43,8 +53,8 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
 
   &::-webkit-slider-thumb {
     appearance: none;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     translate: 0px -3px;
     background: ${(props) => props.theme.primary.accent};
