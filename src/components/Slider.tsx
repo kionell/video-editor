@@ -41,6 +41,11 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
     }};
   }
 
+  &::-moz-range-track {
+    appearance: none;
+    border-radius: 4px;
+    height: 6px;
+
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
       const trackColor = props.theme.input.normal;
@@ -56,10 +61,19 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    translate: 0px -3px;
+    border: none;
     background: ${(props) => props.theme.primary.accent};
+    translate: 0px -3px;
   }
 
+  &::-moz-range-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: ${(props) => props.theme.primary.accent};
+  }
 
   &:enabled {
     cursor: pointer;
@@ -74,7 +88,15 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
             background: linear-gradient(${accentColor}, ${accentColor}) 0/var(--sx) 100% no-repeat, ${normalColor};
           }
 
+          &::-moz-range-track {
+            background: linear-gradient(${accentColor}, ${accentColor}) 0/var(--sx) 100% no-repeat, ${normalColor};
+          }
+
           &::-webkit-slider-thumb {
+            background: ${accentColor};
+          }
+
+          &::-moz-range-thumb {
             background: ${accentColor};
           }
         `;
@@ -90,8 +112,6 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   &:disabled {
     opacity: 0.25;
   }
-
-
 `;
 
 const Slider: React.FC<SliderProps> = (props: SliderProps) => {
