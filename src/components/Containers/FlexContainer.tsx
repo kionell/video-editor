@@ -17,6 +17,8 @@ const StyledFlexContainer = styled.div<FlexProps>`
   display: flex;
   position: relative;
   padding: ${(props) => props.padding}px;
+  gap: 5px;
+
   flex-direction: ${(props) => {
     return props.direction + (props.reversed ? '-reverse' : '');
   }};
