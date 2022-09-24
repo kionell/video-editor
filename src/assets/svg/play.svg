@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="xMidYMid" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_24_52)">
+<path d="M3.35156 1.52349C2.77344 1.16802 2.04688 1.15631 1.45703 1.48834C0.867187 1.82037 0.5 2.44537 0.5 3.12506V16.8751C0.5 17.5547 0.867187 18.1797 1.45703 18.5118C2.04688 18.8438 2.77344 18.8282 3.35156 18.4766L14.6016 11.6016C15.1602 11.2618 15.5 10.6563 15.5 10.0001C15.5 9.34381 15.1602 8.74224 14.6016 8.39849L3.35156 1.52349Z" fill="current"/>
+</g>
+<defs>
+<clipPath id="clip0_24_52">
+<rect width="15" height="20" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs>
+</svg>
