@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 type FlexDirection = 'row' | 'column';
 type FlexJustifying = 'center' | 'space-between' | 'space-around';
-type FlexAligning = 'left' | 'center';
+type FlexAligning = 'start' | 'end' | 'center';
 
 interface FlexProps {
   direction?: FlexDirection;
