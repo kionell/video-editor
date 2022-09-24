@@ -19,6 +19,8 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   border: none;
   background: transparent;
   outline: none;
+  position: relative;
+  width: 100%;
 
   --range: calc(var(--max) - var(--min));
   --ratio: calc((var(--value) - var(--min)) / var(--range));
