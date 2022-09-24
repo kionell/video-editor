@@ -10,11 +10,13 @@ interface FlexProps {
   reversed?: boolean;
   justify?: FlexJustifying;
   align?: FlexAligning;
+  padding?: number;
 }
 
 const StyledFlexContainer = styled.div<FlexProps>`
-  padding: 6px;
   display: flex;
+  position: relative;
+  padding: ${(props) => props.padding}px;
   flex-direction: ${(props) => {
     return props.direction + (props.reversed ? '-reverse' : '');
   }};
@@ -32,6 +34,7 @@ FlexContainer.defaultProps = {
   reversed: false,
   justify: 'center',
   align: 'center',
+  padding: 5,
 };
 
 export { FlexContainer };
