@@ -158,14 +158,14 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
     sliderRef.current.addEventListener('input', onChangeListener);
 
     if (props.listener) {
-      sliderRef.current?.addEventListener('click', props.listener);
+      sliderRef.current?.addEventListener('input', props.listener);
     }
 
     return () => {
       sliderRef.current?.removeEventListener('input', onChangeListener);
 
       if (props.listener) {
-        sliderRef.current?.removeEventListener('click', props.listener);
+        sliderRef.current?.removeEventListener('input', props.listener);
       }
     };
   });
