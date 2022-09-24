@@ -1,4 +1,3 @@
-import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import * as Icons from '../icons';
 
@@ -109,12 +108,12 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
   return Icons.CheckIcon;
 }
 
-const Icon: React.FC<PropsWithChildren<IconProps>> = (props: IconProps) => {
-  const Icon = getIconByType(props.variant);
+const Icon: React.FC<IconProps> = (props: IconProps) => {
+  const Image = getIconByType(props.variant);
   
   return (
     <IconWrapper {...props}>
-      <Icon />
+      <Image />
     </IconWrapper>
   );
 };
