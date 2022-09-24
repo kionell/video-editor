@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 import { useRef, useEffect } from 'react';
 import { Label } from './Label';
+import { FlexContainer } from './Containers';
 import { NORMAL_FONT_SIZE } from '../constants';
-import { FlexContainer } from './Containers/FlexContainer';
 
 export interface SliderProps {
   disabled?: boolean;
@@ -113,19 +113,18 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
     <FlexContainer
       {...props}
       direction='column'
-      align='left'
-      reversed
+      align='start'
     >
+      <Label 
+        visible={showLabel} 
+        text={label} 
+        size={NORMAL_FONT_SIZE}
+      />
       <StyledSlider 
         {...props} 
         ref={sliderRef}
         min={minValue}
         max={maxValue}
-      />
-      <Label 
-        visible={showLabel} 
-        text={label} 
-        size={NORMAL_FONT_SIZE}
       />
     </FlexContainer>
   );
