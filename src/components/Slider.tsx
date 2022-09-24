@@ -11,6 +11,7 @@ export interface SliderProps {
   minValue?: number;
   maxValue?: number;
   defaultValue?: number;
+  step?: number;
 }
 
 const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
@@ -115,7 +116,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
 `;
 
 const Slider: React.FC<SliderProps> = (props: SliderProps) => {
-  const { showLabel, label, minValue, maxValue } = props;
+  const { showLabel, label, minValue, maxValue, step } = props;
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -157,6 +158,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
         ref={sliderRef}
         min={minValue}
         max={maxValue}
+        step={step}
       />
     </FlexContainer>
   );
@@ -169,6 +171,7 @@ Slider.defaultProps = {
   minValue: 0,
   maxValue: 100,
   defaultValue: 50,
+  step: 1,
 };
 
 export { Slider };
