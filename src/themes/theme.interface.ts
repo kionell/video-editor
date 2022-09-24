@@ -38,3 +38,8 @@ export interface ITheme {
   text: ITextColors;
   other: IOtherColors;
 }
+
+declare module 'styled-components' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultTheme extends ITheme {}
+}
