@@ -58,7 +58,8 @@ const IconWrapper = styled.div<IconProps>`
   align-items: center;
 
   & > * {
-    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
     position: relative;
     fill: ${(props) => props.theme.text.normal};
   }
