@@ -14,11 +14,11 @@ interface FlatButtonProps extends ButtonProps {
 }
 
 const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
+  flex-direction: column;
   width: 60px;
   height: 60px;
-  flex-direction: column;
-  padding: 6px 0px;
-  gap: 0px;
+  padding: 6px 6px;
+  gap: 2px;
   border-radius: 0px;
   
   justify-content: ${(props) => {
