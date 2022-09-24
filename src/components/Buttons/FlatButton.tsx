@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 import { Label } from '../Label';
 import { 
   SMALL_FONT_SIZE, 
-  NORMAL_ICON_SIZE 
+  LARGE_ICON_SIZE 
 } from '../../constants';
 
 interface FlatButtonProps extends ButtonProps {
@@ -14,13 +14,16 @@ interface FlatButtonProps extends ButtonProps {
 }
 
 const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
   flex-direction: column;
-  justify-content: center;
-  padding: 2px 0px;
-  gap: 4px;
+  padding: 6px 0px;
+  gap: 0px;
   border-radius: 0px;
+  
+  justify-content: ${(props) => {
+    return !props.showLabel || !props.showIcon ? 'center' : 'space-between'; 
+  }};
 
   &:not(.toggled) {
     background: ${(props) => props.showBackground ? props.theme.secondary.normal : 'transparent'};
@@ -65,7 +68,7 @@ const FlatButton: React.FC<FlatButtonProps> = (props: FlatButtonProps) => {
       <Icon 
         visible={showIcon} 
         variant={iconType} 
-        size={NORMAL_ICON_SIZE}
+        size={LARGE_ICON_SIZE}
         useColor={false}
       />
       <Label 
