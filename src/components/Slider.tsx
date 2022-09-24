@@ -19,8 +19,8 @@ const StyledSliderWrapper = styled.div<SliderProps>`
   align-items: start;
   justify-content: center;
   position: relative;
-  padding: 5px;
-  gap: 5px;
+  margin: 5px;
+  gap: 10px;
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
