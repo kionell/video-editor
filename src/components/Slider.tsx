@@ -104,9 +104,20 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
       }};
     }
 
-    &:active::after {
+    &:active::before {
+      font-size: 18px;
+      font-family: 'Roboto';
+      user-select: none;
+      background-color: ${(props) => props.theme.primary.normal};
+      color: ${(props) => props.theme.text.lighter};
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
       position: absolute;
-      content: attr(value);
+      z-index: 1;
+      left: var(--sx);
+      translate: -50% -125%;
+      content: var(--display);
     }
   }
 
@@ -128,6 +139,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
     el.style.setProperty('--min', el.min);
     el.style.setProperty('--max', el.max);
     el.style.setProperty('--value', el.value);
+    el.style.setProperty('--display', `"${el.value}"`);
   };
 
   useEffect(() => {
