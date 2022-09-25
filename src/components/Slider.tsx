@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { useRef, useEffect } from 'react';
-import { Label } from './Label';
-import { NORMAL_FONT_SIZE } from '../constants';
+import { FormEventHandler, useRef, useEffect } from 'react';
+import { Label } from '../Label';
+import { NORMAL_FONT_SIZE } from '../../constants';
 
 export interface SliderProps {
   disabled?: boolean;
@@ -11,7 +11,7 @@ export interface SliderProps {
   maxValue?: number;
   defaultValue?: number;
   step?: number;
-  listener?: () => void;
+  onInput?: FormEventHandler<HTMLInputElement>;
 }
 
 const StyledSliderWrapper = styled.div<SliderProps>`
@@ -95,7 +95,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
       ${(props) => {
         const accentColor = props.theme.primary.accentHover;
         const normalColor = props.theme.input.normalHover;
-        
+
         return css`
           &::-webkit-slider-runnable-track {
             background: linear-gradient(${accentColor}, ${accentColor}) 0/var(--sx) 100% no-repeat, ${normalColor};
@@ -139,7 +139,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  const onChangeListener = () => {
+  const onInputListener = () => {
     if (!sliderRef.current) return;
 
     const el = sliderRef.current;
@@ -153,22 +153,14 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
   useEffect(() => {
     if (!sliderRef.current) return;
     
-    onChangeListener();
+    onInputListener();
 
-    sliderRef.current.addEventListener('input', onChangeListener);
-
-    if (props.listener) {
-      sliderRef.current?.addEventListener('input', props.listener);
-    }
+    sliderRef.current.addEventListener('input', onInputListener);
 
     return () => {
-      sliderRef.current?.removeEventListener('input', onChangeListener);
-
-      if (props.listener) {
-        sliderRef.current?.removeEventListener('input', props.listener);
-      }
+      sliderRef.current?.removeEventListener('input', onInputListener);
     };
-  });
+  }, []);
 
   return (
     <StyledSliderWrapper {...props}>
