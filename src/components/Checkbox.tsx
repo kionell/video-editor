@@ -1,11 +1,12 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
-import { Label } from './Label';
-import { Icon } from './Icon';
+import { MouseEventHandler, useState, useRef } from 'react';
+import { useUpdateEffect } from '../../hooks';
+import { Label } from '../Label';
+import { Icon } from '../Icon';
 import { 
   NORMAL_FONT_SIZE, 
   NORMAL_ICON_SIZE 
-} from '../constants';
+} from '../../constants';
 
 export interface CheckboxProps {
   disabled?: boolean;
@@ -13,11 +14,24 @@ export interface CheckboxProps {
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'left' | 'right';
-  listener?: () => void;
+  onClick?: MouseEventHandler<HTMLInputElement>;
 }
 
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
 const StyledCheckboxWrapper = styled.div<CheckboxProps>`
-  display: flex;
+  display: inline-flex;
   justify-content: left;
   align-items: center;
   position: relative;
@@ -42,66 +56,58 @@ const StyledCheckbox = styled.div<CheckboxProps>`
   & > * {
     width: 100%;
     height: 100%;
+    visibility: ${(props) => props.checked ? 'visible' : 'hidden'};
 
     & > * {
       width: 100%;
       height: 100%;
-      fill: ${(props) => props.checked ? props.theme.primary.accent : 'transparent'};
+      fill: ${(props) => props.theme.primary.accent};
     }
   }
 
   ${(props) => {
     if (props.disabled) return;
 
-    const { theme, checked } = props;
-
     return css`
       cursor: pointer;
 
       &:hover {
-        border-color: ${theme.input.normalHover};
-
-        & > * > * {
-          fill: ${checked ? theme.primary.accentHover : 'transparent'};
-        }
+        border-color: ${props.theme.input.normalHover};
+        fill: ${props.theme.primary.accentHover};
       }
     `;
   }}
 `;
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
+  const { showLabel, label, labelPosition, disabled, onClick } = props;
+  
   const [checked, setChecked] = useState(props.checked);
-
   const checkboxRef = useRef<HTMLInputElement>(null);
 
-  const onClickListener = () => !props.disabled && setChecked(!checked);
+  useUpdateEffect(() => checkboxRef.current?.click(), [checked]);
 
-  useEffect(() => {
-    if (!checkboxRef.current) return;
-
-    checkboxRef.current.addEventListener('click', onClickListener);
-
-    if (props.listener) {
-      checkboxRef.current.addEventListener('click', props.listener);
-    }
-
-    return () => {
-      checkboxRef.current?.removeEventListener('click', onClickListener);
-
-      if (props.listener) {
-        checkboxRef.current?.removeEventListener('click', props.listener);
-      }
-    };
-  });
+  const changeState = () => !disabled && setChecked(!checked);
 
   return (
-    <StyledCheckboxWrapper {...props}>
-      <StyledCheckbox {...props} ref={checkboxRef} checked={checked}>
+    <StyledCheckboxWrapper
+      labelPosition={labelPosition}
+      disabled={disabled}
+      onClick={changeState}
+    >
+      <HiddenCheckbox 
+        disabled={disabled} 
+        checked={checked} 
+        onClick={onClick}
+        onChange={() => void 0}
+        ref={checkboxRef}
+      />
+      <StyledCheckbox disabled={disabled} checked={checked}>
         <Icon useColor={false} size={NORMAL_ICON_SIZE} />
       </StyledCheckbox>
       <Label 
-        visible={props.showLabel} 
-        text={props.label} 
+        visible={showLabel} 
+        text={label} 
         size={NORMAL_FONT_SIZE}
       />
     </StyledCheckboxWrapper>
