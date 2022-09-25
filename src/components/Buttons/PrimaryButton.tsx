@@ -13,8 +13,7 @@ interface PrimaryButtonProps extends ButtonProps {
 }
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
-  width: 85px;
-  height: 30px;
+  height: 40px;
 
   background: ${(props) => props.theme.primary.accent};
 

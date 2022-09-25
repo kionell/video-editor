@@ -14,8 +14,7 @@ interface SecondaryButtonProps extends ButtonProps {
 }
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
-  width: 85px;
-  height: 30px;
+  height: 40px;
 
   background: ${(props) => props.theme.secondary.normal};
   
