@@ -7,6 +7,7 @@ export interface ButtonProps {
   iconType?: keyof typeof IconType;
   showLabel?: boolean;
   label?: string;
+  className?: string;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`

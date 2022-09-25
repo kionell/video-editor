@@ -9,6 +9,7 @@ interface LabelProps {
   font?: string;
   weight?: FontWeight;
   useColor?: boolean;
+  className?: string;
 }
 
 const StyledLabel = styled.label<LabelProps>`

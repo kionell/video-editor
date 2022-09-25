@@ -47,6 +47,7 @@ interface IconProps {
   variant?: keyof typeof IconType;
   size?: number;
   useColor?: boolean;
+  className?: string;
 }
 
 const IconWrapper = styled.div<IconProps>`

@@ -10,6 +10,7 @@ export interface TextInputProps {
   labelPosition?: 'left' | 'right';
   placeholder?: string;
   onInput?: FormEventHandler<HTMLInputElement>;
+  className?: string;
 }
 
 const StyledTextInputWrapper = styled.div<TextInputProps>`

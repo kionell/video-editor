@@ -15,6 +15,7 @@ export interface CheckboxProps {
   label?: string;
   labelPosition?: 'left' | 'right';
   onClick?: MouseEventHandler<HTMLInputElement>;
+  className?: string;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
