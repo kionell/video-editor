@@ -4,6 +4,7 @@ type FontWeight = 'Regular' | 'Medium';
 
 interface LabelProps {
   visible?: boolean;
+  disabled?: boolean;
   text?: string;
   size?: number;
   font?: string;
@@ -17,6 +18,7 @@ const StyledLabel = styled.label<LabelProps>`
   font-family: ${(props) => props.font};
   font-size: ${(props) => props.size}px;
   display: ${(props) => props.visible ? 'inline-block' : 'none'};
+  opacity: ${(props) => props.disabled ? 0.25 : 1};
   user-select: none;
   cursor: inherit;
   
@@ -33,6 +35,7 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
 
 Label.defaultProps = {
   visible: true,
+  disabled: false,
   text: 'Label',
   size: 14,
   font: 'Roboto',
