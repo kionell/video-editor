@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
@@ -56,12 +56,28 @@ const FlatButton: React.FC<FlatButtonProps> = (props: FlatButtonProps) => {
   const { togglable, showIcon, iconType, showLabel, label } = props;
 
   const [ isToggled, setToggled ] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const toggleButton = () => togglable && setToggled(!isToggled);
 
+  useEffect(() => {
+    if (!buttonRef.current) return;
+
+    if (props.onClick) {
+      buttonRef.current.addEventListener('click', props.onClick);
+    }
+
+    return () => {
+      if (props.onClick) { 
+        buttonRef.current?.removeEventListener('click', props.onClick);
+      }
+    };
+  }, []);
+
   return (
     <StyledFlatButton 
-      {...props} 
+      {...props}
+      ref={buttonRef}
       onClick={toggleButton}
       className={isToggled ? 'toggled' : ''}
     >

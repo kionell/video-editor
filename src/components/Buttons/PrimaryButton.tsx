@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useEffect, useRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
@@ -25,8 +26,28 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
 const PrimaryButton: React.FC<PrimaryButtonProps> = (props: PrimaryButtonProps) => {
   const { showIcon, iconType, largeIcon, showLabel, label } = props;
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!buttonRef.current) return;
+
+    if (props.onClick) {
+      buttonRef.current.addEventListener('click', props.onClick);
+    }
+
+    return () => {
+      if (props.onClick) { 
+        buttonRef.current?.removeEventListener('click', props.onClick);
+      }
+    };
+  }, []);
+
   return (
-    <StyledPrimaryButton {...props}>
+    <StyledPrimaryButton 
+      {...props}
+      ref={buttonRef}
+      onClick={() => void 0}
+    >
       <Icon 
         visible={showIcon} 
         variant={iconType} 

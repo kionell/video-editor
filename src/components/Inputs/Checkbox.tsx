@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { Label } from '../Label';
 import { Icon } from '../Icon';
@@ -85,20 +85,26 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
   
   const [checked, setChecked] = useState(props.checked);
   const checkboxRef = useRef<HTMLInputElement>(null);
+  
+  const changeState = () => {
+    if (disabled) return;
+    
+    setChecked(!checked);
+
+    checkboxRef.current?.dispatchEvent(new Event('change'));
+  };
 
   useUpdateEffect(() => {
-    if (!props.onChange) return;
-
-    checkboxRef.current?.addEventListener('change', props.onChange);
+    if (props.onChange) { 
+      checkboxRef.current?.addEventListener('change', props.onChange);
+    }
 
     return () => {
-      if (!props.onChange) return;
-
-      checkboxRef.current?.removeEventListener('change', props.onChange);
+      if (props.onChange) { 
+        checkboxRef.current?.removeEventListener('change', props.onChange);
+      }
     };
   }, []);
-
-  const changeState = () => !disabled && setChecked(!checked);
 
   return (
     <StyledCheckboxWrapper
