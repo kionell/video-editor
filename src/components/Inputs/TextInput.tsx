@@ -9,8 +9,8 @@ export interface TextInputProps {
   label?: string;
   labelPosition?: 'left' | 'right';
   placeholder?: string;
-  onInput?: FormEventHandler<HTMLInputElement>;
   className?: string;
+  onChange?: FormEventHandler<HTMLInputElement>;
 }
 
 const StyledTextInputWrapper = styled.div<TextInputProps>`
@@ -65,8 +65,7 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <StyledTextInput {...props}>
-      </StyledTextInput>
+      <StyledTextInput {...props} />
       <Label 
         visible={showLabel} 
         text={label} 
