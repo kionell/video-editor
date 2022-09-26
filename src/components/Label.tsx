@@ -18,6 +18,7 @@ const StyledLabel = styled.label<LabelProps>`
   font-size: ${(props) => props.size}px;
   display: ${(props) => props.visible ? 'inline-block' : 'none'};
   user-select: none;
+  cursor: inherit;
   
   ${(props) => {
     return props.useColor && css`
