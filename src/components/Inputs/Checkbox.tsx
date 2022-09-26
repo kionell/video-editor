@@ -41,6 +41,19 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
 
   flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
   opacity: ${(props) => props.disabled ? 0.25 : 1};
+
+  ${(props) => {
+    if (props.disabled) return;
+    
+    return css`
+      cursor: pointer;
+
+      &:hover > .checkbox {
+        border-color: ${props.theme.input.normalHover};
+        fill: ${props.theme.primary.accentHover};
+      }
+    `;
+  }}
 `;
 
 const StyledCheckbox = styled.div<CheckboxProps>`
@@ -65,19 +78,6 @@ const StyledCheckbox = styled.div<CheckboxProps>`
       fill: ${(props) => props.theme.primary.accent};
     }
   }
-
-  ${(props) => {
-    if (props.disabled) return;
-
-    return css`
-      cursor: pointer;
-
-      &:hover {
-        border-color: ${props.theme.input.normalHover};
-        fill: ${props.theme.primary.accentHover};
-      }
-    `;
-  }}
 `;
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
