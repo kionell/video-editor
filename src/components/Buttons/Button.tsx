@@ -1,4 +1,3 @@
-import { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { IconType } from '../Icon';
 
@@ -9,7 +8,7 @@ export interface ButtonProps {
   showLabel?: boolean;
   label?: string;
   className?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: (event: MouseEvent) => void;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`
@@ -32,8 +31,12 @@ const StyledBaseButton = styled.button<ButtonProps>`
 
   color: ${(props) => props.theme.text.normal};
 
-  & > * > * {
-    fill: ${(props) => props.theme.text.normal};
+  & > * {
+    pointer-events: none;
+
+    & > * {
+      fill: ${(props) => props.theme.text.normal};
+    }
   }
 
   &:hover:enabled {
