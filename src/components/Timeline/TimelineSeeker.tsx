@@ -17,7 +17,7 @@ const StyledTimelineSeekerWrapper = styled.div`
   border: none;
   outline: none;
   user-select: none;
-  cursor: ew-resize;
+  cursor: col-resize;
 
   & > * {
     pointer-events: none;
