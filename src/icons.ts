@@ -36,3 +36,4 @@ export { ReactComponent as TransformIcon } from './assets/svg/transform.svg';
 export { ReactComponent as TransitionIcon } from './assets/svg/transition.svg';
 export { ReactComponent as UndoIcon } from './assets/svg/undo.svg';
 export { ReactComponent as VerticalFlipIcon } from './assets/svg/vertical-flip.svg';
+export { ReactComponent as SeekerIcon } from './assets/svg/seeker.svg';

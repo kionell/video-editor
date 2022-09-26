@@ -40,6 +40,7 @@ export enum IconType {
   Transition,
   Undo,
   VerticalFlip,
+  Seeker,
 }
 
 interface IconProps {
@@ -104,6 +105,7 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
     case 'Transition': return Icons.TransitionIcon;
     case 'Undo': return Icons.UndoIcon;
     case 'VerticalFlip': return Icons.VerticalFlipIcon;
+    case 'Seeker': return Icons.SeekerIcon;
   }
 
   return Icons.CheckIcon;
