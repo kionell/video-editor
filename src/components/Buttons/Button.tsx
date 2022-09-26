@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { IconType } from '../Icon';
 
@@ -8,6 +9,7 @@ export interface ButtonProps {
   showLabel?: boolean;
   label?: string;
   className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`
