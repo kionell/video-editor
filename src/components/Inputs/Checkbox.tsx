@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { MouseEventHandler, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { Label } from '../Label';
 import { Icon } from '../Icon';
@@ -14,8 +14,8 @@ export interface CheckboxProps {
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'left' | 'right';
-  onClick?: MouseEventHandler<HTMLInputElement>;
   className?: string;
+  onChange?: (event: Event) => void;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -81,12 +81,22 @@ const StyledCheckbox = styled.div<CheckboxProps>`
 `;
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
-  const { showLabel, label, labelPosition, disabled, onClick } = props;
+  const { showLabel, label, labelPosition, disabled } = props;
   
   const [checked, setChecked] = useState(props.checked);
   const checkboxRef = useRef<HTMLInputElement>(null);
 
-  useUpdateEffect(() => checkboxRef.current?.click(), [checked]);
+  useUpdateEffect(() => {
+    if (!props.onChange) return;
+
+    checkboxRef.current?.addEventListener('change', props.onChange);
+
+    return () => {
+      if (!props.onChange) return;
+
+      checkboxRef.current?.removeEventListener('change', props.onChange);
+    };
+  }, []);
 
   const changeState = () => !disabled && setChecked(!checked);
 
@@ -97,13 +107,12 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
       onClick={changeState}
     >
       <HiddenCheckbox 
-        disabled={disabled} 
-        checked={checked} 
-        onClick={onClick}
-        onChange={() => void 0}
         ref={checkboxRef}
+        disabled={disabled} 
+        checked={checked}
+        readOnly 
       />
-      <StyledCheckbox disabled={disabled} checked={checked}>
+      <StyledCheckbox disabled={disabled} checked={checked} className='checkbox'>
         <Icon useColor={false} size={NORMAL_ICON_SIZE} />
       </StyledCheckbox>
       <Label 
