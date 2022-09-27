@@ -58,6 +58,7 @@ const IconWrapper = styled.div<IconProps>`
   display: ${(props) => props.visible ? 'flex' : 'none'}; 
   justify-content: center; 
   align-items: center;
+  pointer-events: none;
 
   & > * {
     width: 100%;
