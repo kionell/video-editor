@@ -1,18 +1,18 @@
 import { ForwardedRef, forwardRef, HTMLProps, useEffect } from 'react';
 
-interface ClickProps {
-  onPress?: (event: MouseEvent) => void;
-}
+type ClickProps = HTMLProps<HTMLElement> & {
+  listener?: (event: MouseEvent) => void;
+};
 
 export const withClickable = (Component: React.FC) => {
-  const DraggableComponent = forwardRef<HTMLElement, HTMLProps<HTMLElement>>((
-    props: HTMLProps<HTMLElement> & ClickProps, 
+  const DraggableComponent = forwardRef<HTMLElement, ClickProps>((
+    props: ClickProps, 
     ref: ForwardedRef<HTMLElement>,
   ) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
-      const listener = props.onPress ?? null;
+      const listener = props.listener ?? null;
 
       if (listener) {
         ref.current.addEventListener('click', listener);
