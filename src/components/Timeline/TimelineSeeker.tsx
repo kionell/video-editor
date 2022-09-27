@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { HTMLProps } from 'react';
 import styled from 'styled-components';
+import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../Icon';
 
 const StyledTimelineSeekerLine = styled.div`
@@ -10,6 +11,7 @@ const StyledTimelineSeekerLine = styled.div`
 `;
 
 const StyledTimelineSeekerWrapper = styled.div`
+  position: absolute;
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
@@ -17,49 +19,48 @@ const StyledTimelineSeekerWrapper = styled.div`
   border: none;
   outline: none;
   user-select: none;
-  cursor: col-resize;
+  z-index: 2;
+  cursor: ew-resize;
 
   & > * {
     pointer-events: none;
   }
 
   & > ${StyledTimelineSeekerLine} {
-    background: ${(props) => props.theme.text.lighter};
+    background: ${(props) => {
+      return props.className?.includes('focused')
+        ? props.theme.primary.accentHover
+        : props.theme.text.lighter;
+    }};
   }
 
   & > * > svg {
-    fill: ${(props) => props.theme.text.lighter};
-  }
-
-  & > ${StyledTimelineSeekerLine}.focused {
-    background: ${(props) => props.theme.primary.accentHover};
-  }
-
-  & > .focused > svg {
-    fill: ${(props) => props.theme.primary.accentHover};
+    fill: ${(props) => {
+      return props.className?.includes('focused')
+        ? props.theme.primary.accentHover
+        : props.theme.text.lighter;
+    }};
   }
 `;
 
-const TimelineSeeker: React.FC = () => {
-  const [selected, setSelected] = useState(false);
-  const seekerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    document.addEventListener('mousedown', (e: Event) => {
-      if (!seekerRef.current) return;
-      
-      if (e.target !== seekerRef.current) {
-        setSelected(false);
-      }
-    });
-  }, []);
-
+const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <StyledTimelineSeekerWrapper ref={seekerRef} onMouseDown={() => setSelected(true)}>
-      <Icon size={25} useColor={false} variant='Seeker' className={selected ? 'focused' : ''} />
-      <StyledTimelineSeekerLine className={selected ? 'focused' : ''} />
+    <StyledTimelineSeekerWrapper ref={ref} {...props}>
+      <Icon 
+        size={25} 
+        useColor={false} 
+        variant='Seeker' 
+        className='seeker-icon' 
+      />
+      <StyledTimelineSeekerLine 
+        className='seeker-line' 
+      />
     </StyledTimelineSeekerWrapper>
   );
-};
+});
 
-export { TimelineSeeker };
+BaseTimelineSeeker.displayName = 'Timeline Seeker';
+
+export const TimelineSeeker: React.FC<HTMLProps<HTMLDivElement>> = (
+  withFocusable(withMovableX(BaseTimelineSeeker))
+);
