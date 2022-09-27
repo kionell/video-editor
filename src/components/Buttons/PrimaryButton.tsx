@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { useEffect, useRef } from 'react';
+import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
+import { withClickable, withTogglable } from '../../hoc';
 import { 
   LARGE_ICON_SIZE, 
   NORMAL_FONT_SIZE, 
@@ -23,29 +24,16 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const PrimaryButton: React.FC<PrimaryButtonProps> = (props: PrimaryButtonProps) => {
+const BasePrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
+  props: PrimaryButtonProps, 
+  ref: React.ForwardedRef<HTMLButtonElement>
+) => {
   const { showIcon, iconType, largeIcon, showLabel, label } = props;
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!buttonRef.current) return;
-
-    if (props.onClick) {
-      buttonRef.current.addEventListener('click', props.onClick);
-    }
-
-    return () => {
-      if (props.onClick) { 
-        buttonRef.current?.removeEventListener('click', props.onClick);
-      }
-    };
-  }, []);
 
   return (
     <StyledPrimaryButton 
       {...props}
-      ref={buttonRef}
+      ref={ref}
       onClick={() => void 0}
     >
       <Icon 
@@ -62,9 +50,11 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = (props: PrimaryButtonProps) 
       />
     </StyledPrimaryButton>
   );
-};
+});
 
-PrimaryButton.defaultProps = {
+BasePrimaryButton.displayName = 'Primary Button';
+
+BasePrimaryButton.defaultProps = {
   disabled: false,
   showIcon: true,
   largeIcon: false,
@@ -72,4 +62,6 @@ PrimaryButton.defaultProps = {
   label: 'Button',
 };
 
-export { PrimaryButton };
+export const PrimaryButton: React.FC<PrimaryButtonProps> = (
+  withTogglable(withClickable(BasePrimaryButton)) as any
+);

@@ -1,8 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
+import { withClickable, withTogglable } from '../../hoc';
 import { 
   SMALL_FONT_SIZE, 
   LARGE_ICON_SIZE 
@@ -52,34 +54,22 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   }
 `;
 
-const FlatButton: React.FC<FlatButtonProps> = (props: FlatButtonProps) => {
+const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
+  props: FlatButtonProps, 
+  ref: React.ForwardedRef<HTMLButtonElement>
+) => {
   const { togglable, showIcon, iconType, showLabel, label } = props;
 
   const [ isToggled, setToggled ] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const toggleButton = () => togglable && setToggled(!isToggled);
-
-  useEffect(() => {
-    if (!buttonRef.current) return;
-
-    if (props.onClick) {
-      buttonRef.current.addEventListener('click', props.onClick);
-    }
-
-    return () => {
-      if (props.onClick) { 
-        buttonRef.current?.removeEventListener('click', props.onClick);
-      }
-    };
-  }, []);
 
   return (
     <StyledFlatButton 
       {...props}
-      ref={buttonRef}
+      ref={ref}
       onClick={toggleButton}
-      className={isToggled ? 'toggled' : ''}
+      
     >
       <Icon 
         visible={showIcon} 
@@ -96,9 +86,11 @@ const FlatButton: React.FC<FlatButtonProps> = (props: FlatButtonProps) => {
       />
     </StyledFlatButton>
   );
-};
+});
 
-FlatButton.defaultProps = {
+BaseFlatButton.displayName = 'Flat Button';
+
+BaseFlatButton.defaultProps = {
   disabled: false,
   togglable: false,
   showBackground: true,
@@ -107,4 +99,6 @@ FlatButton.defaultProps = {
   label: 'Button',
 };
 
-export { FlatButton };
+export const FlatButton: React.FC<FlatButtonProps> = (
+  withTogglable(withClickable(BaseFlatButton)) as any
+);

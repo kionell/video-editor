@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
+import { withClickable, withTogglable } from '../../hoc';
 import { 
   LARGE_ICON_SIZE, 
   NORMAL_FONT_SIZE, 
@@ -33,34 +34,16 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const SecondaryButton: React.FC<SecondaryButtonProps> = (props: SecondaryButtonProps) => {
-  const { showIcon, iconType, largeIcon, showLabel, label, togglable } = props;
-
-  const [ isToggled, setToggled ] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const toggleButton = () => togglable && setToggled(!isToggled);
-
-  useEffect(() => {
-    if (!buttonRef.current) return;
-
-    if (props.onClick) {
-      buttonRef.current.addEventListener('click', props.onClick);
-    }
-
-    return () => {
-      if (props.onClick) { 
-        buttonRef.current?.removeEventListener('click', props.onClick);
-      }
-    };
-  }, []);
+const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>((
+  props: SecondaryButtonProps, 
+  ref: React.ForwardedRef<HTMLButtonElement>
+) => {
+  const { showIcon, iconType, largeIcon, showLabel, label } = props;
 
   return (
     <StyledSecondaryButton
+      ref={ref}
       {...props}
-      ref={buttonRef}
-      onClick={toggleButton}
-      className={isToggled ? 'toggled' : ''}
     >
       <Icon 
         visible={showIcon} 
@@ -76,15 +59,18 @@ const SecondaryButton: React.FC<SecondaryButtonProps> = (props: SecondaryButtonP
       />
     </StyledSecondaryButton>
   );
-};
+});
 
-SecondaryButton.defaultProps = {
+BaseSecondaryButton.displayName = 'Secondary Button';
+
+BaseSecondaryButton.defaultProps = {
   disabled: false,
-  togglable: false,
   showIcon: true,
   largeIcon: false,
   showLabel: true,
   label: 'Button',
 };
 
-export { SecondaryButton };
+export const SecondaryButton: React.FC<SecondaryButtonProps> = (
+  withTogglable(withClickable(BaseSecondaryButton)) as any
+);
