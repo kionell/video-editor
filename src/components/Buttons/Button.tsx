@@ -1,3 +1,4 @@
+import { Ref } from 'react';
 import styled from 'styled-components';
 import { IconType } from '../Icon';
 
@@ -8,7 +9,8 @@ export interface ButtonProps {
   showLabel?: boolean;
   label?: string;
   className?: string;
-  onClick?: (event: MouseEvent) => void;
+  ref?: Ref<HTMLButtonElement>;
+  listener?: (event: MouseEvent) => void;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`
