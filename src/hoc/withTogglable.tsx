@@ -1,12 +1,10 @@
 import { ForwardedRef, forwardRef, HTMLProps, useEffect, useState } from 'react';
 
-interface ToggleProps {
-  togglable?: boolean;
-}
+type ToggleProps = HTMLProps<HTMLElement> & { togglable?: boolean };
 
 export const withTogglable = (Component: React.FC) => {
-  const TogglableComponent = forwardRef<HTMLElement, HTMLProps<HTMLElement>>((
-    props: HTMLProps<HTMLElement> & ToggleProps, 
+  const TogglableComponent = forwardRef<HTMLElement, ToggleProps>((
+    props: ToggleProps, 
     ref: ForwardedRef<HTMLElement>,
   ) => {
     const [ isToggled, setToggled ] = useState(false);
