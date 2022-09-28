@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { Label } from '../Label';
 import { SecondaryButton } from '../Buttons';
 import { FlexContainer } from '../Containers';
@@ -142,8 +142,9 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
       disabled={disabled}
     >
       <FlexContainer gap={0} padding={0}>
-        <SecondaryButton 
-          onClick={decrement}
+        <SecondaryButton
+          ref={React.createRef()}
+          listener={decrement}
           className="minus-button" 
           iconType='Minus'
           disabled={disabled}
@@ -158,7 +159,8 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           disabled={disabled}
         />
         <SecondaryButton
-          onClick={increment}
+          ref={React.createRef()}
+          listener={increment}
           className="plus-button"
           iconType='Plus'
           disabled={disabled}
