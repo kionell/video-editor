@@ -31,11 +31,7 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
   const { showIcon, iconType, largeIcon, showLabel, label } = props;
 
   return (
-    <StyledPrimaryButton 
-      {...props}
-      ref={ref}
-      onClick={() => void 0}
-    >
+    <StyledPrimaryButton ref={ref} {...props}>
       <Icon 
         visible={showIcon} 
         variant={iconType} 

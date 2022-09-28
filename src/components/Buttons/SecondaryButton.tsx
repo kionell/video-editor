@@ -41,10 +41,7 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>(
   const { showIcon, iconType, largeIcon, showLabel, label } = props;
 
   return (
-    <StyledSecondaryButton
-      ref={ref}
-      {...props}
-    >
+    <StyledSecondaryButton ref={ref} {...props}>
       <Icon 
         visible={showIcon} 
         variant={iconType} 

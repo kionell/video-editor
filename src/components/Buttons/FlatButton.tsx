@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
@@ -58,19 +58,10 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
   props: FlatButtonProps, 
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { togglable, showIcon, iconType, showLabel, label } = props;
-
-  const [ isToggled, setToggled ] = useState(false);
-
-  const toggleButton = () => togglable && setToggled(!isToggled);
+  const { showIcon, iconType, showLabel, label } = props;
 
   return (
-    <StyledFlatButton 
-      {...props}
-      ref={ref}
-      onClick={toggleButton}
-      
-    >
+    <StyledFlatButton ref={ref} {...props}>
       <Icon 
         visible={showIcon} 
         variant={iconType} 
