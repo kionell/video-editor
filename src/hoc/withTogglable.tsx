@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, HTMLProps, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, HTMLProps, useState } from 'react';
 
 type ToggleProps = HTMLProps<HTMLElement> & { togglable?: boolean };
 
@@ -11,21 +11,12 @@ export const withTogglable = (Component: React.FC) => {
 
     const toggleButton = () => props.togglable && setToggled(!isToggled);
 
-    useEffect(() => {
-      if (ref instanceof Function || !ref?.current) return;
-
-      ref.current.addEventListener('click', toggleButton);
-
-      return () => {
-        ref.current?.removeEventListener('click', toggleButton);
-      };
-    }, []);
-
     return (
       <Component 
-        ref={ref} 
+        ref={ref}
+        onClick={toggleButton}
         className={isToggled ? 'toggled' : ''}
-        {...props} 
+        {...props}
       />
     );
   });
@@ -33,4 +24,5 @@ export const withTogglable = (Component: React.FC) => {
   TogglableComponent.displayName = 'Togglable Component';
 
   return TogglableComponent;
+
 };
