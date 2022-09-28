@@ -20,6 +20,7 @@ const StyledLabel = styled.label<LabelProps>`
   display: ${(props) => props.visible ? 'inline-block' : 'none'};
   opacity: ${(props) => props.disabled ? 0.25 : 1};
   user-select: none;
+  pointer-events: none;
   cursor: inherit;
   
   ${(props) => {
