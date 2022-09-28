@@ -10,7 +10,7 @@ export const withFocusable = (Component: React.FC): React.FC => {
     const unfocusElement = (event: MouseEvent) => {
       if (ref instanceof Function || !ref?.current) return;
       
-      const targetPath = (event as any)?.path as HTMLElement[];
+      const targetPath = event.composedPath();
 
       if (event.target !== ref.current && !targetPath?.includes(ref.current)) {
         setSelected(false);
