@@ -7,7 +7,7 @@ export const withFocusable = (Component: React.FC): React.FC => {
   ) => {
     const [selected, setSelected] = useState(false);
 
-    const select = (event: MouseEvent) => {
+    const unfocusElement = (event: MouseEvent) => {
       if (ref instanceof Function || !ref?.current) return;
       
       const targetPath = (event as any)?.path as HTMLElement[];
@@ -16,17 +16,24 @@ export const withFocusable = (Component: React.FC): React.FC => {
         setSelected(false);
       }
     };
+
+    const focusElement = () => setSelected(true);
   
     useEffect(() => {
-      document.addEventListener('mousedown', select);
+      if (ref instanceof Function || !ref?.current) return;
+
+      ref.current.addEventListener('mousedown', focusElement);
+      document.addEventListener('mousedown', unfocusElement);
   
-      return () => document.removeEventListener('mousedown', select);
+      return () => {
+        document.removeEventListener('mousedown', unfocusElement);
+        ref.current?.addEventListener('mousedown', focusElement);
+      };
     }, []);
 
     return (
       <Component 
         ref={ref}
-        onMouseDown={() => setSelected(true)}
         className={selected ? 'focused' : ''}
         {...props} 
       />
