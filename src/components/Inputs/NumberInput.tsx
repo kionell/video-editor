@@ -93,12 +93,12 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const increment = () => {
-    inputRef.current?.stepUp(props.step as number);
+    inputRef.current?.stepUp();
     inputRef.current?.dispatchEvent(new Event('change'));
   };
 
   const decrement = () => {
-    inputRef.current?.stepDown(props.step as number);
+    inputRef.current?.stepDown();
     inputRef.current?.dispatchEvent(new Event('change'));
   };
 
@@ -154,6 +154,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           ref={inputRef}
           min={props.min}
           max={props.max}
+          step={props.step}
           disabled={disabled}
         />
         <SecondaryButton
