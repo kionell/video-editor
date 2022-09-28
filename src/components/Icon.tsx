@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NORMAL_ICON_SIZE } from '../constants';
 import * as Icons from '../icons';
 
 export enum IconType {
@@ -127,7 +128,7 @@ const Icon: React.FC<IconProps> = (props: IconProps) => {
 Icon.defaultProps = {
   visible: true,
   variant: 'Check',
-  size: 14,
+  size: NORMAL_ICON_SIZE,
   useColor: true,
 };
 
