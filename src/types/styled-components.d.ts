@@ -33,6 +33,7 @@ declare module 'styled-components' {
     | 'video'
     | 'audio'
     | 'select'
+    | 'option'
   >;
 
   export type ThemedStyledProps<P, T> = P & ThemeProps<T>;
