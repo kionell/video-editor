@@ -182,7 +182,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
 Slider.defaultProps = {
   disabled: false,
-  showLabel: false,
+  showLabel: true,
   label: 'Slider',
   minValue: 0,
   maxValue: 100,
