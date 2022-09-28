@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 type FontWeight = 'Regular' | 'Medium';
 
-interface LabelProps {
+export interface LabelProps {
   visible?: boolean;
   disabled?: boolean;
   text?: string;
