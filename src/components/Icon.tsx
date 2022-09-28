@@ -55,7 +55,7 @@ interface IconProps {
 const IconWrapper = styled.div<IconProps>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;  
-  display: ${(props) => props.visible ? 'flex' : 'none'}; 
+  display: ${(props) => props.visible ? 'inline-flex' : 'none'}; 
   justify-content: center; 
   align-items: center;
   pointer-events: none;
