@@ -11,7 +11,7 @@ export const DarkTheme: ITheme = {
     normal: '#191B21',
     normalHover: '#2C303A',
     accent: '#282A30',
-    accentHover: '#282A30',
+    accentHover: '#3A3D45',
   },
   scrollbar: {
     thumb: '#4F525C',
