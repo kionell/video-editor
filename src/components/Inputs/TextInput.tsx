@@ -7,7 +7,7 @@ export interface TextInputProps {
   disabled?: boolean;
   showLabel?: boolean;
   label?: string;
-  labelPosition?: 'left' | 'right';
+  labelPosition?: 'top' | 'left' | 'right';
   placeholder?: string;
   className?: string;
   onChange?: FormEventHandler<HTMLInputElement>;
@@ -16,12 +16,19 @@ export interface TextInputProps {
 const StyledTextInputWrapper = styled.div<TextInputProps>`
   display: flex;
   justify-content: left;
-  align-items: center;
   position: relative;
   margin: 12px;
   gap: 5px;
 
-  flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
+  flex-direction: ${(props) => {
+    if (props.labelPosition === 'left') return 'row';
+    if (props.labelPosition === 'right') return 'row-reverse';
+
+    return 'column';
+  }};
+
+  align-items: ${(props) => props.labelPosition === 'top' ? 'start' : 'center'};
+
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
 
