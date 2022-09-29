@@ -31,9 +31,9 @@ const StyledTextInput = styled.input<TextInputProps>`
   height: 40px;
   outline: none;
   padding-left: 5px;
-  outline: 1px solid;
+  border: 1px solid;
   border-radius: 4px;
-  outline-color: ${(props) => props.theme.input.normal};
+  border-color: ${(props) => props.theme.input.normal};
   background: ${(props) => props.theme.secondary.accent};
   caret-color: ${(props) => props.theme.text.darker};
   color: ${(props) => props.theme.text.lighter};
@@ -47,7 +47,7 @@ const StyledTextInput = styled.input<TextInputProps>`
       cursor: text;
 
       &:focus {
-        outline-color: ${props.theme.primary.accentHover};
+        border-color: ${props.theme.primary.accentHover};
       }
     `;
   }}

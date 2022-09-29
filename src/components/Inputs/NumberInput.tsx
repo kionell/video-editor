@@ -56,7 +56,7 @@ const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProp
   border-bottom: 1px solid;
   border-left: none;
   border-right: none;
-  outline-color: ${(props) => props.theme.input.normal};
+  border-color: ${(props) => props.theme.input.normal};
   background: ${(props) => props.theme.secondary.accent};
   caret-color: ${(props) => props.theme.text.darker};
   color: ${(props) => props.theme.text.lighter};
@@ -77,7 +77,7 @@ const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProp
       cursor: text;
 
       &:focus {
-        outline-color: ${props.theme.primary.accentHover};
+        border-color: ${props.theme.primary.accentHover};
       }
     `;
   }}
