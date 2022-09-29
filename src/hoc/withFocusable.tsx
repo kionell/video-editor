@@ -27,7 +27,7 @@ export const withFocusable = (Component: React.FC): React.FC => {
   
       return () => {
         document.removeEventListener('mousedown', unfocusElement);
-        ref.current?.addEventListener('mousedown', focusElement);
+        ref.current?.removeEventListener('mousedown', focusElement);
       };
     }, []);
 
