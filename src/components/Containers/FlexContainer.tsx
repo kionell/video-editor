@@ -1,17 +1,18 @@
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 type FlexDirection = 'row' | 'column';
 type FlexJustifying = 'center' | 'space-between' | 'space-around';
 type FlexAligning = 'start' | 'end' | 'center';
 
-interface FlexProps {
+export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: FlexDirection;
   reversed?: boolean;
   justify?: FlexJustifying;
   align?: FlexAligning;
   padding?: number;
   gap?: number;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 const StyledFlexContainer = styled.div<FlexProps>`
@@ -28,7 +29,7 @@ const StyledFlexContainer = styled.div<FlexProps>`
   align-items: ${(props) => props.align};
 `;
 
-const FlexContainer: React.FC<PropsWithChildren<FlexProps>> = (props: FlexProps) => {
+const FlexContainer: React.FC<FlexProps> = (props: FlexProps) => {
   return <StyledFlexContainer {...props}></StyledFlexContainer>;
 };
 
