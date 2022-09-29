@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 import React, { useRef } from 'react';
 import { Label } from '../Label';
-import { SecondaryButton } from '../Buttons';
-import { FlexContainer } from '../Containers';
+import { SecondaryButton } from '../Buttons/SecondaryButton';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { useUpdateEffect } from '../../hooks';
 import { NORMAL_FONT_SIZE } from '../../constants';
 
