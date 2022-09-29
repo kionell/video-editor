@@ -135,7 +135,7 @@ Checkbox.defaultProps = {
   checked: false,
   showLabel: true,
   label: 'Checkbox',
-  labelPosition: 'right',
+  labelPosition: 'left',
 };
 
 export { Checkbox };

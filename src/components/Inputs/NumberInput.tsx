@@ -182,7 +182,7 @@ NumberInput.defaultProps = {
   disabled: false,
   showLabel: true,
   label: 'Input',
-  labelPosition: 'right',
+  labelPosition: 'left',
   min: 0,
   max: 100,
   step: 1,

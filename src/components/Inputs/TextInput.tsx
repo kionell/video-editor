@@ -65,12 +65,12 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <StyledTextInput {...props} />
       <Label 
         visible={showLabel} 
         text={label} 
         size={NORMAL_FONT_SIZE}
       />
+      <StyledTextInput {...props} />
     </StyledTextInputWrapper>
   );
 };
@@ -79,7 +79,7 @@ TextInput.defaultProps = {
   disabled: false,
   showLabel: true,
   label: 'Input',
-  labelPosition: 'right',
+  labelPosition: 'left',
   placeholder: 'Placeholder Text',
 };
 
