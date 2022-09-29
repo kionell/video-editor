@@ -29,7 +29,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
 const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   appearance: none;
   border-radius: 4px;
-  border: none;
+  outline: none;
   background: transparent;
   outline: none;
   position: relative;
@@ -74,7 +74,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: none;
+    outline: none;
     background: ${(props) => props.theme.primary.accent};
     translate: 0px -3px;
   }
@@ -84,7 +84,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: none;
+    outline: none;
     background: ${(props) => props.theme.primary.accent};
   }
 

@@ -25,11 +25,11 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 
   &.toggled {
-    border: 1px solid;
-    border-color: ${(props) => props.theme.primary.accent};
+    outline: 1px solid;
+    outline-color: ${(props) => props.theme.primary.accent};
 
     &:hover:enabled {
-      border-color: ${(props) => props.theme.primary.accentHover};
+      outline-color: ${(props) => props.theme.primary.accentHover};
     }
   }
 `;

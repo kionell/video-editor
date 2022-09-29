@@ -19,7 +19,7 @@ export interface CheckboxProps {
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-  border: 0;
+  outline: none;
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
@@ -49,7 +49,7 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
       cursor: pointer;
 
       &:hover > .checkbox {
-        border-color: ${props.theme.input.normalHover};
+        outline-color: ${props.theme.input.normalHover};
         fill: ${props.theme.primary.accentHover};
       }
     `;
@@ -63,9 +63,9 @@ const StyledCheckbox = styled.div<CheckboxProps>`
   height: ${NORMAL_ICON_SIZE}px;
   width: ${NORMAL_ICON_SIZE}px;
   background: transparent;
-  border: 1px solid;
+  outline: 1px solid;
   border-radius: 3px;
-  border-color: ${(props) => props.theme.input.normal};
+  outline-color: ${(props) => props.theme.input.normal};
 
   & > * {
     width: 100%;
