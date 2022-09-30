@@ -52,10 +52,10 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
   props: FlatButtonProps, 
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { showIcon, iconType, showLabel, label } = props;
+  const { showIcon, iconType, showLabel, label, toggled } = props;
 
   return (
-    <StyledFlatButton ref={ref} {...props}>
+    <StyledFlatButton ref={ref} {...props} className={toggled ? 'toggled' : ''}>
       <Icon 
         visible={showIcon} 
         variant={iconType} 
@@ -77,7 +77,6 @@ BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
   showBackground: true,
-  toggled: false,
   width: 60,
   height: 60,
 };

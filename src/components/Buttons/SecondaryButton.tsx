@@ -5,10 +5,6 @@ import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
 import { withClickable } from '../../hoc';
 
-interface SecondaryButtonProps extends ButtonProps {
-  togglable?: boolean;
-}
-
 const StyledSecondaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.secondary.normal};
   
@@ -26,14 +22,14 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>((
-  props: SecondaryButtonProps, 
+const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((
+  props: ButtonProps, 
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { showIcon, iconType, iconSize, showLabel, label } = props;
+  const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
 
   return (
-    <StyledSecondaryButton ref={ref} {...props}>
+    <StyledSecondaryButton ref={ref} {...props} className={toggled ? 'toggled' : ''}>
       <Icon
         visible={showIcon}
         variant={iconType}
@@ -50,9 +46,5 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>(
 });
 
 BaseSecondaryButton.displayName = 'Secondary Button';
-
-BaseSecondaryButton.defaultProps = {
-  togglable: true,
-};
 
 export const SecondaryButton = withClickable(BaseSecondaryButton);
