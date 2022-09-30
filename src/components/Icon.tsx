@@ -130,6 +130,7 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
 }
 
 export function getIconSizeBySizeType(iconSize?: keyof typeof IconSize): number {
+  if (iconSize === 'Giant') return GIANT_ICON_SIZE;
   if (iconSize === 'Large') return LARGE_ICON_SIZE;
   if (iconSize === 'Normal') return NORMAL_ICON_SIZE;
 
