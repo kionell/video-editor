@@ -60,4 +60,13 @@ const StyledBaseButton = styled.button<ButtonProps>`
   }
 `;
 
+StyledBaseButton.defaultProps = {
+  visible: true,
+  disabled: false,
+  showIcon: true,
+  iconType: 'Check', 
+  iconSize: 'Normal',
+  showLabel: true,
+  label: 'Button',
+};
 export { StyledBaseButton };

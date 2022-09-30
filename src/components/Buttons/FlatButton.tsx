@@ -82,12 +82,8 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
 BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
-  disabled: false,
-  togglable: false,
   showBackground: true,
-  showIcon: true,
-  showLabel: true,
-  label: 'Button',
+  togglable: false,
 };
 
 export const FlatButton: React.FC<FlatButtonProps> = (

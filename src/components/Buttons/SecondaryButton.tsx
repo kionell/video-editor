@@ -1,17 +1,11 @@
 import styled from 'styled-components';
 import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
-import { Icon } from '../Icon';
+import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
 import { withClickable, withTogglable } from '../../hoc';
-import { 
-  LARGE_ICON_SIZE, 
-  NORMAL_FONT_SIZE, 
-  NORMAL_ICON_SIZE 
-} from '../../constants';
 
 interface SecondaryButtonProps extends ButtonProps {
-  largeIcon?: boolean;
   togglable?: boolean;
 }
 
@@ -38,20 +32,19 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>(
   props: SecondaryButtonProps, 
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { showIcon, iconType, largeIcon, showLabel, label } = props;
+  const { showIcon, iconType, iconSize, showLabel, label } = props;
 
   return (
     <StyledSecondaryButton ref={ref} {...props}>
-      <Icon 
-        visible={showIcon} 
-        variant={iconType} 
-        size={largeIcon ? LARGE_ICON_SIZE : NORMAL_ICON_SIZE}
+      <Icon
+        visible={showIcon}
+        variant={iconType}
+        size={getIconSizeBySizeType(iconSize)}
         useColor={false}
       />
-      <Label 
-        visible={showLabel} 
-        text={label} 
-        size={NORMAL_FONT_SIZE}
+      <Label
+        visible={showLabel}
+        text={label}
         useColor={false}
       />
     </StyledSecondaryButton>
@@ -61,11 +54,7 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, SecondaryButtonProps>(
 BaseSecondaryButton.displayName = 'Secondary Button';
 
 BaseSecondaryButton.defaultProps = {
-  disabled: false,
-  showIcon: true,
-  largeIcon: false,
-  showLabel: true,
-  label: 'Button',
+  togglable: true,
 };
 
 export const SecondaryButton: React.FC<SecondaryButtonProps> = (

@@ -1,18 +1,9 @@
 import styled from 'styled-components';
 import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
-import { Icon } from '../Icon';
+import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
 import { withClickable, withTogglable } from '../../hoc';
-import { 
-  LARGE_ICON_SIZE, 
-  NORMAL_FONT_SIZE, 
-  NORMAL_ICON_SIZE 
-} from '../../constants';
-
-interface PrimaryButtonProps extends ButtonProps {
-  largeIcon?: boolean;
-}
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
   height: 40px;
@@ -24,24 +15,23 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BasePrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
-  props: PrimaryButtonProps, 
+const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((
+  props: ButtonProps, 
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { showIcon, iconType, largeIcon, showLabel, label } = props;
+  const { showIcon, iconType, iconSize, showLabel, label } = props;
 
   return (
     <StyledPrimaryButton ref={ref} {...props}>
       <Icon 
         visible={showIcon} 
-        variant={iconType} 
-        size={largeIcon ? LARGE_ICON_SIZE : NORMAL_ICON_SIZE}
+        variant={iconType}
+        size={getIconSizeBySizeType(iconSize)}
         useColor={false}
       />
       <Label 
         visible={showLabel} 
         text={label} 
-        size={NORMAL_FONT_SIZE}
         useColor={false}
       />
     </StyledPrimaryButton>
@@ -50,14 +40,6 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
 
 BasePrimaryButton.displayName = 'Primary Button';
 
-BasePrimaryButton.defaultProps = {
-  disabled: false,
-  showIcon: true,
-  largeIcon: false,
-  showLabel: true,
-  label: 'Button',
-};
-
-export const PrimaryButton: React.FC<PrimaryButtonProps> = (
+export const PrimaryButton: React.FC<ButtonProps> = (
   withTogglable(withClickable(BasePrimaryButton)) as any
 );
