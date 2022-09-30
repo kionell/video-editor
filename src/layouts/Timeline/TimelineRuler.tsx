@@ -94,29 +94,6 @@ export class BaseRuler extends PureComponent<TimelineRulerProps> implements ITim
     );
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', () => {
-      this.resize();
-    });
-  }
-
-  componentDidMount() {
-    const canvas = this.canvasElement;
-    const context = canvas.getContext('2d');
-
-    this.canvasContext = context as CanvasRenderingContext2D;
-
-    window.addEventListener('resize', () => {
-      this.resize();
-    });
-
-    this.resize();
-  }
-
-  componentDidUpdate() {
-    this.resize();
-  }
-
   scroll(scrollPos: number, nextZoom?: number) {
     this.draw(scrollPos, nextZoom);
   }
@@ -226,6 +203,27 @@ export class BaseRuler extends PureComponent<TimelineRulerProps> implements ITim
     }
 
     context.restore();
+  }
+
+  private onResize = () => this.resize();
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  componentDidMount() {
+    const canvas = this.canvasElement;
+    const context = canvas.getContext('2d');
+
+    this.canvasContext = context as CanvasRenderingContext2D;
+
+    window.addEventListener('resize', this.onResize);
+
+    this.resize();
+  }
+
+  componentDidUpdate() {
+    this.resize();
   }
 }
 
