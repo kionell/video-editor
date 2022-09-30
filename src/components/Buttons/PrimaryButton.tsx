@@ -6,8 +6,6 @@ import { Label } from '../Label';
 import { withClickable } from '../../hoc';
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
-  height: 40px;
-
   background: ${(props) => props.theme.primary.accent};
 
   &:hover:enabled {

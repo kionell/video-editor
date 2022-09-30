@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
-import { withClickable, withTogglable } from '../../hoc';
+import { withClickable } from '../../hoc';
 import { 
   SMALL_FONT_SIZE, 
   LARGE_ICON_SIZE 
@@ -78,9 +78,8 @@ BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
   showBackground: true,
-  togglable: false,
+  width: 60,
+  height: 60,
 };
 
-export const FlatButton: React.FC<FlatButtonProps> = (
-  withTogglable(withClickable(BaseFlatButton)) as any
-);
+export const FlatButton = withClickable(BaseFlatButton);

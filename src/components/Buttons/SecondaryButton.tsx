@@ -10,8 +10,6 @@ interface SecondaryButtonProps extends ButtonProps {
 }
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
-  height: 40px;
-
   background: ${(props) => props.theme.secondary.normal};
   
   &:hover:enabled {
