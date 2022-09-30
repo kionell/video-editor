@@ -75,6 +75,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
 StyledBaseButton.defaultProps = {
   visible: true,
   disabled: false,
+  toggled: false,
   height: 40,
   showIcon: true,
   iconType: 'Check', 
