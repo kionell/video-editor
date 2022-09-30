@@ -26,15 +26,14 @@ const StyledTimelineTools = styled.div`
 const TimelineTools: React.FC = () => {
   return (
     <StyledTimelineTools>
-      <ButtonGroup gap={6}>
+      <FlexContainer gap={6}>
         <SecondaryButton showLabel={false} iconType='Undo' />
         <SecondaryButton showLabel={false} iconType='Redo' />
         <SecondaryButton showLabel={false} iconType='Split' />
         <SecondaryButton showLabel={false} iconType='BringForward' />
         <SecondaryButton showLabel={false} iconType='SendBackward' />
         <SecondaryButton showLabel={false} iconType='Delete' />
-      </ButtonGroup>
-
+      </FlexContainer>
 
       <FlexContainer gap={5} padding={0} className='timeline-time'>
         <Label className='timeline-time-current' text='0:00.00' useColor={false} />
@@ -42,12 +41,14 @@ const TimelineTools: React.FC = () => {
         <Label className='timeline-time-duration' text='0:00.00' useColor={false} />
       </FlexContainer>
 
-      <ButtonGroup gap={6}>
-        <SecondaryButton showLabel={false} iconType='Snap' togglable />
+      <FlexContainer gap={6}>
+        <ButtonGroup>
+          <SecondaryButton showLabel={false} iconType='Snap' />
+        </ButtonGroup>
         <SecondaryButton showLabel={false} iconType='Minus' />
         <SecondaryButton showLabel={false} iconType='Plus' />
         <SecondaryButton showLabel={false} iconType='Fit' />
-      </ButtonGroup>
+      </FlexContainer>
     </StyledTimelineTools>
   );
 };
