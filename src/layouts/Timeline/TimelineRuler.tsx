@@ -60,8 +60,8 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
   textFormat?: (scale: number) => string;
 }
 
-export class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
-  public static defaultProps: TimelineRulerProps = {
+class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
+  static defaultProps: TimelineRulerProps = {
     height: 15,
     zoom: 1,
     unit: 100,
