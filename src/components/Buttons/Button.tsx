@@ -6,6 +6,7 @@ export interface ButtonProps {
   disabled?: boolean;
   showIcon?: boolean;
   iconType?: keyof typeof IconType;
+  iconSize?: keyof typeof IconSize;
   showLabel?: boolean;
   label?: string;
   className?: string;
