@@ -1,6 +1,6 @@
-import { forwardRef, HTMLProps, useEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 
-export const withMovableX = (Component: React.FC) => {
+export const withMovableX = <T,>(Component: React.FC<T>) => {
   const makeMovableX = (element: HTMLElement) => {
     let offsetX = 0;
 
@@ -24,7 +24,7 @@ export const withMovableX = (Component: React.FC) => {
     element.addEventListener('mousedown', startMoving);
   };
 
-  const MovableXComponent = forwardRef<HTMLElement, HTMLProps<HTMLElement>>((props, ref) => {
+  const MovableXComponent = forwardRef<HTMLElement, T>((props, ref) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 

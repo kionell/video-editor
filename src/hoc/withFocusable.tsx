@@ -1,8 +1,8 @@
-import { ForwardedRef, forwardRef, HTMLProps, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 
-export const withFocusable = (Component: React.FC): React.FC => {
-  const FocusedComponent =  forwardRef<HTMLElement, HTMLProps<HTMLElement>>((
-    props: HTMLProps<HTMLElement>, 
+export const withFocusable = <T,>(Component: React.FC<T>) => {
+  const FocusedComponent =  forwardRef<HTMLElement, T>((
+    props: T, 
     ref: ForwardedRef<HTMLElement>,
   ) => {
     const [selected, setSelected] = useState(false);

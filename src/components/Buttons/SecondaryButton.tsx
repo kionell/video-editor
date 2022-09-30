@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
-import { withClickable, withTogglable } from '../../hoc';
+import { withClickable } from '../../hoc';
 
 interface SecondaryButtonProps extends ButtonProps {
   togglable?: boolean;
@@ -57,6 +57,4 @@ BaseSecondaryButton.defaultProps = {
   togglable: true,
 };
 
-export const SecondaryButton: React.FC<SecondaryButtonProps> = (
-  withTogglable(withClickable(BaseSecondaryButton)) as any
-);
+export const SecondaryButton = withClickable(BaseSecondaryButton);

@@ -122,6 +122,4 @@ BaseGeneralItem.defaultProps = {
   label: 'General Item',
 };
 
-export const GeneralItem: React.FC<GeneralItemProps> = (
-  withDraggable(BaseGeneralItem) as React.FC<GeneralItemProps>
-);
+export const GeneralItem = withDraggable(BaseGeneralItem);

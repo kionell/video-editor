@@ -1,6 +1,6 @@
-import { ForwardedRef, forwardRef, HTMLProps, useEffect } from 'react';
+import { ForwardedRef, forwardRef, useEffect } from 'react';
 
-export const withStretchableX = (Component: React.FC) => {
+export const withStretchableX = <T,>(Component: React.FC<T>) => {
   type ResizeCallback = () => void;
 
   const resizeElement = (target: HTMLElement, edge: HTMLElement, left: boolean): ResizeCallback => {
@@ -104,8 +104,8 @@ export const withStretchableX = (Component: React.FC) => {
     return callbacks;
   };
 
-  const StretchableXComponent = forwardRef<HTMLElement, HTMLProps<HTMLElement>>((
-    props: HTMLProps<HTMLElement>, 
+  const StretchableXComponent = forwardRef<HTMLElement, T>((
+    props: T, 
     ref: ForwardedRef<HTMLElement>,
   ) => {
     useEffect(() => {

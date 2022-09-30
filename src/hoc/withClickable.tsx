@@ -4,9 +4,9 @@ type ClickProps = HTMLProps<HTMLElement> & {
   listener?: (event: MouseEvent) => void;
 };
 
-export const withClickable = (Component: React.FC) => {
-  const DraggableComponent = forwardRef<HTMLElement, ClickProps>((
-    props: ClickProps, 
+export const withClickable = <T extends ClickProps>(Component: React.FC<T>) => {
+  const DraggableComponent = forwardRef<HTMLElement, T>((
+    props: T, 
     ref: ForwardedRef<HTMLElement>,
   ) => {
     useEffect(() => {

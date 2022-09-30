@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
-import { withClickable, withTogglable } from '../../hoc';
+import { withClickable } from '../../hoc';
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
   height: 40px;
@@ -40,6 +40,4 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((
 
 BasePrimaryButton.displayName = 'Primary Button';
 
-export const PrimaryButton: React.FC<ButtonProps> = (
-  withTogglable(withClickable(BasePrimaryButton)) as any
-);
+export const PrimaryButton = withClickable(BasePrimaryButton);

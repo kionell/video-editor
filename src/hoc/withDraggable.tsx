@@ -1,6 +1,6 @@
-import { forwardRef, HTMLProps, useEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 
-export const withDraggable = (Component: React.FC) => {
+export const withDraggable = <T,>(Component: React.FC<T>) => {
   const makeDraggable = (element: HTMLElement) => {
     let offsetX = 0, offsetY = 0;
 
@@ -57,7 +57,7 @@ export const withDraggable = (Component: React.FC) => {
     element.addEventListener('mousedown', startDragging);
   };
 
-  const DraggableComponent = forwardRef<HTMLElement, HTMLProps<HTMLElement>>((props, ref) => {
+  const DraggableComponent = forwardRef<HTMLElement, T>((props, ref) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
