@@ -1,10 +1,12 @@
 import { Ref } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { IconType, IconSize } from '../Icon';
 
 export interface ButtonProps {
   visible?: boolean;
   disabled?: boolean;
+  width?: number;
+  height?: number;
   showIcon?: boolean;
   iconType?: keyof typeof IconType;
   iconSize?: keyof typeof IconSize;
@@ -24,6 +26,18 @@ const StyledBaseButton = styled.button<ButtonProps>`
   align-items: center;
   border: none;
   outline: none;
+
+  ${(props) => {
+    return props.width && css`
+      width: ${props.width}px;
+    `;
+  }}
+
+  ${(props) => {
+    return props.height && css`
+      height: ${props.height}px;
+    `;
+  }}
 
   &:enabled, &:enabled > * {
     cursor: pointer;
@@ -60,6 +74,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
 StyledBaseButton.defaultProps = {
   visible: true,
   disabled: false,
+  height: 40,
   showIcon: true,
   iconType: 'Check', 
   iconSize: 'Normal',
