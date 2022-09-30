@@ -9,7 +9,6 @@ const StyledTimelineElementWrapper = styled.div`
   height: 50px;
   left: 100px;
   display: inline-flex;
-  position: absolute;
   justify-content: space-between;
   align-items: center;
   user-select: none;
@@ -17,7 +16,6 @@ const StyledTimelineElementWrapper = styled.div`
   border-right: none;
   border-radius: 6px;
   overflow: hidden;
-  cursor: grab;
   
   ${(props) => {
     const isFocused = props.className?.includes('focused');

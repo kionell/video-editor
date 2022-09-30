@@ -4,7 +4,11 @@ export const withDraggable = (Component: React.FC) => {
   const makeDraggable = (element: HTMLElement) => {
     let offsetX = 0, offsetY = 0;
 
+    element.style.cursor = 'grab';
+
     const startDragging = (event: MouseEvent) => {
+      event.stopPropagation();
+
       const targetElement = event.target as HTMLElement;
       
       // If we are trying to drag using resizable control element.
@@ -13,6 +17,7 @@ export const withDraggable = (Component: React.FC) => {
       offsetX = element.offsetLeft - event.pageX;
       offsetY = element.offsetTop - event.pageY;
 
+      element.style.position = 'relative';
       element.style.cursor = 'grabbing';
       element.style.zIndex = '1';
 
@@ -36,6 +41,11 @@ export const withDraggable = (Component: React.FC) => {
       element.style.opacity = '1';
       element.style.cursor = 'grab';
       element.style.zIndex = '0';
+
+      // Reset element position
+      element.style.position = '';
+      element.style.left = '0px';
+      element.style.top = '0px';
 
       // element.parentNode?.removeChild(element);
       // parentNode?.appendChild(element);
