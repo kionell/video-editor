@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { NORMAL_FONT_SIZE } from '../constants';
+import { DEFAULT_FONT, DEFAULT_WEIGHT, NORMAL_FONT_SIZE } from '../constants';
 
 type FontWeight = 'Regular' | 'Medium';
 
@@ -40,8 +40,8 @@ Label.defaultProps = {
   disabled: false,
   text: 'Label',
   size: NORMAL_FONT_SIZE,
-  font: 'Roboto',
-  weight: 'Regular',
+  font: DEFAULT_FONT,
+  weight: DEFAULT_WEIGHT,
   useColor: true,
 };
 
