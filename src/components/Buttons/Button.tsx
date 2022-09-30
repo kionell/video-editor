@@ -37,10 +37,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
 
   & > * {
     pointer-events: none;
-
-    & > * {
-      fill: ${(props) => props.theme.text.normal};
-    }
+    fill: ${(props) => props.theme.text.normal};
   }
 
   &:hover:enabled {
