@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html, body, #root {
+    height: 100%;
+  }
+
   body {
     background: #1E1E1E;
   }
@@ -22,12 +26,12 @@ export function App() {
   useEffect(() => setTheme(DarkTheme));
 
   return (
-    <>
+    <div style={{ width: '100%', height: '100%' }}>
       <GlobalStyle />
       <CustomFonts />
       <ThemeProvider theme={theme}>
         <Main />
       </ThemeProvider>
-    </>
+    </div>
   );
 }
