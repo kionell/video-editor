@@ -12,7 +12,6 @@ import {
 
 interface FlatButtonProps extends ButtonProps {
   showBackground?: boolean;
-  togglable?: boolean;
 }
 
 const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
@@ -78,6 +77,7 @@ BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
   showBackground: true,
+  toggled: false,
   width: 60,
   height: 60,
 };

@@ -7,6 +7,7 @@ export interface ButtonProps {
   disabled?: boolean;
   width?: number;
   height?: number;
+  toggled?: boolean;
   showIcon?: boolean;
   iconType?: keyof typeof IconType;
   iconSize?: keyof typeof IconSize;
