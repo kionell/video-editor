@@ -17,15 +17,10 @@ interface FlatButtonProps extends ButtonProps {
 
 const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   flex-direction: column;
-  width: 60px;
-  height: 60px;
-  padding: 6px 6px;
-  gap: 2px;
+  justify-content: center;
+  padding: 6px;
+  gap: 8px;
   border-radius: 0px;
-  
-  justify-content: ${(props) => {
-    return !props.showLabel || !props.showIcon ? 'center' : 'space-between'; 
-  }};
 
   &:not(.toggled) {
     background: ${(props) => props.showBackground ? props.theme.secondary.normal : 'transparent'};
