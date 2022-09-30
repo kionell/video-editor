@@ -19,7 +19,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
   border-radius: 6px;
   padding: 7px 12px;
   gap: 5px;
-  display: flex;
+  display: ${(props) => props.visible ? 'flex' : 'none'};
   justify-content: center;
   align-items: center;
   border: none;
