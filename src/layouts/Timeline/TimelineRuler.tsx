@@ -13,7 +13,7 @@ interface TimelineRulerProps extends ThemeProps<DefaultTheme> {
 
   /**
    * Main scale unit
-   * @default 50
+   * @default 100
    * @example
    * ```
    * 1px (Default) zoom: 1, unit: 50 (every 50px)
