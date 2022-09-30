@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { FormEventHandler } from 'react';
 import { Label } from '../Label';
-import { NORMAL_FONT_SIZE } from '../../constants';
+import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface TextInputProps {
   disabled?: boolean;
@@ -44,7 +44,7 @@ const StyledTextInput = styled.input<TextInputProps>`
   background: ${(props) => props.theme.secondary.accent};
   caret-color: ${(props) => props.theme.text.darker};
   color: ${(props) => props.theme.text.lighter};
-  font-family: 'Roboto';
+  font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;
 
   ${(props) => {

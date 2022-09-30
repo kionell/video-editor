@@ -1,6 +1,6 @@
 import { Ref } from 'react';
 import styled from 'styled-components';
-import { IconType } from '../Icon';
+import { IconType, IconSize } from '../Icon';
 
 export interface ButtonProps {
   visible?: boolean;
@@ -69,4 +69,5 @@ StyledBaseButton.defaultProps = {
   showLabel: true,
   label: 'Button',
 };
+
 export { StyledBaseButton };

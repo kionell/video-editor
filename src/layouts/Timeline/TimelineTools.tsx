@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { SecondaryButton } from '../../components/Buttons';
+import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
-import { FlexContainer } from '../../components/Containers';
+import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Label } from '../../components/Label';
 
 const StyledTimelineTools = styled.div`

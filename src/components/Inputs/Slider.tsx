@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { FormEventHandler, useRef, useEffect } from 'react';
 import { Label } from '../Label';
-import { NORMAL_FONT_SIZE } from '../../constants';
+import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface SliderProps {
   disabled?: boolean;
@@ -118,7 +118,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
 
     &:active::before {
       font-size: 18px;
-      font-family: 'Roboto';
+      font-family: ${DEFAULT_FONT};
       user-select: none;
       background-color: ${(props) => props.theme.primary.normal};
       color: ${(props) => props.theme.text.lighter};

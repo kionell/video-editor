@@ -4,7 +4,7 @@ import { Label } from '../Label';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { useUpdateEffect } from '../../hooks';
-import { NORMAL_FONT_SIZE } from '../../constants';
+import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface NumberInputProps {
   disabled?: boolean;
@@ -61,7 +61,7 @@ const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProp
   caret-color: ${(props) => props.theme.text.darker};
   color: ${(props) => props.theme.text.lighter};
   opacity: ${(props) => props.disabled ? 0.25 : 1};
-  font-family: 'Roboto';
+  font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;
 
   &::-webkit-outer-spin-button,
@@ -147,9 +147,9 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           listener={decrement}
           className="minus-button" 
           iconType='Minus'
+          iconSize='Large'
           disabled={disabled}
           showLabel={false}
-          largeIcon
         />
         <StyledNumberInput
           ref={inputRef}
@@ -163,9 +163,9 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           listener={increment}
           className="plus-button"
           iconType='Plus'
+          iconSize='Large'
           disabled={disabled}
           showLabel={false}
-          largeIcon
         />
       </FlexContainer>
       <Label 

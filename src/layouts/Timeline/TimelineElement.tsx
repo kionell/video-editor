@@ -1,7 +1,7 @@
 import React, { HTMLProps } from 'react';
 import styled, { css } from 'styled-components';
 import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
-import { Icon } from '../Icon';
+import { Icon } from '../../components/Icon';
 
 const StyledTimelineElementWrapper = styled.div`
   width: 400px;
