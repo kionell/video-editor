@@ -3,9 +3,9 @@ export const LARGE_ICON_SIZE = 30;
 export const NORMAL_ICON_SIZE = 20;
 export const SMALL_ICON_SIZE = 15;
 
-export const LARGE_FONT_SIZE = 30;
-export const NORMAL_FONT_SIZE = 20;
-export const SMALL_FONT_SIZE = 14;
+export const LARGE_FONT_SIZE = 28;
+export const NORMAL_FONT_SIZE = 18;
+export const SMALL_FONT_SIZE = 12;
 
 export const DEFAULT_FONT = 'Roboto';
 export const DEFAULT_WEIGHT = 'Regular';
