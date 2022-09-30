@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import { NORMAL_ICON_SIZE } from '../constants';
 import * as Icons from '../icons';
+import { 
+  LARGE_ICON_SIZE, 
+  NORMAL_ICON_SIZE, 
+  SMALL_ICON_SIZE 
+} from '../constants';
 
 export enum IconType {
   Adjustments,
@@ -43,6 +47,12 @@ export enum IconType {
   VerticalFlip,
   Seeker,
   Edge,
+}
+
+export enum IconSize {
+  Small,
+  Normal,
+  Large,
 }
 
 interface IconProps {
@@ -115,9 +125,16 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
   return Icons.CheckIcon;
 }
 
+export function getIconSizeBySizeType(iconSize?: keyof typeof IconSize): number {
+  if (iconSize === 'Large') return LARGE_ICON_SIZE;
+  if (iconSize === 'Normal') return NORMAL_ICON_SIZE;
+
+  return SMALL_ICON_SIZE;
+}
+
 const Icon: React.FC<IconProps> = (props: IconProps) => {
   const Image = getIconByType(props.variant);
-  
+
   return (
     <IconWrapper {...props}>
       <Image />
