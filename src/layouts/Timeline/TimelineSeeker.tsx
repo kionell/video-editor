@@ -1,7 +1,7 @@
-import React, { HTMLProps } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
-import { Icon } from '../Icon';
+import { Icon } from '../../components/Icon';
 
 const StyledTimelineSeekerLine = styled.div`
   width: 2px;
@@ -61,6 +61,4 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
 
 BaseTimelineSeeker.displayName = 'Timeline Seeker';
 
-export const TimelineSeeker: React.FC<HTMLProps<HTMLDivElement>> = (
-  withFocusable(withMovableX(BaseTimelineSeeker))
-);
+export const TimelineSeeker = withFocusable(withMovableX(BaseTimelineSeeker));

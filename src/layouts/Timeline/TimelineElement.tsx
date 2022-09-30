@@ -1,4 +1,4 @@
-import React, { HTMLProps } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
@@ -85,6 +85,6 @@ const BaseTimelineElement = React.forwardRef<HTMLDivElement>((props, ref) => {
 
 BaseTimelineElement.displayName = 'Timeline Element';
 
-export const TimelineElement: React.FC<HTMLProps<HTMLDivElement>> = (
+export const TimelineElement = (
   withFocusable(withDraggable(withStretchableX(BaseTimelineElement)))
 );
