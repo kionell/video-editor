@@ -3,8 +3,10 @@ import { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
 import { SECONDARY_FONT, SMALL_FONT_SIZE } from '../../constants';
 import { DarkTheme } from '../../themes/dark.theme';
 import { convertToRef } from '../../utils';
+import { TimelinableProps } from './Types/TimelinableProps';
+import { ITimelinableComponent } from './Types/TimelinableComponent';
 
-interface TimelineRulerProps extends ThemeProps<DefaultTheme> {
+interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> {
   /**
    * Ruler's height
    * @default 15
@@ -20,15 +22,6 @@ interface TimelineRulerProps extends ThemeProps<DefaultTheme> {
    * ```
    */
   unit?: number;
-  /**
-   * zoom
-   * @default 1
-   * @example
-   * ```
-   * 1px (Default) zoom: 1, unit: 50 (every 50px)
-   * ```
-   */
-  zoom?: number;
 
   /**
    * Number of areas to divide between two main lines
@@ -49,13 +42,6 @@ interface TimelineRulerProps extends ThemeProps<DefaultTheme> {
   shortLineSize?: number,
 
   /**
-   * Current scroll position set by component props.
-   * This overwrites scroll method values.
-   * @default undefined
-   */
-  scrollPos?: number;
-
-  /**
    * Text offset by X-axis.
    * @default 5
    */
@@ -74,7 +60,7 @@ interface TimelineRulerProps extends ThemeProps<DefaultTheme> {
   textFormat?: (scale: number) => string;
 }
 
-export class BaseRuler extends PureComponent<TimelineRulerProps> {
+export class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
   public static defaultProps: TimelineRulerProps = {
     height: 15,
     zoom: 1,
