@@ -77,7 +77,9 @@ const IconWrapper = styled.div<IconProps>`
     width: 100%;
     height: 100%;
     position: relative;
-    fill: ${(props) => props.theme.text.normal};
+    fill: ${(props) => {
+      return props.useColor ? props.theme.text.normal : 'inherit';
+    }};
   }
 `;
 
