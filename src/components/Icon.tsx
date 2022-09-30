@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import * as Icons from '../icons';
 import { 
+  GIANT_ICON_SIZE,
   LARGE_ICON_SIZE, 
   NORMAL_ICON_SIZE, 
   SMALL_ICON_SIZE 
@@ -53,6 +54,7 @@ export enum IconSize {
   Small,
   Normal,
   Large,
+  Giant,
 }
 
 interface IconProps {

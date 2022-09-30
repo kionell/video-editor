@@ -1,7 +1,9 @@
+export const GIANT_ICON_SIZE = 100;
 export const LARGE_ICON_SIZE = 30;
 export const NORMAL_ICON_SIZE = 20;
 export const SMALL_ICON_SIZE = 15;
 
+export const LARGE_FONT_SIZE = 30;
 export const NORMAL_FONT_SIZE = 20;
 export const SMALL_FONT_SIZE = 14;
 
