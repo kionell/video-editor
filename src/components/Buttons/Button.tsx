@@ -1,8 +1,8 @@
-import { Ref } from 'react';
+import { HTMLAttributes, Ref } from 'react';
 import styled, { css } from 'styled-components';
 import { IconType, IconSize } from '../Icon';
 
-export interface ButtonProps {
+export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   visible?: boolean;
   disabled?: boolean;
   width?: number;
