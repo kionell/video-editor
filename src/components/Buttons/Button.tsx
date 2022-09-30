@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { IconType } from '../Icon';
 
 export interface ButtonProps {
+  visible?: boolean;
   disabled?: boolean;
   showIcon?: boolean;
   iconType?: keyof typeof IconType;
