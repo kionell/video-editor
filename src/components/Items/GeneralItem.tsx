@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler } from 'react';
+import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, Ref } from 'react';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
@@ -12,6 +12,7 @@ export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
   showDuration?: boolean;
   showLabel?: boolean;
   label?: string;
+  ref?: Ref<HTMLDivElement>;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -121,6 +122,6 @@ BaseGeneralItem.defaultProps = {
   label: 'General Item',
 };
 
-export const GeneralItem: React.FC<HTMLAttributes<HTMLDivElement>> = (
-  withDraggable(BaseGeneralItem)
+export const GeneralItem: React.FC<GeneralItemProps> = (
+  withDraggable(BaseGeneralItem) as React.FC<GeneralItemProps>
 );
