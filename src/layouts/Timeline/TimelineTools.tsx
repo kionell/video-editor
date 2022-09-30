@@ -9,7 +9,7 @@ const StyledTimelineTools = styled.div`
   height: 50px;
   display: flex;
   position: relative;
-  padding: 0 12px;
+  padding: 5px 12px;
   justify-content: space-between;
   align-items: center;
   background: ${(props) => props.theme.other.primary};
