@@ -76,8 +76,7 @@ export class BaseRuler extends PureComponent<TimelineRulerProps> implements ITim
   state = {
     scrollPos: 0,
   };
-  
-  declare divisionsElement: HTMLElement;
+
   declare canvasElement: HTMLCanvasElement;
   declare private canvasContext: CanvasRenderingContext2D;
   private width = 0;
