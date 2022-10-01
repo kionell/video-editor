@@ -12,7 +12,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   align?: FlexAligning;
   padding?: number;
   gap?: number;
-  wrap?: boolean;
+  wrapElements?: boolean;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -21,7 +21,7 @@ const StyledFlexContainer = styled.div<FlexProps>`
   position: relative;
   padding: ${(props) => props.padding}px;
   gap: ${(props) => props.gap}px;
-  flex-wrap: ${(props) => props.wrap ? 'wrap' : 'inherit'};
+  flex-wrap: ${(props) => props.wrapElements ? 'wrap' : 'inherit'};
 
   flex-direction: ${(props) => {
     return props.direction + (props.reversed ? '-reverse' : '');
@@ -38,6 +38,7 @@ const FlexContainer: React.FC<FlexProps> = (props: FlexProps) => {
 FlexContainer.defaultProps = {
   direction: 'row',
   reversed: false,
+  wrapElements: true,
   justify: 'center',
   align: 'center',
   padding: 5,
