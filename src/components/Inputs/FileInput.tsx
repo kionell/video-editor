@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { FormEventHandler, Ref } from 'react';
+import React, { FormEventHandler, forwardRef, Ref } from 'react';
 
 interface FileInputProps {
   disabled?: boolean;
@@ -18,8 +18,13 @@ const StyledFileInput = styled.input.attrs({ type: 'file' })<FileInputProps>`
   cursor: pointer;
 `;
 
-const FileInput: React.FC<FileInputProps> = (props: FileInputProps) => {
-  return <StyledFileInput {...props} />;
-};
+const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
+  props: FileInputProps, 
+  ref: React.ForwardedRef<HTMLInputElement>
+) => {
+  return <StyledFileInput {...props} ref={ref} />;
+});
+
+FileInput.displayName = 'File Input';
 
 export { FileInput };
