@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { FormEventHandler, ForwardedRef, forwardRef, HTMLAttributes } from 'react';
-import { Label } from '../components/Label';
-import { getIconSizeBySizeType, Icon } from '../components/Icon';
-import { FileInput } from '../components/Inputs/FileInput';
-import { LARGE_FONT_SIZE } from '../constants';
+import { Label } from '../../components/Label';
+import { getIconSizeBySizeType, Icon } from '../../components/Icon';
+import { FileInput } from '../../components/Inputs/FileInput';
+import { LARGE_FONT_SIZE } from '../../constants';
 
 export interface DragUploaderProps extends HTMLAttributes<HTMLDivElement> {
   visible?: boolean;
@@ -21,7 +21,7 @@ const StyledDragUploaderWrapper = styled.div<DragUploaderProps>`
   overflow: hidden;
 `;
 
-const StyledDragUploader = styled.div<DragUploaderProps>`
+const StyledDragUploaderShowArea = styled.div<DragUploaderProps>`
   width: 100%;
   height: 100%;
   display: flex;
@@ -49,13 +49,13 @@ const StyledUploadMessageWrapper = styled.div`
   outline: none;
 `;
 
-const DragUploader = forwardRef<HTMLInputElement, DragUploaderProps>((
+const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
   props: DragUploaderProps, 
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   return (
     <StyledDragUploaderWrapper {...props}>
-      <StyledDragUploader {...props}>
+      <StyledDragUploaderShowArea {...props}>
         <StyledUploadMessageWrapper>
           <Icon 
             className='message-icons'
@@ -70,12 +70,12 @@ const DragUploader = forwardRef<HTMLInputElement, DragUploaderProps>((
             useColor={false} 
           />
         </StyledUploadMessageWrapper>
-        <FileInput ref={ref} onChange={props.onChange}/>
-      </StyledDragUploader>
+      </StyledDragUploaderShowArea>
+      <FileInput ref={ref} onChange={props.onChange}/>
     </StyledDragUploaderWrapper>
   );
 });
 
-DragUploader.displayName = 'Drag Uploader';
+DragUploadOverlay.displayName = 'Drag Upload Overlay';
 
-export { DragUploader };
+export { DragUploadOverlay };
