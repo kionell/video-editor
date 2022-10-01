@@ -7,6 +7,8 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   width?: number;
   height?: number;
+  paddingHorizontal?: number;
+  paddingVertical?: number;
   toggled?: boolean;
   showIcon?: boolean;
   iconType?: keyof typeof IconType;
@@ -20,7 +22,7 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 const StyledBaseButton = styled.button<ButtonProps>`
   border-radius: 6px;
-  padding: 7px 12px;
+  padding: ${(props) => props.paddingVertical}px ${(props) => props.paddingHorizontal}px;
   gap: 5px;
   display: ${(props) => props.visible ? 'flex' : 'none'};
   justify-content: center;
@@ -77,6 +79,8 @@ StyledBaseButton.defaultProps = {
   disabled: false,
   toggled: false,
   height: 40,
+  paddingHorizontal: 12,
+  paddingVertical: 7,
   showIcon: true,
   iconType: 'Check', 
   iconSize: 'Normal',

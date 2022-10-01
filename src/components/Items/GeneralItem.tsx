@@ -91,6 +91,10 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             showLabel={false}
             iconType='Plus'
             iconSize='Small'
+            width={25}
+            height={25}
+            paddingHorizontal={3}
+            paddingVertical={3}
           />
           <SecondaryButton
             className='buttons'
@@ -98,6 +102,10 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             showLabel={false}
             iconType='Delete'
             iconSize='Small'
+            width={25}
+            height={25}
+            paddingHorizontal={3}
+            paddingVertical={3}
           />
         </FlexContainer>
       </StyledGeneralItemPreview>
