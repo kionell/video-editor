@@ -22,7 +22,10 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   border-radius: 0px;
 
   &:not(.toggled) {
-    background: ${(props) => props.showBackground ? props.theme.secondary.normal : 'transparent'};
+    background: ${(props) => {
+      return props.showBackground ? props.theme.secondary.normal : 'transparent';
+    }};
+
     color: ${(props) => props.theme.text.darker};
 
     & > * > * {
@@ -39,7 +42,7 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   }
 
   &.toggled {
-    background: ${(props) => props.showBackground ? props.theme.secondary.accent : 'transparent'};
+    background: ${(props) => props.theme.secondary.accent};
     color: ${(props) => props.theme.text.lighter};
 
     & > * > * {
@@ -76,9 +79,9 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
 BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
-  showBackground: true,
-  width: 60,
-  height: 60,
+  showBackground: false,
+  width: 70,
+  height: 70,
 };
 
 export const FlatButton = withClickable(BaseFlatButton);
