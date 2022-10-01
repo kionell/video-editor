@@ -9,8 +9,8 @@ export interface UploadItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const StyledUploadItemWrapper = styled.div`
-  width: 160px;
-  height: 90px;
+  width: 144px;
+  height: 81px;
   display: inline-flex;
   position: relative;
   justify-content: center;

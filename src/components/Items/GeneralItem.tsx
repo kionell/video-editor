@@ -5,6 +5,7 @@ import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { Label } from '../Label';
 import { withDraggable } from '../../hoc';
+import { SMALL_FONT_SIZE } from '../../constants';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
   deletable?: boolean;
@@ -34,8 +35,8 @@ const StyledGeneralItemWrapper = styled.div`
 `;
 
 const StyledGeneralItemPreview = styled.div<GeneralItemProps>`
-  width: 160px;
-  height: 90px;
+  width: 144px;
+  height: 81px;
   display: flex;
   padding: 0px 3px 3px 3px;
   align-items: flex-end;
@@ -82,6 +83,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         <StyledGeneralItemDuration 
           text='0:00' 
           visible={showDuration}
+          size={SMALL_FONT_SIZE}
         />
 
         <FlexContainer padding={0}>
@@ -115,6 +117,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         visible={showLabel} 
         text={label} 
         useColor={false} 
+        size={SMALL_FONT_SIZE}
       />
     </StyledGeneralItemWrapper>
   );
