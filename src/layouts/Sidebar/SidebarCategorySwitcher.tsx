@@ -17,6 +17,8 @@ interface SidebarCategoryProps extends PropsWithChildren {
 const StyledSidebarCategorySwitcher = styled.div<SidebarCategoryProps>`
   position: relative;
   background: transparent;
+  width: 100%;
+  height: 100%;
 `;
 
 function getCategoryByType(category: keyof typeof CategoryType) {
