@@ -38,7 +38,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props: ButtonGroupProps) => {
   const childrenWithIndex = React.Children.map(children, (child, index) => {
     return React.cloneElement<ButtonProps>(child as any, {
       toggled: currentIndex === index,
-      onClick: selectButton
+      onClick: selectButton,
     });
   });
 
