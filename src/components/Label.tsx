@@ -15,11 +15,15 @@ export interface LabelProps {
 }
 
 const StyledLabel = styled.label<LabelProps>`
+  position: relative;
   font-weight: ${(props) => props.weight === 'Medium' ? 600 : 400 };
   font-family: ${(props) => props.font};
   font-size: ${(props) => props.size}px;
   display: ${(props) => props.visible ? 'inline-block' : 'none'};
   opacity: ${(props) => props.disabled ? 0.25 : 1};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   user-select: none;
   pointer-events: none;
   cursor: inherit;
