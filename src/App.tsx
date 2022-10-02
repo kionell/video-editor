@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
+import { store } from './store';
 import { DarkTheme } from './themes/dark.theme';
 import { Main } from './pages/Main';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
@@ -14,9 +16,11 @@ export function App() {
     <div style={{ width: '100%', height: '100%' }}>
       <BaseGlobalStyle />
       <CustomFonts />
-      <ThemeProvider theme={theme}>
-        <Main />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <Main />
+        </ThemeProvider>
+      </Provider>
     </div>
   );
 }
