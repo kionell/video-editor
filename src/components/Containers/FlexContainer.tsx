@@ -2,7 +2,7 @@ import { HTMLAttributes, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 type FlexDirection = 'row' | 'column';
-type FlexJustifying = 'center' | 'space-between' | 'space-around';
+type FlexJustifying = 'start' | 'end' | 'center' | 'space-between' | 'space-around';
 type FlexAligning = 'start' | 'end' | 'center';
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
@@ -39,8 +39,8 @@ FlexContainer.defaultProps = {
   direction: 'row',
   reversed: false,
   wrapElements: true,
-  justify: 'center',
-  align: 'center',
+  justify: 'start',
+  align: 'start',
   padding: 5,
   gap: 5,
 };
