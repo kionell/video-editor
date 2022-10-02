@@ -12,6 +12,7 @@ export enum MIMEType {
   MPEG = 'video/mpeg',
   OGG = 'audio/ogg',
   PNG = 'image/png',
+  SVG = 'image/svg+xml',
   WAV = 'audio/wav',
   WEBA = 'audio/webm',
   WEBM = 'video/webm',
