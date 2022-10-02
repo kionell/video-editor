@@ -55,7 +55,9 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   outline: none;
   
   justify-content: ${(props) => {
-    return props.showDuration ? 'space-between' : 'center';
+    return props.file?.hasDuration || props.showDuration 
+      ? 'space-between' 
+      : 'flex-end';
   }};
 
   .button-wrapper {
