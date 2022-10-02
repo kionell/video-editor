@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Label } from '../Label';
@@ -22,14 +22,20 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((
-  props: ButtonProps, 
-  ref: React.ForwardedRef<HTMLButtonElement>
-) => {
+const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
 
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    ref.current.classList.toggle('toggled');
+  }, [toggled]);
+
   return (
-    <StyledSecondaryButton ref={ref} {...props} className={toggled ? 'toggled' : ''}>
+    <StyledSecondaryButton 
+      {...props} 
+      ref={ref}
+    >
       <Icon
         visible={showIcon}
         variant={iconType}

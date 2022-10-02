@@ -1,6 +1,5 @@
-import React from 'react';
 import styled from 'styled-components';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
@@ -51,14 +50,17 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   }
 `;
 
-const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((
-  props: FlatButtonProps, 
-  ref: React.ForwardedRef<HTMLButtonElement>
-) => {
+const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
   const { showIcon, iconType, showLabel, label, toggled } = props;
 
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    ref.current.classList.toggle('toggled');
+  }, [toggled]);
+
   return (
-    <StyledFlatButton ref={ref} {...props} className={toggled ? 'toggled' : ''}>
+    <StyledFlatButton ref={ref} {...props}>
       <Icon 
         visible={showIcon} 
         variant={iconType} 

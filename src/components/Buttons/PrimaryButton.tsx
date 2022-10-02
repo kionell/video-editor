@@ -13,10 +13,7 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((
-  props: ButtonProps, 
-  ref: React.ForwardedRef<HTMLButtonElement>
-) => {
+const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { showIcon, iconType, iconSize, showLabel, label } = props;
 
   return (
