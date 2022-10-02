@@ -48,4 +48,8 @@ export class VideoFile extends UploadedFile {
   get duration(): number {
     return this.element.duration || 0;
   }
+
+  get hasDuration(): boolean {
+    return this.duration > 0;
+  }
 }

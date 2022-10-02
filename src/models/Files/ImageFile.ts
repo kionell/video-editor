@@ -40,4 +40,15 @@ export class ImageFile extends UploadedFile {
       this.element.src = this.url;
     });
   }
+
+  /**
+   * Duration of this image file in seconds.
+   */
+  get duration(): number {
+    return 0;
+  }
+
+  get hasDuration(): boolean {
+    return false;
+  }
 }

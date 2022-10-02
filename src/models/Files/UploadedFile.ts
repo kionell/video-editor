@@ -32,7 +32,7 @@ export abstract class UploadedFile {
   /**
    * HTML element that will store file data.
    */
-  abstract element: HTMLElement | HTMLMediaElement;
+  abstract element: HTMLElement;
 
   constructor(file: File) {
     this.name = file.name;
@@ -45,5 +45,8 @@ export abstract class UploadedFile {
   /**
    * Loads this file to the HTML element.
    */
-  abstract load(): void;
+  abstract load(): Promise<this>;
+
+  abstract get duration(): number;
+  abstract get hasDuration(): boolean;
 }
