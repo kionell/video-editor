@@ -2,59 +2,30 @@ import { forwardRef, useEffect } from 'react';
 
 export const withDraggable = <T,>(Component: React.FC<T>) => {
   const makeDraggable = (element: HTMLElement) => {
-    let offsetX = 0, offsetY = 0;
-
     element.style.cursor = 'grab';
 
-    const startDragging = (event: MouseEvent) => {
-      event.stopPropagation();
-
+    const startDragging = (event: DragEvent) => {
       const targetElement = event.target as HTMLElement;
+      
+      element.style.opacity = '0.5';
       
       // If we are trying to drag using resizable control element.
       if (targetElement.className.includes('edge')) return;
-      
-      offsetX = element.offsetLeft - event.pageX;
-      offsetY = element.offsetTop - event.pageY;
 
-      element.style.position = 'relative';
-      element.style.cursor = 'grabbing';
-      element.style.zIndex = '1';
-
-      document.addEventListener('mousemove', dragElement);
-      document.addEventListener('mouseup', stopDragging);
+      document.addEventListener('dragend', stopDragging);
     };
 
-    const dragElement = (event: MouseEvent) => {
-      // Lower element opacity during drag and change cursor type.
-      element.style.opacity = '0.5';
-
-      element.style.left = (event.pageX + offsetX) + 'px';
-      element.style.top = (event.pageY + offsetY) + 'px';
-    };
-
-    const stopDragging = (event: MouseEvent) => {
-      const targetElement = event.target as HTMLElement;
-      const parentNode = targetElement?.parentNode;
+    const stopDragging = (event: DragEvent) => {
+      event.stopImmediatePropagation();
 
       // Make element fully visible after drag ends.
       element.style.opacity = '1';
       element.style.cursor = 'grab';
-      element.style.zIndex = '0';
 
-      // Reset element position
-      element.style.position = '';
-      element.style.left = '0px';
-      element.style.top = '0px';
-
-      // element.parentNode?.removeChild(element);
-      // parentNode?.appendChild(element);
-
-      document.removeEventListener('mousemove', dragElement);
-      document.removeEventListener('mouseup', stopDragging);
+      document.removeEventListener('dragend', stopDragging);
     };
 
-    element.addEventListener('mousedown', startDragging);
+    element.addEventListener('dragstart', startDragging);
   };
 
   const DraggableComponent = forwardRef<HTMLElement, T>((props, ref) => {
@@ -64,7 +35,7 @@ export const withDraggable = <T,>(Component: React.FC<T>) => {
       makeDraggable(ref.current);
     }, []);
 
-    return <Component ref={ref} {...props} />;
+    return <Component ref={ref} draggable {...props} />;
   });
 
   DraggableComponent.displayName = 'Draggable Component';
