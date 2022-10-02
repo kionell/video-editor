@@ -3,6 +3,7 @@ import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Label } from '../../components/Label';
+import { useRef } from 'react';
 
 const StyledTimelineTools = styled.div`
   width: 100%;
@@ -24,6 +25,8 @@ const StyledTimelineTools = styled.div`
 `;
 
 const TimelineTools: React.FC = () => {
+  const snapButtonRef = useRef(null);
+
   return (
     <StyledTimelineTools>
       <FlexContainer gap={6}>
@@ -43,7 +46,7 @@ const TimelineTools: React.FC = () => {
 
       <FlexContainer gap={6}>
         <ButtonGroup>
-          <SecondaryButton showLabel={false} iconType='Snap' />
+          <SecondaryButton showLabel={false} iconType='Snap' ref={snapButtonRef}/>
         </ButtonGroup>
         <SecondaryButton showLabel={false} iconType='Minus' />
         <SecondaryButton showLabel={false} iconType='Plus' />
