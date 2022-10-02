@@ -1,11 +1,17 @@
 import styled from 'styled-components';
-import React, { FormEventHandler, forwardRef, Ref } from 'react';
+import React, { forwardRef, Ref, FormEvent } from 'react';
+import { UploadedFile } from '../../models/Files/UploadedFile';
+import { ImageFile } from '../../models/Files/ImageFile';
+import { VideoFile } from '../../models/Files/VideoFile';
+import { AudioFile } from '../../models/Files/AudioFile';
+import { MIMEType } from '../../models/Enums/MIMEType';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { addFile } from '../../store/Reducers/fileSlice';
 
 interface FileInputProps {
   disabled?: boolean;
   className?: string;
   ref?: Ref<HTMLInputElement>;
-  onChange?: FormEventHandler<HTMLInputElement>;
 }
 
 const StyledFileInput = styled.input.attrs({ type: 'file' })<FileInputProps>`
@@ -18,11 +24,59 @@ const StyledFileInput = styled.input.attrs({ type: 'file' })<FileInputProps>`
   cursor: pointer;
 `;
 
+async function loadFile(file: File): Promise<UploadedFile | null> {
+  switch (file.type) {
+    case MIMEType.AVI:
+    case MIMEType.MP4:
+    case MIMEType.WEBM:
+    case MIMEType.MPEG:
+      return new VideoFile(file).load();
+
+    case MIMEType.MP3:
+    case MIMEType.OGG:
+    case MIMEType.WAV:
+    case MIMEType.WEBA:
+      return new AudioFile(file).load();
+
+    case MIMEType.BPM:
+    case MIMEType.GIF:
+    case MIMEType.ICO:
+    case MIMEType.JPEG:
+    case MIMEType.PNG:
+    case MIMEType.SVG:
+    case MIMEType.WEBP:
+      return new ImageFile(file).load();
+  }
+
+  return null;
+}
+
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
   props: FileInputProps, 
   ref: React.ForwardedRef<HTMLInputElement>
 ) => {
-  return <StyledFileInput {...props} ref={ref} />;
+  const dispatch = useAppDispatch();
+
+  const onChange = async (event: FormEvent<HTMLInputElement>) => {
+    const input = event.target as HTMLInputElement;
+    
+    if (!input?.files) return;
+
+    console.log(input.files);
+
+    for (const file of input.files) {
+      const loaded = await loadFile(file);
+
+      if (!loaded) continue;
+
+      dispatch(addFile(loaded));
+    }
+
+    // Reset input files to allow repeated upload.
+    input.value = '';
+  };
+
+  return <StyledFileInput {...props} onChange={onChange} ref={ref} />;
 });
 
 FileInput.displayName = 'File Input';
