@@ -25,17 +25,17 @@ export class VideoFile extends UploadedFile {
   /**
    * Loads this video file to the HTML video element.
    */
-  async load(): Promise<void> {
+  async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.onload = () => {
-        resolve();  
-      };
+      this.element.addEventListener('loadeddata', () => {
+        resolve(this);
+      });
 
-      this.element.onerror = () => {
+      this.element.addEventListener('error', () => {
         console.warn(`Video "${this.name}" failed to load!`);
 
-        resolve();
-      };
+        resolve(this);
+      });
 
       this.element.src = this.url;
       this.element.load();

@@ -25,16 +25,16 @@ export class ImageFile extends UploadedFile {
   /**
    * Loads this image file to the HTML image element.
    */
-  async load(): Promise<void> {
+  async load(): Promise<this> {
     return new Promise((resolve) => {
       this.element.onload = () => {
-        resolve();  
+        resolve(this);  
       };
 
       this.element.onerror = () => {
         console.warn(`Image "${this.name}" failed to load!`);
 
-        resolve();
+        resolve(this);
       };
 
       this.element.src = this.url;
