@@ -1,12 +1,7 @@
 import styled from 'styled-components';
-import { FormEventHandler, HTMLAttributes } from 'react';
 import { Label } from '../Label';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { FileInput } from '../Inputs/FileInput';
-
-export interface UploadItemProps extends HTMLAttributes<HTMLDivElement> {
-  onChange?: FormEventHandler<HTMLInputElement>;
-}
 
 const StyledUploadItemWrapper = styled.div`
   width: 144px;
@@ -50,7 +45,7 @@ const StyledUploadMessageWrapper = styled.div`
   outline: none;
 `;
 
-const UploadItem: React.FC<UploadItemProps> = (props: UploadItemProps) => {
+const UploadItem: React.FC = () => {
   return (
     <StyledUploadItemWrapper>
       <StyledUploadMessageWrapper>
@@ -66,7 +61,7 @@ const UploadItem: React.FC<UploadItemProps> = (props: UploadItemProps) => {
           useColor={false} 
         />
       </StyledUploadMessageWrapper>
-      <FileInput onChange={props.onChange}/>
+      <FileInput />
     </StyledUploadItemWrapper>
   );
 };
