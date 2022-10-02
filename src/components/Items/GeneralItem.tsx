@@ -6,18 +6,28 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import { Label } from '../Label';
 import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
+import { formatTime } from '../../utils';
+import { ImagePreview } from '../ImagePreview';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { UploadedFile } from '../../models/Files/UploadedFile';
+import { removeFile } from '../../store/Reducers/fileSlice';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
+  previewElement?: HTMLElement;
   deletable?: boolean;
   addable?: boolean;
   showDuration?: boolean;
+  duration?: number;
   showLabel?: boolean;
   label?: string;
+  file?: UploadedFile;
   ref?: Ref<HTMLDivElement>;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 const StyledGeneralItemWrapper = styled.div`
+  width: 144px;
   display: inline-flex;
   flex-direction: column;
   position: relative;
@@ -34,14 +44,13 @@ const StyledGeneralItemWrapper = styled.div`
   }
 `;
 
-const StyledGeneralItemPreview = styled.div<GeneralItemProps>`
+const StyledGeneralItem = styled.div<GeneralItemProps>`
   width: 144px;
   height: 81px;
   display: flex;
   padding: 0px 3px 3px 3px;
   align-items: flex-end;
   border-radius: 6px;
-  background: white;
   border: none;
   outline: none;
   
@@ -63,35 +72,76 @@ const StyledGeneralItemPreview = styled.div<GeneralItemProps>`
   }
 `;
 
+const StyledGeneralItemPreview = styled.div`
+  width: 144px;
+  height: 81px;
+  position: absolute;
+  border-radius: 6px;
+  overflow: hidden;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
 const StyledGeneralItemDuration = styled(Label)`
   padding-left: 3px;
   padding-right: 3px;
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.7);
   color: white;
+  z-index: 1;
+`;
+
+const StyledGeneralItemButtonWrapper = styled(FlexContainer)`
+  z-index: 1;
+`;
+
+const StyledGeneralItemLabel = styled(Label)`
+  width: 100%;
 `;
 
 const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   props: HTMLAttributes<HTMLDivElement> & GeneralItemProps, 
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const { deletable, addable, showDuration, showLabel, label } = props;
-  
+  const { deletable, addable, file, showLabel } = props;
+
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
+
+  const files = useAppSelector((state) => state.files);
+  const dispatch = useAppDispatch();
+
+  const label = file?.name ?? props.label;
+  const showDuration = file?.hasDuration ?? props.showDuration;
+  const duration = file?.duration ?? props.duration;
+  const previewElement = file?.element;
   const addButtonRef = useRef(null);
   const deleteButtonRef = useRef(null);
 
   return (
     <StyledGeneralItemWrapper {...props}>
-      <StyledGeneralItemPreview {...props} ref={ref}>
+      <StyledGeneralItem {...props}>
         <StyledGeneralItemDuration 
-          text='0:00' 
+          text={formatTime(duration)} 
           visible={showDuration}
           size={SMALL_FONT_SIZE}
         />
 
-        <FlexContainer padding={0}>
+        <StyledGeneralItemPreview ref={ref}>
+          <ImagePreview
+            width={144}
+            height={81}
+            previewElement={previewElement} 
+          />
+        </StyledGeneralItemPreview>
+
+        <StyledGeneralItemButtonWrapper
+          className='button-wrapper'
+          padding={0}
+        >
           <PrimaryButton
-            className='buttons'
             ref={addButtonRef}
             visible={addable}
             showLabel={false}
@@ -114,10 +164,10 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             paddingHorizontal={3}
             paddingVertical={3}
           />
-        </FlexContainer>
-      </StyledGeneralItemPreview>
+        </StyledGeneralItemButtonWrapper>
+      </StyledGeneralItem>
 
-      <Label
+      <StyledGeneralItemLabel
         className='labels'
         visible={showLabel} 
         text={label} 
@@ -133,7 +183,8 @@ BaseGeneralItem.displayName = 'General Item';
 BaseGeneralItem.defaultProps = {
   deletable: true,
   addable: true,
-  showDuration: true,
+  showDuration: false,
+  duration: 0,
   showLabel: true,
   label: 'General Item',
 };
