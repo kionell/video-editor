@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
+import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
@@ -53,10 +54,12 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
 const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
   const { showIcon, iconType, showLabel, label, toggled } = props;
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
     ref.current.classList.toggle('toggled');
+
+    () => console.log('Unmounted!');
   }, [toggled]);
 
   return (
