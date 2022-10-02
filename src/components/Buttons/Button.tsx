@@ -1,4 +1,4 @@
-import { HTMLAttributes, Ref } from 'react';
+import { HTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 import { IconType, IconSize } from '../Icon';
 
@@ -16,7 +16,6 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   showLabel?: boolean;
   label?: string;
   className?: string;
-  ref?: Ref<HTMLButtonElement>;
   listener?: (event: MouseEvent) => void;
 }
 
