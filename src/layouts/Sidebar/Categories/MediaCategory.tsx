@@ -3,6 +3,7 @@ import { createRef, PropsWithChildren } from 'react';
 import { ScrollableContainer } from '../../../components/Containers/ScrollableContainer';
 import { GeneralItem } from '../../../components/Items/GeneralItem';
 import { UploadItem } from '../../../components/Items/UploadItem';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 interface SidebarCategoryProps extends PropsWithChildren {
   className?: string;
@@ -21,25 +22,21 @@ const StyledSidebarMediaCategory = styled.div<SidebarCategoryProps>`
 `;
 
 const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
+  const files = useAppSelector((state) => state.files);
+  
   return (
     <StyledSidebarMediaCategory>
-      <ScrollableContainer {...props} gap={12} padding={12} align='start'>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
-        <GeneralItem ref={createRef()}/>
+      <ScrollableContainer {...props} gap={12} padding={12} align='start' justify='space-between'>
         <UploadItem />
+        {
+          files.list.map((file, index) => {
+            return <GeneralItem 
+              file={file}
+              key={index}
+              ref={createRef()}
+            />;
+          })
+        }
       </ScrollableContainer>
     </StyledSidebarMediaCategory>
   );
