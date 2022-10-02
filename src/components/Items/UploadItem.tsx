@@ -28,6 +28,7 @@ const StyledUploadItemWrapper = styled.div`
   }
 
   &:hover {
+    background: ${(props) => props.theme.text.darker};
     border: 2px dashed ${(props) => props.theme.text.lighter};
 
     .message-icons {
