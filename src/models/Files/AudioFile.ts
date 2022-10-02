@@ -25,17 +25,17 @@ export class AudioFile extends UploadedFile {
   /**
    * Loads this audio file to the HTML audio element.
    */
-  async load(): Promise<void> {
+  async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.onload = () => {
-        resolve();  
-      };
+      this.element.addEventListener('loadeddata', () => {
+        resolve(this);
+      });
 
-      this.element.onerror = () => {
+      this.element.addEventListener('error', () => {
         console.warn(`Audio "${this.name}" failed to load!`);
 
-        resolve();
-      };
+        resolve(this);
+      });
 
       this.element.src = this.url;
       this.element.load();
@@ -47,5 +47,9 @@ export class AudioFile extends UploadedFile {
    */
   get duration(): number {
     return this.element.duration || 0;
+  }
+
+  get hasDuration(): boolean {
+    return this.duration > 0;
   }
 }
