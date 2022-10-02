@@ -58,16 +58,16 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
     return props.showDuration ? 'space-between' : 'center';
   }};
 
-  .buttons {
-    visibility: hidden;
+  .button-wrapper {
+    display: none;
   }
 
   &:hover {
     outline: 2px solid;
     outline-color: ${(props) => props.theme.primary.accentHover};
 
-    .buttons {
-      visibility: visible;
+    .button-wrapper {
+      display: flex;
     }
   }
 `;
@@ -117,8 +117,12 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const showDuration = file?.hasDuration ?? props.showDuration;
   const duration = file?.duration ?? props.duration;
   const previewElement = file?.element;
-  const addButtonRef = useRef(null);
-  const deleteButtonRef = useRef(null);
+
+  const onDeleteClick = () => {
+    const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
+
+    if (targetFile) dispatch(removeFile(targetFile));
+  };
 
   return (
     <StyledGeneralItemWrapper {...props}>
@@ -153,8 +157,8 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             paddingVertical={3}
           />
           <SecondaryButton
-            className='buttons'
             ref={deleteButtonRef}
+            onClick={onDeleteClick}
             visible={deletable}
             showLabel={false}
             iconType='Delete'
