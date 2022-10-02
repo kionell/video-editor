@@ -78,7 +78,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
   };
 
   declare canvasElement: HTMLCanvasElement;
-  declare private canvasContext: CanvasRenderingContext2D;
+  declare private canvasContext: CanvasRenderingContext2D | null;
   private width = 0;
   private height = 0;
   private zoom = 0;
@@ -116,6 +116,8 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
   private draw(scrollPos: number = this.state.scrollPos, nextZoom = this.zoom) {
     this.zoom = nextZoom;
+
+    if (!this.canvasContext) return;
 
     const props = this.props as Required<TimelineRulerProps>;
     const width = this.width;
@@ -212,10 +214,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
   }
 
   componentDidMount() {
-    const canvas = this.canvasElement;
-    const context = canvas.getContext('2d');
-
-    this.canvasContext = context as CanvasRenderingContext2D;
+    this.canvasContext = this.canvasElement.getContext('2d');
 
     window.addEventListener('resize', this.onResize);
 
