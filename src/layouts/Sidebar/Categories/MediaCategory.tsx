@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { PropsWithChildren } from 'react';
-import { FlexContainer } from '../../../components/Containers/FlexContainer';
+import { createRef, PropsWithChildren } from 'react';
+import { ScrollableContainer } from '../../../components/Containers/ScrollableContainer';
 import { GeneralItem } from '../../../components/Items/GeneralItem';
 import { UploadItem } from '../../../components/Items/UploadItem';
 
@@ -23,24 +23,24 @@ const StyledSidebarMediaCategory = styled.div<SidebarCategoryProps>`
 const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
   return (
     <StyledSidebarMediaCategory>
-      <FlexContainer {...props} gap={12} padding={12} align='start'>
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
-        <GeneralItem />
+      <ScrollableContainer {...props} gap={12} padding={12} align='start'>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
+        <GeneralItem ref={createRef()}/>
         <UploadItem />
-      </FlexContainer>
+      </ScrollableContainer>
     </StyledSidebarMediaCategory>
   );
 };
