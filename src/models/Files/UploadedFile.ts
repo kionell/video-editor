@@ -42,6 +42,13 @@ export abstract class UploadedFile {
     this.lastModified = file.lastModified;
   }
 
+  equals(other: UploadedFile): boolean {
+    return this.name === other.name 
+      && this.type === other.type 
+      && this.size === other.size 
+      && this.lastModified === other.lastModified;
+  }
+
   /**
    * Loads this file to the HTML element.
    */
