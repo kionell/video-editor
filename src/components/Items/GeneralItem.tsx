@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, Ref } from 'react';
+import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, Ref, useRef } from 'react';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
@@ -77,6 +77,9 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 ) => {
   const { deletable, addable, showDuration, showLabel, label } = props;
   
+  const addButtonRef = useRef(null);
+  const deleteButtonRef = useRef(null);
+
   return (
     <StyledGeneralItemWrapper {...props}>
       <StyledGeneralItemPreview {...props} ref={ref}>
@@ -89,6 +92,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         <FlexContainer padding={0}>
           <PrimaryButton
             className='buttons'
+            ref={addButtonRef}
             visible={addable}
             showLabel={false}
             iconType='Plus'
@@ -100,6 +104,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           />
           <SecondaryButton
             className='buttons'
+            ref={deleteButtonRef}
             visible={deletable}
             showLabel={false}
             iconType='Delete'
