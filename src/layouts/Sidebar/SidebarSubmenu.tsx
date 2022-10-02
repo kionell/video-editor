@@ -7,7 +7,7 @@ interface SidebarSubmenuProps extends PropsWithChildren {
 }
 
 const StyledSidebarSubmenu = styled.div<SidebarSubmenuProps>`
-  width: 335px;
+  width: 325px;
   height: 100%;
   position: relative;
   background: ${(props) => props.theme.other.secondary};
