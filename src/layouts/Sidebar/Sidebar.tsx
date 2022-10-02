@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlatButton } from '../../components/Buttons/FlatButton';
@@ -25,14 +26,35 @@ const StyledSidebar = styled.div<SidebarProps>`
 `;
 
 const Sidebar: React.FC<SidebarProps> = (props: SidebarProps) => {
+  const mediaButtonRef = useRef(null);
+  const textButtonRef = useRef(null);
+  const transitionsButtonRef = useRef(null);
+  const settingsButtonRef = useRef(null);
+  
   return (
     <StyledSidebarWrapper>
       <StyledSidebar {...props}>
         <ButtonGroup direction='column'>
-          <FlatButton label='Media' iconType='Media' />
-          <FlatButton label='Text' iconType='Text' />
-          <FlatButton label='Transitions' iconType='Transition' />
-          <FlatButton label='Settings' iconType='Settings' />
+          <FlatButton 
+            label='Media'
+            iconType='Media'
+            ref={mediaButtonRef}
+          />
+          <FlatButton 
+            label='Text'
+            iconType='Text'
+            ref={textButtonRef}
+          />
+          <FlatButton 
+            label='Transitions'
+            iconType='Transition'
+            ref={transitionsButtonRef}
+          />
+          <FlatButton 
+            label='Settings'
+            iconType='Settings'
+            ref={settingsButtonRef}
+          />
         </ButtonGroup>
       </StyledSidebar>
 
