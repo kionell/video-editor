@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { WaveForm } from 'wavesurfer-react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { UploadedFile } from '../models/Files/UploadedFile';
-import { getImageThumbnailURL } from '../utils/thumbnail';
-// import { getImageThumbnailURL } from '../utils/thumbnail';
+import { getImageThumbnailURL } from '../utils/thumbnails';
 
 export interface PreviewProps {
   width?: number;
@@ -21,15 +19,17 @@ const StyledImagePreview = styled.div<PreviewProps>`
 const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
   const { width, height, file } = props;
   
+  const theme = useTheme();
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getThumbnail = async () => {
-      if (file?.element instanceof HTMLAudioElement) {
-        
-      }
-
-      return getImageThumbnailURL(file?.element, width, height);
+      return getImageThumbnailURL({
+        accentColor: theme.primary.accentHover,
+        file,
+        width,
+        height,
+      });
     };
 
     const setPreview = async () => {
@@ -43,11 +43,7 @@ const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
     setPreview();
   }, [previewRef, file]);
 
-  return (
-    <StyledImagePreview {...props} ref={previewRef}>
-      <WaveForm />
-    </StyledImagePreview>
-  );
+  return <StyledImagePreview {...props} ref={previewRef} />;
 };
 
 export { ImagePreview };
