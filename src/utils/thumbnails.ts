@@ -8,7 +8,8 @@ interface ThumbnailOptions {
   width?: number;
   height?: number;
   backgroundColor?: string;
-  accentColor?: string;
+  accentColor1?: string;
+  accentColor2?: string;
 }
 
 export async function getImageThumbnailURL(options?: ThumbnailOptions): Promise<string> {
@@ -87,21 +88,30 @@ function drawImage(options?: ThumbnailOptions): string {
 
   if (options?.width) canvas.width = options.width;
   if (options?.height) canvas.height = options.height;
-
-  context.fillStyle = options?.accentColor ?? 'white';
-  context.strokeStyle = options?.accentColor ?? 'white';
-
-  // Find the max height we can draw
-  const maxAmplitude = canvas.height / 2;
-
+  
   // Extra height scale factor.
   const scaleFactor = 0.8;
 
+  // Find the max height we can draw
+  const maxAmplitude = canvas.height / 2 * scaleFactor;
+  const paddingY = canvas.height / 2 - maxAmplitude;
+
+  const accentColor1 = options?.accentColor1 ?? 'lightgray';
+  const accentColor2 = options?.accentColor2 ?? options?.accentColor1 ?? 'white';
+  const gradient = context.createLinearGradient(0, paddingY, 0, canvas.height - paddingY);
+
+  gradient.addColorStop(0.0, accentColor1 + '11');
+  gradient.addColorStop(0.3, accentColor1 + 'AA');
+  gradient.addColorStop(0.5, accentColor2 + 'FF');
+  gradient.addColorStop(0.7, accentColor1 + 'AA');
+  gradient.addColorStop(1.0, accentColor1 + '11');
+
+  context.strokeStyle = gradient;
   context.moveTo(0, maxAmplitude);
 
   for (let i = 0; i < bounds.length; ++i) {
     const range = bounds[i].max - bounds[i].min;
-    const height = Math.max(1, range * maxAmplitude * scaleFactor);
+    const height = Math.max(1, range * maxAmplitude);
     const x = i;
     const y = (canvas.height - height) / 2;
 

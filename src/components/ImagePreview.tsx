@@ -25,7 +25,8 @@ const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
   useEffect(() => {
     const getThumbnail = async () => {
       return getImageThumbnailURL({
-        accentColor: theme.primary.accentHover,
+        accentColor1: theme.primary.accent,
+        accentColor2: theme.primary.accentHover,
         file,
         width,
         height,
