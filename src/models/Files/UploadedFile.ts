@@ -38,7 +38,7 @@ export abstract class UploadedFile {
     this.name = file.name;
     this.type = file.type as MIMEType;
     this.size = file.size;
-    this.url = URL.createObjectURL(file);
+    this.url = URL.createObjectURL(file) + '#t=0.00001';
     this.lastModified = file.lastModified;
   }
 

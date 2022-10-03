@@ -27,7 +27,7 @@ export class VideoFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.addEventListener('loadeddata', () => {
+      this.element.addEventListener('canplaythrough', () => {
         resolve(this);
       });
 
