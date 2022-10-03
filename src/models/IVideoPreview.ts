@@ -1,7 +1,29 @@
+import { AspectRatio } from './Enums/AspectRatio';
+
 /**
  * Video preview state.
  */
 export interface IVideoPreview {
+  /**
+   * Aspect ratio of the preview.
+   */
+  aspectRatio: AspectRatio;
+
+  /**
+   * Preview width.
+   */
+  previewWidth: number;
+
+  /**
+   * Preview height.
+   */
+  previewHeight: number;
+
+  /**
+   * Preview frame rate.
+   */
+  previewFrameRate: number;
+
   /**
    * Whether this video preview is playing or not.
    */
