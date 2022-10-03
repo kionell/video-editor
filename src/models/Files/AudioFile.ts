@@ -15,11 +15,17 @@ export class AudioFile extends UploadedFile {
    */
   element: HTMLAudioElement;
 
+  /**
+   * Reference to this file for getting audio buffer.
+   */
+  private _file: File;
+
   constructor(file: File) {
     super(file);
 
     this.type = file.type as AudioType;
     this.element = document.createElement('audio');
+    this._file = file;
   }
 
   /**
@@ -39,6 +45,28 @@ export class AudioFile extends UploadedFile {
 
       this.element.src = this.url;
       this.element.load();
+    });
+  }
+
+  async getAudioBuffer(): Promise<AudioBuffer | null> {
+    return new Promise((resolve) => {
+      const fileReader = new FileReader();
+      
+      fileReader.onload = (event) => {
+        const result = event.target?.result as ArrayBuffer;
+        
+        if (!result) return resolve(null);
+
+        const audioContext = new AudioContext();
+
+        audioContext.decodeAudioData(result)
+          .then((audioBuffer) => resolve(audioBuffer))
+          .catch(() => resolve(null));
+      };
+
+      fileReader.onerror = () => resolve(null);
+      
+      fileReader.readAsArrayBuffer(this._file);
     });
   }
 
