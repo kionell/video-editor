@@ -1,4 +1,4 @@
-import { findIndex } from '../../utils';
+import { findIndex } from '../../utils/search';
 import { BaseElement } from '../Elements/BaseElement';
 import { MediaType } from '../Enums/MediaType';
 

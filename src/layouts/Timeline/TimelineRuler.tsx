@@ -2,7 +2,7 @@ import { PureComponent } from 'react';
 import { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
 import { SECONDARY_FONT, SMALL_FONT_SIZE } from '../../constants';
 import { DarkTheme } from '../../themes/dark.theme';
-import { convertToRef } from '../../utils';
+import { convertToRef } from '../../utils/react';
 import { TimelinableProps } from './Types/TimelinableProps';
 import { ITimelinableComponent } from './Types/TimelinableComponent';
 
