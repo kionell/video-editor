@@ -1,63 +1,52 @@
 import { useEffect, useRef } from 'react';
+import { WaveForm } from 'wavesurfer-react';
+import styled from 'styled-components';
+import { UploadedFile } from '../models/Files/UploadedFile';
+import { getImageThumbnailURL } from '../utils/thumbnail';
+// import { getImageThumbnailURL } from '../utils/thumbnail';
 
 export interface PreviewProps {
   width?: number;
   height?: number;
-  previewElement?: HTMLElement;
+  file?: UploadedFile;
 }
 
+const StyledImagePreview = styled.div<PreviewProps>`
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
 const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
-  const { width, height, previewElement } = props;
+  const { width, height, file } = props;
   
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    const getThumbnail = async () => {
+      if (file?.element instanceof HTMLAudioElement) {
+        
+      }
 
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    if (!context) return;
-
-    context.fillStyle = 'black';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    
-    const draw = (source: CanvasImageSource) => {      
-      const sw = source.width as number;
-      const sh = source.height as number;
-      const scale = canvas.height / sh;
-      
-      const dw = sw * scale;
-      const dh = sh * scale;
-      const dx = canvas.width / 2 - dw / 2;
-      const dy = canvas.height / 2 - dh / 2;
-
-      context.drawImage(source, 0, 0, sw, sh, dx, dy, dw, dh);
+      return getImageThumbnailURL(file?.element, width, height);
     };
 
-    if (previewElement instanceof HTMLVideoElement) {
-      const onPlay = () => {
-        draw(previewElement);
+    const setPreview = async () => {
+      if (!previewRef.current) return;
 
-        previewElement.removeEventListener('play', onPlay);
-        previewElement.pause();
-      };
-      
-      previewElement.addEventListener('play', onPlay);
-      previewElement.play();
-    }
+      const thumbnailURL = await getThumbnail();
 
-    if (previewElement instanceof HTMLImageElement) {
-      draw(previewElement);
-    }
-  }, [canvasRef, previewElement]);
+      previewRef.current.style.backgroundImage = `url("${thumbnailURL}")`;
+    };
+    
+    setPreview();
+  }, [previewRef, file]);
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      width={width} 
-      height={height}
-    />
+    <StyledImagePreview {...props} ref={previewRef}>
+      <WaveForm />
+    </StyledImagePreview>
   );
 };
 
