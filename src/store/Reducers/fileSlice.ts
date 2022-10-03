@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UploadedFile } from '../../models/Files/UploadedFile';
 
-type FileState = {
+interface FileState {
   list: UploadedFile[];
 }
 

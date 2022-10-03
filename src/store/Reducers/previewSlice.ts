@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IVideoPreview } from '../../models/IVideoPreview';
 
-type PreviewState = {
-  isPlaying: boolean;
-  isExpanded: boolean;
-}
-
-const initialState: PreviewState = {
+const initialState: IVideoPreview = {
   isPlaying: false,
   isExpanded: false,
 };
