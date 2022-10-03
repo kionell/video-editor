@@ -57,6 +57,10 @@ const timelineSlice = createSlice({
       state.currentScroll = action.payload;
     },
 
+    snapMode(state, action: PayloadAction<boolean>) {
+      state.snapMode = action.payload;
+    },
+
     addTrack(state, action: PayloadAction<TrackAddOperation>) {
       state.addTrack(action.payload.track);
     },

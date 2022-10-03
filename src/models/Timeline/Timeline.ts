@@ -26,6 +26,11 @@ export class Timeline {
    */
   currentScroll = 0;
 
+  /**
+   * Whether the snap mode is activated or not.
+   */
+  snapMode = false;
+
 	/**
    * Adds a new track to this timeline.
    * @param track Track to add.
