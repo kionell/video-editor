@@ -6,7 +6,7 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import { Label } from '../Label';
 import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
-import { formatTime } from '../../utils';
+import { formatTime } from '../../utils/format';
 import { ImagePreview } from '../ImagePreview';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -118,7 +118,6 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const label = file?.name ?? props.label;
   const showDuration = file?.hasDuration ?? props.showDuration;
   const duration = file?.duration ?? props.duration;
-  const previewElement = file?.element;
 
   const onDeleteClick = () => {
     const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
@@ -139,7 +138,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           <ImagePreview
             width={144}
             height={81}
-            previewElement={previewElement} 
+            file={file} 
           />
         </StyledGeneralItemPreview>
 
