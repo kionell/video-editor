@@ -6,21 +6,37 @@ import { DarkTheme } from './themes/dark.theme';
 import { Main } from './pages/Main';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
 import { CustomFonts } from './styles/CustomFonts';
+import { ffmpeg } from './lib/ffmpeg';
 
 export function App() {
   const [theme, setTheme] = useState(DarkTheme);
+  const [ready, setReady] = useState(false);
 
-  useEffect(() => setTheme(DarkTheme));
+  const load = async () => {
+    await ffmpeg.load();
+    setReady(true);
+  };
 
-  return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <BaseGlobalStyle />
-      <CustomFonts />
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-            <Main />
-        </ThemeProvider>
-      </Provider>
-    </div>
-  );
+  useEffect(() => {
+    setTheme(DarkTheme);
+    load();
+  });
+
+  return ready 
+    ?
+    (
+      <div style={{ width: '100%', height: '100%' }}>
+        <BaseGlobalStyle />
+        <CustomFonts />
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+              <Main />
+          </ThemeProvider>
+        </Provider>
+      </div>
+    )
+    :
+    (
+      <div>Loading...</div>
+    );
 }
