@@ -26,7 +26,9 @@ const StyledFileInput = styled.input.attrs({ type: 'file' })<FileInputProps>`
 
 async function loadFile(file: File): Promise<UploadedFile | null> {
   switch (file.type) {
-    case MIMEType.AVI:
+    case MIMEType.AVI1:
+    case MIMEType.AVI2:
+    case MIMEType.AVI3:
     case MIMEType.MP4:
     case MIMEType.WEBM:
     case MIMEType.MPEG:

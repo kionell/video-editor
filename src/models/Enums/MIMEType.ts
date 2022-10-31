@@ -2,7 +2,9 @@
  * Supported MIME types.
  */
 export enum MIMEType {
-  AVI = 'video/x-msvideo',
+  AVI1 = 'video/avi',
+  AVI2 = 'video/msvideo',
+  AVI3 = 'video/x-msvideo',
   BPM = 'image/bmp',
   GIF = 'image/gif',
   ICO = 'image/vnd.microsoft.icon',
@@ -19,6 +21,21 @@ export enum MIMEType {
   WEBP = 'image/webp',
 }
 
-export type VideoType = MIMEType.AVI | MIMEType.MP4 | MIMEType.MPEG | MIMEType.WEBM;
-export type AudioType = MIMEType.MP3 | MIMEType.OGG | MIMEType.WAV | MIMEType.WEBA;
-export type ImageType = MIMEType.BPM | MIMEType.GIF | MIMEType.ICO | MIMEType.JPEG | MIMEType.PNG | MIMEType.WEBP;
+export type VideoType = MIMEType.AVI1 
+  | MIMEType.AVI2 
+  | MIMEType.AVI3 
+  | MIMEType.MP4 
+  | MIMEType.MPEG 
+  | MIMEType.WEBM;
+
+export type AudioType = MIMEType.MP3 
+  | MIMEType.OGG 
+  | MIMEType.WAV 
+  | MIMEType.WEBA;
+
+export type ImageType = MIMEType.BPM 
+  | MIMEType.GIF 
+  | MIMEType.ICO 
+  | MIMEType.JPEG 
+  | MIMEType.PNG 
+  | MIMEType.WEBP;
