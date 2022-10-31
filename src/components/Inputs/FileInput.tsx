@@ -7,8 +7,6 @@ import { AudioFile } from '../../models/Files/AudioFile';
 import { MIMEType } from '../../models/Enums/MIMEType';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { addFile } from '../../store/Reducers/fileSlice';
-import { ffmpeg } from '../../lib/ffmpeg';
-import { fetchFile } from '@ffmpeg/ffmpeg';
 
 interface FileInputProps {
   disabled?: boolean;
@@ -63,12 +61,6 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
     const input = event.target as HTMLInputElement;
     
     if (!input?.files) return;
-
-    console.log(input.files);
-
-    ffmpeg.FS('writeFile', 'test.avi', await fetchFile(input.files[0]));
-
-    await ffmpeg.run('-i', 'test.avi', '-c:v', 'libx264', '-preset', 'ultrafast', 'output.mp4');
 
     for (const file of input.files) {
       const loaded = await loadFile(file);
