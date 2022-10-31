@@ -45,19 +45,19 @@ const timelineSlice = createSlice({
   name: 'timeline',
   initialState,
   reducers: {
-    currentTimeMs(state, action: PayloadAction<number>) {
+    setCurrentTimeMs(state, action: PayloadAction<number>) {
       state.currentTimeMs = action.payload;
     },
 
-    currentZoom(state, action: PayloadAction<number>) {
+    setCurrentZoom(state, action: PayloadAction<number>) {
       state.currentZoom = action.payload;
     },
 
-    currentScroll(state, action: PayloadAction<number>) {
+    setCurrentScroll(state, action: PayloadAction<number>) {
       state.currentScroll = action.payload;
     },
 
-    snapMode(state, action: PayloadAction<boolean>) {
+    setSnapMode(state, action: PayloadAction<boolean>) {
       state.snapMode = action.payload;
     },
 
@@ -137,9 +137,9 @@ const timelineSlice = createSlice({
 });
 
 export const {
-  currentTimeMs,
-  currentZoom,
-  currentScroll,
+  setCurrentTimeMs,
+  setCurrentZoom,
+  setCurrentScroll,
   addTrack,
   removeTrack,
   moveTrack,
