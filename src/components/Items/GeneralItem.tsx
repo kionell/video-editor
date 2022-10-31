@@ -3,7 +3,7 @@ import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, Ref, useRe
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
 import { formatTime } from '../../utils/format';
@@ -86,7 +86,7 @@ const StyledGeneralItemPreview = styled.div`
   bottom: 0;
 `;
 
-const StyledGeneralItemDuration = styled(Label)`
+const StyledGeneralItemDuration = styled(Text)`
   padding-left: 3px;
   padding-right: 3px;
   border-radius: 2px;
@@ -99,7 +99,7 @@ const StyledGeneralItemButtonWrapper = styled(FlexContainer)`
   z-index: 1;
 `;
 
-const StyledGeneralItemLabel = styled(Label)`
+const StyledGeneralItemLabel = styled(Text)`
   width: 100%;
 `;
 
@@ -172,7 +172,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         </StyledGeneralItemButtonWrapper>
       </StyledGeneralItem>
 
-      <StyledGeneralItemLabel
+      <StyledGeneralItemText
         className='labels'
         visible={showLabel} 
         text={label} 
@@ -194,4 +194,4 @@ BaseGeneralItem.defaultProps = {
   label: 'General Item',
 };
 
-export const GeneralItem = withDraggable(BaseGeneralItem);
+export const GeneralItem = BaseGeneralItem;

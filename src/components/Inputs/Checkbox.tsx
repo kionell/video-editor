@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { useRef, useState } from 'react';
 import { useUpdateEffect } from '../../hooks';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { Icon } from '../Icon';
 import { 
   NORMAL_FONT_SIZE, 
@@ -121,7 +121,7 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
       <StyledCheckbox disabled={disabled} checked={checked} className='checkbox'>
         <Icon useColor={false} size={NORMAL_ICON_SIZE} />
       </StyledCheckbox>
-      <Label 
+      <Text 
         visible={showLabel} 
         text={label} 
         size={NORMAL_FONT_SIZE}

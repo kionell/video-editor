@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { FormEventHandler, useRef, useEffect } from 'react';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface SliderProps {
@@ -164,7 +164,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
   return (
     <StyledSliderWrapper {...props}>
-      <Label 
+      <Text 
         visible={showLabel} 
         text={label} 
         size={NORMAL_FONT_SIZE}

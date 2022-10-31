@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { withClickable } from '../../hoc';
 import { 
   SMALL_FONT_SIZE, 
@@ -58,8 +58,6 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
     if (ref instanceof Function || !ref?.current) return;
 
     ref.current.classList.toggle('toggled');
-
-    () => console.log('Unmounted!');
   }, [toggled]);
 
   return (
@@ -70,7 +68,7 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
         size={LARGE_ICON_SIZE}
         useColor={false}
       />
-      <Label 
+      <Text 
         visible={showLabel} 
         text={label} 
         size={SMALL_FONT_SIZE}

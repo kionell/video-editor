@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { Icon } from '../Icon';
 import { MouseEventHandler } from 'react';
 
@@ -47,7 +47,7 @@ const DropdownHeader: React.FC<DropdownHeaderProps> = (props: DropdownHeaderProp
 
   return (
     <StyledDropdownHeader {...props}>
-      <Label text={text} useColor={false} />
+      <Text text={text} useColor={false} />
       <Icon 
         variant={expanded ? 'ChevronUp' : 'ChevronDown' }
         className='expand-icon'

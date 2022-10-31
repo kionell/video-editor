@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { MouseEventHandler } from 'react';
-import { Label } from '../Label';
+import { Text } from '../Text';
 
 interface DropdownItemWrapperProps {
   visible?: boolean;
@@ -60,7 +60,7 @@ const DropdownItem: React.FC<DropdownItemProps> = (props: DropdownItemProps) => 
       {...props}
       className={selected ? 'selected' : ''}
     >
-      <Label text={text} useColor={false} />
+      <Text text={text} useColor={false} />
     </StyledDropdownItem>
   );
 };

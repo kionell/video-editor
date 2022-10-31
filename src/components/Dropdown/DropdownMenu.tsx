@@ -9,7 +9,7 @@ import {
   useRef
 } from 'react';
 
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { DropdownItem, DropdownItemProps, DropdownItemWrapper } from './DropdownItem';
 import { DropdownHeader } from './DropdownHeader';
 
@@ -132,7 +132,7 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <Label 
+      <Text 
         visible={showLabel} 
         text={label}
       />

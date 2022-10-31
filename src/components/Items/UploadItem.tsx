@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { FileInput } from '../Inputs/FileInput';
 
@@ -55,7 +55,7 @@ const UploadItem: React.FC = () => {
           variant='Plus'
           useColor={false}
         />
-        <Label
+        <Text
           className='message-labels'
           text='Add media' 
           useColor={false} 

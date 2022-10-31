@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React, { useRef } from 'react';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { useUpdateEffect } from '../../hooks';
@@ -168,7 +168,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           showLabel={false}
         />
       </FlexContainer>
-      <Label 
+      <Text 
         visible={showLabel} 
         disabled={disabled}
         text={label} 

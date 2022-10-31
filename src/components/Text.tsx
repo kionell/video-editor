@@ -3,7 +3,7 @@ import { DEFAULT_FONT, DEFAULT_WEIGHT, NORMAL_FONT_SIZE } from '../constants';
 
 type FontWeight = 'Regular' | 'Medium';
 
-export interface LabelProps {
+export interface TextProps {
   visible?: boolean;
   disabled?: boolean;
   text?: string;
@@ -14,7 +14,7 @@ export interface LabelProps {
   className?: string;
 }
 
-const StyledLabel = styled.label<LabelProps>`
+const StyledText = styled.label<TextProps>`
   position: relative;
   font-weight: ${(props) => props.weight === 'Medium' ? 600 : 400 };
   font-family: ${(props) => props.font};
@@ -35,11 +35,11 @@ const StyledLabel = styled.label<LabelProps>`
   }}
 `;
 
-const Label: React.FC<LabelProps> = (props: LabelProps) => {
-  return <StyledLabel {...props}>{props.text}</StyledLabel>;
+const Text: React.FC<TextProps> = (props: TextProps) => {
+  return <StyledText {...props}>{props.text}</StyledText>;
 };
 
-Label.defaultProps = {
+Text.defaultProps = {
   visible: true,
   disabled: false,
   text: 'Label',
@@ -49,4 +49,4 @@ Label.defaultProps = {
   useColor: true,
 };
 
-export { Label };
+export { Text };

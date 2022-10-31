@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { withClickable } from '../../hoc';
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
@@ -43,7 +43,7 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, r
         size={getIconSizeBySizeType(iconSize)}
         useColor={false}
       />
-      <Label
+      <Text
         visible={showLabel}
         text={label}
         useColor={false}

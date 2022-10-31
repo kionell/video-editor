@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { FormEventHandler } from 'react';
-import { Label } from '../Label';
+import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface TextInputProps {
@@ -72,7 +72,7 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <Label 
+      <Text 
         visible={showLabel} 
         text={label} 
         size={NORMAL_FONT_SIZE}

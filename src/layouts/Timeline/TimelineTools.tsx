@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { Label } from '../../components/Label';
+import { Text } from '../../components/Text';
 import { useRef } from 'react';
 
 const StyledTimelineTools = styled.div`
@@ -39,9 +39,9 @@ const TimelineTools: React.FC = () => {
       </FlexContainer>
 
       <FlexContainer gap={5} padding={0} className='timeline-time'>
-        <Label className='timeline-time-current' text='0:00.00' useColor={false} />
-        <Label className='timeline-time-delimiter' text='/' useColor={false} />
-        <Label className='timeline-time-duration' text='0:00.00' useColor={false} />
+        <Text className='timeline-time-current' text='0:00.00' useColor={false} />
+        <Text className='timeline-time-delimiter' text='/' useColor={false} />
+        <Text className='timeline-time-duration' text='0:00.00' useColor={false} />
       </FlexContainer>
 
       <FlexContainer gap={6}>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FormEventHandler, ForwardedRef, forwardRef, HTMLAttributes } from 'react';
-import { Label } from '../../components/Label';
+import { Text } from '../../components/Text';
 import { getIconSizeBySizeType, Icon } from '../../components/Icon';
 import { FileInput } from '../../components/Inputs/FileInput';
 import { LARGE_FONT_SIZE } from '../../constants';
@@ -63,7 +63,7 @@ const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
             variant='Plus'
             useColor={false}
           />
-          <Label
+          <Text
             className='message-labels'
             text='Drop here to upload' 
             size={LARGE_FONT_SIZE}
