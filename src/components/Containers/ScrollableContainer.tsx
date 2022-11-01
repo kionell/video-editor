@@ -1,15 +1,27 @@
 import Scrollbars from 'react-custom-scrollbars-2';
+import styled from 'styled-components';
 import { FlexProps, FlexContainer } from './FlexContainer';
+
+// Hide scrollbars for Google Chrome
+const StyledScrollbars = styled(Scrollbars)`
+  width: 100%;
+  height: 100%;
+  
+  & > *::-webkit-scrollbar {
+    display: none;
+  }
+
+  & > * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+`;
 
 const ScrollableContainer: React.FC<FlexProps> = (props: FlexProps) => {
   return (
-    <Scrollbars 
-      style={{ width: '100%', height: '100%' }} 
-      hideTracksWhenNotNeeded
-      autoHide 
-    >
+    <StyledScrollbars hideTracksWhenNotNeeded autoHide >
       <FlexContainer {...props} />
-    </Scrollbars>
+    </StyledScrollbars>
   );
 };
 
