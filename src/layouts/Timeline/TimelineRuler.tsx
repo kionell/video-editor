@@ -65,7 +65,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     height: 15,
     zoom: 1,
     unit: 100,
-    segments: 2,
+    segments: 1,
     longLineSize: 15,
     shortLineSize: 10,
     textOffsetX: 5,
