@@ -4,6 +4,9 @@ import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Text } from '../../components/Text';
 import { useRef } from 'react';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
 
 const StyledTimelineTools = styled.div`
   width: 100%;
@@ -27,6 +30,25 @@ const StyledTimelineTools = styled.div`
 const TimelineTools: React.FC = () => {
   const snapButtonRef = useRef(null);
 
+  const timeline = useAppSelector((state) => state.timeline);
+  const dispatch = useAppDispatch();
+
+  const onZoomOutClick = () => {
+    dispatch(setCurrentZoom(timeline.getPreviousZoom()));
+  };
+
+  const onZoomInClick = () => {
+    dispatch(setCurrentZoom(timeline.getNextZoom()));
+  };
+
+  const onZoomFitClick = () => {
+    dispatch(setCurrentZoom(2));
+  };
+
+  const onSnapClick = () => {
+    dispatch(setSnapMode(!timeline.snapMode));
+  };
+
   return (
     <StyledTimelineTools>
       <FlexContainer gap={6}>
@@ -46,11 +68,16 @@ const TimelineTools: React.FC = () => {
 
       <FlexContainer gap={6}>
         <ButtonGroup>
-          <SecondaryButton showLabel={false} iconType='Snap' ref={snapButtonRef}/>
+          <SecondaryButton 
+            showLabel={false} 
+            iconType='Snap' 
+            ref={snapButtonRef} 
+            onClick={onSnapClick}
+          />
         </ButtonGroup>
-        <SecondaryButton showLabel={false} iconType='Minus' />
-        <SecondaryButton showLabel={false} iconType='Plus' />
-        <SecondaryButton showLabel={false} iconType='Fit' />
+        <SecondaryButton showLabel={false} iconType='Minus' onClick={onZoomOutClick} />
+        <SecondaryButton showLabel={false} iconType='Plus' onClick={onZoomInClick} />
+        <SecondaryButton showLabel={false} iconType='Fit' onClick={onZoomFitClick} />
       </FlexContainer>
     </StyledTimelineTools>
   );
