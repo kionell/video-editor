@@ -4,6 +4,7 @@ import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 
 const StyledTimelineElementWrapper = styled.div`
+  position: relative;
   width: 400px;
   min-width: 24px;
   height: 50px;
