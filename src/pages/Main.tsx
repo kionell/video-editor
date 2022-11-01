@@ -1,56 +1,43 @@
 import styled from 'styled-components';
-import { createRef, useState, DragEvent } from 'react';
-import { DragUploadOverlay } from '../layouts/Overlays/DragUploadOverlay';
+import { ScrollableContainer } from '../components/Containers/ScrollableContainer';
 import { Sidebar } from '../layouts/Sidebar/Sidebar';
 import { Timeline } from '../layouts/Timeline/Timeline';
 
-const StyledMainPage = styled.div`
+const StyledMainPage = styled(ScrollableContainer)`
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  padding: 0px;
+`;
+
+const StyledTopPart = styled.div`
+  flex-grow: 1;
+  flex-basis: 0;
+  height: 100%; 
   display: flex; 
-  flex-direction: column; 
+  flex-direction: row;
+  background-color: ${(props) => props.theme.other.background};
+`;
+
+const StyledBottomPart = styled.div`
+  flex-grow: 0;
+  flex-basis: 0;
+  display: flex; 
+  flex-direction: column;
 `;
 
 export const Main: React.FC = () => {
-  const [isDragAreaVisible, showDragArea] = useState(false);
-  
-  const dragRef = createRef<HTMLInputElement>();
-
-  const onDragEnter = (event: DragEvent) => {
-    event.stopPropagation();
-    
-    console.log('Enter!');
-
-    showDragArea(true);
-  };
-
-  const onDragEnd = async (event: DragEvent) => {
-    event.stopPropagation();
-
-    console.log('End!');
-
-    showDragArea(false);
-  };
-
   return (
-    <StyledMainPage 
-      onDragEnter={onDragEnter}
-      onDragEnd={onDragEnd}
-      onDrop={onDragEnd}
-    >
-      <DragUploadOverlay
-        ref={dragRef}
-        visible={isDragAreaVisible}
-      />
-
-      <div style={{
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'row' 
-      }}>
+    <StyledMainPage>
+      <StyledTopPart>
         <Sidebar />
-      </div>
+        <Sidebar />
+      </StyledTopPart>
 
-      <Timeline />
+      <StyledBottomPart>
+        <Timeline />
+      </StyledBottomPart>
     </StyledMainPage>
   );
 };
