@@ -1,3 +1,4 @@
+import { immerable } from 'immer';
 import { findIndex } from '../../utils/search';
 import { BaseElement } from '../Elements/BaseElement';
 import { MediaType } from '../Enums/MediaType';
@@ -7,6 +8,9 @@ import { ITimelineTrack } from './ITimelineTrack';
  * A timeline track.
  */
 export class TimelineTrack<T extends BaseElement = BaseElement> implements ITimelineTrack {
+	[immerable] = true;
+  
+  /**
    * Index of timeline track on the timeline track area.
    */
   index: number;
@@ -93,6 +97,10 @@ export class TimelineTrack<T extends BaseElement = BaseElement> implements ITime
     if (!element) return;
 
     this.moveElementToTime(element, toMs);
+  }
+
+  get elements(): T[] {
+    return this._elements;
   }
 
   get firstElement(): T | null {

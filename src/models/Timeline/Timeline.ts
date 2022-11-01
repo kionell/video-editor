@@ -1,3 +1,5 @@
+import { immerable } from 'immer';
+import { findIndex } from '../../utils/search';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';
 import { TextElement } from '../Elements/TextElement';
@@ -10,6 +12,12 @@ import { TimelineTrack } from './TimelineTrack';
  * A timeline.
  */
 export class Timeline implements ITimeline {
+  [immerable] = true;
+  
+  private static DEFAULT_ZOOM_LEVELS = [
+    0.5, 0.75, 1, 1.5, 2, 3, 5,
+  ];
+
   private _tracks: TimelineTrack[] = [];
 	
   /**
@@ -31,6 +39,16 @@ export class Timeline implements ITimeline {
    * Whether the snap mode is activated or not.
    */
   snapMode = false;
+
+  getPreviousZoom(): number {
+    console.log(this.snapMode);
+    return Timeline.DEFAULT_ZOOM_LEVELS[this._getPreviousZoomIndex()];
+
+  }
+
+  getNextZoom(): number {
+    return Timeline.DEFAULT_ZOOM_LEVELS[this._getNextZoomIndex()];
+  }
 
 	/**
    * Adds a new track to this timeline.
@@ -108,6 +126,10 @@ export class Timeline implements ITimeline {
     return this._tracks.length;
   }
 
+  get tracks(): TimelineTrack[] {
+    return this._tracks;
+  }
+
   get videoTracks(): TimelineTrack<VideoElement>[] {
     const result = this._tracks.filter((t) => t.type === MediaType.Video);
     
@@ -153,5 +175,24 @@ export class Timeline implements ITimeline {
    */
   private _reindexTracks(): void {
     this._tracks.forEach((track, index) => track.index = index);
+  }
+
+  private _getPreviousZoomIndex(): number {
+    // Previous zoom is 2 positions behind next zoom.
+    const previousZoomIndex = this._getNextZoomIndex() - 2;
+
+    // Limit zoom to the first default level.
+    return Math.max(0, previousZoomIndex);
+  }
+
+  private _getNextZoomIndex(): number {
+    const zoomLevels = Timeline.DEFAULT_ZOOM_LEVELS;
+
+    const nextZoomIndex = findIndex(zoomLevels, (zoom) => {
+      return zoom > this.currentZoom;
+    });
+
+    // Limit zoom to the last default level.
+    return Math.min(zoomLevels.length - 1, nextZoomIndex);
   }
 }

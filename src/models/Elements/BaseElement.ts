@@ -1,9 +1,12 @@
+import { immerable } from 'immer';
 import { ITimelineElement } from './ITimelineElement';
 
 /**
  * Any media instance that can be placed on a timeline track.
  */
 export abstract class BaseElement implements ITimelineElement {
+  [immerable] = true;
+  
   /**
    * Default duration of the file in ms.
    */
