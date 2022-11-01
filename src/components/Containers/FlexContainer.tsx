@@ -1,5 +1,5 @@
 import { HTMLAttributes, MouseEventHandler } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type FlexDirection = 'row' | 'column';
 type FlexJustifying = 'start' | 'end' | 'center' | 'space-between' | 'space-around';
@@ -13,6 +13,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   padding?: number;
   gap?: number;
   wrapElements?: boolean;
+  coverArea?: boolean;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -30,6 +31,15 @@ const StyledFlexContainer = styled.div<FlexProps>`
 
   justify-content: ${(props) => props.justify};
   align-items: ${(props) => props.align};
+
+  ${(props) => {
+    if (!props.coverArea) return;
+
+    return css`
+      width: 100%;
+      height: 100%;
+    `;
+  }}
 `;
 
 const FlexContainer: React.FC<FlexProps> = (props: FlexProps) => {
