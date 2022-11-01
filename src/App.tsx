@@ -6,14 +6,17 @@ import { DarkTheme } from './themes/dark.theme';
 import { Main } from './pages/Main';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
 import { CustomFonts } from './styles/CustomFonts';
-import { ffmpeg } from './lib/ffmpeg';
+import { ffmpeg } from './lib/FFmpeg';
 
 export function App() {
   const [theme, setTheme] = useState(DarkTheme);
   const [ready, setReady] = useState(false);
 
   const load = async () => {
-    await ffmpeg.load();
+    if (!ffmpeg.isLoaded()) {
+      await ffmpeg.load();
+    }
+
     setReady(true);
   };
 
