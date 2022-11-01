@@ -140,6 +140,7 @@ export const {
   setCurrentTimeMs,
   setCurrentZoom,
   setCurrentScroll,
+  setSnapMode,
   addTrack,
   removeTrack,
   moveTrack,
