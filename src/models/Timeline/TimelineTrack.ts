@@ -1,12 +1,12 @@
 import { findIndex } from '../../utils/search';
 import { BaseElement } from '../Elements/BaseElement';
 import { MediaType } from '../Enums/MediaType';
+import { ITimelineTrack } from './ITimelineTrack';
 
 /**
  * A timeline track.
  */
-export class TimelineTrack<T extends BaseElement = BaseElement> {
-	/**
+export class TimelineTrack<T extends BaseElement = BaseElement> implements ITimelineTrack {
    * Index of timeline track on the timeline track area.
    */
   index: number;

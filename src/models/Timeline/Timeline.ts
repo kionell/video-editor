@@ -3,12 +3,13 @@ import { ImageElement } from '../Elements/ImageElement';
 import { TextElement } from '../Elements/TextElement';
 import { VideoElement } from '../Elements/VideoElement';
 import { MediaType } from '../Enums/MediaType';
+import { ITimeline } from './ITimeline';
 import { TimelineTrack } from './TimelineTrack';
 
 /**
  * A timeline.
  */
-export class Timeline {
+export class Timeline implements ITimeline {
   private _tracks: TimelineTrack[] = [];
 	
   /**

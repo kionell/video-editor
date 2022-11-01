@@ -1,7 +1,9 @@
+import { ITimelineElement } from './ITimelineElement';
+
 /**
  * Any media instance that can be placed on a timeline track.
  */
-export abstract class BaseElement {
+export abstract class BaseElement implements ITimelineElement {
   /**
    * Default duration of the file in ms.
    */
