@@ -19,6 +19,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
 const StyledFlexContainer = styled.div<FlexProps>`
   display: flex;
   position: relative;
+  background: transparent;
   padding: ${(props) => props.padding}px;
   gap: ${(props) => props.gap}px;
   flex-wrap: ${(props) => props.wrapElements ? 'wrap' : 'inherit'};
