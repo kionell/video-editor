@@ -14,6 +14,7 @@ const StyledScrollbars = styled(Scrollbars)`
   & > * {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    margin: 0 !important; /* Overwrites negative margin from scrollbar lib */
   }
 `;
 
