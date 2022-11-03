@@ -1,15 +1,21 @@
 import styled from 'styled-components';
+import Scrollbars from 'react-custom-scrollbars-2';
+import { useRef } from 'react';
 import { Text } from '../../components/Text';
+import { ScrollableContainer } from '../../components/Containers/ScrollableContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineTrack } from './TimelineTrack';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { setCurrentScroll } from '../../store/Reducers/timelineSlice';
 
-const StyledTimelineTrackArea = styled.div`
+const StyledTimelinableContainer = styled(ScrollableContainer)`
   width: 100%;
-  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
+  margin-top: 10px;
+  gap: 0;
+  padding: 0;
   background: ${(props) => props.theme.other.primary};
 `;
 
@@ -20,9 +26,20 @@ const StyledTimelineTrackAreaPlaceholder = styled(Text)`
 
 const TimelineTrackArea: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
+  const dispatch = useAppDispatch();
+
+  const scrollbarRef = useRef<Scrollbars>(null);
   
+  const onScroll = () => {
+    if (!scrollbarRef.current) return;
+
+    const currentScroll = scrollbarRef.current.getScrollLeft();
+
+    dispatch(setCurrentScroll(currentScroll));
+  };
+
   return (
-    <StyledTimelineTrackArea>
+    <StyledTimelinableContainer onScroll={onScroll} ref={scrollbarRef}>
       {
         timeline.tracks.length > 0
         ?
@@ -37,7 +54,7 @@ const TimelineTrackArea: React.FC = () => {
           useColor={false}
         />
       }      
-    </StyledTimelineTrackArea>
+    </StyledTimelinableContainer>
   );
 };
 
