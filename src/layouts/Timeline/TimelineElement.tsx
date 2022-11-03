@@ -8,14 +8,13 @@ const StyledTimelineElementWrapper = styled.div`
   width: 400px;
   min-width: 24px;
   height: 50px;
-  left: 100px;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
   user-select: none;
   border-left: none;
   border-right: none;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   
   ${(props) => {
@@ -36,13 +35,13 @@ const StyledTimelineElementWrapper = styled.div`
 
   &:hover:not(.focused) {
     .preview {
-      border-top: 2px solid ${(props) => props.theme.primary.accentHover};
-      border-bottom: 2px solid ${(props) => props.theme.primary.accentHover};
+      border-top: 2px solid ${(props) => props.theme.primary.accent};
+      border-bottom: 2px solid ${(props) => props.theme.primary.accent};
     }
     
     .edges {
       visibility: visible;
-      background: ${(props) => props.theme.primary.accentHover};
+      background: ${(props) => props.theme.primary.accent};
     }
   }
 `;
@@ -62,8 +61,9 @@ const StyledTimelineElementPreview = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
+  border-radius: 10px;
   background-color: white;
-  background-image: linear-gradient(to top, #5E5E5EFF 0%, #50505030 50%, transparent 100%);
+  background-image: linear-gradient(to top, #202020bb 5%, #40404060 50%, transparent 100%);
   background-repeat: no-repeat;
   pointer-events: none;
 `;
@@ -87,5 +87,5 @@ const BaseTimelineElement = React.forwardRef<HTMLDivElement>((props, ref) => {
 BaseTimelineElement.displayName = 'Timeline Element';
 
 export const TimelineElement = (
-  withFocusable(withDraggable(withStretchableX(BaseTimelineElement)))
+  withFocusable(withStretchableX(BaseTimelineElement))
 );
