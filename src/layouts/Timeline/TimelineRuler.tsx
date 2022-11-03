@@ -5,6 +5,7 @@ import { DarkTheme } from '../../themes/dark.theme';
 import { convertToRef } from '../../utils/react';
 import { TimelinableProps } from './Types/TimelinableProps';
 import { ITimelinableComponent } from './Types/TimelinableComponent';
+import { formatTime } from '../../utils/format';
 
 interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> {
   /**
@@ -15,7 +16,7 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
 
   /**
    * Main scale unit
-   * @default 100
+   * @default 1
    * @example
    * ```
    * 1px (Default) zoom: 1, unit: 50 (every 50px)
@@ -24,22 +25,10 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
   unit?: number;
 
   /**
-   * Number of areas to divide between two main lines
-   * @default 2
-   */
-  segments?: number;
-
-  /**
-   * Size of the long ruler lines.
+   * Size of the ruler lines.
    * @default 15
    */
-  longLineSize?: number,
-
-  /**
-   * Size of the short ruler lines.
-   * @default 10
-   */
-  shortLineSize?: number,
+  lineSize?: number,
 
   /**
    * Text offset by X-axis.
@@ -65,12 +54,11 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     height: 15,
     zoom: 1,
     unit: 100,
-    segments: 1,
-    longLineSize: 15,
-    shortLineSize: 10,
+    lineSize: 15,
     textOffsetX: 5,
     textOffsetY: 3,
     theme: DarkTheme,
+    textFormat: formatTime,
   };
 
   state = {
@@ -81,7 +69,10 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
   declare private canvasContext: CanvasRenderingContext2D | null;
   private width = 0;
   private height = 0;
-  private zoom = 0;
+  private zoom = 1;
+
+  private readonly zoomScale = 1;
+  private readonly minUnitDistance = 100;
 
   render() {
     this.zoom = this.props.zoom as number;
@@ -129,14 +120,15 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
     const {
       theme,
-      segments,
       unit,
-      longLineSize,
-      shortLineSize,
+      lineSize,
       textOffsetX,
       textOffsetY,
       textFormat,
     } = props;
+
+    nextZoom *= this.zoomScale;
+    scrollPos /= this.zoomScale;
 
     // Clear existing paths & text
     context.clearRect(0, 0, width, height);
@@ -161,6 +153,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     context.moveTo(0, 0);
     context.lineTo(this.width, 0);
 
+    // Draw lines.
     for (let i = 0; i <= length; ++i) {
       const value = i + minRange;
 
@@ -169,30 +162,21 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
       const startValue = value * unit;
       const startPos = (startValue - scrollPos) * nextZoom;
 
-      for (let j = 0; j < segments; ++j) {
-        const pos = startPos + j / segments * zoomUnit;
+      if (startPos < 0 || startPos >= size) continue;
 
-        if (pos < 0 || pos >= size) continue;
-
-        const lineSize = j % 2 === 0 ? longLineSize : shortLineSize;
-        const origin = 0;
-
-        const [x1, y1] = [pos, origin];
-        const [x2, y2] = [x1, y1 + lineSize];
-
-        context.moveTo(x1, y1);
-        context.lineTo(x2, y2);
-      }
+      context.moveTo(startPos, 0);
+      context.lineTo(startPos, lineSize);
     }
 
     context.stroke();
 
+    // Draw text.
     for (let i = 0; i <= length; ++i) {
       const value = i + minRange;
 
       if (value < 0) continue;
 
-      const startValue = value * unit;
+      const startValue = value * zoomUnit;
       const startPos = (startValue - scrollPos) * nextZoom;
 
       if (startPos < -zoomUnit || startPos >= size + unit * nextZoom) {
