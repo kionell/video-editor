@@ -15,7 +15,7 @@ export class Timeline implements ITimeline {
   [immerable] = true;
   
   private static DEFAULT_ZOOM_LEVELS = [
-    0.5, 0.75, 1, 1.5, 2, 3, 5,
+    0.1, 0.2, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5,
   ];
 
   private _tracks: TimelineTrack[] = [];
@@ -41,9 +41,7 @@ export class Timeline implements ITimeline {
   snapMode = false;
 
   getPreviousZoom(): number {
-    console.log(this.snapMode);
     return Timeline.DEFAULT_ZOOM_LEVELS[this._getPreviousZoomIndex()];
-
   }
 
   getNextZoom(): number {
@@ -54,17 +52,19 @@ export class Timeline implements ITimeline {
    * Adds a new track to this timeline.
    * @param track Track to add.
    */
-  addTrack(track: TimelineTrack): void {
+  addTrack(track: TimelineTrack): TimelineTrack {
     this._tracks.splice(track.index, 0, track);
 
     this._reindexTracks();
+
+    return track;
   }
 
 	/**
    * Removes an existing track from this timeline.
    * @param track Track to remove.
    */
-	removeTrack(track: TimelineTrack): void {
+	removeTrack(track: TimelineTrack): TimelineTrack | null {
     const index = this._tracks.findIndex((t) => t === track);
 
     return this.removeTrackByIndex(index);
@@ -74,12 +74,16 @@ export class Timeline implements ITimeline {
    * Removes an existing track from this timeline by its index.
    * @param index Target index of a track.
    */
-  removeTrackByIndex(index: number): void {
-    if (index < 0 || index >= this.totalTracks) return;
-    
-    this._tracks.splice(index, 1);
+  removeTrackByIndex(index: number): TimelineTrack | null {
+    if (index < 0 || index >= this.totalTracks) {
+      return null;
+    }
+
+    const track = this._tracks.splice(index, 1);
 
     this._reindexTracks();
+
+    return track[0];
   }
 
   /**
@@ -174,7 +178,9 @@ export class Timeline implements ITimeline {
    * Fixes order of all track indexes.
    */
   private _reindexTracks(): void {
-    this._tracks.forEach((track, index) => track.index = index);
+    this._tracks.forEach((track, index) => {
+      track.index = index;
+    });
   }
 
   private _getPreviousZoomIndex(): number {
