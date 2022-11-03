@@ -32,7 +32,6 @@ export const Main: React.FC = () => {
     <StyledMainPage>
       <StyledTopPart>
         <Sidebar />
-        <Sidebar />
       </StyledTopPart>
 
       <StyledBottomPart>
