@@ -88,12 +88,12 @@ const timelineSlice = createSlice({
     addElement(state, action: PayloadAction<ElementAddOperation>) {
       const payload = action.payload;
       
-      if (!payload.track && typeof payload.trackIndex !== 'number') return;
+      if (!payload.element) return;
 
+      const element = payload.element;
       const track = payload.track 
-        ?? state.getTrackByIndex(payload.trackIndex as number);
-
-      if (!track || !payload.element) return;
+        ?? state.getTrackByIndex(payload.trackIndex as number)
+        ?? state.addTrack(new TimelineTrack(0, element.type));
 
       track.addElement(payload.element);
     },
