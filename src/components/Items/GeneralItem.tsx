@@ -12,6 +12,8 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { UploadedFile } from '../../models/Files/UploadedFile';
 import { removeFile } from '../../store/Reducers/fileSlice';
+import { addElement } from '../../store/Reducers/timelineSlice';
+import { convertUploadedFileToElement } from '../../utils/files';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
   previewElement?: HTMLElement;
@@ -119,6 +121,16 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const showDuration = file?.hasDuration ?? props.showDuration;
   const duration = file?.duration ?? props.duration;
 
+  const onAddClick = () => {
+    if (!file) return;
+
+    const element = convertUploadedFileToElement(file);
+
+    if (!element) return;
+
+    dispatch(addElement({ element }));
+  };
+
   const onDeleteClick = () => {
     const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
 
@@ -148,6 +160,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         >
           <PrimaryButton
             ref={addButtonRef}
+            onClick={onAddClick}
             visible={addable}
             showLabel={false}
             iconType='Plus'
@@ -172,7 +185,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         </StyledGeneralItemButtonWrapper>
       </StyledGeneralItem>
 
-      <StyledGeneralItemText
+      <StyledGeneralItemLabel
         className='labels'
         visible={showLabel} 
         text={label} 
