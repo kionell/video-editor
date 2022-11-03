@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Text } from '../../components/Text';
-import { TimelineElement } from './TimelineElement';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { TimelineTrack } from './TimelineTrack';
 
 const StyledTimelineTrackArea = styled.div`
   width: 100%;
@@ -18,17 +19,24 @@ const StyledTimelineTrackAreaPlaceholder = styled(Text)`
 `;
 
 const TimelineTrackArea: React.FC = () => {
+  const timeline = useAppSelector((state) => state.timeline);
+  
   return (
     <StyledTimelineTrackArea>
-      {/* <StyledTimelineTrackAreaPlaceholder
-        className='placeholder'
-        text='Add files to timeline to start' 
-        size={30}
-        useColor={false}
-      /> */}
-      <TimelineElement
-        
-      />
+      {
+        timeline.tracks.length > 0
+        ?
+        timeline.tracks.map((track) => {
+          return <TimelineTrack track={track} key={track.index}/>;
+        })
+        :
+        <StyledTimelineTrackAreaPlaceholder
+          className='placeholder'
+          text='Add files to timeline to start' 
+          size={30}
+          useColor={false}
+        />
+      }      
     </StyledTimelineTrackArea>
   );
 };
