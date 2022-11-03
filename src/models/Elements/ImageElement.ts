@@ -1,3 +1,4 @@
+import { MediaType } from '../Enums/MediaType';
 import { ImageFile } from '../Files/ImageFile';
 import { IFileElement } from './Types/IFileElement';
 import { VisibleElement } from './VisibleElement';
@@ -8,9 +9,14 @@ import { VisibleElement } from './VisibleElement';
 export class ImageElement extends VisibleElement implements IFileElement {
   file: ImageFile;
 
-  constructor(options: Pick<ImageElement, 'file'> & Partial<ImageElement>) {
-    super(options);
+  /**
+   * Media type of this element.
+   */
+  type: MediaType = MediaType.Image;
 
-    this.file = options.file;
+  constructor(file: ImageFile) {
+    super();
+
+    this.file = file;
   }
 }

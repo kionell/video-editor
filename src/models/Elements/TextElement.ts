@@ -1,3 +1,4 @@
+import { MediaType } from '../Enums/MediaType';
 import { TextAlign, TextVerticalAlign } from '../Enums/TextAlign';
 import { VisibleElement } from './VisibleElement';
 
@@ -35,7 +36,8 @@ export class TextElement extends VisibleElement {
    */
 	verticalAlign: TextVerticalAlign = TextVerticalAlign.Center;
 
-  constructor(options: Partial<TextElement>) {
-    super(options);
-  }
+  /**
+   * Media type of this element.
+   */
+  type: MediaType = MediaType.Text;
 }

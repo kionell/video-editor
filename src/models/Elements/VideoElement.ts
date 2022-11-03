@@ -1,3 +1,4 @@
+import { MediaType } from '../Enums/MediaType';
 import { VideoFile } from '../Files/VideoFile';
 import { IFileElement } from './Types/IFileElement';
 import { IPlayableElement } from './Types/IPlayableElement';
@@ -12,10 +13,15 @@ export class VideoElement extends VisibleElement implements IFileElement, IPlaya
 
   file: VideoFile;
 
-  constructor(options: Pick<VideoElement, 'file'> & Partial<VideoElement>) {
-    super(options);
+  /**
+   * Media type of this element.
+   */
+  type: MediaType = MediaType.Video;
 
-    this.file = options.file;
+  constructor(file: VideoFile) {
+    super();
+
+    this.file = file;
   }
 
   /**

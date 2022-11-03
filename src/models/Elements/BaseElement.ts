@@ -1,4 +1,5 @@
 import { immerable } from 'immer';
+import { MediaType } from '../Enums/MediaType';
 import { ITimelineElement } from './ITimelineElement';
 
 /**
@@ -27,11 +28,12 @@ export abstract class BaseElement implements ITimelineElement {
    */
 	endTrimMs = 0;
 
-  protected _durationMs?: number;
+  /**
+   * Media type of this element.
+   */
+  type: MediaType = MediaType.Unknown;
 
-  constructor(options: Partial<BaseElement>) {
-    Object.assign(this, options);
-  }
+  protected _durationMs?: number;
 
   /**
    * Time at which this element starts.

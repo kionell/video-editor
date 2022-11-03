@@ -3,6 +3,7 @@ import { IFadeableElement } from './Types/IFadeableElement';
 import { IPlayableElement } from './Types/IPlayableElement';
 import { AudioFile } from '../Files/AudioFile';
 import { BaseElement } from './BaseElement';
+import { MediaType } from '../Enums/MediaType';
 
 /**
  * An audio element that can be placed on a timeline track.
@@ -23,10 +24,15 @@ export class AudioElement extends BaseElement
 
   file: AudioFile;
 
-  constructor(options: Pick<AudioElement, 'file'> & Partial<AudioElement>) {
-    super(options);
+  /**
+   * Media type of this element.
+   */
+  type: MediaType = MediaType.Audio;
 
-    this.file = options.file;
+  constructor(file: AudioFile) {
+    super();
+
+    this.file = file;
   }
 
   /**
