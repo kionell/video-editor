@@ -1,6 +1,9 @@
-import Scrollbars from 'react-custom-scrollbars-2';
 import styled from 'styled-components';
+import { ForwardedRef, forwardRef } from 'react';
+import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars-2';
 import { FlexProps, FlexContainer } from './FlexContainer';
+
+type ScrollableProps = FlexProps | ScrollbarProps;
 
 // Hide scrollbars for Google Chrome
 const StyledScrollbars = styled(Scrollbars)`
@@ -18,12 +21,22 @@ const StyledScrollbars = styled(Scrollbars)`
   }
 `;
 
-const ScrollableContainer: React.FC<FlexProps> = (props: FlexProps) => {
+const ScrollableContainer = forwardRef<Scrollbars, ScrollableProps>((
+  props: ScrollableProps, 
+  ref: ForwardedRef<Scrollbars>
+) => {
   return (
-    <StyledScrollbars hideTracksWhenNotNeeded autoHide >
-      <FlexContainer {...props} />
+    <StyledScrollbars 
+      hideTracksWhenNotNeeded 
+      autoHide 
+      onScroll={props.onScroll} 
+      ref={ref}
+    >
+      <FlexContainer {...props as FlexProps} />
     </StyledScrollbars>
   );
-};
+});
+
+ScrollableContainer.displayName = 'Scrollable Container';
 
 export { ScrollableContainer };
