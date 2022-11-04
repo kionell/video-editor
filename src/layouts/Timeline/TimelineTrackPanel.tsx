@@ -18,12 +18,12 @@ const StyledTrackPanelContainer = styled(ScrollableContainer)`
 `;
 
 const StyledTrackControlContainer = styled.div`
-  width: 20px;
+  width: 30px;
   height: 100%;
   position: sticky;
   left: 0px;
   display: flex;
-  flex-basis: 20px;
+  flex-basis: 30px;
   flex-grow: 0;
   flex-shrink: 0;
   flex-direction: column;
