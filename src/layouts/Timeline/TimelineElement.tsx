@@ -1,11 +1,15 @@
-import React from 'react';
+import { forwardRef, ForwardedRef } from 'react';
 import styled, { css } from 'styled-components';
 import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
+import { BaseElement } from '../../models/Elements/BaseElement';
 
-const StyledTimelineElementWrapper = styled.div`
+interface ElementProps {
+  element: BaseElement;
+}
+
+const StyledTimelineElementWrapper = styled.div<ElementProps>`
   position: relative;
-  width: 400px;
   min-width: 24px;
   height: 50px;
   display: inline-flex;
@@ -17,6 +21,8 @@ const StyledTimelineElementWrapper = styled.div`
   border-radius: 8px;
   overflow: hidden;
   
+  width: ${(props) => props.element.durationMs / 100}px;
+
   ${(props) => {
     const isFocused = props.className?.includes('focused');
 
@@ -68,9 +74,12 @@ const StyledTimelineElementPreview = styled.div`
   pointer-events: none;
 `;
 
-const BaseTimelineElement = React.forwardRef<HTMLDivElement>((props, ref) => {
+const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
+  props: ElementProps, 
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   return (
-    <StyledTimelineElementWrapper ref={ref} {...props} >
+    <StyledTimelineElementWrapper ref={ref} {...props}>
       <StyledTimelineElementEdge className='edges edge-left'>
         <Icon variant='Edge' size={25} className='edge-lines' />
       </StyledTimelineElementEdge>

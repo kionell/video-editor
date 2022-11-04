@@ -24,9 +24,9 @@ const TimelineTrack: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) 
   return (
     <StyledTimelineTrack>
       {
-        track.elements.map((_, i) => {
+        track.elements.map((element, i) => {
           return (
-            <TimelineElement key={i} />
+            <TimelineElement element={element} key={i} />
           );
         })
       }
