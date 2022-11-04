@@ -10,8 +10,6 @@ interface TimelineTrackProps {
 const StyledTimelineTrack = styled.div`
   width: 100%;
   height: 50px;
-  left: 100px;
-  display: flex;
   border: none;
   overflow: hidden;
   margin-bottom: 6px;
