@@ -33,7 +33,7 @@ export abstract class BaseElement implements ITimelineElement {
    */
   type: MediaType = MediaType.Unknown;
 
-  protected _durationMs?: number;
+  protected _durationMs: number | null = null;
 
   /**
    * Time at which this element starts.

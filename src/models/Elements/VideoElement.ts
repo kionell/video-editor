@@ -27,6 +27,12 @@ export class VideoElement extends VisibleElement implements IFileElement, IPlaya
   /**
    * Duration of this video element.
    */
+  get durationMs(): number {
+    const fileDurationMs = this.file.duration * 1000;
+
+    return Math.max(0, this._durationMs ?? fileDurationMs);
+  }
+
   set durationMs(value: number) {
     const fileDurationMs = this.file.duration * 1000;
 
