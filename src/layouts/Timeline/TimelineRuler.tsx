@@ -25,10 +25,22 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
   unit?: number;
 
   /**
-   * Size of the ruler lines.
+   * Number of areas to divide between two main lines
+   * @default 2
+   */
+  segments?: number;
+
+  /**
+   * Size of the long ruler lines.
    * @default 15
    */
-  lineSize?: number,
+  longLineSize?: number,
+ 
+  /**
+   * Size of the short ruler lines.
+   * @default 10
+   */
+  shortLineSize?: number,
 
   /**
    * Text offset by X-axis.
@@ -54,7 +66,9 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     height: 15,
     zoom: 1,
     unit: 100,
-    lineSize: 15,
+    segments: 2,
+    longLineSize: 15,
+    shortLineSize: 10,
     textOffsetX: 5,
     textOffsetY: 3,
     theme: DarkTheme,
@@ -120,8 +134,10 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
     const {
       theme,
+      segments,
       unit,
-      lineSize,
+      longLineSize,
+      shortLineSize,
       textOffsetX,
       textOffsetY,
       textFormat,
@@ -162,10 +178,20 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
       const startValue = value * unit;
       const startPos = (startValue - scrollPos) * nextZoom;
 
-      if (startPos < 0 || startPos >= size) continue;
+      for (let j = 0; j < segments; ++j) {
+        const pos = startPos + j / segments * zoomUnit;
 
-      context.moveTo(startPos, 0);
-      context.lineTo(startPos, lineSize);
+        if (pos < 0 || pos >= size) continue;
+
+        const lineSize = j % 2 === 0 ? longLineSize : shortLineSize;
+        const origin = 0;
+
+        const [x1, y1] = [pos, origin];
+        const [x2, y2] = [x1, y1 + lineSize];
+
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+      }
     }
 
     context.stroke();
