@@ -14,6 +14,7 @@ const StyledMainPage = styled(ScrollableContainer)`
 const StyledTopPart = styled.div`
   flex-grow: 1;
   flex-basis: 0;
+  width: 100%;
   height: 100%; 
   display: flex; 
   flex-direction: row;
@@ -21,6 +22,7 @@ const StyledTopPart = styled.div`
 `;
 
 const StyledBottomPart = styled.div`
+  width: 100%;
   flex-grow: 0;
   flex-basis: 0;
   display: flex; 
