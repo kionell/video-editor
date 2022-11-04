@@ -6,7 +6,7 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import { Text } from '../Text';
 import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
-import { formatTime } from '../../utils/format';
+import { formatDuration } from '../../utils/format';
 import { ImagePreview } from '../ImagePreview';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -141,7 +141,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
     <StyledGeneralItemWrapper {...props}>
       <StyledGeneralItem {...props}>
         <StyledGeneralItemDuration 
-          text={formatTime(duration)} 
+          text={formatDuration(duration)} 
           visible={showDuration}
           size={SMALL_FONT_SIZE}
         />

@@ -3,7 +3,7 @@
  * @param time Target time in seconds.
  * @returns Time in format H:MM:SS.
  */
- export function formatTime(time?: number): string {
+ export function formatDuration(time?: number): string {
   if (!time) return '0:00';
   
   time = Math.round(time);
