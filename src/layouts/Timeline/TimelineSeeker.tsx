@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 
+const StyledTimelineSeekerHead = styled(Icon)`
+  position: absolute;
+`;
+
 const StyledTimelineSeekerLine = styled.div`
   width: 2px;
   height: 100%;
@@ -14,7 +18,6 @@ const StyledTimelineSeekerWrapper = styled.div`
   position: absolute;
   display: inline-flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   border: none;
   outline: none;
@@ -46,7 +49,7 @@ const StyledTimelineSeekerWrapper = styled.div`
 const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <StyledTimelineSeekerWrapper ref={ref} {...props}>
-      <Icon 
+      <StyledTimelineSeekerHead 
         size={25} 
         useColor={false} 
         variant='Seeker' 
