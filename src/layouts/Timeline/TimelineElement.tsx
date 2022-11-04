@@ -25,31 +25,31 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
 
   ${(props) => {
     const isFocused = props.className?.includes('focused');
+    const accentColor = props.theme.primary.accent;
+    const hoverColor = props.theme.primary.accentHover;
 
-    return isFocused && css`
+    return css`
       .preview {
-        border-top: 2px solid ${props.theme.primary.accent};
-        border-bottom: 2px solid ${props.theme.primary.accent};
+        border: ${isFocused ? `2px solid ${accentColor}` : 'none'};
       }
       
       .edges {
-        visibility: visible;
-        background: ${(props) => props.theme.primary.accent};
+        visibility: ${isFocused ? 'visible' : 'hidden'};
+        background: ${accentColor};
+      }
+
+      &:hover:not(.focused) {
+        .preview {
+          border: 2px solid ${hoverColor};
+        }
+        
+        .edges {
+          display: ${isFocused ? 'visible' : 'hidden'};
+          background: ${hoverColor};
+        }
       }
     `;
   }};
-
-  &:hover:not(.focused) {
-    .preview {
-      border-top: 2px solid ${(props) => props.theme.primary.accent};
-      border-bottom: 2px solid ${(props) => props.theme.primary.accent};
-    }
-    
-    .edges {
-      visibility: visible;
-      background: ${(props) => props.theme.primary.accent};
-    }
-  }
 `;
 
 const StyledTimelineElementEdge = styled.div`
@@ -61,14 +61,15 @@ const StyledTimelineElementEdge = styled.div`
   justify-content: center;
   align-items: center;
   cursor: ew-resize;
+
 `;
 
 const StyledTimelineElementPreview = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  border-radius: 10px;
-  background-color: white;
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.text.lighter};
   background-image: linear-gradient(to top, #202020bb 5%, #40404060 50%, transparent 100%);
   background-repeat: no-repeat;
   pointer-events: none;
@@ -78,13 +79,17 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   props: ElementProps, 
   ref: ForwardedRef<HTMLDivElement>
 ) => {
+  
+
   return (
     <StyledTimelineElementWrapper ref={ref} {...props}>
       <StyledTimelineElementEdge className='edges edge-left'>
         <Icon variant='Edge' size={25} className='edge-lines' />
       </StyledTimelineElementEdge>
       
-      <StyledTimelineElementPreview className='preview' />
+      <StyledTimelineElementPreview className='preview'>
+
+      </StyledTimelineElementPreview>
       
       <StyledTimelineElementEdge className='edges edge-right'>
         <Icon variant='Edge' size={25} className='edge-lines' />
