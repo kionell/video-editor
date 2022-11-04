@@ -6,11 +6,11 @@ import { Icon } from '../../components/Icon';
 const StyledTimelineSeekerLine = styled.div`
   width: 2px;
   height: 100%;
-  min-height: 300px;
   margin-top: -3px;
 `;
 
 const StyledTimelineSeekerWrapper = styled.div`
+  height: 100%;
   position: absolute;
   display: inline-flex;
   flex-direction: column;
