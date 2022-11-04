@@ -13,7 +13,7 @@ export const withMovableX = <T,>(Component: React.FC<T>) => {
     };
 
     const moveElement = (event: MouseEvent) => {
-      element.style.left = (event.pageX + offsetX) + 'px';
+      element.style.left = Math.max(0, (event.pageX + offsetX)) + 'px';
     };
 
     const stopMoving = () => {
