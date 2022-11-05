@@ -61,9 +61,9 @@ const TimelineTools: React.FC = () => {
       </FlexContainer>
 
       <FlexContainer gap={5} padding={0} className='timeline-time'>
-        <Text className='timeline-time-current' text='0:00.00' useColor={false} />
+        <Text className='timeline-time-current' text='00:00:00.00' useColor={false} />
         <Text className='timeline-time-delimiter' text='/' useColor={false} />
-        <Text className='timeline-time-duration' text='0:00.00' useColor={false} />
+        <Text className='timeline-time-duration' text='00:00:00.00' useColor={false} />
       </FlexContainer>
 
       <FlexContainer gap={6}>
