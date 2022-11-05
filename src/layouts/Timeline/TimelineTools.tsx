@@ -9,13 +9,13 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
 
 const StyledTimelineTools = styled.div`
-  width: 100%;
-  height: 50px;
+  height: 45px;
   display: flex;
   position: relative;
-  padding: 5px 12px;
+  padding: 6px 12px;
   justify-content: space-between;
   align-items: center;
+  box-sizing: content-box;
   background: ${(props) => props.theme.other.primary};
 
   .timeline-time {
@@ -25,6 +25,11 @@ const StyledTimelineTools = styled.div`
     transform: translate(-50%,-50%);
     color: ${(props) => props.theme.text.lighter};
   }
+`;
+
+const StyledTimelineToolButton = styled(SecondaryButton)`
+  width: 40px;
+  height: 35px;
 `;
 
 const TimelineTools: React.FC = () => {
@@ -51,13 +56,13 @@ const TimelineTools: React.FC = () => {
 
   return (
     <StyledTimelineTools>
-      <FlexContainer gap={6}>
-        <SecondaryButton showLabel={false} iconType='Undo' />
-        <SecondaryButton showLabel={false} iconType='Redo' />
-        <SecondaryButton showLabel={false} iconType='Split' />
-        <SecondaryButton showLabel={false} iconType='BringForward' />
-        <SecondaryButton showLabel={false} iconType='SendBackward' />
-        <SecondaryButton showLabel={false} iconType='Delete' />
+      <FlexContainer gap={6} padding={0}>
+        <StyledTimelineToolButton showLabel={false} iconType='Undo' />
+        <StyledTimelineToolButton showLabel={false} iconType='Redo' />
+        <StyledTimelineToolButton showLabel={false} iconType='Split' />
+        <StyledTimelineToolButton showLabel={false} iconType='BringForward' />
+        <StyledTimelineToolButton showLabel={false} iconType='SendBackward' />
+        <StyledTimelineToolButton showLabel={false} iconType='Delete' />
       </FlexContainer>
 
       <FlexContainer gap={5} padding={0} className='timeline-time'>
@@ -66,18 +71,18 @@ const TimelineTools: React.FC = () => {
         <Text className='timeline-time-duration' text='00:00:00.00' useColor={false} />
       </FlexContainer>
 
-      <FlexContainer gap={6}>
+      <FlexContainer gap={6} padding={0}>
         <ButtonGroup>
-          <SecondaryButton 
+          <StyledTimelineToolButton 
             showLabel={false} 
             iconType='Snap' 
             ref={snapButtonRef} 
             onClick={onSnapClick}
           />
         </ButtonGroup>
-        <SecondaryButton showLabel={false} iconType='Minus' onClick={onZoomOutClick} />
-        <SecondaryButton showLabel={false} iconType='Plus' onClick={onZoomInClick} />
-        <SecondaryButton showLabel={false} iconType='Fit' onClick={onZoomFitClick} />
+        <StyledTimelineToolButton showLabel={false} iconType='Minus' onClick={onZoomOutClick} />
+        <StyledTimelineToolButton showLabel={false} iconType='Plus' onClick={onZoomInClick} />
+        <StyledTimelineToolButton showLabel={false} iconType='Fit' onClick={onZoomFitClick} />
       </FlexContainer>
     </StyledTimelineTools>
   );

@@ -12,7 +12,6 @@ const StyledTimelineTrack = styled.div`
   height: 50px;
   border: none;
   overflow: hidden;
-  margin-bottom: 6px;
   background: ${(props) => props.theme.other.secondary};
 `;
 
