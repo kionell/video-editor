@@ -4,7 +4,7 @@ import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 
 const StyledTimelineSeekerHead = styled(Icon)`
-  position: absolute;
+  position: relative;
 `;
 
 const StyledTimelineSeekerLine = styled.div`
@@ -48,12 +48,18 @@ const StyledTimelineSeekerWrapper = styled.div`
 
 const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <StyledTimelineSeekerWrapper ref={ref} {...props}>
+    <StyledTimelineSeekerWrapper
+      {...props} 
+      ref={ref}
+      style={{
+        translate: '20px',
+      }}
+    >
       <StyledTimelineSeekerHead 
-        size={25} 
+        size={20} 
         useColor={false} 
         variant='Seeker' 
-        className='seeker-icon' 
+        className='seeker-icon'
       />
       <StyledTimelineSeekerLine 
         className='seeker-line' 
