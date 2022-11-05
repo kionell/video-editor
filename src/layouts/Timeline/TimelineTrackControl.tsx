@@ -15,7 +15,6 @@ const StyledTimelineTrackControl = styled.div`
   align-content: center;
   border: none;
   overflow: hidden;
-  margin-bottom: 6px;
   cursor: grab;
   background: ${(props) => props.theme.other.secondary};
 
