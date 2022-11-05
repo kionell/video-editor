@@ -5,7 +5,7 @@ import { DarkTheme } from '../../themes/dark.theme';
 import { convertToRef } from '../../utils/react';
 import { TimelinableProps } from './Types/TimelinableProps';
 import { ITimelinableComponent } from './Types/TimelinableComponent';
-import { formatDuration } from '../../utils/format';
+import { formatTimelineUnit } from '../../utils/format';
 
 interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> {
   /**
@@ -63,16 +63,16 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
 
 class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
   static defaultProps: TimelineRulerProps = {
-    height: 15,
+    height: 30,
     zoom: 1,
     unit: 100,
     segments: 2,
     longLineSize: 15,
     shortLineSize: 10,
     textOffsetX: 5,
-    textOffsetY: 3,
+    textOffsetY: 4,
     theme: DarkTheme,
-    textFormat: formatDuration,
+    textFormat: formatTimelineUnit,
   };
 
   state = {

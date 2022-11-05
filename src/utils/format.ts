@@ -24,3 +24,26 @@
 
   return values.join(':');
 }
+
+/**
+ * Converts raw time value to the readable format.
+ * @param time Target time in seconds.
+ * @returns Time in format H:MM:SS.
+ */
+ export function formatTimelineUnit(time?: number): string {
+  if (!time) return '00:00:00';
+  
+  time = Math.round(time);
+
+  const seconds = Math.trunc(time) % 60;
+  const minutes = Math.trunc(time / 60) % 60;
+  const hours = Math.trunc(time / 3600);
+
+  const values = [
+    hours.toString().padStart(2, '0'),
+    minutes.toString().padStart(2, '0'),
+    seconds.toString().padStart(2, '0'),
+  ];
+
+  return values.join(':');
+}
