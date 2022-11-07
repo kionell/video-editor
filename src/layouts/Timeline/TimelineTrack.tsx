@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { TimelineTrack as TrackModel } from '../../models/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
 
-interface TimelineTrackProps {
+interface TimelineTrackProps extends HTMLAttributes<HTMLDivElement> {
   track: TrackModel;
 }
 

@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
-import { SECONDARY_FONT, SMALL_FONT_SIZE } from '../../constants';
+import { PREVIEW_FRAME_WIDTH, SECONDARY_FONT, SMALL_FONT_SIZE } from '../../constants';
 import { DarkTheme } from '../../themes/dark.theme';
 import { convertToRef } from '../../utils/react';
 import { TimelinableProps } from './Types/TimelinableProps';
@@ -34,13 +34,18 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
    * Size of the long ruler lines.
    * @default 15
    */
-  longLineSize?: number,
+  longLineSize?: number;
  
   /**
    * Size of the short ruler lines.
    * @default 10
    */
-  shortLineSize?: number,
+  shortLineSize?: number;
+
+  /**
+   * Starting offset by X-axis.
+   */
+  offsetX?: number;
 
   /**
    * Text offset by X-axis.
@@ -63,14 +68,15 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
 
 class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
   static defaultProps: TimelineRulerProps = {
-    height: 30,
+    height: 40,
     zoom: 1,
-    unit: 100,
-    segments: 2,
-    longLineSize: 15,
-    shortLineSize: 10,
-    textOffsetX: 5,
-    textOffsetY: 4,
+    unit: 1,
+    segments: 1,
+    longLineSize: 14,
+    shortLineSize: 8,
+    offsetX: 40,
+    textOffsetX: -32,
+    textOffsetY: 20,
     theme: DarkTheme,
     textFormat: formatTimelineUnit,
   };
@@ -84,9 +90,6 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
   private width = 0;
   private height = 0;
   private zoom = 1;
-
-  private readonly zoomScale = 1;
-  private readonly minUnitDistance = 100;
 
   render() {
     this.zoom = this.props.zoom as number;
@@ -140,13 +143,11 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
       unit,
       longLineSize,
       shortLineSize,
+      offsetX,
       textOffsetX,
       textOffsetY,
       textFormat,
     } = props;
-
-    nextZoom *= this.zoomScale;
-    scrollPos /= this.zoomScale;
 
     // Clear existing paths & text
     context.clearRect(0, 0, width, height);
@@ -161,31 +162,32 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     context.translate(0.5, 0);
     context.beginPath();
 
+    // Represents distance between two long lines with current zoom level.
+    const zoomUnit = unit * nextZoom * PREVIEW_FRAME_WIDTH;
+
     const size = width;
-    const zoomUnit = nextZoom * unit;
-    const minRange = Math.floor(scrollPos * nextZoom / zoomUnit);
-    const maxRange = Math.ceil((scrollPos * nextZoom + size) / zoomUnit);
+    const minRange = Math.floor(scrollPos / zoomUnit);
+    const maxRange = Math.ceil((scrollPos + size) / zoomUnit);
     const length = maxRange - minRange;
 
     // Draw line at the top.
     context.moveTo(0, 0);
     context.lineTo(this.width, 0);
 
-    // Draw lines.
     for (let i = 0; i <= length; ++i) {
       const value = i + minRange;
 
       if (value < 0) continue;
 
-      const startValue = value * unit;
-      const startPos = (startValue - scrollPos) * nextZoom;
+      const startValue = value * zoomUnit;
+      const startPos = (startValue - scrollPos) + offsetX;
 
       for (let j = 0; j < segments; ++j) {
         const pos = startPos + j / segments * zoomUnit;
 
         if (pos < 0 || pos >= size) continue;
 
-        const lineSize = j % 2 === 0 ? longLineSize : shortLineSize;
+        const lineSize = j % segments ? shortLineSize : longLineSize;
         const origin = 0;
 
         const [x1, y1] = [pos, origin];
@@ -195,7 +197,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
         context.lineTo(x2, y2);
       }
     }
-
+    
     context.stroke();
 
     // Draw text.
@@ -204,16 +206,14 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
       if (value < 0) continue;
 
-      const startValue = value * zoomUnit;
-      const startPos = (startValue - scrollPos) * nextZoom;
+      const startValue = value * zoomUnit / nextZoom;
+      const startPos = (startValue - scrollPos / nextZoom) * nextZoom;
 
-      if (startPos < -zoomUnit || startPos >= size + unit * nextZoom) {
-        continue;
-      }
+      if (startPos < -zoomUnit || startPos >= size + zoomUnit) continue;
 
       const text = textFormat ? textFormat(startValue) : `${startValue}`;
 
-      context.fillText(text, startPos + textOffsetX, textOffsetY);
+      context.fillText(text, startPos + textOffsetX + offsetX, textOffsetY);
     }
 
     context.restore();
