@@ -15,6 +15,7 @@ const StyledTimelineSeekerLine = styled.div`
 
 const StyledTimelineSeekerWrapper = styled.div`
   height: 100%;
+  translate: calc(-50% + 30px);
   position: absolute;
   display: inline-flex;
   flex-direction: column;
@@ -48,13 +49,7 @@ const StyledTimelineSeekerWrapper = styled.div`
 
 const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <StyledTimelineSeekerWrapper
-      {...props} 
-      ref={ref}
-      style={{
-        translate: '20px',
-      }}
-    >
+    <StyledTimelineSeekerWrapper {...props} ref={ref}>
       <StyledTimelineSeekerHead 
         size={20} 
         useColor={false} 
