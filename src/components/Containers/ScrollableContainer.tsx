@@ -5,11 +5,10 @@ import { FlexProps, FlexContainer } from './FlexContainer';
 
 type ScrollableProps = FlexProps | ScrollbarProps;
 
-// Hide scrollbars for Google Chrome
 const StyledScrollbars = styled(Scrollbars)`
   width: 100%;
   height: 100%;
-  
+
   & > *::-webkit-scrollbar {
     display: none;
   }

@@ -71,7 +71,7 @@ const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
           />
         </StyledUploadMessageWrapper>
       </StyledDragUploaderShowArea>
-      <FileInput ref={ref} onChange={props.onChange}/>
+      <FileInput ref={ref} />
     </StyledDragUploaderWrapper>
   );
 });

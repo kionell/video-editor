@@ -1,4 +1,4 @@
-import { HTMLAttributes, MouseEventHandler } from 'react';
+import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 type FlexDirection = 'row' | 'column';
@@ -42,9 +42,14 @@ const StyledFlexContainer = styled.div<FlexProps>`
   }}
 `;
 
-const FlexContainer: React.FC<FlexProps> = (props: FlexProps) => {
-  return <StyledFlexContainer {...props}></StyledFlexContainer>;
-};
+const FlexContainer = forwardRef<HTMLDivElement, FlexProps>((
+  props: FlexProps, 
+  ref: ForwardedRef<HTMLDivElement>
+) => {
+  return <StyledFlexContainer ref={ref} {...props} />;
+});
+
+FlexContainer.displayName = 'Flex Container';
 
 FlexContainer.defaultProps = {
   direction: 'row',
@@ -52,8 +57,8 @@ FlexContainer.defaultProps = {
   wrapElements: true,
   justify: 'start',
   align: 'start',
-  padding: 5,
-  gap: 5,
+  padding: 6,
+  gap: 6,
 };
 
 export { FlexContainer };
