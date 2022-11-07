@@ -153,8 +153,8 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
     context.save();
     context.strokeStyle = theme.text.darker;
-    context.fillStyle = theme.text.darker;
-    context.lineWidth = 2;
+    context.fillStyle = theme.text.normal;
+    context.lineWidth = 1;
     context.font = `${SMALL_FONT_SIZE}px ${SECONDARY_FONT}`;
     context.textBaseline = 'top';
 
