@@ -186,8 +186,10 @@ export class Timeline implements ITimeline {
   }
 
   private _getPreviousZoomIndex(): number {
-    // Previous zoom is 2 positions behind next zoom.
-    const previousZoomIndex = this._getNextZoomIndex() - 2;
+    const lastLevel = TIMELINE_ZOOM_LEVELS[TIMELINE_ZOOM_LEVELS.length - 1];
+    const isLastIndex = this.currentZoom === lastLevel;
+    const nextZoomIndex = this._getNextZoomIndex();
+    const previousZoomIndex = nextZoomIndex - (isLastIndex ? 1 : 2);
 
     // Limit zoom to the first default level.
     return Math.max(0, previousZoomIndex);
