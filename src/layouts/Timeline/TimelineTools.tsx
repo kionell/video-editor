@@ -39,16 +39,20 @@ const TimelineTools: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const onZoomOutClick = () => {
-    dispatch(setCurrentZoom(timeline.getPreviousZoom()));
+    const zoomLevel = timeline.getPreviousZoomLevel();
+
+    dispatch(setCurrentZoom(zoomLevel));
   };
 
   const onZoomInClick = () => {
-    dispatch(setCurrentZoom(timeline.getNextZoom()));
+    const zoomLevel = timeline.getNextZoomLevel();
+
+    dispatch(setCurrentZoom(zoomLevel));
   };
 
-  const onZoomFitClick = () => {
-    dispatch(setCurrentZoom(2));
-  };
+  // const onZoomFitClick = () => {
+  //   dispatch(setCurrentZoom(2));
+  // };
 
   const onSnapClick = () => {
     dispatch(setSnapMode(!timeline.snapMode));
@@ -82,7 +86,7 @@ const TimelineTools: React.FC = () => {
         </ButtonGroup>
         <StyledTimelineToolButton showLabel={false} iconType='Minus' onClick={onZoomOutClick} />
         <StyledTimelineToolButton showLabel={false} iconType='Plus' onClick={onZoomInClick} />
-        <StyledTimelineToolButton showLabel={false} iconType='Fit' onClick={onZoomFitClick} />
+        <StyledTimelineToolButton showLabel={false} iconType='Fit' />
       </FlexContainer>
     </StyledTimelineTools>
   );

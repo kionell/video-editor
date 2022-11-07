@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BaseElement } from '../../models/Elements/BaseElement';
+import { ITimelineZoomLevel } from '../../models/Timeline/ITimelineZoomLevel';
 import { Timeline } from '../../models/Timeline/Timeline';
 import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
 
@@ -49,7 +50,7 @@ const timelineSlice = createSlice({
       state.currentTimeMs = action.payload;
     },
 
-    setCurrentZoom(state, action: PayloadAction<number>) {
+    setCurrentZoom(state, action: PayloadAction<ITimelineZoomLevel>) {
       state.currentZoom = action.payload;
     },
 

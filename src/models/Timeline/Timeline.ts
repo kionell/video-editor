@@ -42,12 +42,12 @@ export class Timeline implements ITimeline {
    */
   snapMode = false;
 
-  getPreviousZoom(): number {
-    return Timeline.DEFAULT_ZOOM_LEVELS[this._getPreviousZoomIndex()];
+  getPreviousZoomLevel(): ITimelineZoomLevel {
+    return TIMELINE_ZOOM_LEVELS[this._getPreviousZoomIndex()];
   }
 
-  getNextZoom(): number {
-    return Timeline.DEFAULT_ZOOM_LEVELS[this._getNextZoomIndex()];
+  getNextZoomLevel(): ITimelineZoomLevel {
+    return TIMELINE_ZOOM_LEVELS[this._getNextZoomIndex()];
   }
 
 	/**

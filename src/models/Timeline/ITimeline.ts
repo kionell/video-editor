@@ -1,4 +1,5 @@
 import { ITimelineTrack } from './ITimelineTrack';
+import { ITimelineZoomLevel } from './ITimelineZoomLevel';
 
 export interface ITimeline {
   /**
@@ -9,7 +10,7 @@ export interface ITimeline {
   /**
    * Current zoom of this timeline.
    */
-  currentZoom: number;
+  currentZoom: ITimelineZoomLevel;
 
   /**
    * Current scroll position of this timeline.
