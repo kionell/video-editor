@@ -1,4 +1,5 @@
 import { immerable } from 'immer';
+import { TIMELINE_ZOOM_LEVELS } from '../../constants';
 import { findIndex } from '../../utils/search';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';
@@ -6,6 +7,7 @@ import { TextElement } from '../Elements/TextElement';
 import { VideoElement } from '../Elements/VideoElement';
 import { MediaType } from '../Enums/MediaType';
 import { ITimeline } from './ITimeline';
+import { ITimelineZoomLevel } from './ITimelineZoomLevel';
 import { TimelineTrack } from './TimelineTrack';
 
 /**
@@ -13,10 +15,6 @@ import { TimelineTrack } from './TimelineTrack';
  */
 export class Timeline implements ITimeline {
   [immerable] = true;
-  
-  private static DEFAULT_ZOOM_LEVELS = [
-    0.1, 0.2, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5,
-  ];
 
   private _tracks: TimelineTrack[] = [];
 	
@@ -28,7 +26,11 @@ export class Timeline implements ITimeline {
   /**
    * Current zoom of this timeline.
    */
-  currentZoom = 1;
+  currentZoom: ITimelineZoomLevel = {
+    unit: 1,
+    zoom: 1,
+    segments: 1,
+  };
 
   /**
    * Current scroll position of this timeline.
@@ -192,10 +194,10 @@ export class Timeline implements ITimeline {
   }
 
   private _getNextZoomIndex(): number {
-    const zoomLevels = Timeline.DEFAULT_ZOOM_LEVELS;
+    const zoomLevels = TIMELINE_ZOOM_LEVELS;
 
-    const nextZoomIndex = findIndex(zoomLevels, (zoom) => {
-      return zoom > this.currentZoom;
+    const nextZoomIndex = findIndex(zoomLevels, (level) => {
+      return level.zoom > this.currentZoom.zoom;
     });
 
     // Limit zoom to the last default level.
