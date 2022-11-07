@@ -110,7 +110,9 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
       scrollPos,
     } = this.props as Required<TimelineRulerProps>;
 
-    this.width = canvas.offsetWidth;
+    const offsetParent = canvas.offsetParent as HTMLDivElement;
+
+    this.width = offsetParent?.offsetWidth ?? canvas.offsetWidth;
     this.height = height;
 
     canvas.width = this.width;
