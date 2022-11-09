@@ -23,11 +23,10 @@ interface ITextColors {
   darker: string;
 }
 
-interface IOtherColors {
+interface IContainerColors {
   primary: string;
   secondary: string;
   background: string;
-  stroke: string;
 }
 
 export interface ITheme {
@@ -36,7 +35,7 @@ export interface ITheme {
   scrollbar: IScrollbarColors;
   input: IInputColors;
   text: ITextColors;
-  other: IOtherColors;
+  container: IContainerColors;
 }
 
 declare module 'styled-components' {

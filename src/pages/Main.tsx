@@ -18,7 +18,7 @@ const StyledTopPart = styled.div`
   height: 100%; 
   display: flex; 
   flex-direction: row;
-  background-color: ${(props) => props.theme.other.background};
+  background-color: ${(props) => props.theme.container.background};
 `;
 
 const StyledBottomPart = styled.div`

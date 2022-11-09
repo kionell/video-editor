@@ -16,7 +16,7 @@ const StyledTimelineTrackControl = styled.div`
   border: none;
   overflow: hidden;
   cursor: grab;
-  background: ${(props) => props.theme.other.secondary};
+  background: ${(props) => props.theme.container.secondary};
 
   &:hover {
     background: ${(props) => props.theme.secondary.accentHover};

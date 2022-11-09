@@ -22,7 +22,7 @@ const StyledSidebar = styled.div<SidebarProps>`
   display: flex;
   flex-direction: column;
   position: relative;
-  background: ${(props) => props.theme.other.primary};
+  background: ${(props) => props.theme.container.primary};
 `;
 
 const Sidebar: React.FC<SidebarProps> = (props: SidebarProps) => {

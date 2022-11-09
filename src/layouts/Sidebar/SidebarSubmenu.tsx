@@ -10,7 +10,7 @@ const StyledSidebarSubmenu = styled.div<SidebarSubmenuProps>`
   width: 325px;
   height: 100%;
   position: relative;
-  background: ${(props) => props.theme.other.secondary};
+  background: ${(props) => props.theme.container.secondary};
 `;
 
 const SidebarSubmenu: React.FC<SidebarSubmenuProps> = (props: SidebarSubmenuProps) => {

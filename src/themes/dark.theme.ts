@@ -26,10 +26,9 @@ export const DarkTheme: ITheme = {
     lighter: '#FFFFFF',
     darker: '#777777',
   },
-  other: {
+  container: {
     primary: '#202228',
     secondary: '#282A30',
     background: '#16181A',
-    stroke: '#1D1D20',
   },
 };

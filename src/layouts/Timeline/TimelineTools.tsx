@@ -16,7 +16,7 @@ const StyledTimelineTools = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: content-box;
-  background: ${(props) => props.theme.other.primary};
+  background: ${(props) => props.theme.container.primary};
 
   .timeline-time {
     position: absolute;
