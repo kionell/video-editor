@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { createRef, HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { TimelineTrack as TrackModel } from '../../models/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
@@ -23,7 +23,11 @@ const TimelineTrack: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) 
       {
         track.elements.map((element, i) => {
           return (
-            <TimelineElement element={element} key={i} />
+            <TimelineElement 
+              element={element} 
+              key={i} 
+              ref={createRef()} 
+            />
           );
         })
       }
