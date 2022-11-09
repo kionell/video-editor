@@ -109,7 +109,7 @@ export class Timeline implements ITimeline {
     if (fromIndex < 0 || fromIndex >= this.totalTracks) return;
 
     const track = this._tracks.splice(fromIndex, 1);
-    const index = Math.max(0, Math.min(toIndex, this.totalLengthMs - 1));
+    const index = clamp(toIndex, 0, this.totalTracks - 1);
 
     this._tracks.splice(index, 0, track[0]);
 
