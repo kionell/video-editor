@@ -13,10 +13,6 @@ export const DarkTheme: ITheme = {
     accent: '#282A30',
     accentHover: '#3A3D45',
   },
-  scrollbar: {
-    thumb: '#4F525C',
-    track: '#2F323B',
-  },
   input: {
     normal: '#777777',
     normalHover: '#BBBBBB',

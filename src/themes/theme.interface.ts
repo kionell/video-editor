@@ -12,11 +12,6 @@ type IPrimaryColors = INormalColors & IAccentColors;
 type ISecondaryColors = INormalColors & IAccentColors;
 type IInputColors = INormalColors;
 
-interface IScrollbarColors {
-  thumb: string;
-  track: string;
-}
-
 interface ITextColors {
   normal: string;
   lighter: string;
@@ -32,7 +27,6 @@ interface IContainerColors {
 export interface ITheme {
   primary: IPrimaryColors;
   secondary: ISecondaryColors;
-  scrollbar: IScrollbarColors;
   input: IInputColors;
   text: ITextColors;
   container: IContainerColors;
