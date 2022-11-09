@@ -1,14 +1,15 @@
 import { immerable } from 'immer';
-import { TIMELINE_ZOOM_LEVELS } from '../../constants';
-import { findIndex } from '../../utils/search';
+import { PREVIEW_FRAME_WIDTH, TIMELINE_ZOOM_LEVELS } from '../../constants';
+import { ITimeline } from './ITimeline';
+import { ITimelineZoomLevel } from './ITimelineZoomLevel';
+import { TimelineTrack } from './TimelineTrack';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';
 import { TextElement } from '../Elements/TextElement';
 import { VideoElement } from '../Elements/VideoElement';
 import { MediaType } from '../Enums/MediaType';
-import { ITimeline } from './ITimeline';
-import { ITimelineZoomLevel } from './ITimelineZoomLevel';
-import { TimelineTrack } from './TimelineTrack';
+import { clamp } from '../../utils/math';
+import { findIndex } from '../../utils/search';
 
 /**
  * A timeline.
@@ -108,7 +109,7 @@ export class Timeline implements ITimeline {
     if (fromIndex < 0 || fromIndex >= this.totalTracks) return;
 
     const track = this._tracks.splice(fromIndex, 1);
-    const index = Math.max(0, Math.min(toIndex, this.totalLength - 1));
+    const index = Math.max(0, Math.min(toIndex, this.totalLengthMs - 1));
 
     this._tracks.splice(index, 0, track[0]);
 
@@ -161,19 +162,45 @@ export class Timeline implements ITimeline {
   }
 
   get startTimeMs(): number {
-    return this._tracks.reduce((ms, t) => Math.min(ms, t.startTimeMs), Infinity);
+    const timeMs = this._tracks
+      .reduce((ms, t) => Math.min(ms, t.startTimeMs), Infinity);
+
+    return timeMs === Infinity ? 0 : timeMs;
   }
 
 	get endTimeMs(): number {
-    return this._tracks.reduce((ms, t) => Math.max(ms, t.endTimeMs), -Infinity);
+    const timeMs = this._tracks
+      .reduce((ms, t) => Math.max(ms, t.endTimeMs), -Infinity);
+
+    return timeMs === -Infinity ? 0 : timeMs;
   }
 
 	get durationMs(): number {
     return this.endTimeMs - this.startTimeMs;
   }
 
-  get totalLength(): number {
+  get totalLengthMs(): number {
     return this.endTimeMs;
+  }
+
+  get width(): number {
+    return this.durationMs / 1000 * this.frameUnits;
+  }
+
+  get frameUnits(): number {
+    return PREVIEW_FRAME_WIDTH * this.currentZoom.zoom;
+  }
+
+  timeMsToUnits(timeMs = this.currentTimeMs): number {
+    const clampedTime = clamp(timeMs, 0, this.durationMs);
+    
+    return clampedTime * this.frameUnits / 1000;
+  }
+
+  unitsToTimeMs(units: number): number {
+    const timeMs = units * 1000 / this.frameUnits;
+
+    return clamp(timeMs, 0, this.durationMs);
   }
 
   /**
