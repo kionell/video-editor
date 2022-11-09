@@ -6,7 +6,7 @@ import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineTrack } from './TimelineTrack';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { setCurrentScroll } from '../../store/Reducers/timelineSlice';
+import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/timelineSlice';
 import { TimelineTrackControl } from './TimelineTrackControl';
 import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
@@ -49,7 +49,9 @@ const StyledTrackControlContainer = styled(StyledTimelineTrackContainer)`
   background-color: ${(props) => props.theme.container.secondary};
 `;
 
-const StyledTrackContainer = styled(StyledTimelineTrackContainer)``;
+const StyledTrackContainer = styled(StyledTimelineTrackContainer)`
+  min-width: 100%;
+`;
 
 const TimelineTrackPanel: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
@@ -58,27 +60,50 @@ const TimelineTrackPanel: React.FC = () => {
   const scrollbarRef = useRef<Scrollbars>(null);
   const seekerRef = useRef<HTMLDivElement>(null);
   const rulerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => onScroll(), []);
 
   const onScroll = () => {
     if (!scrollbarRef.current) return;
     
     const scrollLeft = scrollbarRef.current.getScrollLeft();
+    // const container = scrollbarRef.current.container;
 
-    if (seekerRef.current) {
-      seekerRef.current.style.translate = `calc(-50% + 40px - ${scrollLeft}px)`;
-    }
+    // container.style.width = `calc(${timeline.width})`;
+
+    setSeekerPosition();
 
     dispatch(setCurrentScroll(scrollLeft));
+  };
+
+  const setCurrentTime = (event: MouseEvent<HTMLDivElement>) => {
+    if (!scrollbarRef.current) return;
+
+    const clientX = event.clientX - 40;
+    const scrollX = scrollbarRef.current.getScrollLeft();
+
+    const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
+
+    dispatch(setCurrentTimeMs(timeMs));
+  };
+
+  const setSeekerPosition = () => {
+    if (!seekerRef.current || !scrollbarRef.current) return;
+
+    const units = timeline.timeMsToUnits();
+    const scrollX = scrollbarRef.current.getScrollLeft();
+    const offsetX = units - scrollX;
+
+    seekerRef.current.style.left = offsetX + 'px';
   };
 
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
 
+  useEffect(setSeekerPosition, [timeline.currentTimeMs, timeline.currentZoom]);
+  useEffect(onScroll, []);
+
   return (
-    <StyledTimelineContainer>
+    <StyledTimelineContainer onClick={setCurrentTime}>
       <StyledTimelineRulerContainer ref={rulerRef}>
         <TimelineRuler
           unit={timeline.currentZoom.unit}
