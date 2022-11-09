@@ -1,6 +1,5 @@
 import { immerable } from 'immer';
 import { PREVIEW_FRAME_WIDTH, TIMELINE_ZOOM_LEVELS } from '../../constants';
-import { ITimeline } from './ITimeline';
 import { ITimelineZoomLevel } from './ITimelineZoomLevel';
 import { TimelineTrack } from './TimelineTrack';
 import { AudioElement } from '../Elements/AudioElement';
@@ -14,7 +13,7 @@ import { findIndex } from '../../utils/search';
 /**
  * A timeline.
  */
-export class Timeline implements ITimeline {
+export class Timeline {
   [immerable] = true;
 
   private _tracks: TimelineTrack[] = [];
