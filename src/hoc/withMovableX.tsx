@@ -1,13 +1,13 @@
 import { forwardRef, useEffect } from 'react';
 
-export const withMovableX = <T,>(Component: React.FC<T>) => {
+export const withMovableX = <T, >(Component: React.FC<T>) => {
   const makeMovableX = (element: HTMLElement) => {
     let offsetX = 0;
 
     const startMoving = (event: MouseEvent) => {
       offsetX = element.offsetLeft - event.pageX;
       element.style.position = 'absolute';
-      
+
       document.addEventListener('mousemove', moveElement);
       document.addEventListener('mouseup', stopMoving);
     };

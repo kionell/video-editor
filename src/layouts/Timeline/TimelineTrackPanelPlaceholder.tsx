@@ -22,7 +22,7 @@ const TimelineTrackPanelPlaceholder: React.FC = () => {
   return (
     <StyledTimelinePlaceholderArea>
       <StyledTimelinePlaceholder
-        text='Add files to timeline to start' 
+        text='Add files to timeline to start'
         size={LARGER_FONT_SIZE}
       />
     </StyledTimelinePlaceholderArea>

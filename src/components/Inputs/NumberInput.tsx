@@ -107,8 +107,8 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
 
     const minValue = props.min as number;
     const maxValue = props.max as number;
-    const currentValue = inputRef.current.value 
-      ? parseFloat(inputRef.current.value) 
+    const currentValue = inputRef.current.value
+      ? parseFloat(inputRef.current.value)
       : props.defaultValue as number;
 
     const value = Math.max(minValue, Math.min(currentValue, maxValue));
@@ -145,7 +145,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
         <SecondaryButton
           ref={React.createRef()}
           listener={decrement}
-          className="minus-button" 
+          className="minus-button"
           iconType='Minus'
           iconSize='Large'
           disabled={disabled}
@@ -168,10 +168,10 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           showLabel={false}
         />
       </FlexContainer>
-      <Text 
-        visible={showLabel} 
+      <Text
+        visible={showLabel}
         disabled={disabled}
-        text={label} 
+        text={label}
         size={NORMAL_FONT_SIZE}
       />
     </StyledNumberInputWrapper>

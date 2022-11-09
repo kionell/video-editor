@@ -28,7 +28,7 @@ export class ImageFile extends UploadedFile {
   async load(): Promise<this> {
     return new Promise((resolve) => {
       this.element.onload = () => {
-        resolve(this);  
+        resolve(this);
       };
 
       this.element.onerror = () => {

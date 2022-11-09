@@ -51,10 +51,10 @@ export class AudioFile extends UploadedFile {
   async getAudioBuffer(): Promise<AudioBuffer | null> {
     return new Promise((resolve) => {
       const fileReader = new FileReader();
-      
+
       fileReader.onload = (event) => {
         const result = event.target?.result as ArrayBuffer;
-        
+
         if (!result) return resolve(null);
 
         const audioContext = new AudioContext();
@@ -65,7 +65,7 @@ export class AudioFile extends UploadedFile {
       };
 
       fileReader.onerror = () => resolve(null);
-      
+
       fileReader.readAsArrayBuffer(this._file);
     });
   }

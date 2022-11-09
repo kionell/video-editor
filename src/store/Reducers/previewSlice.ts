@@ -22,7 +22,7 @@ const previewSlice = createSlice({
     setPreviewWidth(state, action: PayloadAction<number>) {
       state.previewWidth = action.payload;
     },
-   
+
     setPreviewHeight(state, action: PayloadAction<number>) {
       state.previewHeight = action.payload;
     },
@@ -38,7 +38,7 @@ const previewSlice = createSlice({
     setExpanded(state, action: PayloadAction<boolean>) {
       state.isExpanded = action.payload;
     },
-  }
+  },
 });
 
 export const {
@@ -47,7 +47,7 @@ export const {
   setPreviewHeight,
   setPreviewFrameRate,
   setPlaying,
-  setExpanded
+  setExpanded,
 } = previewSlice.actions;
 
 export const previewReducer = previewSlice.reducer;

@@ -96,7 +96,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
       const trackColor = props.theme.input.normal;
-      
+
       return css`
         linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
       `;
@@ -107,7 +107,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
       const trackColor = props.theme.input.normal;
-      
+
       return css`
         linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
       `;
@@ -164,7 +164,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
   useEffect(() => {
     if (!sliderRef.current) return;
-    
+
     onInputListener();
 
     sliderRef.current.addEventListener('input', onInputListener);
@@ -176,14 +176,14 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
   return (
     <StyledSliderContainer {...props}>
-      <Text 
-        visible={showLabel} 
-        text={label} 
+      <Text
+        visible={showLabel}
+        text={label}
         size={NORMAL_FONT_SIZE}
       />
       <StyledSliderWrapper ref={wrapperRef}>
-        <StyledSlider 
-          {...props} 
+        <StyledSlider
+          {...props}
           ref={sliderRef}
           min={minValue}
           max={maxValue}

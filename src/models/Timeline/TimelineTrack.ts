@@ -8,13 +8,13 @@ import { ITimelineTrack } from './ITimelineTrack';
  * A timeline track.
  */
 export class TimelineTrack<T extends BaseElement = BaseElement> implements ITimelineTrack {
-	[immerable] = true;
-  
+  [immerable] = true;
+
   /**
    * Index of timeline track on the timeline track area.
    */
   index: number;
-	
+
   /**
    * Type of this media.
    */
@@ -27,21 +27,21 @@ export class TimelineTrack<T extends BaseElement = BaseElement> implements ITime
     this.type = type;
   }
 
-	/**
+  /**
    * Adds a new element to this timeline track.
    * @param element Element to add.
    */
-	addElement(element: T): void {
+  addElement(element: T): void {
     this._elements.push(element);
-    
+
     this._fixTimeOffsets();
   }
 
-	/**
+  /**
    * Removes an existing element from this timeline track.
    * @param element Element to remove.
    */
-	removeElement(element: T): void {
+  removeElement(element: T): void {
     const index = this._elements.findIndex((el) => el === element);
 
     this._elements.splice(index, 1);
@@ -56,13 +56,13 @@ export class TimelineTrack<T extends BaseElement = BaseElement> implements ITime
 
     if (element) this.removeElement(element);
   }
-	
+
   /**
    * Searches for an element which is played at the specified time.
    * @param time Time in milliseconds.
    * @returns Found element or null.
    */
-	getElementAtTime(time: number): T | null {
+  getElementAtTime(time: number): T | null {
     const predicate = (element: T) => {
       return element.startTimeMs >= time && element.endTimeMs <= time;
     };
@@ -111,15 +111,15 @@ export class TimelineTrack<T extends BaseElement = BaseElement> implements ITime
     return this._elements[this._elements.length - 1] ?? null;
   }
 
-	get startTimeMs(): number {
+  get startTimeMs(): number {
     return this.firstElement?.startTimeMs ?? 0;
   }
 
-	get endTimeMs(): number {
+  get endTimeMs(): number {
     return this.lastElement?.endTimeMs ?? 0;
   }
 
-	get durationMs(): number {
+  get durationMs(): number {
     return this.endTimeMs - this.startTimeMs;
   }
 
@@ -141,9 +141,9 @@ export class TimelineTrack<T extends BaseElement = BaseElement> implements ITime
 
     this._elements.forEach((element, index) => {
       if (index === 0) return;
-      
+
       const difference = element.startTimeMs - nextMinTime;
-      
+
       // This means that our current element intersects with previous element.
       if (difference < 0) element.offsetMs -= difference;
 

@@ -30,27 +30,27 @@ const Sidebar: React.FC<SidebarProps> = (props: SidebarProps) => {
   const textButtonRef = useRef(null);
   const transitionsButtonRef = useRef(null);
   const settingsButtonRef = useRef(null);
-  
+
   return (
     <StyledSidebarWrapper>
       <StyledSidebar {...props}>
         <ButtonGroup direction='column'>
-          <FlatButton 
+          <FlatButton
             label='Media'
             iconType='Media'
             ref={mediaButtonRef}
           />
-          <FlatButton 
+          <FlatButton
             label='Text'
             iconType='Text'
             ref={textButtonRef}
           />
-          <FlatButton 
+          <FlatButton
             label='Transitions'
             iconType='Transition'
             ref={transitionsButtonRef}
           />
-          <FlatButton 
+          <FlatButton
             label='Settings'
             iconType='Settings'
             ref={settingsButtonRef}

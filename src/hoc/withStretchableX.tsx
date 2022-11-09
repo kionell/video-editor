@@ -1,12 +1,12 @@
 import { ForwardedRef, forwardRef, useEffect } from 'react';
 
-export const withStretchableX = <T,>(Component: React.FC<T>) => {
+export const withStretchableX = <T, >(Component: React.FC<T>) => {
   type ResizeCallback = () => void;
 
   const resizeElement = (target: HTMLElement, edge: HTMLElement, left: boolean): ResizeCallback => {
     let previousCursorX = 0;
     let cursorMoveOffsetX = 0;
-    
+
     let startClickX = 0;
     let startX1 = 0;
     let startX2 = 0;
@@ -33,7 +33,7 @@ export const withStretchableX = <T,>(Component: React.FC<T>) => {
 
           return;
         }
-        
+
         // <-(_____________) initial width has been reached.
         if (startX2 - event.pageX + (startClickX - startX1) > initinalWidth) {
           target.style.left = startX2 - initinalWidth + 'px';
@@ -47,7 +47,7 @@ export const withStretchableX = <T,>(Component: React.FC<T>) => {
         if (startX1 + edge.offsetWidth * 2 > event.pageX + (startX2 - startClickX)) {
           target.style.left = startX1 + 'px';
           target.style.width = edge.offsetWidth * 2 + 'px';
-          
+
           return;
         }
 
@@ -105,7 +105,7 @@ export const withStretchableX = <T,>(Component: React.FC<T>) => {
   };
 
   const StretchableXComponent = forwardRef<HTMLElement, T>((
-    props: T, 
+    props: T,
     ref: ForwardedRef<HTMLElement>,
   ) => {
     useEffect(() => {

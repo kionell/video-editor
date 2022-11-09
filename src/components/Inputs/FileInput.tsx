@@ -20,14 +20,14 @@ const StyledFileInput = styled.input.attrs({ type: 'file' })<FileInputProps>`
 `;
 
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
-  props: FileInputProps, 
-  ref: React.ForwardedRef<HTMLInputElement>
+  props: FileInputProps,
+  ref: React.ForwardedRef<HTMLInputElement>,
 ) => {
   const dispatch = useAppDispatch();
 
-  const onChange = async (event: FormEvent<HTMLInputElement>) => {
+  const onChange = async(event: FormEvent<HTMLInputElement>) => {
     const input = event.target as HTMLInputElement;
-    
+
     if (!input?.files) return;
 
     for (const file of input.files) {

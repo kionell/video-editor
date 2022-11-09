@@ -12,7 +12,7 @@ export function App() {
   const [theme, setTheme] = useState(DarkTheme);
   const [ready, setReady] = useState(false);
 
-  const load = async () => {
+  const load = async() => {
     if (!ffmpeg.isLoaded()) {
       await ffmpeg.load();
     }
@@ -25,7 +25,7 @@ export function App() {
     load();
   });
 
-  return ready 
+  return ready
     ?
     (
       <div style={{ width: '100%', height: '100%' }}>

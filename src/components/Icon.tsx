@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { HTMLAttributes } from 'react';
 import * as Icons from '../icons';
-import { 
+import {
   GIANT_ICON_SIZE,
-  LARGE_ICON_SIZE, 
-  NORMAL_ICON_SIZE, 
-  SMALL_ICON_SIZE 
+  LARGE_ICON_SIZE,
+  NORMAL_ICON_SIZE,
+  SMALL_ICON_SIZE,
 } from '../constants';
 
 export enum IconType {

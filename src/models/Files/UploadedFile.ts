@@ -43,9 +43,9 @@ export abstract class UploadedFile {
   }
 
   equals(other: UploadedFile): boolean {
-    return this.name === other.name 
-      && this.type === other.type 
-      && this.size === other.size 
+    return this.name === other.name
+      && this.type === other.type
+      && this.size === other.size
       && this.lastModified === other.lastModified;
   }
 

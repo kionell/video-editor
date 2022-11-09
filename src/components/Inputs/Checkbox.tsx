@@ -3,9 +3,9 @@ import { useRef, useState } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { Text } from '../Text';
 import { Icon } from '../Icon';
-import { 
-  NORMAL_FONT_SIZE, 
-  NORMAL_ICON_SIZE 
+import {
+  NORMAL_FONT_SIZE,
+  NORMAL_ICON_SIZE,
 } from '../../constants';
 
 export interface CheckboxProps {
@@ -44,7 +44,7 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
 
   ${(props) => {
     if (props.disabled) return;
-    
+
     return css`
       cursor: pointer;
 
@@ -82,25 +82,25 @@ const StyledCheckbox = styled.div<CheckboxProps>`
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
   const { showLabel, label, labelPosition, disabled } = props;
-  
+
   const [checked, setChecked] = useState(props.checked);
   const checkboxRef = useRef<HTMLInputElement>(null);
-  
+
   const changeState = () => {
     if (disabled) return;
-    
+
     setChecked(!checked);
 
     checkboxRef.current?.dispatchEvent(new Event('change'));
   };
 
   useUpdateEffect(() => {
-    if (props.onChange) { 
+    if (props.onChange) {
       checkboxRef.current?.addEventListener('change', props.onChange);
     }
 
     return () => {
-      if (props.onChange) { 
+      if (props.onChange) {
         checkboxRef.current?.removeEventListener('change', props.onChange);
       }
     };
@@ -112,18 +112,18 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
       disabled={disabled}
       onClick={changeState}
     >
-      <HiddenCheckbox 
+      <HiddenCheckbox
         ref={checkboxRef}
-        disabled={disabled} 
+        disabled={disabled}
         checked={checked}
-        readOnly 
+        readOnly
       />
       <StyledCheckbox disabled={disabled} checked={checked} className='checkbox'>
         <Icon size={NORMAL_ICON_SIZE} />
       </StyledCheckbox>
-      <Text 
-        visible={showLabel} 
-        text={label} 
+      <Text
+        visible={showLabel}
+        text={label}
         size={NORMAL_FONT_SIZE}
       />
     </StyledCheckboxWrapper>

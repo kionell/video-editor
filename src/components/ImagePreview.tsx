@@ -18,12 +18,12 @@ const StyledImagePreview = styled.div<PreviewProps>`
 
 const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
   const { width, height, file } = props;
-  
+
   const theme = useTheme();
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const getThumbnail = async () => {
+    const getThumbnail = async() => {
       return getImageThumbnailURL({
         accentColor1: theme.primary.accent,
         accentColor2: theme.primary.accentHover,
@@ -33,14 +33,14 @@ const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
       });
     };
 
-    const setPreview = async () => {
+    const setPreview = async() => {
       if (!previewRef.current) return;
 
       const thumbnailURL = await getThumbnail();
 
       previewRef.current.style.backgroundImage = `url("${thumbnailURL}")`;
     };
-    
+
     setPreview();
   }, [previewRef, file]);
 

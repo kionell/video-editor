@@ -19,7 +19,7 @@ interface TrackMoveOperation {
   track?: TimelineTrack;
   fromIndex?: number;
   toIndex: number;
-} 
+}
 
 interface ElementAddOperation {
   track?: TimelineTrack;
@@ -70,14 +70,14 @@ const timelineSlice = createSlice({
       if (action.payload.track) {
         state.removeTrack(action.payload.track);
       }
-      else if (typeof action.payload.index === 'number') { 
+      else if (typeof action.payload.index === 'number') {
         state.removeTrackByIndex(action.payload.index);
       }
     },
 
     moveTrack(state, action: PayloadAction<TrackMoveOperation>) {
       const payload = action.payload;
-      
+
       if (payload.track) {
         state.moveTrack(payload.track, payload.toIndex);
       }
@@ -88,11 +88,11 @@ const timelineSlice = createSlice({
 
     addElement(state, action: PayloadAction<ElementAddOperation>) {
       const payload = action.payload;
-      
+
       if (!payload.element) return;
 
       const element = payload.element;
-      const track = payload.track 
+      const track = payload.track
         ?? state.getTrackByIndex(payload.trackIndex as number)
         ?? state.addTrack(new TimelineTrack(0, element.type));
 
@@ -101,10 +101,10 @@ const timelineSlice = createSlice({
 
     removeElement(state, action: PayloadAction<ElementRemoveOperation>) {
       const payload = action.payload;
-      
+
       if (!payload.track && typeof payload.trackIndex !== 'number') return;
 
-      const track = payload.track 
+      const track = payload.track
         ?? state.getTrackByIndex(payload.trackIndex as number);
 
       if (!track) return;
@@ -119,10 +119,10 @@ const timelineSlice = createSlice({
 
     moveElement(state, action: PayloadAction<ElementMoveOperation>) {
       const payload = action.payload;
-      
+
       if (!payload.track && typeof payload.trackIndex !== 'number') return;
 
-      const track = payload.track 
+      const track = payload.track
         ?? state.getTrackByIndex(payload.trackIndex as number);
 
       if (!track) return;
@@ -134,7 +134,7 @@ const timelineSlice = createSlice({
         track.moveElementFromTimeToTime(payload.fromMs, payload.toMs);
       }
     },
-  }
+  },
 });
 
 export const {

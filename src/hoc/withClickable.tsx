@@ -6,7 +6,7 @@ type ClickProps = HTMLProps<HTMLElement> & {
 
 export const withClickable = <T extends ClickProps>(Component: React.FC<T>) => {
   const DraggableComponent = forwardRef<HTMLElement, T>((
-    props: T, 
+    props: T,
     ref: ForwardedRef<HTMLElement>,
   ) => {
     useEffect(() => {
@@ -17,9 +17,9 @@ export const withClickable = <T extends ClickProps>(Component: React.FC<T>) => {
       if (listener) {
         ref.current.addEventListener('click', listener);
       }
-  
+
       return () => {
-        if (listener) { 
+        if (listener) {
           ref.current?.removeEventListener('click', listener);
         }
       };

@@ -23,10 +23,10 @@ const TimelineTrack: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) 
       {
         track.elements.map((element, i) => {
           return (
-            <TimelineElement 
-              element={element} 
-              key={i} 
-              ref={createRef()} 
+            <TimelineElement
+              element={element}
+              key={i}
+              ref={createRef()}
             />
           );
         })

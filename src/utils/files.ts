@@ -11,7 +11,7 @@ import { ImageElement } from '../models/Elements/ImageElement';
 
 export async function loadFile(file: File): Promise<UploadedFile | null> {
   const mediaType = convertMIMEToMediaType(file.type as MIMEType);
-  
+
   switch (mediaType) {
     case MediaType.Video:
       return new VideoFile(file).load();
@@ -35,7 +35,7 @@ export function convertMIMEToMediaType(type: MIMEType): MediaType {
     case MIMEType.WEBM:
     case MIMEType.MPEG:
       return MediaType.Video;
-    
+
     case MIMEType.MP3:
     case MIMEType.OGG:
     case MIMEType.WAV:

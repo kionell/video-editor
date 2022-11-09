@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import {
-  MouseEventHandler, 
-  ReactElement, 
-  Ref, 
+  MouseEventHandler,
+  ReactElement,
+  Ref,
   useMemo,
-  useEffect, 
-  useState, 
-  useRef
+  useEffect,
+  useState,
+  useRef,
 } from 'react';
 
 import { Text } from '../Text';
@@ -19,7 +19,7 @@ interface DropdownProps {
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'top' | 'left' | 'right';
-  placeholder?: string; 
+  placeholder?: string;
   selectedIndex?: number;
   options?: string[];
   ref?: Ref<HTMLDivElement>;
@@ -61,15 +61,15 @@ const StyledDropdownMenu = styled.div<DropdownProps>`
 `;
 
 const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
-  const { 
-    showLabel, 
-    label, 
-    labelPosition, 
+  const {
+    showLabel,
+    label,
+    labelPosition,
     disabled,
-    options, 
-    selectedIndex, 
-    expanded, 
-    placeholder 
+    options,
+    selectedIndex,
+    expanded,
+    placeholder,
   } = props;
 
   const [isExpanded, setExpanded] = useState(expanded as boolean);
@@ -77,7 +77,7 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => !disabled && setExpanded(!isExpanded);
-  
+
   const collapseMenu = (event: MouseEvent) => {
     if (!dropdownRef.current) return;
 
@@ -92,7 +92,7 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
     const targetElement = event.target as HTMLDivElement;
     const indexAttribute = targetElement.dataset.index ?? null;
     const targetIndex = indexAttribute === null ? -1 : parseInt(indexAttribute);
-    
+
     setSelectedIndex(targetIndex);
     setExpanded(false);
 
@@ -105,13 +105,13 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   useMemo(() => {
     const items = options ?? [];
-    
+
     dropdownItems = items.map((option, i) => {
       return (
         <DropdownItem
           key={i}
           data-index={i}
-          text={option} 
+          text={option}
           selected={currentSelectedIndex === i}
           onClick={selectOption}
         />
@@ -121,7 +121,7 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   useEffect(() => {
     document.addEventListener('click', collapseMenu);
-  
+
     return () => {
       document.removeEventListener('click', collapseMenu);
     };
@@ -132,14 +132,14 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <Text 
-        visible={showLabel} 
+      <Text
+        visible={showLabel}
         text={label}
       />
       <StyledDropdownMenu ref={dropdownRef} {...props}>
-        <DropdownHeader 
+        <DropdownHeader
           onClick={toggleMenu}
-          disabled={disabled} 
+          disabled={disabled}
           expanded={isExpanded}
           empty={currentSelectedIndex === -1}
           text={dropdownItems[currentSelectedIndex]?.props.text ?? placeholder}

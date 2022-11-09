@@ -21,14 +21,14 @@ const StyledScrollbars = styled(Scrollbars)`
 `;
 
 const ScrollableContainer = forwardRef<Scrollbars, ScrollableProps>((
-  props: ScrollableProps, 
-  ref: ForwardedRef<Scrollbars>
+  props: ScrollableProps,
+  ref: ForwardedRef<Scrollbars>,
 ) => {
   return (
-    <StyledScrollbars 
-      hideTracksWhenNotNeeded 
-      autoHide 
-      onScroll={props.onScroll} 
+    <StyledScrollbars
+      hideTracksWhenNotNeeded
+      autoHide
+      onScroll={props.onScroll}
       ref={ref}
     >
       <FlexContainer {...props as FlexProps} />

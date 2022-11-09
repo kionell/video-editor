@@ -46,20 +46,20 @@ function drawImage(options?: ThumbnailOptions): string {
   const context = canvas.getContext('2d');
 
   if (!context) return '';
-  
-  const sw = source instanceof HTMLVideoElement 
-    ? source.videoWidth 
+
+  const sw = source instanceof HTMLVideoElement
+    ? source.videoWidth
     : source.width as number;
 
-  const sh = source instanceof HTMLVideoElement 
-    ? source.videoHeight 
+  const sh = source instanceof HTMLVideoElement
+    ? source.videoHeight
     : source.height as number;
-  
+
   canvas.width = options.width || sw;
   canvas.height = options.height || sh;
 
   const scale = sh ? canvas.height / sh : 1;
-  
+
   const dw = sw * scale;
   const dh = sh * scale;
   const dx = canvas.width / 2 - dw / 2;
@@ -80,7 +80,7 @@ function drawImage(options?: ThumbnailOptions): string {
  */
  export function drawWaveform(bounds: AudioBounds[], options?: ThumbnailOptions): string {
   if (!bounds.length) return '';
-  
+
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
 
@@ -88,7 +88,7 @@ function drawImage(options?: ThumbnailOptions): string {
 
   if (options?.width) canvas.width = options.width;
   if (options?.height) canvas.height = options.height;
-  
+
   // Extra height scale factor.
   const scaleFactor = 0.8;
 

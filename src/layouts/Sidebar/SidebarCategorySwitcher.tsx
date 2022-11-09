@@ -25,13 +25,13 @@ function getCategoryByType(category: keyof typeof CategoryType) {
   switch (category) {
     case 'Media': return MediaCategory;
   }
-  
+
   return MediaCategory;
 }
 
 const SidebarCategorySwitcher: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
-  const SidebarCategory = getCategoryByType('Media'); 
-  
+  const SidebarCategory = getCategoryByType('Media');
+
   return (
     <StyledSidebarCategorySwitcher>
       <SidebarCategory />

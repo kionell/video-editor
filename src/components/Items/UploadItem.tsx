@@ -49,7 +49,7 @@ const UploadItem: React.FC = () => {
   return (
     <StyledUploadItemWrapper>
       <StyledUploadMessageWrapper>
-        <Icon 
+        <Icon
           className='message-icons'
           size={getIconSizeBySizeType('Large')}
           variant='Plus'

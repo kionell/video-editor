@@ -18,8 +18,8 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref
 
   return (
     <StyledPrimaryButton ref={ref} {...props}>
-      <Icon 
-        visible={showIcon} 
+      <Icon
+        visible={showIcon}
         variant={iconType}
         size={getIconSizeBySizeType(iconSize)}
       />

@@ -21,21 +21,21 @@ export enum MIMEType {
   WEBP = 'image/webp',
 }
 
-export type VideoType = MIMEType.AVI1 
-  | MIMEType.AVI2 
-  | MIMEType.AVI3 
-  | MIMEType.MP4 
-  | MIMEType.MPEG 
+export type VideoType = MIMEType.AVI1
+  | MIMEType.AVI2
+  | MIMEType.AVI3
+  | MIMEType.MP4
+  | MIMEType.MPEG
   | MIMEType.WEBM;
 
-export type AudioType = MIMEType.MP3 
-  | MIMEType.OGG 
-  | MIMEType.WAV 
+export type AudioType = MIMEType.MP3
+  | MIMEType.OGG
+  | MIMEType.WAV
   | MIMEType.WEBA;
 
-export type ImageType = MIMEType.BPM 
-  | MIMEType.GIF 
-  | MIMEType.ICO 
-  | MIMEType.JPEG 
-  | MIMEType.PNG 
+export type ImageType = MIMEType.BPM
+  | MIMEType.GIF
+  | MIMEType.ICO
+  | MIMEType.JPEG
+  | MIMEType.PNG
   | MIMEType.WEBP;

@@ -33,8 +33,8 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, r
   }, [toggled]);
 
   return (
-    <StyledSecondaryButton 
-      {...props} 
+    <StyledSecondaryButton
+      {...props}
       ref={ref}
     >
       <Icon

@@ -51,16 +51,16 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
-  
+
   return (
     <StyledTimelineSeekerWrapper {...props} ref={ref} onClick={handleClick}>
-      <StyledTimelineSeekerHead 
+      <StyledTimelineSeekerHead
         size={20}
-        variant='Seeker' 
+        variant='Seeker'
         className='seeker-icon'
       />
-      <StyledTimelineSeekerLine 
-        className='seeker-line' 
+      <StyledTimelineSeekerLine
+        className='seeker-line'
       />
     </StyledTimelineSeekerWrapper>
   );

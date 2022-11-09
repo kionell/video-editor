@@ -63,7 +63,7 @@ const TimelineTrackPanel: React.FC = () => {
 
   const onScroll = () => {
     if (!scrollbarRef.current) return;
-    
+
     const scrollLeft = scrollbarRef.current.getScrollLeft();
     // const container = scrollbarRef.current.container;
 
@@ -108,7 +108,7 @@ const TimelineTrackPanel: React.FC = () => {
         <TimelineRuler
           unit={timeline.currentZoom.unit}
           segments={timeline.currentZoom.segments}
-          zoom={timeline.currentZoom.zoom} 
+          zoom={timeline.currentZoom.zoom}
           scrollPos={timeline.currentScroll}
         />
       </StyledTimelineRulerContainer>

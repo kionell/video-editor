@@ -35,7 +35,7 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
    * @default 15
    */
   longLineSize?: number;
- 
+
   /**
    * Size of the short ruler lines.
    * @default 10
@@ -197,7 +197,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
         context.lineTo(x2, y2);
       }
     }
-    
+
     context.stroke();
 
     // Draw text.

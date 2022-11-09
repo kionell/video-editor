@@ -5,9 +5,9 @@ import { ButtonProps, StyledBaseButton } from './Button';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { withClickable } from '../../hoc';
-import { 
-  SMALL_FONT_SIZE, 
-  LARGE_ICON_SIZE 
+import {
+  SMALL_FONT_SIZE,
+  LARGE_ICON_SIZE,
 } from '../../constants';
 
 interface FlatButtonProps extends ButtonProps {
@@ -62,14 +62,14 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
 
   return (
     <StyledFlatButton ref={ref} {...props}>
-      <Icon 
-        visible={showIcon} 
-        variant={iconType} 
+      <Icon
+        visible={showIcon}
+        variant={iconType}
         size={LARGE_ICON_SIZE}
       />
-      <Text 
-        visible={showLabel} 
-        text={label} 
+      <Text
+        visible={showLabel}
+        text={label}
         size={SMALL_FONT_SIZE}
         weight='Medium'
       />

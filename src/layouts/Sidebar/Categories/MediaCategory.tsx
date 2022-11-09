@@ -23,14 +23,14 @@ const StyledSidebarMediaCategory = styled.div<SidebarCategoryProps>`
 
 const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
   const files = useAppSelector((state) => state.files);
-  
+
   return (
     <StyledSidebarMediaCategory>
       <ScrollableContainer {...props} gap={12} padding={12} align='start' justify='space-between'>
         <UploadItem />
         {
           files.list.map((file, index) => {
-            return <GeneralItem 
+            return <GeneralItem
               file={file}
               key={index}
               ref={createRef()}

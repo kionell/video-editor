@@ -7,7 +7,7 @@ import { PREVIEW_FRAME_WIDTH } from '../constants';
  */
  export function formatDuration(time?: number): string {
   if (!time) return '0:00';
-  
+
   time = Math.round(time);
 
   const seconds = Math.trunc(time) % 60;
@@ -49,7 +49,7 @@ export function formatTimeMs(timeMs?: number) {
   const frameInterval = 1000 / 60;
   const frames = Math.floor(milliseconds / frameInterval);
   const formattedFrames = `${frames}`.padStart(2, '0');
-  
+
   return `${formattedTime}.${formattedFrames}`;
 }
 

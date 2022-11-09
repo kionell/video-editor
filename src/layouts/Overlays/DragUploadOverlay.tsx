@@ -50,21 +50,21 @@ const StyledUploadMessageWrapper = styled.div`
 `;
 
 const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
-  props: DragUploaderProps, 
-  ref: ForwardedRef<HTMLInputElement>
+  props: DragUploaderProps,
+  ref: ForwardedRef<HTMLInputElement>,
 ) => {
   return (
     <StyledDragUploaderWrapper {...props}>
       <StyledDragUploaderShowArea {...props}>
         <StyledUploadMessageWrapper>
-          <Icon 
+          <Icon
             className='message-icons'
             size={getIconSizeBySizeType('Giant')}
             variant='Plus'
           />
           <Text
             className='message-labels'
-            text='Drop here to upload' 
+            text='Drop here to upload'
             size={LARGE_FONT_SIZE}
           />
         </StyledUploadMessageWrapper>

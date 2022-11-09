@@ -79,7 +79,7 @@ StyledBaseButton.defaultProps = {
   paddingHorizontal: 12,
   paddingVertical: 7,
   showIcon: true,
-  iconType: 'Check', 
+  iconType: 'Check',
   iconSize: 'Normal',
   showLabel: true,
   label: 'Button',

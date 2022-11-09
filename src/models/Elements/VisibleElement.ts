@@ -9,7 +9,7 @@ import { ITransformableElement } from './Types/ITransformableElement';
 /**
  * A visible element that can be placed on a timeline track.
  */
-export abstract class VisibleElement extends BaseElement implements 
+export abstract class VisibleElement extends BaseElement implements
   ITransformableElement, IFadeableElement, IHasFilters, IHasColorAdjustments {
 
   fadeInTimeMs = 0;

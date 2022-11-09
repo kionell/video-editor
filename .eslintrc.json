@@ -21,18 +21,125 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "linebreak-style": [
-      "error",
-      "windows"
+    /* Best Practices */
+    "accessor-pairs": ["error", {
+      "setWithoutGet": true
+    }],
+    "curly": ["error", "multi-line"],
+    "dot-location": ["error", "property"],
+    "grouped-accessor-pairs": ["error", "getBeforeSet"],
+    "eqeqeq": ["error", "always"],
+    "no-case-declarations": "error",
+    "no-else-return": "error",
+    "no-fallthrough": "off",
+    "no-floating-decimal": "error",
+    "no-multi-spaces": "error",
+    "no-useless-escape": "error",
+
+    /* Variables */
+    "no-shadow": "off",
+    "no-unused-vars": "off",
+    "no-use-before-define": "off",
+
+    /* Stylistic Issues */
+    "block-spacing": "error",
+    "brace-style": ["error", "stroustrup"],
+    "comma-dangle": ["error", "always-multiline"],
+    "comma-spacing": ["error", { 
+      "before": false, 
+      "after": true 
+    }],
+    "comma-style": ["error", "last"],
+    "eol-last": ["error", "always"],
+    "key-spacing": ["error", {
+      "beforeColon": false
+    }],
+    "keyword-spacing": ["error", {
+      "overrides": {
+        "else": { "before": false, "after": true }
+      }
+    }],
+    "linebreak-style": "off",
+    "multiline-comment-style": "off",
+    "newline-per-chained-call": ["error", {
+      "ignoreChainWithDepth": 2
+    }],
+    "no-multiple-empty-lines": ["error", {
+      "max": 1,
+      "maxEOF": 0 
+    }],
+    "no-trailing-spaces": ["error", {
+      "ignoreComments": true
+    }],
+    "no-whitespace-before-property": "error",
+    "object-curly-spacing": ["error", "always"],
+    "object-property-newline": ["error", {
+      "allowMultiplePropertiesPerLine": true
+    }],
+    "padding-line-between-statements": ["error", 
+      {
+        "blankLine": "always", 
+        "prev": [
+          "block-like", 
+          "multiline-block-like", 
+          "multiline-expression"
+        ], 
+        "next": "*"
+      },
+      {
+        "blankLine": "always", 
+        "prev": "*",
+        "next": [
+          "block-like", 
+          "multiline-block-like", 
+          "return"
+        ]
+      },
+      {
+        "blankLine": "any", 
+        "prev": "case",
+        "next": "case" 
+      },
+      {
+        "blankLine": "always", 
+        "prev": ["let", "var", "const"],
+        "next": ["expression", "multiline-expression"]
+      },
+      {
+        "blankLine": "always", 
+        "prev": ["expression", "multiline-expression"],
+        "next": ["let", "var", "const"]
+      },
+      {
+        "blankLine": "always", 
+        "prev": "*",
+        "next": ["function", "class"]
+      }
     ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "quotes": ["error", "single"],
+    "semi": "off",
+    "semi-spacing": ["error", {
+      "before": false, 
+      "after": true
+    }],
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "space-infix-ops": "error",
+    "spaced-comment": "error",
+    "switch-colon-spacing": "error",
+
+    /* ECMAScript 6 */
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
+    "no-duplicate-imports": "error",
+    "no-useless-constructor": "off",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "prefer-arrow-callback": "error",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off"
   }

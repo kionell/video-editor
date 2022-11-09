@@ -18,7 +18,7 @@ export class Timeline implements ITimeline {
   [immerable] = true;
 
   private _tracks: TimelineTrack[] = [];
-	
+
   /**
    * Current time of the playback in milliseconds.
    */
@@ -51,7 +51,7 @@ export class Timeline implements ITimeline {
     return TIMELINE_ZOOM_LEVELS[this._getNextZoomIndex()];
   }
 
-	/**
+  /**
    * Adds a new track to this timeline.
    * @param track Track to add.
    */
@@ -63,11 +63,11 @@ export class Timeline implements ITimeline {
     return track;
   }
 
-	/**
+  /**
    * Removes an existing track from this timeline.
    * @param track Track to remove.
    */
-	removeTrack(track: TimelineTrack): TimelineTrack | null {
+  removeTrack(track: TimelineTrack): TimelineTrack | null {
     const index = this._tracks.findIndex((t) => t === track);
 
     return this.removeTrackByIndex(index);
@@ -139,25 +139,25 @@ export class Timeline implements ITimeline {
 
   get videoTracks(): TimelineTrack<VideoElement>[] {
     const result = this._tracks.filter((t) => t.type === MediaType.Video);
-    
+
     return result as TimelineTrack<VideoElement>[];
   }
 
-	get audioTracks(): TimelineTrack<AudioElement>[] {
+  get audioTracks(): TimelineTrack<AudioElement>[] {
     const result = this._tracks.filter((t) => t.type === MediaType.Audio);
-    
+
     return result as TimelineTrack<AudioElement>[];
   }
 
-	get imageTracks(): TimelineTrack<ImageElement>[] {
+  get imageTracks(): TimelineTrack<ImageElement>[] {
     const result = this._tracks.filter((t) => t.type === MediaType.Image);
-    
+
     return result as TimelineTrack<ImageElement>[];
   }
 
-	get textTracks(): TimelineTrack<TextElement>[] {
+  get textTracks(): TimelineTrack<TextElement>[] {
     const result = this._tracks.filter((t) => t.type === MediaType.Text);
-    
+
     return result as TimelineTrack<TextElement>[];
   }
 
@@ -168,14 +168,14 @@ export class Timeline implements ITimeline {
     return timeMs === Infinity ? 0 : timeMs;
   }
 
-	get endTimeMs(): number {
+  get endTimeMs(): number {
     const timeMs = this._tracks
       .reduce((ms, t) => Math.max(ms, t.endTimeMs), -Infinity);
 
     return timeMs === -Infinity ? 0 : timeMs;
   }
 
-	get durationMs(): number {
+  get durationMs(): number {
     return this.endTimeMs - this.startTimeMs;
   }
 
@@ -193,7 +193,7 @@ export class Timeline implements ITimeline {
 
   timeMsToUnits(timeMs = this.currentTimeMs): number {
     const clampedTime = clamp(timeMs, 0, this.durationMs);
-    
+
     return clampedTime * this.frameUnits / 1000;
   }
 

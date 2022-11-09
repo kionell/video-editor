@@ -43,8 +43,8 @@ const StyledFlexContainer = styled.div<FlexProps>`
 `;
 
 const FlexContainer = forwardRef<HTMLDivElement, FlexProps>((
-  props: FlexProps, 
-  ref: ForwardedRef<HTMLDivElement>
+  props: FlexProps,
+  ref: ForwardedRef<HTMLDivElement>,
 ) => {
   return <StyledFlexContainer ref={ref} {...props} />;
 });

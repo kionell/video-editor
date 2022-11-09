@@ -57,8 +57,8 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   outline: none;
   
   justify-content: ${(props) => {
-    return props.file?.hasDuration || props.showDuration 
-      ? 'space-between' 
+    return props.file?.hasDuration || props.showDuration
+      ? 'space-between'
       : 'flex-end';
   }};
 
@@ -106,8 +106,8 @@ const StyledGeneralItemLabel = styled(Text)`
 `;
 
 const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
-  props: HTMLAttributes<HTMLDivElement> & GeneralItemProps, 
-  ref: ForwardedRef<HTMLDivElement>
+  props: HTMLAttributes<HTMLDivElement> & GeneralItemProps,
+  ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { deletable, addable, file, showLabel } = props;
 
@@ -140,8 +140,8 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   return (
     <StyledGeneralItemWrapper {...props}>
       <StyledGeneralItem {...props}>
-        <StyledGeneralItemDuration 
-          text={formatDuration(duration)} 
+        <StyledGeneralItemDuration
+          text={formatDuration(duration)}
           visible={showDuration}
           size={SMALL_FONT_SIZE}
         />
@@ -150,7 +150,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           <ImagePreview
             width={144}
             height={81}
-            file={file} 
+            file={file}
           />
         </StyledGeneralItemPreview>
 
@@ -187,8 +187,8 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
       <StyledGeneralItemLabel
         className='labels'
-        visible={showLabel} 
-        text={label} 
+        visible={showLabel}
+        text={label}
         size={SMALL_FONT_SIZE}
       />
     </StyledGeneralItemWrapper>

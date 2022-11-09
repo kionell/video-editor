@@ -32,8 +32,8 @@ const StyledText = styled.label<TextProps>`
 `;
 
 const Text = forwardRef<HTMLLabelElement, TextProps>((
-  props: HTMLAttributes<HTMLLabelElement> & TextProps, 
-  ref: ForwardedRef<HTMLLabelElement>
+  props: HTMLAttributes<HTMLLabelElement> & TextProps,
+  ref: ForwardedRef<HTMLLabelElement>,
 ) => {
   return <StyledText {...props} ref={ref}>{props.text}</StyledText>;
 });

@@ -75,8 +75,8 @@ const StyledTimelineElementPreview = styled.div`
 `;
 
 const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
-  props: ElementProps, 
-  ref: ForwardedRef<HTMLDivElement>
+  props: ElementProps,
+  ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const timeline = useAppSelector((state) => state.timeline);
 
@@ -86,7 +86,7 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     const durationMs = props.element.durationMs;
     const units = timeline.timeMsToUnits(durationMs);
 
-    ref.current.style.width = units  + 'px';
+    ref.current.style.width = units + 'px';
   }, [timeline.currentZoom]);
 
   const handleClick = (event: MouseEvent) => {
@@ -98,11 +98,11 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
       <StyledTimelineElementEdge className='edges edge-left'>
         <Icon variant='Edge' size={25} className='edge-lines' />
       </StyledTimelineElementEdge>
-      
+
       <StyledTimelineElementPreview className='preview'>
 
       </StyledTimelineElementPreview>
-      
+
       <StyledTimelineElementEdge className='edges edge-right'>
         <Icon variant='Edge' size={25} className='edge-lines' />
       </StyledTimelineElementEdge>
