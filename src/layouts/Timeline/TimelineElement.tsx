@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 import { BaseElement } from '../../models/Elements/BaseElement';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface ElementProps {
   element: BaseElement;
@@ -77,6 +78,16 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   props: ElementProps, 
   ref: ForwardedRef<HTMLDivElement>
 ) => {
+  const timeline = useAppSelector((state) => state.timeline);
+
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    const durationMs = props.element.durationMs;
+    const units = timeline.timeMsToUnits(durationMs);
+
+    ref.current.style.width = units  + 'px';
+  }, [timeline.currentZoom]);
 
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
@@ -102,5 +113,5 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
 BaseTimelineElement.displayName = 'Timeline Element';
 
 export const TimelineElement = (
-  withFocusable(withStretchableX(BaseTimelineElement))
+  withDraggable(withFocusable(withStretchableX(BaseTimelineElement)))
 );
