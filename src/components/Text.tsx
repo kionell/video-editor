@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
+import { ForwardedRef, forwardRef, HTMLAttributes } from 'react';
 import { DEFAULT_FONT, DEFAULT_WEIGHT, NORMAL_FONT_SIZE } from '../constants';
 
 type FontWeight = 'Regular' | 'Medium';
 
-export interface TextProps {
+export interface TextProps extends HTMLAttributes<HTMLLabelElement> {
   visible?: boolean;
   disabled?: boolean;
   text?: string;
@@ -35,9 +36,14 @@ const StyledText = styled.label<TextProps>`
   }}
 `;
 
-const Text: React.FC<TextProps> = (props: TextProps) => {
-  return <StyledText {...props}>{props.text}</StyledText>;
-};
+const Text = forwardRef<HTMLLabelElement, TextProps>((
+  props: HTMLAttributes<HTMLLabelElement> & TextProps, 
+  ref: ForwardedRef<HTMLLabelElement>
+) => {
+  return <StyledText {...props} ref={ref}>{props.text}</StyledText>;
+});
+
+Text.displayName = 'Text';
 
 Text.defaultProps = {
   visible: true,
