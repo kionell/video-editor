@@ -55,8 +55,7 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <StyledTimelineSeekerWrapper {...props} ref={ref} onClick={handleClick}>
       <StyledTimelineSeekerHead 
-        size={20} 
-        useColor={false} 
+        size={20}
         variant='Seeker' 
         className='seeker-icon'
       />

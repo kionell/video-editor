@@ -41,12 +41,10 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, r
         visible={showIcon}
         variant={iconType}
         size={getIconSizeBySizeType(iconSize)}
-        useColor={false}
       />
       <Text
         visible={showLabel}
         text={label}
-        useColor={false}
       />
     </StyledSecondaryButton>
   );

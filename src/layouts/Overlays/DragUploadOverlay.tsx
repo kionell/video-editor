@@ -61,13 +61,11 @@ const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
             className='message-icons'
             size={getIconSizeBySizeType('Giant')}
             variant='Plus'
-            useColor={false}
           />
           <Text
             className='message-labels'
             text='Drop here to upload' 
             size={LARGE_FONT_SIZE}
-            useColor={false} 
           />
         </StyledUploadMessageWrapper>
       </StyledDragUploaderShowArea>

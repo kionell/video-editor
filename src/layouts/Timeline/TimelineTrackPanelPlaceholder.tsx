@@ -24,7 +24,6 @@ const TimelineTrackPanelPlaceholder: React.FC = () => {
       <StyledTimelinePlaceholder
         text='Add files to timeline to start' 
         size={LARGER_FONT_SIZE}
-        useColor={false}
       />
     </StyledTimelinePlaceholderArea>
   );

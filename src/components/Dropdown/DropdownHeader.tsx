@@ -47,7 +47,7 @@ const DropdownHeader: React.FC<DropdownHeaderProps> = (props: DropdownHeaderProp
 
   return (
     <StyledDropdownHeader {...props}>
-      <Text text={text} useColor={false} />
+      <Text text={text} />
       <Icon 
         variant={expanded ? 'ChevronUp' : 'ChevronDown' }
         className='expand-icon'

@@ -15,8 +15,6 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   iconSize?: keyof typeof IconSize;
   showLabel?: boolean;
   label?: string;
-  className?: string;
-  listener?: (event: MouseEvent) => void;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`

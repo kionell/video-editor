@@ -25,6 +25,7 @@ const StyledTimelineTrackControl = styled.div`
 
 const StyledTrackNumber = styled(Text)`
   align-self: center;
+  color: ${(props) => props.theme.text.normal}
 `;
 
 const TimelineTrackControl: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) => {

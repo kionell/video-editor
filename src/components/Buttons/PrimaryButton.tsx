@@ -22,12 +22,10 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref
         visible={showIcon} 
         variant={iconType}
         size={getIconSizeBySizeType(iconSize)}
-        useColor={false}
       />
-      <Text 
-        visible={showLabel} 
-        text={label} 
-        useColor={false}
+      <Text
+        visible={showLabel}
+        text={label}
       />
     </StyledPrimaryButton>
   );

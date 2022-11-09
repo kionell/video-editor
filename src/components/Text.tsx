@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { ForwardedRef, forwardRef, HTMLAttributes } from 'react';
 import { DEFAULT_FONT, DEFAULT_WEIGHT, NORMAL_FONT_SIZE } from '../constants';
 
@@ -11,12 +11,13 @@ export interface TextProps extends HTMLAttributes<HTMLLabelElement> {
   size?: number;
   font?: string;
   weight?: FontWeight;
-  useColor?: boolean;
+  color?: string;
   className?: string;
 }
 
 const StyledText = styled.label<TextProps>`
   position: relative;
+  color: ${(props) => props.color ?? 'inherit'};
   font-weight: ${(props) => props.weight === 'Medium' ? 600 : 400 };
   font-family: ${(props) => props.font};
   font-size: ${(props) => props.size}px;
@@ -28,12 +29,6 @@ const StyledText = styled.label<TextProps>`
   user-select: none;
   pointer-events: none;
   cursor: inherit;
-  
-  ${(props) => {
-    return props.useColor && css`
-      color: ${props.theme.text.normal};
-    `;
-  }}
 `;
 
 const Text = forwardRef<HTMLLabelElement, TextProps>((
@@ -52,7 +47,6 @@ Text.defaultProps = {
   size: NORMAL_FONT_SIZE,
   font: DEFAULT_FONT,
   weight: DEFAULT_WEIGHT,
-  useColor: true,
 };
 
 export { Text };

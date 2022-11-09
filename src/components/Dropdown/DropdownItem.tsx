@@ -60,7 +60,7 @@ const DropdownItem: React.FC<DropdownItemProps> = (props: DropdownItemProps) => 
       {...props}
       className={selected ? 'selected' : ''}
     >
-      <Text text={text} useColor={false} />
+      <Text text={text} />
     </StyledDropdownItem>
   );
 };

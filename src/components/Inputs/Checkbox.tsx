@@ -119,7 +119,7 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
         readOnly 
       />
       <StyledCheckbox disabled={disabled} checked={checked} className='checkbox'>
-        <Icon useColor={false} size={NORMAL_ICON_SIZE} />
+        <Icon size={NORMAL_ICON_SIZE} />
       </StyledCheckbox>
       <Text 
         visible={showLabel} 

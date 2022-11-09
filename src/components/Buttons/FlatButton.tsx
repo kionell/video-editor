@@ -66,14 +66,12 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
         visible={showIcon} 
         variant={iconType} 
         size={LARGE_ICON_SIZE}
-        useColor={false}
       />
       <Text 
         visible={showLabel} 
         text={label} 
         size={SMALL_FONT_SIZE}
         weight='Medium'
-        useColor={false}
       />
     </StyledFlatButton>
   );

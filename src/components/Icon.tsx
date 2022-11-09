@@ -77,9 +77,7 @@ const IconWrapper = styled.div<IconProps>`
     width: 100%;
     height: 100%;
     position: relative;
-    fill: ${(props) => {
-      return props.useColor ? props.theme.text.normal : 'inherit';
-    }};
+    fill: ${(props) => props.color ?? 'inherit'};
   }
 `;
 
@@ -153,7 +151,6 @@ Icon.defaultProps = {
   visible: true,
   variant: 'Check',
   size: NORMAL_ICON_SIZE,
-  useColor: true,
 };
 
 export { Icon };

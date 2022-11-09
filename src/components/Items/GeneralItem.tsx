@@ -189,7 +189,6 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         className='labels'
         visible={showLabel} 
         text={label} 
-        useColor={false} 
         size={SMALL_FONT_SIZE}
       />
     </StyledGeneralItemWrapper>

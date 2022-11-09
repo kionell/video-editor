@@ -53,12 +53,10 @@ const UploadItem: React.FC = () => {
           className='message-icons'
           size={getIconSizeBySizeType('Large')}
           variant='Plus'
-          useColor={false}
         />
         <Text
           className='message-labels'
-          text='Add media' 
-          useColor={false} 
+          text='Add media'
         />
       </StyledUploadMessageWrapper>
       <FileInput />
