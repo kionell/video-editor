@@ -3,10 +3,11 @@ import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Text } from '../../components/Text';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
+import { formatTimeMs } from '../../utils/format';
 
 const StyledTimelineTools = styled.div`
   height: 45px;
@@ -33,10 +34,12 @@ const StyledTimelineToolButton = styled(SecondaryButton)`
 `;
 
 const TimelineTools: React.FC = () => {
-  const snapButtonRef = useRef(null);
-
   const timeline = useAppSelector((state) => state.timeline);
   const dispatch = useAppDispatch();
+  
+  const snapButtonRef = useRef(null);
+  const currentTimeRef = useRef<HTMLLabelElement>(null);
+  const durationRef = useRef<HTMLLabelElement>(null);
 
   const onZoomOutClick = () => {
     const zoomLevel = timeline.getPreviousZoomLevel();
@@ -58,6 +61,18 @@ const TimelineTools: React.FC = () => {
     dispatch(setSnapMode(!timeline.snapMode));
   };
 
+  useEffect(() => {
+    if (!currentTimeRef.current) return;
+
+    currentTimeRef.current.innerText = formatTimeMs(timeline.currentTimeMs);
+  }, [timeline.currentTimeMs]);
+
+  useEffect(() => {
+    if (!durationRef.current) return;
+
+    durationRef.current.innerText = formatTimeMs(timeline.totalLengthMs);
+  }, [timeline.totalLengthMs]);
+
   return (
     <StyledTimelineTools>
       <FlexContainer gap={6} padding={0}>
@@ -70,9 +85,23 @@ const TimelineTools: React.FC = () => {
       </FlexContainer>
 
       <FlexContainer gap={5} padding={0} className='timeline-time'>
-        <Text className='timeline-time-current' text='00:00:00.00' useColor={false} />
-        <Text className='timeline-time-delimiter' text='/' useColor={false} />
-        <Text className='timeline-time-duration' text='00:00:00.00' useColor={false} />
+        <Text
+          className='timeline-time-current'
+          text='00:00:00.00'
+          useColor={false}
+          ref={currentTimeRef}
+        />
+        <Text
+          className='timeline-time-delimiter'
+          text='/'
+          useColor={false}
+        />
+        <Text
+          className='timeline-time-duration'
+          text='00:00:00.00'
+          useColor={false}
+          ref={durationRef}
+        />
       </FlexContainer>
 
       <FlexContainer gap={6} padding={0}>

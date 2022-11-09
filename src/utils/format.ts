@@ -28,11 +28,37 @@ import { PREVIEW_FRAME_WIDTH } from '../constants';
 }
 
 /**
+ * Converts current timeline time to the readable format.
+ * @param timeMs Target time in milliseconds.
+ * @returns Time in format HH:MM:SS.FPS
+ */
+export function formatTimeMs(timeMs?: number) {
+  if (!timeMs) return '00:00:00.00';
+
+  const milliseconds = Math.trunc(timeMs) % 1000;
+  const seconds = Math.trunc(timeMs / 1000) % 60;
+  const minutes = Math.trunc(timeMs / 60000) % 60;
+  const hours = Math.trunc(timeMs / 3600000);
+
+  const formattedTime = [
+    hours.toString().padStart(2, '0'),
+    minutes.toString().padStart(2, '0'),
+    seconds.toString().padStart(2, '0'),
+  ].join(':');
+
+  const frameInterval = 1000 / 60;
+  const frames = Math.floor(milliseconds / frameInterval);
+  const formattedFrames = `${frames}`.padStart(2, '0');
+  
+  return `${formattedTime}.${formattedFrames}`;
+}
+
+/**
  * Converts raw timeline units to the readable format.
  * @param units Target unit value.
  * @returns Time in format HH:MM:SS.FPS
  */
- export function formatTimelineUnit(units?: number): string {
+export function formatTimelineUnit(units?: number): string {
   if (!units) return '00:00:00.00';
 
   const time = units / PREVIEW_FRAME_WIDTH;
