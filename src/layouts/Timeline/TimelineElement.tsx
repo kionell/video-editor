@@ -1,4 +1,4 @@
-import { forwardRef, ForwardedRef } from 'react';
+import { forwardRef, ForwardedRef, useEffect, MouseEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
@@ -61,7 +61,6 @@ const StyledTimelineElementEdge = styled.div`
   justify-content: center;
   align-items: center;
   cursor: ew-resize;
-
 `;
 
 const StyledTimelineElementPreview = styled.div`
@@ -79,10 +78,13 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   props: ElementProps, 
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  
+
+  const handleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
 
   return (
-    <StyledTimelineElementWrapper ref={ref} {...props}>
+    <StyledTimelineElementWrapper ref={ref} {...props} onClick={handleClick}>
       <StyledTimelineElementEdge className='edges edge-left'>
         <Icon variant='Edge' size={25} className='edge-lines' />
       </StyledTimelineElementEdge>

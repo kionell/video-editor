@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Scrollbars from 'react-custom-scrollbars-2';
-import { useEffect, useRef } from 'react';
+import { MouseEvent, useEffect, useRef } from 'react';
 import { ScrollableContainer } from '../../components/Containers/ScrollableContainer';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
@@ -73,6 +73,10 @@ const TimelineTrackPanel: React.FC = () => {
     dispatch(setCurrentScroll(scrollLeft));
   };
 
+  const handleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
   return (
     <StyledTimelineContainer>
       <StyledTimelineRulerContainer ref={rulerRef}>
@@ -87,7 +91,7 @@ const TimelineTrackPanel: React.FC = () => {
       <TimelineSeeker ref={seekerRef} />
 
       <StyledTrackPanelContainer onScroll={onScroll} ref={scrollbarRef}>
-        <StyledTrackControlContainer>
+        <StyledTrackControlContainer onClick={handleClick}>
           {
             timeline.tracks.map((track, i) => {
               return <TimelineTrackControl track={track} key={i} />;

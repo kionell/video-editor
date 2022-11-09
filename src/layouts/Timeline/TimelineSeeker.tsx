@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
@@ -15,7 +15,7 @@ const StyledTimelineSeekerLine = styled.div`
 
 const StyledTimelineSeekerWrapper = styled.div`
   height: 100%;
-  translate: calc(-50% + 30px);
+  translate: calc(-50% + 40px);
   position: absolute;
   display: inline-flex;
   flex-direction: column;
@@ -48,8 +48,12 @@ const StyledTimelineSeekerWrapper = styled.div`
 `;
 
 const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
+  const handleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+  
   return (
-    <StyledTimelineSeekerWrapper {...props} ref={ref}>
+    <StyledTimelineSeekerWrapper {...props} ref={ref} onClick={handleClick}>
       <StyledTimelineSeekerHead 
         size={20} 
         useColor={false} 
