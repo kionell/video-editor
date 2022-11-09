@@ -20,8 +20,7 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
   border-right: none;
   border-radius: 8px;
   overflow: hidden;
-  
-  width: ${(props) => props.element.durationMs / 100}px;
+  cursor: pointer;
 
   ${(props) => {
     const isFocused = props.className?.includes('focused');
@@ -35,7 +34,7 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
       
       .edges {
         visibility: ${isFocused ? 'visible' : 'hidden'};
-        background: ${accentColor};
+        background: transparent;
       }
 
       &:hover:not(.focused) {
@@ -45,7 +44,7 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
         
         .edges {
           display: ${isFocused ? 'visible' : 'hidden'};
-          background: ${hoverColor};
+          background: transparent;
         }
       }
     `;
