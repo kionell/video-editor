@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { HTMLAttributes } from 'react';
 import * as Icons from '../icons';
 import { 
   GIANT_ICON_SIZE,
@@ -57,12 +58,11 @@ export enum IconSize {
   Giant,
 }
 
-interface IconProps {
+interface IconProps extends HTMLAttributes<HTMLDivElement> {
   visible?: boolean;
   variant?: keyof typeof IconType;
   size?: number;
-  useColor?: boolean;
-  className?: string;
+  color?: string;
 }
 
 const IconWrapper = styled.div<IconProps>`
