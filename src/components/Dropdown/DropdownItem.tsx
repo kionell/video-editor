@@ -8,7 +8,8 @@ interface DropdownItemWrapperProps {
 }
 
 const DropdownItemWrapper = styled.div<DropdownItemWrapperProps>`
-  display: ${(props) => props.visible ? 'flex' : 'none'};
+  visibility: ${(props) => props.visible ? 'visible' : 'hidden'};
+  opacity: ${(props) => props.visible ? 1 : 0};
   top: ${(props) => props.offset}px;
   flex-direction: column;
   position: absolute;
@@ -18,6 +19,7 @@ const DropdownItemWrapper = styled.div<DropdownItemWrapperProps>`
   overflow: hidden;
   outline: none;
   z-index: 1;
+  transition: opacity 100ms;
 `;
 
 export interface DropdownItemProps {
@@ -37,7 +39,10 @@ const StyledDropdownItem = styled.div<DropdownItemProps>`
   padding-left: 5px;
   outline: none;
   border-radius: 0px;
-  background: ${(props) => props.theme.secondary.normal};
+  background: ${({ selected, theme }) => {
+    return selected ? theme.secondary.surface : theme.background;
+  }};
+
   color: ${(props) => props.theme.text.normal};
 
   ${(props) => {
@@ -46,7 +51,7 @@ const StyledDropdownItem = styled.div<DropdownItemProps>`
     return css`
       &:hover {
         color: ${(props) => props.theme.text.lighter};
-        background: ${(props) => props.theme.secondary.accentHover}
+        background: ${(props) => props.theme.secondary.accent}
       }
     `;
   }}

@@ -30,8 +30,7 @@ const StyledTrackPanelContainer = styled(ScrollableContainer)`
 const StyledTimelineRulerContainer = styled.div`
   width: 100%;
   height: 40px;
-  position: relative;
-  background-color: ${(props) => props.theme.container.secondary};
+  background-color: ${(props) => props.theme.secondary.surface};
 `;
 
 const StyledTimelineTrackContainer = styled(FlexContainer)`
@@ -43,10 +42,9 @@ const StyledTrackControlContainer = styled(StyledTimelineTrackContainer)`
   position: relative;
   width: 40px;
   left: 0px;
-  float: left;
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: ${(props) => props.theme.container.secondary};
+  background-color: ${(props) => props.theme.secondary.surface};
 `;
 
 const StyledTrackContainer = styled(StyledTimelineTrackContainer)`

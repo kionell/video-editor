@@ -23,7 +23,7 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
 
   &:not(.toggled) {
     background: ${(props) => {
-      return props.showBackground ? props.theme.secondary.normal : 'transparent';
+      return props.showBackground ? props.theme.secondary.accent : 'transparent';
     }};
 
     color: ${(props) => props.theme.text.darker};

@@ -16,16 +16,16 @@ const StyledTimelineTrackControl = styled.div`
   border: none;
   overflow: hidden;
   cursor: grab;
-  background: ${(props) => props.theme.container.secondary};
+  background: ${(props) => props.theme.secondary.surface};
 
   &:hover {
-    background: ${(props) => props.theme.secondary.accentHover};
+    background: ${(props) => props.theme.secondary.hover};
   }
 `;
 
 const StyledTrackNumber = styled(Text)`
   align-self: center;
-  color: ${(props) => props.theme.text.normal}
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const TimelineTrackControl: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) => {

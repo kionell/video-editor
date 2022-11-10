@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { useRef, useState } from 'react';
-import { useUpdateEffect } from '../../hooks';
 import { Text } from '../Text';
 import { Icon } from '../Icon';
 import {
@@ -14,8 +13,6 @@ export interface CheckboxProps {
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'left' | 'right';
-  className?: string;
-  onChange?: (event: Event) => void;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -39,18 +36,23 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
   margin: 12px;
   gap: 5px;
 
-  flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
+  flex-direction: ${(props) => {
+    return props.labelPosition === 'left' ? 'row-reverse' : 'row';
+  }};
+
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 
   ${(props) => {
     if (props.disabled) return;
 
-    return css`
+    return css<CheckboxProps>`
       cursor: pointer;
 
-      &:hover > .checkbox {
-        outline-color: ${props.theme.input.normalHover};
-        fill: ${props.theme.primary.accentHover};
+      &:hover > ${StyledCheckbox} {
+        fill: ${props.theme.primary.hover};
+        outline-color: ${({ checked, theme }) => {
+          return checked ? theme.primary.hover : theme.secondary.hover;
+        }};
       }
     `;
   }}
@@ -65,19 +67,21 @@ const StyledCheckbox = styled.div<CheckboxProps>`
   background: transparent;
   outline: 1px solid;
   border-radius: 3px;
-  outline-color: ${(props) => props.theme.input.normal};
+  transition: 100ms;
+  fill: ${(props) => props.theme.primary.accent};
+  outline-color: ${({ checked, theme }) => {
+    return checked ? theme.primary.accent : theme.secondary.accent;
+  }};
+`;
 
-  & > * {
-    width: 100%;
-    height: 100%;
-    visibility: ${(props) => props.checked ? 'visible' : 'hidden'};
+const StyledCheckboxIcon = styled(Icon)<CheckboxProps>`
+  width: 100%;
+  height: 100%;
+  visibility: ${(props) => props.checked ? 'visible' : 'hidden'};
+`;
 
-    & > * {
-      width: 100%;
-      height: 100%;
-      fill: ${(props) => props.theme.primary.accent};
-    }
-  }
+const StyledCheckboxLabel = styled(Text)`
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
@@ -91,25 +95,26 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
 
     setChecked(!checked);
 
-    checkboxRef.current?.dispatchEvent(new Event('change'));
+    // checkboxRef.current?.dispatchEvent(new Event('change'));
   };
 
-  useUpdateEffect(() => {
-    if (props.onChange) {
-      checkboxRef.current?.addEventListener('change', props.onChange);
-    }
+  // useUpdateEffect(() => {
+  //   if (props.onChange) {
+  //     checkboxRef.current?.addEventListener('change', props.onChange);
+  //   }
 
-    return () => {
-      if (props.onChange) {
-        checkboxRef.current?.removeEventListener('change', props.onChange);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (props.onChange) {
+  //       checkboxRef.current?.removeEventListener('change', props.onChange);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <StyledCheckboxWrapper
       labelPosition={labelPosition}
       disabled={disabled}
+      checked={checked}
       onClick={changeState}
     >
       <HiddenCheckbox
@@ -118,10 +123,13 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
         checked={checked}
         readOnly
       />
-      <StyledCheckbox disabled={disabled} checked={checked} className='checkbox'>
-        <Icon size={NORMAL_ICON_SIZE} />
+      <StyledCheckbox checked={checked}>
+        <StyledCheckboxIcon
+          checked={checked}
+          size={NORMAL_ICON_SIZE}
+        />
       </StyledCheckbox>
-      <Text
+      <StyledCheckboxLabel
         visible={showLabel}
         text={label}
         size={NORMAL_FONT_SIZE}

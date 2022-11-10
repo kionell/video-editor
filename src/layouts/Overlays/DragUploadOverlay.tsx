@@ -29,14 +29,14 @@ const StyledDragUploaderShowArea = styled.div<DragUploaderProps>`
   justify-content: center;
   align-items: center;
   border-radius: 30px;
-  border: 5px dashed ${(props) => props.theme.primary.accentHover};
+  border: 5px dashed ${(props) => props.theme.primary.hover};
 
   .message-icons {
-    fill: ${(props) => props.theme.primary.accentHover};
+    fill: ${(props) => props.theme.primary.hover};
   }
 
   .message-labels {
-    color: ${(props) => props.theme.primary.accentHover};
+    color: ${(props) => props.theme.primary.hover};
   }
 `;
 

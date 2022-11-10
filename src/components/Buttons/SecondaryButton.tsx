@@ -7,10 +7,14 @@ import { Text } from '../Text';
 import { withClickable } from '../../hoc';
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
-  background: ${(props) => props.theme.secondary.normal};
+  background: ${(props) => props.theme.secondary.accent};
   
   &:hover:enabled {
-    background: ${(props) => props.theme.secondary.normalHover};
+    background: ${(props) => props.theme.secondary.hover};
+  }
+
+  &:active:enabled {
+    background: ${(props) => props.theme.secondary.press};
   }
 
   &.toggled {
@@ -18,7 +22,11 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
     outline-color: ${(props) => props.theme.primary.accent};
 
     &:hover:enabled {
-      outline-color: ${(props) => props.theme.primary.accentHover};
+      outline-color: ${(props) => props.theme.primary.hover};
+    }
+
+    &:active:enabled {
+      outline-color: ${(props) => props.theme.primary.press};
     }
   }
 `;

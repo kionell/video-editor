@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Text } from '../Text';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
-import { useUpdateEffect } from '../../hooks';
-import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
+import { NORMAL_FONT_SIZE } from '../../constants';
+import { StyledTextInput } from './TextInput';
 
 export interface NumberInputProps {
   disabled?: boolean;
@@ -28,41 +28,41 @@ const StyledNumberInputWrapper = styled.div<NumberInputProps>`
   gap: 5px;
 
   flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
-
-  .minus-button {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-  }
-
-  .plus-button {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-  }
 `;
 
-const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProps>`
+const StyledNumberInputContainer = styled(FlexContainer)`
+  padding: 0px;
+  gap: 0px;
+  min-width: 180px;
+`;
+
+const StyledMinusButton = styled(SecondaryButton)`
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  flex: 0;
+`;
+
+const StyledPlusButton = styled(SecondaryButton)`
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  flex: 0;
+`;
+
+const StyledNumberInput = styled(StyledTextInput).attrs({ type: 'number' })<NumberInputProps>`
   -moz-appearance: textfield;
-  position: relative;
-  padding: 0px 5px;
-  height: 40px;
-  width: 100px;
-  outline: none;
-  text-align: center;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+  width: 50px;
+  padding: 0px;
+  flex: 1;
+  border-radius: 0px;
   border-left: none;
   border-right: none;
-  border-color: ${(props) => props.theme.input.normal};
-  background: ${(props) => props.theme.secondary.accent};
-  caret-color: ${(props) => props.theme.text.darker};
-  color: ${(props) => props.theme.text.lighter};
+  text-align: center;
+
   opacity: ${(props) => props.disabled ? 0.25 : 1};
-  font-family: ${DEFAULT_FONT};
-  font-size: ${NORMAL_FONT_SIZE}px;
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -77,7 +77,7 @@ const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProp
       cursor: text;
 
       &:focus {
-        border-color: ${props.theme.primary.accentHover};
+        border-color: ${props.theme.primary.hover};
       }
     `;
   }}
@@ -85,6 +85,10 @@ const StyledNumberInput = styled.input.attrs({ type: 'number' })<NumberInputProp
   &::selection {
     background: ${(props) => props.theme.primary.accent};
   }
+`;
+
+const StyledNumberInputLabel = styled(Text)`
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
@@ -118,7 +122,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
     inputRef.current.value = value.toFixed(digits);
   };
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     inputRef.current?.addEventListener('change', updateValue);
 
     if (props.onChange) {
@@ -141,10 +145,9 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <FlexContainer gap={0} padding={0}>
-        <SecondaryButton
-          ref={React.createRef()}
-          listener={decrement}
+      <StyledNumberInputContainer>
+        <StyledMinusButton
+          onClick={decrement}
           className="minus-button"
           iconType='Minus'
           iconSize='Large'
@@ -158,17 +161,16 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           step={props.step}
           disabled={disabled}
         />
-        <SecondaryButton
-          ref={React.createRef()}
-          listener={increment}
+        <StyledPlusButton
+          onClick={increment}
           className="plus-button"
           iconType='Plus'
           iconSize='Large'
           disabled={disabled}
           showLabel={false}
         />
-      </FlexContainer>
-      <Text
+      </StyledNumberInputContainer>
+      <StyledNumberInputLabel
         visible={showLabel}
         disabled={disabled}
         text={label}

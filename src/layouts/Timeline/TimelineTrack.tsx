@@ -12,7 +12,7 @@ const StyledTimelineTrack = styled.div`
   height: 50px;
   border: none;
   overflow: hidden;
-  background: ${(props) => props.theme.container.secondary};
+  background: ${(props) => props.theme.secondary.surface};
 `;
 
 const TimelineTrack: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) => {

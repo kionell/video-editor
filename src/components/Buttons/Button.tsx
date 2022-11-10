@@ -26,6 +26,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
   align-items: center;
   border: none;
   outline: none;
+  transition: 100ms;
 
   ${(props) => {
     return props.width && css`
@@ -50,7 +51,6 @@ const StyledBaseButton = styled.button<ButtonProps>`
   color: ${(props) => props.theme.text.normal};
 
   & > * {
-    pointer-events: none;
     fill: ${(props) => props.theme.text.normal};
   }
 

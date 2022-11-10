@@ -27,25 +27,28 @@ const StyledTextInputWrapper = styled.div<TextInputProps>`
     return 'column';
   }};
 
-  align-items: ${(props) => props.labelPosition === 'top' ? 'start' : 'center'};
+  align-items: ${(props) => {
+    return props.labelPosition === 'top' ? 'start' : 'center';
+  }};
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
 
-const StyledTextInput = styled.input<TextInputProps>`
+export const StyledTextInput = styled.input<TextInputProps>`
   position: relative;
-  width: 100%;
   height: 40px;
   outline: none;
   padding-left: 5px;
   border: 1px solid;
   border-radius: 4px;
-  border-color: ${(props) => props.theme.input.normal};
-  background: ${(props) => props.theme.secondary.accent};
+  border-color: ${(props) => props.theme.secondary.accent};
+  background: ${(props) => props.theme.background};
   caret-color: ${(props) => props.theme.text.darker};
   color: ${(props) => props.theme.text.lighter};
+  pointer-events: ${(props) => props.disabled ? 'none' : 'all'};
   font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;
+  transition: 100ms;
 
   ${(props) => {
     if (props.disabled) return;
@@ -54,7 +57,7 @@ const StyledTextInput = styled.input<TextInputProps>`
       cursor: text;
 
       &:focus {
-        border-color: ${props.theme.primary.accentHover};
+        border-color: ${props.theme.primary.hover};
       }
     `;
   }}
@@ -62,6 +65,10 @@ const StyledTextInput = styled.input<TextInputProps>`
   &::selection {
     background: ${(props) => props.theme.primary.accent};
   }
+`;
+
+const StyledTextInputLabel = styled(Text)`
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
@@ -72,7 +79,7 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <Text
+      <StyledTextInputLabel
         visible={showLabel}
         text={label}
         size={NORMAL_FONT_SIZE}

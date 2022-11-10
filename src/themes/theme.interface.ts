@@ -1,16 +1,9 @@
 interface INormalColors {
-  normal: string;
-  normalHover: string;
-}
-
-interface IAccentColors {
   accent: string;
-  accentHover: string;
+  hover: string;
+  press: string;
+  surface: string;
 }
-
-type IPrimaryColors = INormalColors & IAccentColors;
-type ISecondaryColors = INormalColors & IAccentColors;
-type IInputColors = INormalColors;
 
 interface ITextColors {
   normal: string;
@@ -18,18 +11,11 @@ interface ITextColors {
   darker: string;
 }
 
-interface IContainerColors {
-  primary: string;
-  secondary: string;
-  background: string;
-}
-
 export interface ITheme {
-  primary: IPrimaryColors;
-  secondary: ISecondaryColors;
-  input: IInputColors;
+  primary: INormalColors;
+  secondary: INormalColors;
   text: ITextColors;
-  container: IContainerColors;
+  background: string;
 }
 
 declare module 'styled-components' {

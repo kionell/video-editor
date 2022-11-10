@@ -50,7 +50,7 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   width: 144px;
   height: 81px;
   display: flex;
-  padding: 0px 3px 3px 3px;
+  padding: 5px;
   align-items: flex-end;
   border-radius: 6px;
   border: none;
@@ -68,7 +68,7 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
 
   &:hover {
     outline: 2px solid;
-    outline-color: ${(props) => props.theme.primary.accentHover};
+    outline-color: ${(props) => props.theme.primary.hover};
 
     .button-wrapper {
       display: flex;

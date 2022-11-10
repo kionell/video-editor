@@ -23,17 +23,17 @@ const ImagePreview: React.FC<PreviewProps> = (props: PreviewProps) => {
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const getThumbnail = async() => {
+    const getThumbnail = async () => {
       return getImageThumbnailURL({
         accentColor1: theme.primary.accent,
-        accentColor2: theme.primary.accentHover,
+        accentColor2: theme.primary.hover,
         file,
         width,
         height,
       });
     };
 
-    const setPreview = async() => {
+    const setPreview = async () => {
       if (!previewRef.current) return;
 
       const thumbnailURL = await getThumbnail();

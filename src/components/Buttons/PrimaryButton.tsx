@@ -9,7 +9,11 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.primary.accent};
 
   &:hover:enabled {
-    background: ${(props) => props.theme.primary.accentHover};
+    background: ${(props) => props.theme.primary.hover};
+  }
+
+  &:active:enabled {
+    background: ${(props) => props.theme.primary.press};
   }
 `;
 

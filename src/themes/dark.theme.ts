@@ -2,29 +2,21 @@ import { ITheme } from './theme.interface';
 
 export const DarkTheme: ITheme = {
   primary: {
-    normal: '#111319',
-    normalHover: '#232834',
-    accent: '#5952D7',
-    accentHover: '#7A74DF',
+    accent: '#4C45D3',
+    hover: '#746EDD',
+    press: '#605AD8',
+    surface: '#21212c',
   },
   secondary: {
-    normal: '#191B21',
-    normalHover: '#2C303A',
-    accent: '#282A30',
-    accentHover: '#3A3D45',
-  },
-  input: {
-    normal: '#777777',
-    normalHover: '#BBBBBB',
+    accent: '#373749',
+    hover: '#4b4b68',
+    press: '#404059',
+    surface: '#2c2c3a',
   },
   text: {
-    normal: '#CCCCCC',
-    lighter: '#FFFFFF',
-    darker: '#777777',
+    normal: '#B6B6C9',
+    lighter: '#F0F0F4',
+    darker: '#75757A',
   },
-  container: {
-    primary: '#202228',
-    secondary: '#282A30',
-    background: '#16181A',
-  },
+  background: '#16161d',
 };

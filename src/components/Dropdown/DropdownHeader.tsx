@@ -22,35 +22,41 @@ const StyledDropdownHeader = styled.div<DropdownHeaderProps>`
   outline: 1px solid;
   z-index: 2;
   border-radius: 4px;
-  outline-color: ${(props) => props.theme.input.normal};
-  background: ${(props) => props.theme.secondary.accent};
-  color: ${(props) => props.empty ? props.theme.text.darker : props.theme.text.lighter};
+  outline-color: ${(props) => props.theme.secondary.accent};
+  background: ${(props) => props.theme.background};
+  transition: 100ms;
 
   ${(props) => {
     if (props.disabled || !props.expanded) return;
 
     return css`
-      outline-color: ${props.theme.primary.accentHover};
+      outline-color: ${props.theme.primary.hover};
       border-bottom-left-radius: 0px;
       border-bottom-right-radius: 0px;
     `;
   }}
+`;
 
-  .expand-icon {
-    position: absolute;
-    right: 10px;
-  }
+const StyledDropdownHeaderText = styled(Text)<DropdownHeaderProps>`
+  color: ${(props) => props.empty ? props.theme.text.darker : props.theme.text.lighter};
+`;
+
+const StyledDropdownHeaderIcon = styled(Icon)<DropdownHeaderProps>`
+  position: absolute;
+  right: 10px;
+  fill: ${(props) => props.theme.text.normal};
 `;
 
 const DropdownHeader: React.FC<DropdownHeaderProps> = (props: DropdownHeaderProps) => {
-  const { expanded, text } = props;
-
   return (
     <StyledDropdownHeader {...props}>
-      <Text text={text} />
-      <Icon
-        variant={expanded ? 'ChevronUp' : 'ChevronDown' }
-        className='expand-icon'
+      <StyledDropdownHeaderText
+        empty={props.empty}
+        text={props.text}
+      />
+      <StyledDropdownHeaderIcon
+        {...props}
+        variant={props.expanded ? 'ChevronUp' : 'ChevronDown' }
       />
     </StyledDropdownHeader>
   );

@@ -49,15 +49,15 @@ const StyledDropdownMenu = styled.div<DropdownProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  min-width: 150px;
   height: 100%;
   outline: none;
   border-radius: 4px;
   cursor: ${(props) => props.disabled ? 'inherit' : 'pointer'};
+`;
 
-  .selected {
-    background: ${(props) => props.theme.secondary.accent};
-  }
+const StyledDropdownLabel = styled(Text)`
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -70,10 +70,10 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
     selectedIndex,
     expanded,
     placeholder,
-  } = props;
+  } = props as Required<DropdownProps>;
 
-  const [isExpanded, setExpanded] = useState(expanded as boolean);
-  const [currentSelectedIndex, setSelectedIndex] = useState(selectedIndex as number);
+  const [isExpanded, setExpanded] = useState(expanded);
+  const [currentSelectedIndex, setSelectedIndex] = useState(selectedIndex);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => !disabled && setExpanded(!isExpanded);
@@ -132,7 +132,7 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
       labelPosition={labelPosition}
       disabled={disabled}
     >
-      <Text
+      <StyledDropdownLabel
         visible={showLabel}
         text={label}
       />

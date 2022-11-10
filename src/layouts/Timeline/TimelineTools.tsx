@@ -17,15 +17,7 @@ const StyledTimelineTools = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: content-box;
-  background: ${(props) => props.theme.container.primary};
-
-  .timeline-time {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    color: ${(props) => props.theme.text.lighter};
-  }
+  background: ${(props) => props.theme.primary.surface};
 `;
 
 const StyledTimelineToolButton = styled(SecondaryButton)`

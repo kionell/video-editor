@@ -10,7 +10,7 @@ const StyledTimeline = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  background: ${(props) => props.theme.container.primary};
+  background: ${(props) => props.theme.primary.surface};
 `;
 
 const Timeline: React.FC = () => {

@@ -22,6 +22,7 @@ const StyledSliderContainer = styled.div<SliderProps>`
   position: relative;
   margin: 12px;
   gap: 10px;
+  user-select: none;
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
@@ -76,26 +77,10 @@ const StyledSliderWrapper = styled.div<SliderProps>`
 
   height: 0px;
 
-  &:active::before {
-    font-size: 18px;
-    font-family: ${DEFAULT_FONT};
-    user-select: none;
-    background-color: ${(props) => props.theme.primary.normal};
-    color: ${(props) => props.theme.text.lighter};
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    left: var(--sx);
-    translate: -50% -125%;
-    content: var(--display);
-  }
-
   input[type=range]::-moz-range-track {
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
-      const trackColor = props.theme.input.normal;
+      const trackColor = props.theme.primary.accent;
 
       return css`
         linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
@@ -106,7 +91,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
   input[type=range]::-webkit-slider-runnable-track {
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
-      const trackColor = props.theme.input.normal;
+      const trackColor = props.theme.secondary.accent;
 
       return css`
         linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
@@ -119,29 +104,60 @@ const StyledSliderWrapper = styled.div<SliderProps>`
 
     &:hover {
       ${(props) => {
-        const accentColor = props.theme.primary.accentHover;
-        const normalColor = props.theme.input.normalHover;
+        const rangeColor = props.theme.primary.hover;
+        const trackColor = props.theme.secondary.hover;
 
         return css`
           &::-moz-range-track {
-            background: linear-gradient(${accentColor}, ${accentColor}) 0/var(--sx) 100% no-repeat, ${normalColor};
+            background: linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
           }
 
           &::-webkit-slider-runnable-track {
-            background: linear-gradient(${accentColor}, ${accentColor}) 0/var(--sx) 100% no-repeat, ${normalColor};
+            background: linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
           }
 
           &::-moz-range-thumb {
-            background: ${accentColor};
+            background: ${rangeColor};
           }
 
           &::-webkit-slider-thumb {
-            background: ${accentColor};
+            background: ${rangeColor};
           }
         `;
       }};
     }
   }
+
+  ${(props) => {
+    return !props.disabled && css`
+      &::before {
+        font-size: 18px;
+        font-family: ${DEFAULT_FONT};
+        user-select: none;
+        pointer-events: none;
+        background-color: ${(props) => props.theme.background};
+        color: ${(props) => props.theme.text.lighter};
+        text-align: center;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        left: var(--sx);
+        translate: -50% -125%;
+        opacity: 0;
+        transition: opacity 100ms;
+        content: var(--display);
+      }
+
+      &:active::before {
+        opacity: 1;
+      }
+    `;
+  }}
+`;
+
+const StyledSliderLabel = styled(Text)`
+  color: ${(props) => props.theme.text.normal};
 `;
 
 const Slider: React.FC<SliderProps> = (props: SliderProps) => {
@@ -176,12 +192,12 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
 
   return (
     <StyledSliderContainer {...props}>
-      <Text
+      <StyledSliderLabel
         visible={showLabel}
         text={label}
         size={NORMAL_FONT_SIZE}
       />
-      <StyledSliderWrapper ref={wrapperRef}>
+      <StyledSliderWrapper {...props} ref={wrapperRef}>
         <StyledSlider
           {...props}
           ref={sliderRef}
