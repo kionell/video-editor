@@ -1,13 +1,11 @@
 import styled from 'styled-components';
+import { useRef } from 'react';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
-import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { Text } from '../../components/Text';
-import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
-import { formatTimeMs } from '../../utils/format';
+import { TimelineTime } from './TimelineTime';
+import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 
 const StyledTimelineTools = styled.div`
   height: 45px;
@@ -23,15 +21,17 @@ const StyledTimelineTools = styled.div`
 const StyledTimelineToolButton = styled(SecondaryButton)`
   width: 40px;
   height: 35px;
+
+  label {
+    display: none;
+  }
 `;
 
 const TimelineTools: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
   const dispatch = useAppDispatch();
-  
+
   const snapButtonRef = useRef(null);
-  const currentTimeRef = useRef<HTMLLabelElement>(null);
-  const durationRef = useRef<HTMLLabelElement>(null);
 
   const onZoomOutClick = () => {
     const zoomLevel = timeline.getPreviousZoomLevel();
@@ -45,70 +45,53 @@ const TimelineTools: React.FC = () => {
     dispatch(setCurrentZoom(zoomLevel));
   };
 
-  // const onZoomFitClick = () => {
-  //   dispatch(setCurrentZoom(2));
-  // };
+  const onZoomFitClick = () => {
+    const zoomLevel = timeline.getPreviousZoomLevel();
+
+    dispatch(setCurrentZoom(zoomLevel));
+  };
 
   const onSnapClick = () => {
     dispatch(setSnapMode(!timeline.snapMode));
   };
 
-  useEffect(() => {
-    if (!currentTimeRef.current) return;
-
-    currentTimeRef.current.innerText = formatTimeMs(timeline.currentTimeMs);
-  }, [timeline.currentTimeMs]);
-
-  useEffect(() => {
-    if (!durationRef.current) return;
-
-    durationRef.current.innerText = formatTimeMs(timeline.totalLengthMs);
-  }, [timeline.totalLengthMs]);
-
   return (
     <StyledTimelineTools>
-      <FlexContainer gap={6} padding={0}>
-        <StyledTimelineToolButton showLabel={false} iconType='Undo' />
-        <StyledTimelineToolButton showLabel={false} iconType='Redo' />
-        <StyledTimelineToolButton showLabel={false} iconType='Split' />
-        <StyledTimelineToolButton showLabel={false} iconType='BringForward' />
-        <StyledTimelineToolButton showLabel={false} iconType='SendBackward' />
-        <StyledTimelineToolButton showLabel={false} iconType='Delete' />
-      </FlexContainer>
+      <ButtonGroup gap={6}>
+        <StyledTimelineToolButton iconType='Undo' />
+        <StyledTimelineToolButton iconType='Redo' />
+        <StyledTimelineToolButton iconType='Split' />
+        <StyledTimelineToolButton iconType='BringForward' />
+        <StyledTimelineToolButton iconType='SendBackward' />
+        <StyledTimelineToolButton iconType='Delete' />
+      </ButtonGroup>
 
-      <FlexContainer gap={5} padding={0} className='timeline-time'>
-        <Text
-          className='timeline-time-current'
-          text='00:00:00.00'
-          useColor={false}
-          ref={currentTimeRef}
-        />
-        <Text
-          className='timeline-time-delimiter'
-          text='/'
-          useColor={false}
-        />
-        <Text
-          className='timeline-time-duration'
-          text='00:00:00.00'
-          useColor={false}
-          ref={durationRef}
-        />
-      </FlexContainer>
+      <TimelineTime />
 
-      <FlexContainer gap={6} padding={0}>
-        <ButtonGroup>
-          <StyledTimelineToolButton 
-            showLabel={false} 
-            iconType='Snap' 
-            ref={snapButtonRef} 
-            onClick={onSnapClick}
-          />
-        </ButtonGroup>
-        <StyledTimelineToolButton showLabel={false} iconType='Minus' onClick={onZoomOutClick} />
-        <StyledTimelineToolButton showLabel={false} iconType='Plus' onClick={onZoomInClick} />
-        <StyledTimelineToolButton showLabel={false} iconType='Fit' />
-      </FlexContainer>
+      <ButtonGroup gap={6}>
+        <StyledTimelineToolButton
+          iconType='Snap'
+          ref={snapButtonRef}
+          onClick={onSnapClick}
+          toggled={timeline.snapMode}
+          disabled={!timeline.totalTracks}
+        />
+        <StyledTimelineToolButton
+          iconType='Minus'
+          onClick={onZoomOutClick}
+          disabled={!timeline.totalTracks}
+        />
+        <StyledTimelineToolButton
+          iconType='Plus'
+          onClick={onZoomInClick}
+          disabled={!timeline.totalTracks}
+        />
+        <StyledTimelineToolButton
+          iconType='Fit'
+          onClick={onZoomFitClick}
+          disabled={!timeline.totalTracks}
+        />
+      </ButtonGroup>
     </StyledTimelineTools>
   );
 };
