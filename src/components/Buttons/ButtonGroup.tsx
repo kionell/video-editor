@@ -1,48 +1,46 @@
-import React, { useState } from 'react';
-import { MouseEventHandler } from 'react';
+import React, { MouseEvent, EventHandler, useState } from 'react';
 import { FlexProps, FlexContainer } from '../Containers/FlexContainer';
-import { ButtonProps } from './Button';
+
+type SelectEvent<T = HTMLButtonElement> = MouseEvent<T> & {
+  selectedIndex: number;
+};
+
+type SelectEventHandler<T = HTMLButtonElement> = EventHandler<SelectEvent<T>>;
 
 interface ButtonGroupProps extends FlexProps {
   selectedIndex?: number;
-  listener?: (selectedIndex: number) => void;
+  children?: JSX.Element[];
+  onClick?: SelectEventHandler;
 }
 
 const ButtonGroup: React.FC<ButtonGroupProps> = (props: ButtonGroupProps) => {
-  const { listener, children, selectedIndex } = props;
+  const {
+    selectedIndex,
+    onClick,
+  } = props as Required<ButtonGroupProps>;
 
-  const [currentIndex, setSelectedIndex] = useState(selectedIndex as number);
+  const [currentIndex, setCurrentIndex] = useState(selectedIndex);
 
-  const selectButton: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const selectButton = (event: MouseEvent<HTMLButtonElement>) => {
     const targetElement = event.target as HTMLButtonElement;
+    const isButton = targetElement.tagName === 'BUTTON';
+
+    if (!isButton || !onClick) return;
+
     const parentElement = targetElement.parentElement;
-    const children = parentElement?.children ? [...parentElement.children] : [];
+    const children = [...(parentElement?.children ?? [])];
 
     const targetIndex = children.findIndex((c) => c === targetElement);
 
-    if (targetIndex === -1) return;
+    if (targetIndex !== -1) {
+      const selectedIndex = targetIndex === currentIndex ? -1 : targetIndex;
 
-    if (targetIndex === currentIndex) {
-      setSelectedIndex(-1);
-      
-      return;
-    }
-
-    setSelectedIndex(targetIndex);
-
-    if (typeof listener === 'function') {
-      listener(targetIndex);
+      onClick({ ...event, selectedIndex });
+      setCurrentIndex(selectedIndex);
     }
   };
 
-  const childrenWithIndex = React.Children.map(children, (child, index) => {
-    return React.cloneElement<ButtonProps>(child as any, {
-      toggled: currentIndex === index,
-      onClick: selectButton,
-    });
-  });
-
-  return <FlexContainer {...props}>{childrenWithIndex}</FlexContainer>;
+  return <FlexContainer {...props} onClick={selectButton} />
 };
 
 ButtonGroup.defaultProps = {

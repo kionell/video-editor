@@ -14,7 +14,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   gap?: number;
   wrapElements?: boolean;
   coverArea?: boolean;
-  onClick?: MouseEventHandler<HTMLDivElement>;
+  onClick?: MouseEventHandler<HTMLElement>;
 }
 
 const StyledFlexContainer = styled.div<FlexProps>`
