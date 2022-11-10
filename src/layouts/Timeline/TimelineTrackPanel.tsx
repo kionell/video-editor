@@ -47,9 +47,7 @@ const StyledTrackControlContainer = styled(StyledTimelineTrackContainer)`
   background-color: ${(props) => props.theme.secondary.surface};
 `;
 
-const StyledTrackContainer = styled(StyledTimelineTrackContainer)`
-  min-width: 100%;
-`;
+const StyledTrackContainer = styled(StyledTimelineTrackContainer)``;
 
 const TimelineTrackPanel: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
@@ -58,14 +56,12 @@ const TimelineTrackPanel: React.FC = () => {
   const scrollbarRef = useRef<Scrollbars>(null);
   const seekerRef = useRef<HTMLDivElement>(null);
   const rulerRef = useRef<HTMLDivElement>(null);
+  const trackAreaRef = useRef<HTMLDivElement>(null);
 
   const onScroll = () => {
     if (!scrollbarRef.current) return;
 
     const scrollLeft = scrollbarRef.current.getScrollLeft();
-    // const container = scrollbarRef.current.container;
-
-    // container.style.width = `calc(${timeline.width})`;
 
     setSeekerPosition();
 
@@ -97,6 +93,12 @@ const TimelineTrackPanel: React.FC = () => {
     event.stopPropagation();
   };
 
+  useEffect(() => {
+    if (!trackAreaRef.current) return;
+
+    trackAreaRef.current.style.width = `calc(100% + ${timeline.width}px)`;
+  }, [timeline.width]);
+
   useEffect(setSeekerPosition, [timeline.currentTimeMs, timeline.currentZoom]);
   useEffect(onScroll, []);
 
@@ -122,7 +124,7 @@ const TimelineTrackPanel: React.FC = () => {
           }
         </StyledTrackControlContainer>
 
-        <StyledTrackContainer>
+        <StyledTrackContainer ref={trackAreaRef}>
           {
             timeline.tracks.map((track) => {
               return <TimelineTrack track={track} key={track.index}/>;
