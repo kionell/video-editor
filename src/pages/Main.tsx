@@ -29,7 +29,7 @@ const StyledBottomPart = styled.div`
   flex-direction: column;
 `;
 
-export const Main: React.FC = () => {
+export const MainPage: React.FC = () => {
   return (
     <StyledMainPage>
       <StyledTopPart>

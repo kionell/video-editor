@@ -3,10 +3,11 @@ import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { DarkTheme } from './themes/dark.theme';
-import { Main } from './pages/Main';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
 import { CustomFonts } from './styles/CustomFonts';
 import { ffmpeg } from './lib/FFmpeg';
+import { MainPage } from './pages/Main';
+import { DebugPage } from './pages/Debug';
 
 export function App() {
   const [theme, setTheme] = useState(DarkTheme);
@@ -33,7 +34,8 @@ export function App() {
         <CustomFonts />
         <Provider store={store}>
           <ThemeProvider theme={theme}>
-              <Main />
+              <MainPage />
+              {/* <DebugPage /> */}
           </ThemeProvider>
         </Provider>
       </div>
