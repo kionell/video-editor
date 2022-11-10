@@ -67,7 +67,7 @@ export class Timeline {
    * @param track Track to remove.
    */
   removeTrack(track: TimelineTrack): TimelineTrack | null {
-    const index = this._tracks.findIndex((t) => t === track);
+    const index = this._tracks.findIndex((t) => t.index === track.index);
 
     return this.removeTrackByIndex(index);
   }
@@ -183,21 +183,24 @@ export class Timeline {
   }
 
   get width(): number {
-    return this.durationMs / 1000 * this.frameUnits;
+    return this.timeMsToUnits(this.durationMs);
   }
 
-  get frameUnits(): number {
+  get zoomedFrameWidth(): number {
     return PREVIEW_FRAME_WIDTH * this.currentZoom.zoom;
   }
 
   timeMsToUnits(timeMs = this.currentTimeMs): number {
     const clampedTime = clamp(timeMs, 0, this.durationMs);
+    const frames = clampedTime * (60 / 1000);
 
-    return clampedTime * this.frameUnits / 1000;
+    return frames * this.zoomedFrameWidth;
   }
 
   unitsToTimeMs(units: number): number {
-    const timeMs = units * 1000 / this.frameUnits;
+    const frames = units / this.zoomedFrameWidth
+    const frameInterval = 1000 / 60;
+    const timeMs = frames * frameInterval;
 
     return clamp(timeMs, 0, this.durationMs);
   }
