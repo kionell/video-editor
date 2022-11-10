@@ -11,7 +11,6 @@ interface ElementProps {
 
 const StyledTimelineElementWrapper = styled.div<ElementProps>`
   position: relative;
-  min-width: 24px;
   height: 50px;
   display: inline-flex;
   justify-content: space-between;
@@ -55,7 +54,6 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
 `;
 
 const StyledTimelineElementEdge = styled.div`
-  width: 12px;
   height: 100%;
   visibility: hidden;
   z-index: 1;
@@ -63,6 +61,12 @@ const StyledTimelineElementEdge = styled.div`
   justify-content: center;
   align-items: center;
   cursor: ew-resize;
+`;
+
+const StyledTimelineElementEdgeIcon = styled(Icon)`
+  width: 15px;
+  height: 25px;
+  fill: ${(props) => props.theme.primary.accent};
 `;
 
 const StyledTimelineElementPreview = styled.div`
@@ -89,7 +93,7 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     const units = timeline.timeMsToUnits(durationMs);
 
     ref.current.style.width = units + 'px';
-  }, [timeline.currentZoom]);
+  }, [timeline.currentZoom, timeline.totalLengthMs, timeline.totalTracks]);
 
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
@@ -97,16 +101,16 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
 
   return (
     <StyledTimelineElementWrapper ref={ref} {...props} onClick={handleClick}>
-      <StyledTimelineElementEdge className='edges edge-left'>
-        <Icon variant='Edge' size={25} className='edge-lines' />
+      <StyledTimelineElementEdge className='edges'>
+        <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementEdge>
 
       <StyledTimelineElementPreview className='preview'>
 
       </StyledTimelineElementPreview>
 
-      <StyledTimelineElementEdge className='edges edge-right'>
-        <Icon variant='Edge' size={25} className='edge-lines' />
+      <StyledTimelineElementEdge className='edges'>
+        <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementEdge>
     </StyledTimelineElementWrapper>
   );
