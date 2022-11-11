@@ -26,7 +26,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
   align-items: center;
   border: none;
   outline: none;
-  transition: 100ms;
+  transition: background 100ms;
 
   ${(props) => {
     return props.width && css`
