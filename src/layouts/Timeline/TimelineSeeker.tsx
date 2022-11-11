@@ -37,7 +37,7 @@ const StyledTimelineSeekerWrapper = styled.div`
   & > ${StyledTimelineSeekerLine} {
     background: ${(props) => {
       return props.className?.includes('focused')
-        ? props.theme.primary.accent
+        ? props.theme.primary.press
         : props.theme.text.lighter;
     }};
   }
@@ -45,7 +45,7 @@ const StyledTimelineSeekerWrapper = styled.div`
   & > * > svg {
     fill: ${(props) => {
       return props.className?.includes('focused')
-        ? props.theme.primary.accent
+        ? props.theme.primary.press
         : props.theme.text.lighter;
     }};
   }

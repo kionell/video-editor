@@ -28,12 +28,12 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
 
   ${(props) => {
     const isFocused = props.className?.includes('focused');
-    const accentColor = props.theme.primary.accent;
+    const pressColor = props.theme.primary.press;
     const hoverColor = props.theme.primary.hover;
 
     return css`
       .preview {
-        border: ${isFocused ? `2px solid ${accentColor}` : 'none'};
+        border: ${isFocused ? `2px solid ${pressColor}` : 'none'};
       }
       
       .edges {
@@ -66,7 +66,7 @@ const StyledTimelineElementEdge = styled.div`
 const StyledTimelineElementEdgeIcon = styled(Icon)`
   width: 15px;
   height: 25px;
-  fill: ${(props) => props.theme.primary.accent};
+  fill: ${(props) => props.theme.primary.press};
 `;
 
 const StyledTimelineElementPreview = styled.div`
