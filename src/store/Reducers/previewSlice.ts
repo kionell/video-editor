@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AspectRatio } from '../../models/Enums/AspectRatio';
-import { IVideoPreview } from '../../models/IVideoPreview';
+import { IVideoPreviewState } from '../../models/IVideoPreviewState';
 
-const initialState: IVideoPreview = {
+const initialState: IVideoPreviewState = {
   aspectRatio: 1,
   previewWidth: 1920,
   previewHeight: 1080,

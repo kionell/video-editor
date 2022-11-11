@@ -3,7 +3,7 @@ import { AspectRatio } from './Enums/AspectRatio';
 /**
  * Video preview state.
  */
-export interface IVideoPreview {
+export interface IVideoPreviewState {
   /**
    * Aspect ratio of the preview.
    */
