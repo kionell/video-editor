@@ -1,34 +1,46 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, MouseEventHandler } from 'react';
 
-export const withMovableX = <T, >(Component: React.FC<T>) => {
-  const makeMovableX = (element: HTMLElement) => {
+interface MovableProps {
+  onMoveX?: MouseEventHandler;
+}
+
+export const withMovableX = <P, >(Component: React.FC<P>) => {
+  const makeMovableX = (element: HTMLElement, props: P & MovableProps) => {
     let offsetX = 0;
 
-    const startMoving = (event: MouseEvent) => {
+    const startMoving: MouseEventHandler = (event) => {
       offsetX = element.offsetLeft - event.pageX;
       element.style.position = 'absolute';
 
-      document.addEventListener('mousemove', moveElement);
-      document.addEventListener('mouseup', stopMoving);
+      document.addEventListener('mousemove', moveElement as any);
+      document.addEventListener('mouseup', stopMoving as any);
+
+      if (props.onMoveX) {
+        document.addEventListener('mousemove', props.onMoveX as any);
+      }
     };
 
-    const moveElement = (event: MouseEvent) => {
+    const moveElement: MouseEventHandler = (event) => {
       element.style.left = Math.max(0, (event.pageX + offsetX)) + 'px';
     };
 
-    const stopMoving = () => {
-      document.removeEventListener('mousemove', moveElement);
-      document.removeEventListener('mouseup', stopMoving);
+    const stopMoving: MouseEventHandler = () => {
+      document.removeEventListener('mousemove', moveElement as any);
+      document.removeEventListener('mouseup', stopMoving as any);
+
+      if (props.onMoveX) {
+        document.removeEventListener('mousemove', props.onMoveX as any);
+      }
     };
 
-    element.addEventListener('mousedown', startMoving);
+    element.addEventListener('mousedown', startMoving as any);
   };
 
-  const MovableXComponent = forwardRef<HTMLElement, T>((props, ref) => {
+  const MovableXComponent = forwardRef<HTMLElement, P & MovableProps>((props, ref) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
-      makeMovableX(ref.current);
+      makeMovableX(ref.current, props);
     }, []);
 
     return <Component ref={ref} {...props} />;
