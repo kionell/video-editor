@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { ForwardedRef, HTMLAttributes, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
@@ -47,13 +47,20 @@ const StyledTimelineSeekerWrapper = styled.div`
   }
 `;
 
-const BaseTimelineSeeker = React.forwardRef<HTMLDivElement>((props, ref) => {
+const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((
+  props: HTMLAttributes<HTMLDivElement>,
+  ref: ForwardedRef<HTMLDivElement>,
+) => {
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
 
   return (
-    <StyledTimelineSeekerWrapper {...props} ref={ref} onClick={handleClick}>
+    <StyledTimelineSeekerWrapper
+      {...props}
+      ref={ref}
+      onClick={handleClick}
+    >
       <StyledTimelineSeekerHead
         size={20}
         variant='Seeker'
