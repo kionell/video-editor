@@ -190,7 +190,7 @@ export class Timeline {
   }
 
   get width(): number {
-    return this.timeMsToUnits(this.durationMs);
+    return this.timeMsToUnits(this.totalLengthMs);
   }
 
   get zoomedFrameWidth(): number {
@@ -198,7 +198,7 @@ export class Timeline {
   }
 
   timeMsToUnits(timeMs = this.currentTimeMs): number {
-    const clampedTime = clamp(timeMs, 0, this.durationMs);
+    const clampedTime = clamp(timeMs, 0, this.totalLengthMs);
     const frames = clampedTime * (60 / 1000);
 
     return frames * this.zoomedFrameWidth;
@@ -209,7 +209,7 @@ export class Timeline {
     const frameInterval = 1000 / 60;
     const timeMs = frames * frameInterval;
 
-    return clamp(timeMs, 0, this.durationMs);
+    return clamp(timeMs, 0, this.totalLengthMs);
   }
 
   /**
