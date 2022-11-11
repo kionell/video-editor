@@ -17,6 +17,7 @@ const StyledTimelineContainer = styled(FlexContainer)`
   gap: 0px;
   padding: 0px;
   flex-wrap: nowrap;
+  overflow: hidden;
 `;
 
 const StyledTrackPanelContainer = styled(ScrollableContainer)`
