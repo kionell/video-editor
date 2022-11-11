@@ -18,7 +18,7 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
   user-select: none;
   border-left: none;
   border-right: none;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
 
@@ -73,7 +73,7 @@ const StyledTimelineElementPreview = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: ${(props) => props.theme.text.lighter};
   background-image: linear-gradient(to top, #202020bb 5%, #40404060 50%, transparent 100%);
   background-repeat: no-repeat;
