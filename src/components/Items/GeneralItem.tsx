@@ -206,4 +206,4 @@ BaseGeneralItem.defaultProps = {
   label: 'General Item',
 };
 
-export const GeneralItem = BaseGeneralItem;
+export const GeneralItem = withDraggable(BaseGeneralItem);
