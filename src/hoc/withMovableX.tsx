@@ -1,11 +1,7 @@
 import { forwardRef, useEffect, MouseEventHandler } from 'react';
 
-interface MovableProps {
-  onMoveX?: MouseEventHandler;
-}
-
 export const withMovableX = <P, >(Component: React.FC<P>) => {
-  const makeMovableX = (element: HTMLElement, props: P & MovableProps) => {
+  const makeMovableX = (element: HTMLElement) => {
     let offsetX = 0;
 
     const startMoving: MouseEventHandler = (event) => {
@@ -14,10 +10,6 @@ export const withMovableX = <P, >(Component: React.FC<P>) => {
 
       document.addEventListener('mousemove', moveElement as any);
       document.addEventListener('mouseup', stopMoving as any);
-
-      if (props.onMoveX) {
-        document.addEventListener('mousemove', props.onMoveX as any);
-      }
     };
 
     const moveElement: MouseEventHandler = (event) => {
@@ -27,20 +19,16 @@ export const withMovableX = <P, >(Component: React.FC<P>) => {
     const stopMoving: MouseEventHandler = () => {
       document.removeEventListener('mousemove', moveElement as any);
       document.removeEventListener('mouseup', stopMoving as any);
-
-      if (props.onMoveX) {
-        document.removeEventListener('mousemove', props.onMoveX as any);
-      }
     };
 
     element.addEventListener('mousedown', startMoving as any);
   };
 
-  const MovableXComponent = forwardRef<HTMLElement, P & MovableProps>((props, ref) => {
+  const MovableXComponent = forwardRef<HTMLElement, P>((props, ref) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
-      makeMovableX(ref.current, props);
+      makeMovableX(ref.current);
     }, []);
 
     return <Component ref={ref} {...props} />;

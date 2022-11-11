@@ -16,13 +16,6 @@ import { findIndex } from '../../utils/search';
 export class Timeline {
   [immerable] = true;
 
-  private _tracks: TimelineTrack[] = [];
-
-  /**
-   * Current time of the playback in milliseconds.
-   */
-  currentTimeMs = 0;
-
   /**
    * Current zoom of this timeline.
    */
@@ -41,6 +34,20 @@ export class Timeline {
    * Whether the snap mode is activated or not.
    */
   snapMode = false;
+
+  private _tracks: TimelineTrack[] = [];
+  private _currentTimeMs = 0;
+
+  /**
+   * Current time of the playback in milliseconds.
+   */
+  get currentTimeMs(): number {
+    return clamp(this._currentTimeMs, 0, this.totalLengthMs);
+  }
+
+  set currentTimeMs(timeMs: number) {
+    this._currentTimeMs = timeMs;
+  }
 
   getPreviousZoomLevel(): ITimelineZoomLevel {
     return TIMELINE_ZOOM_LEVELS[this._getPreviousZoomIndex()];

@@ -1,7 +1,11 @@
-import React, { ForwardedRef, HTMLAttributes, MouseEvent } from 'react';
+import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
+
+interface SeekerProps extends HTMLAttributes<HTMLDivElement> {
+  onMoveX?: MouseEventHandler;
+}
 
 const StyledTimelineSeekerHead = styled(Icon)`
   position: relative;
@@ -47,10 +51,26 @@ const StyledTimelineSeekerWrapper = styled.div`
   }
 `;
 
-const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((
-  props: HTMLAttributes<HTMLDivElement>,
+const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
+  props: SeekerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
+  const stopSeekerMovement = () => {
+    if (props.onMoveX) {
+      document.removeEventListener('mousemove', props.onMoveX as any);
+    }
+
+    document.removeEventListener('mouseup', stopSeekerMovement as any);
+  };
+
+  const startSeekerMovement = () => {
+    if (props.onMoveX) {
+      document.addEventListener('mousemove', props.onMoveX as any);
+    }
+
+    document.addEventListener('mouseup', stopSeekerMovement as any);
+  }
+
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
@@ -60,6 +80,7 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLD
       {...props}
       ref={ref}
       onClick={handleClick}
+      onMouseDown={startSeekerMovement}
     >
       <StyledTimelineSeekerHead
         size={20}

@@ -58,40 +58,58 @@ const TimelineTrackPanel: React.FC = () => {
   const rulerRef = useRef<HTMLDivElement>(null);
   const trackAreaRef = useRef<HTMLDivElement>(null);
 
-  const onScroll = () => {
-    if (!scrollbarRef.current) return;
+  const updatePosByTime = (timeMs?: number) => {
+    if (!seekerRef.current || !scrollbarRef.current) return;
 
-    const scrollLeft = scrollbarRef.current.getScrollLeft();
+    const scrollX = scrollbarRef.current.getScrollLeft();
+    const clientX = timeline.timeMsToUnits(timeMs);
 
-    setSeekerPosition();
+    seekerRef.current.style.left = clientX - scrollX + 'px';
+  }
 
-    dispatch(setCurrentScroll(scrollLeft));
-  };
-
-  const setCurrentTime = (event: MouseEvent<HTMLDivElement>) => {
-    if (!scrollbarRef.current) return;
+  const setSeekerPosition = (event: MouseEvent<HTMLDivElement>) => {
+    if (!seekerRef.current || !scrollbarRef.current) return;
 
     const clientX = event.clientX - 40;
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
 
+    updatePosByTime(timeMs);
+
     dispatch(setCurrentTimeMs(timeMs));
   };
 
-  const setSeekerPosition = () => {
-    if (!seekerRef.current || !scrollbarRef.current) return;
+  const setCurrentTime = () => {
+    if (!scrollbarRef.current || !seekerRef.current) return;
 
-    const units = timeline.timeMsToUnits();
+    const clientX = parseFloat(seekerRef.current.style.left);
     const scrollX = scrollbarRef.current.getScrollLeft();
-    const offsetX = units - scrollX;
 
-    seekerRef.current.style.left = offsetX + 'px';
+    const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
+
+    if (timeMs >= timeline.durationMs) {
+      updatePosByTime(timeMs);
+    }
+
+    dispatch(setCurrentTimeMs(timeMs));
+  };
+
+  const handleScroll = () => {
+    if (!scrollbarRef.current) return;
+
+    const scrollLeft = scrollbarRef.current.getScrollLeft();
+
+    updatePosByTime();
+
+    dispatch(setCurrentScroll(scrollLeft));
   };
 
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
+
+  useEffect(updatePosByTime, [timeline.currentZoom]);
 
   useEffect(() => {
     if (!trackAreaRef.current) return;
@@ -99,11 +117,8 @@ const TimelineTrackPanel: React.FC = () => {
     trackAreaRef.current.style.width = `calc(100% + ${timeline.width}px)`;
   }, [timeline.width]);
 
-  useEffect(setSeekerPosition, [timeline.currentTimeMs, timeline.currentZoom]);
-  useEffect(onScroll, []);
-
   return (
-    <StyledTimelineContainer onClick={setCurrentTime}>
+    <StyledTimelineContainer onClick={setSeekerPosition}>
       <StyledTimelineRulerContainer ref={rulerRef}>
         <TimelineRuler
           unit={timeline.currentZoom.unit}
@@ -113,9 +128,9 @@ const TimelineTrackPanel: React.FC = () => {
         />
       </StyledTimelineRulerContainer>
 
-      <TimelineSeeker ref={seekerRef} />
+      <TimelineSeeker ref={seekerRef} onMoveX={setCurrentTime} />
 
-      <StyledTrackPanelContainer onScroll={onScroll} ref={scrollbarRef}>
+      <StyledTrackPanelContainer onScroll={handleScroll} ref={scrollbarRef}>
         <StyledTrackControlContainer onClick={handleClick}>
           {
             timeline.tracks.map((track, i) => {
