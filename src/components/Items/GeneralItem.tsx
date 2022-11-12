@@ -53,8 +53,6 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   padding: 5px;
   align-items: flex-end;
   border-radius: 6px;
-  border: none;
-  outline: none;
   
   justify-content: ${(props) => {
     return props.file?.hasDuration || props.showDuration
@@ -63,15 +61,14 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   }};
 
   .button-wrapper {
-    display: none;
+    display: flex;
+    opacity: 0;
+    transition: opacity 150ms;
   }
 
   &:hover {
-    outline: 2px solid;
-    outline-color: ${(props) => props.theme.primary.hover};
-
     .button-wrapper {
-      display: flex;
+      opacity: 1;
     }
   }
 `;
@@ -80,12 +77,19 @@ const StyledGeneralItemPreview = styled.div`
   width: 144px;
   height: 81px;
   position: absolute;
-  border-radius: 6px;
   overflow: hidden;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
+  border-radius: 6px;
+  border: 2px solid;
+  border-color: transparent;
+  transition: border-color 150ms;
+  
+  &:hover {
+    border-color: ${(props) => props.theme.primary.hover};
+  }
 `;
 
 const StyledGeneralItemDuration = styled(Text)`
