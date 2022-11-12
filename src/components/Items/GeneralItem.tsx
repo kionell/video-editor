@@ -73,6 +73,8 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   }
 `;
 
+const DraggableGeneralItem = withDraggable(StyledGeneralItem);
+
 const StyledGeneralItemPreview = styled.div`
   width: 144px;
   height: 81px;
@@ -108,12 +110,13 @@ const StyledGeneralItemLabel = styled(Text)`
   width: 100%;
 `;
 
-const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
+export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   props: HTMLAttributes<HTMLDivElement> & GeneralItemProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { deletable, addable, file, showLabel } = props;
 
+  const itemRef = useRef<HTMLDivElement>(null);
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -142,7 +145,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
   return (
     <StyledGeneralItemWrapper {...props}>
-      <StyledGeneralItem {...props}>
+      <DraggableGeneralItem {...props} ref={itemRef}>
         <StyledGeneralItemDuration
           text={formatDuration(duration)}
           visible={showDuration}
@@ -186,7 +189,7 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             paddingVertical={3}
           />
         </StyledGeneralItemButtonWrapper>
-      </StyledGeneralItem>
+      </DraggableGeneralItem>
 
       <StyledGeneralItemLabel
         className='labels'
@@ -198,9 +201,9 @@ const BaseGeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   );
 });
 
-BaseGeneralItem.displayName = 'General Item';
+GeneralItem.displayName = 'General Item';
 
-BaseGeneralItem.defaultProps = {
+GeneralItem.defaultProps = {
   deletable: true,
   addable: true,
   showDuration: false,
@@ -208,5 +211,3 @@ BaseGeneralItem.defaultProps = {
   showLabel: true,
   label: 'General Item',
 };
-
-export const GeneralItem = withDraggable(BaseGeneralItem);
