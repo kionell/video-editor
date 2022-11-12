@@ -3,7 +3,7 @@ import { FormEventHandler, ForwardedRef, forwardRef, HTMLAttributes } from 'reac
 import { Text } from '../../components/Text';
 import { getIconSizeBySizeType, Icon } from '../../components/Icon';
 import { FileInput } from '../../components/Inputs/FileInput';
-import { LARGE_FONT_SIZE } from '../../constants';
+import { LARGER_FONT_SIZE } from '../../constants';
 
 export interface DragUploaderProps extends HTMLAttributes<HTMLDivElement> {
   visible?: boolean;
@@ -65,7 +65,7 @@ const DragUploadOverlay = forwardRef<HTMLInputElement, DragUploaderProps>((
           <Text
             className='message-labels'
             text='Drop here to upload'
-            size={LARGE_FONT_SIZE}
+            size={LARGER_FONT_SIZE}
           />
         </StyledUploadMessageWrapper>
       </StyledDragUploaderShowArea>
