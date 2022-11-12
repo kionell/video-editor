@@ -93,8 +93,7 @@ const StyledGeneralItemPreview = styled.div`
 `;
 
 const StyledGeneralItemDuration = styled(Text)`
-  padding-left: 3px;
-  padding-right: 3px;
+  padding: 2px 4px;
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.7);
   color: white;
