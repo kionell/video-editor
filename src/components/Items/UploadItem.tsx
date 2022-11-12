@@ -13,6 +13,7 @@ const StyledUploadItemWrapper = styled.div`
   border-radius: 6px;
   overflow: hidden;
   border: 2px dashed ${(props) => props.theme.text.normal};
+  transition: 250ms;
 
   .message-icons {
     fill: ${(props) => props.theme.text.normal};
@@ -23,7 +24,7 @@ const StyledUploadItemWrapper = styled.div`
   }
 
   &:hover {
-    background: ${(props) => props.theme.text.darker + '30'};
+    background: ${(props) => props.theme.text.darker + '40'};
     border: 2px dashed ${(props) => props.theme.text.lighter};
 
     .message-icons {
