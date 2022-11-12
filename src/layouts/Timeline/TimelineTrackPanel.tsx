@@ -129,7 +129,7 @@ const TimelineTrackPanel: React.FC = () => {
         />
       </StyledTimelineRulerContainer>
 
-      <TimelineSeeker ref={seekerRef} onMoveX={setCurrentTime} />
+      <TimelineSeeker ref={seekerRef} movementCallback={setCurrentTime} />
 
       <StyledTrackPanelContainer onScroll={handleScroll} ref={scrollbarRef}>
         <StyledTrackControlContainer onClick={handleClick}>

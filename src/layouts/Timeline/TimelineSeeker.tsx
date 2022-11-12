@@ -4,7 +4,7 @@ import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 
 interface SeekerProps extends HTMLAttributes<HTMLDivElement> {
-  onMoveX?: MouseEventHandler;
+  movementCallback?: MouseEventHandler;
 }
 
 const StyledTimelineSeekerHead = styled(Icon)`
@@ -56,16 +56,16 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const stopSeekerMovement = () => {
-    if (props.onMoveX) {
-      document.removeEventListener('mousemove', props.onMoveX as any);
+    if (props.movementCallback) {
+      document.removeEventListener('mousemove', props.movementCallback as any);
     }
 
     document.removeEventListener('mouseup', stopSeekerMovement as any);
   };
 
   const startSeekerMovement = () => {
-    if (props.onMoveX) {
-      document.addEventListener('mousemove', props.onMoveX as any);
+    if (props.movementCallback) {
+      document.addEventListener('mousemove', props.movementCallback as any);
     }
 
     document.addEventListener('mouseup', stopSeekerMovement as any);
