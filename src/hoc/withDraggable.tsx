@@ -15,9 +15,9 @@ interface DraggableState {
 type DraggableCallback = (state: DraggableState) => void;
 
 interface DraggableProps {
-  dragStartCallback: DraggableCallback;
-  dragMoveCallback: DraggableCallback;
-  dragEndCallback: DraggableCallback;
+  dragStartCallback?: DraggableCallback;
+  dragMoveCallback?: DraggableCallback;
+  dragEndCallback?: DraggableCallback;
 }
 
 export const withDraggable = <T, >(Component: React.FC<T>) => {
