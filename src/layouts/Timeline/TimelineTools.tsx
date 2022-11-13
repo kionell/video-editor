@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
 import { TimelineTimecode } from './TimelineTimecode';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
+import { FlexContainer } from '../../components/Containers/FlexContainer';
 
 const StyledTimelineTools = styled.div`
   height: 45px;
@@ -25,6 +26,14 @@ const StyledTimelineToolButton = styled(SecondaryButton)`
   label {
     display: none;
   }
+`;
+
+const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 const TimelineTools: React.FC = () => {
@@ -66,7 +75,9 @@ const TimelineTools: React.FC = () => {
         <StyledTimelineToolButton iconType='Delete' />
       </ButtonGroup>
 
-      <TimelineTimecode />
+      <StyledTimelineTimecodeWrapper>
+        <TimelineTimecode />
+      </StyledTimelineTimecodeWrapper>
 
       <ButtonGroup gap={6}>
         <StyledTimelineToolButton
