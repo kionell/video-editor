@@ -73,11 +73,19 @@ const StyledTimelineElementPreview = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  border-radius: 6px;
-  background-color: ${(props) => props.theme.text.lighter};
-  background-image: linear-gradient(to top, #202020bb 5%, #40404060 50%, transparent 100%);
-  background-repeat: no-repeat;
   pointer-events: none;
+  border-radius: 6px;
+  background-repeat: no-repeat;
+
+  ${(props) => {
+    const baseColor = props.theme.secondary.accent;
+    const highlightColor = props.theme.secondary.hover;
+
+    return css`
+      background-color: ${highlightColor};
+      background-image: linear-gradient(to top, ${baseColor}BB 10%, ${baseColor}60 50%, ${baseColor}20 100%);
+    `;
+  }}
 `;
 
 const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
