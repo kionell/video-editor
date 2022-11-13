@@ -1,13 +1,15 @@
-import { PureComponent } from 'react';
-import { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
-import { PREVIEW_FRAME_WIDTH, SECONDARY_FONT, SMALL_FONT_SIZE } from '../../constants';
-import { DarkTheme } from '../../themes/dark.theme';
+import styled, { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
+import { PureComponent, forwardRef } from 'react';
 import { convertToRef } from '../../utils/react';
-import { TimelinableProps } from './Types/TimelinableProps';
-import { ITimelinableComponent } from './Types/TimelinableComponent';
 import { formatTimelineUnit } from '../../utils/format';
 
-interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> {
+import {
+  PREVIEW_FRAME_WIDTH,
+  SECONDARY_FONT,
+  SMALL_FONT_SIZE,
+} from '../../constants';
+
+interface TimelineRulerProps {
   /**
    * Ruler's height
    * @default 15
@@ -60,33 +62,41 @@ interface TimelineRulerProps extends TimelinableProps, ThemeProps<DefaultTheme> 
   textOffsetY?: number;
 
   /**
+   * Zoom of the current timelinable component.
+   * @default 1
+   */
+  zoom?: number;
+
+  /**
+   * Current scroll position set by component props.
+   * This overwrites scroll method values.
+   * @default undefined
+   */
+  scrollPos?: number;
+
+  /**
    * Function for custom text format.
    * @default undefined
    */
   textFormat?: (scale: number) => string;
 }
 
-class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinableComponent {
-  static defaultProps: TimelineRulerProps = {
-    height: 40,
-    zoom: 1,
-    unit: 1,
-    segments: 1,
-    longLineSize: 14,
-    shortLineSize: 8,
-    offsetX: 40,
-    textOffsetX: -32,
-    textOffsetY: 20,
-    theme: DarkTheme,
-    textFormat: formatTimelineUnit,
-  };
+type ThemedRulerProps = TimelineRulerProps & ThemeProps<DefaultTheme>;
 
+const StyledTimelineRulerContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: ${(props) => props.theme.secondary.surface};
+`;
+
+class BaseTimelineRuler extends PureComponent<ThemedRulerProps> {
   state = {
     scrollPos: 0,
   };
 
   declare canvasElement: HTMLCanvasElement;
-  declare private canvasContext: CanvasRenderingContext2D | null;
+  declare canvasContext: CanvasRenderingContext2D | null;
   private width = 0;
   private height = 0;
   private zoom = 1;
@@ -111,7 +121,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
     const {
       height,
       scrollPos,
-    } = this.props as Required<TimelineRulerProps>;
+    } = this.props as Required<ThemedRulerProps>;
 
     const offsetParent = canvas.offsetParent as HTMLDivElement;
 
@@ -129,7 +139,7 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
 
     if (!this.canvasContext) return;
 
-    const props = this.props as Required<TimelineRulerProps>;
+    const props = this.props as Required<ThemedRulerProps>;
     const width = this.width;
     const height = this.height;
     const context = this.canvasContext;
@@ -238,4 +248,29 @@ class BaseRuler extends PureComponent<TimelineRulerProps> implements ITimelinabl
   }
 }
 
-export const TimelineRuler = withTheme(BaseRuler);
+const ThemedTimelineRuler = withTheme(BaseTimelineRuler);
+
+const TimelineRuler = forwardRef<HTMLDivElement, TimelineRulerProps>((props, ref) => {
+  return (
+    <StyledTimelineRulerContainer ref={ref} >
+      <ThemedTimelineRuler {...props} />
+    </StyledTimelineRulerContainer>
+  );
+});
+
+TimelineRuler.displayName = 'Timeline Ruler';
+
+TimelineRuler.defaultProps = {
+  height: 40,
+  zoom: 1,
+  unit: 1,
+  segments: 1,
+  longLineSize: 14,
+  shortLineSize: 8,
+  offsetX: 40,
+  textOffsetX: -32,
+  textOffsetY: 20,
+  textFormat: formatTimelineUnit,
+}
+
+export { TimelineRuler };

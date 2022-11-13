@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineTools } from './TimelineTools';
-import { TimelinePanel } from './TimelinePanel';
-import { TimelinePanelPlaceholder } from './TimelinePanelPlaceholder';
+import { TimelineTrackpad } from './TimelineTrackpad';
+import { TimelineTrackpadPlaceholder } from './TimelineTrackpadPlaceholder';
 
 const StyledTimeline = styled.div`
   width: 100%;
@@ -21,8 +21,8 @@ const Timeline: React.FC = () => {
       <TimelineTools />
       {
         timeline.tracks.length > 0
-          ? <TimelinePanel />
-          : <TimelinePanelPlaceholder />
+          ? <TimelineTrackpad />
+          : <TimelineTrackpadPlaceholder />
       }
     </StyledTimeline>
   );

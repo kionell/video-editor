@@ -7,9 +7,9 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/timelineSlice';
 import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
-import { TimelineTrackPanel } from './TimelineTrackPanel';
+import { TimelineTrackArea } from './TimelineTrackArea';
 
-const StyledTimelineContainer = styled(FlexContainer)`
+const StyledTimelineTrackpadContainer = styled(FlexContainer)`
   height: 100%;
   flex-direction: column;
   gap: 0px;
@@ -18,14 +18,7 @@ const StyledTimelineContainer = styled(FlexContainer)`
   overflow: hidden;
 `;
 
-const StyledTimelineRulerContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 40px;
-  background-color: ${(props) => props.theme.secondary.surface};
-`;
-
-const TimelinePanel: React.FC = () => {
+const TimelineTrackpad: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
   const dispatch = useAppDispatch();
 
@@ -83,20 +76,19 @@ const TimelinePanel: React.FC = () => {
   useEffect(updatePosByTime, [timeline.currentZoom]);
 
   return (
-    <StyledTimelineContainer onClick={setSeekerPosition}>
-      <StyledTimelineRulerContainer ref={rulerRef}>
-        <TimelineRuler
-          unit={timeline.currentZoom.unit}
-          segments={timeline.currentZoom.segments}
-          zoom={timeline.currentZoom.zoom}
-          scrollPos={timeline.currentScroll}
-        />
-      </StyledTimelineRulerContainer>
+    <StyledTimelineTrackpadContainer onClick={setSeekerPosition}>
+      <TimelineRuler
+        unit={timeline.currentZoom.unit}
+        segments={timeline.currentZoom.segments}
+        zoom={timeline.currentZoom.zoom}
+        scrollPos={timeline.currentScroll}
+        ref={rulerRef}
+      />
 
       <TimelineSeeker ref={seekerRef} movementCallback={setCurrentTime} />
-      <TimelineTrackPanel ref={scrollbarRef} onScroll={handleScroll} />
-    </StyledTimelineContainer>
+      <TimelineTrackArea ref={scrollbarRef} onScroll={handleScroll} />
+    </StyledTimelineTrackpadContainer>
   );
 };
 
-export { TimelinePanel };
+export { TimelineTrackpad };

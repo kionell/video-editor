@@ -11,7 +11,7 @@ interface TimelineScrollableProps {
   onScroll?: React.UIEventHandler<any>;
 }
 
-const StyledTimelineTrackPanel = styled(ScrollableContainer)`
+const StyledTimelineTrackArea = styled(ScrollableContainer)`
   height: 100%;
   flex-wrap: nowrap;
   gap: 0px;
@@ -34,7 +34,7 @@ const StyledTrackControlContainer = styled(StyledTimelineTrackContainer)`
 
 const StyledTrackContainer = styled(StyledTimelineTrackContainer)``;
 
-const TimelineTrackPanel = forwardRef<Scrollbars, TimelineScrollableProps>((
+const TimelineTrackArea = forwardRef<Scrollbars, TimelineScrollableProps>((
   props: TimelineScrollableProps,
   ref: ForwardedRef<Scrollbars>,
 ) => {
@@ -53,7 +53,7 @@ const TimelineTrackPanel = forwardRef<Scrollbars, TimelineScrollableProps>((
   }, [timeline.width]);
 
   return (
-    <StyledTimelineTrackPanel onScroll={props.onScroll} ref={ref}>
+    <StyledTimelineTrackArea onScroll={props.onScroll} ref={ref}>
       <StyledTrackControlContainer onClick={handleClick}>
         {
           timeline.tracks.map((track, i) => {
@@ -69,10 +69,10 @@ const TimelineTrackPanel = forwardRef<Scrollbars, TimelineScrollableProps>((
           })
         }
       </StyledTrackContainer>
-    </StyledTimelineTrackPanel>
+    </StyledTimelineTrackArea>
   );
 });
 
-TimelineTrackPanel.displayName = 'Timeline Track Panel';
+TimelineTrackArea.displayName = 'Timeline Track Area';
 
-export { TimelineTrackPanel };
+export { TimelineTrackArea };

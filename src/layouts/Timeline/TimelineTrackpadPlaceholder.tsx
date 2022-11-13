@@ -1,32 +1,31 @@
 import styled from 'styled-components';
+import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Text } from '../../components/Text';
 import { LARGER_FONT_SIZE } from '../../constants';
 
-const StyledTimelinePlaceholderArea = styled.div`
+const StyledTimelineTrackpadPlaceholderContainer = styled(FlexContainer)`
   width: 100%;
   height: 100%;
-  position: relative;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
 `;
 
-const StyledTimelinePlaceholder = styled(Text)`
+const StyledTimelineTrackpadPlaceholder = styled(Text)`
   align-self: center;
   color: ${(props) => props.theme.text.darker};
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
-const TimelinePanelPlaceholder: React.FC = () => {
+const TimelineTrackpadPlaceholder: React.FC = () => {
   return (
-    <StyledTimelinePlaceholderArea>
-      <StyledTimelinePlaceholder
+    <StyledTimelineTrackpadPlaceholderContainer>
+      <StyledTimelineTrackpadPlaceholder
         text='Add files to timeline to start'
         size={LARGER_FONT_SIZE}
       />
-    </StyledTimelinePlaceholderArea>
+    </StyledTimelineTrackpadPlaceholderContainer>
   );
 };
 
-export { TimelinePanelPlaceholder };
+export { TimelineTrackpadPlaceholder };
