@@ -18,7 +18,7 @@ const StyledTimelinePlaceholder = styled(Text)`
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
-const TimelineTrackPanelPlaceholder: React.FC = () => {
+const TimelinePanelPlaceholder: React.FC = () => {
   return (
     <StyledTimelinePlaceholderArea>
       <StyledTimelinePlaceholder
@@ -29,4 +29,4 @@ const TimelineTrackPanelPlaceholder: React.FC = () => {
   );
 };
 
-export { TimelineTrackPanelPlaceholder };
+export { TimelinePanelPlaceholder };
