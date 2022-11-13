@@ -30,10 +30,11 @@ const StyledTimelineToolButton = styled(SecondaryButton)`
 
 const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
   position: absolute;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  padding: 0px;
+  gap: 0px;
 `;
 
 const TimelineTools: React.FC = () => {
