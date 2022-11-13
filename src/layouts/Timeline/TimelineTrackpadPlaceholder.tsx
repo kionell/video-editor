@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Text } from '../../components/Text';
-import { LARGER_FONT_SIZE } from '../../constants';
+import { LARGE_FONT_SIZE } from '../../constants';
 
 const StyledTimelineTrackpadPlaceholderContainer = styled(FlexContainer)`
   width: 100%;
@@ -22,7 +22,7 @@ const TimelineTrackpadPlaceholder: React.FC = () => {
     <StyledTimelineTrackpadPlaceholderContainer>
       <StyledTimelineTrackpadPlaceholder
         text='Add files to timeline to start'
-        size={LARGER_FONT_SIZE}
+        size={LARGE_FONT_SIZE}
       />
     </StyledTimelineTrackpadPlaceholderContainer>
   );
