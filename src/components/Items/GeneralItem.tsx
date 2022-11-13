@@ -53,7 +53,11 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   padding: 5px;
   align-items: flex-end;
   border-radius: 6px;
-  
+  border: none;
+  outline: 2px solid;
+  outline-color: transparent;
+  transition: outline-color 150ms;
+
   justify-content: ${(props) => {
     return props.file?.hasDuration || props.showDuration
       ? 'space-between'
@@ -67,6 +71,8 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   }
 
   &:hover {
+    outline-color: ${(props) => props.theme.primary.hover};
+    
     .button-wrapper {
       opacity: 1;
     }
@@ -85,13 +91,6 @@ const StyledGeneralItemPreview = styled.div`
   top: 0;
   bottom: 0;
   border-radius: 6px;
-  border: 2px solid;
-  border-color: transparent;
-  transition: border-color 150ms;
-  
-  &:hover {
-    border-color: ${(props) => props.theme.primary.hover};
-  }
 `;
 
 const StyledGeneralItemDuration = styled(Text)`
