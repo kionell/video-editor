@@ -72,6 +72,7 @@ const IconWrapper = styled.div<IconProps>`
   justify-content: center; 
   align-items: center;
   pointer-events: none;
+  cursor: inherit;
 
   & > * {
     width: 100%;
