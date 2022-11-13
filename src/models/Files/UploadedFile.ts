@@ -42,6 +42,10 @@ export abstract class UploadedFile {
     this.lastModified = file.lastModified;
   }
 
+  remove(): void {
+    URL.revokeObjectURL(this.url);
+  }
+
   equals(other: UploadedFile): boolean {
     return this.name === other.name
       && this.type === other.type

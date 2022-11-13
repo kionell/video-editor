@@ -24,7 +24,11 @@ const fileSlice = createSlice({
     removeFile(state, action: PayloadAction<UploadedFile>) {
       const index = state.list.findIndex((f) => f.equals(action.payload));
 
-      if (index !== -1) state.list.splice(index, 1);
+      if (index !== -1) {
+        const file = state.list.splice(index, 1);
+
+        if (file[0]) file[0].remove();
+      }
     },
   },
 });
