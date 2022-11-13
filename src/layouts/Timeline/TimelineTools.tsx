@@ -4,7 +4,7 @@ import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
-import { TimelineTime } from './TimelineTime';
+import { TimelineTimecode } from './TimelineTimecode';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 
 const StyledTimelineTools = styled.div`
@@ -66,7 +66,7 @@ const TimelineTools: React.FC = () => {
         <StyledTimelineToolButton iconType='Delete' />
       </ButtonGroup>
 
-      <TimelineTime />
+      <TimelineTimecode />
 
       <ButtonGroup gap={6}>
         <StyledTimelineToolButton

@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { formatTimeMs } from '../../utils/format';
 
-const StyledTimeContainer = styled(FlexContainer)`
+const StyledTimecodeContainer = styled(FlexContainer)`
   position: relative;
   padding: 0px;
   justify-content: space-between;
@@ -13,11 +13,11 @@ const StyledTimeContainer = styled(FlexContainer)`
   box-sizing: content-box;
 `;
 
-const StyledTimeLabel = styled(Text)`
+const StyledTimecodeLabel = styled(Text)`
   color: ${(props) => props.theme.text.lighter};
 `;
 
-const TimelineTime: React.FC = () => {
+const TimelineTimecode: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
 
   const currentTimeRef = useRef<HTMLLabelElement>(null);
@@ -36,18 +36,18 @@ const TimelineTime: React.FC = () => {
   }, [timeline.totalLengthMs]);
 
   return (
-    <StyledTimeContainer>
-      <StyledTimeLabel
+    <StyledTimecodeContainer>
+      <StyledTimecodeLabel
         text={formatTimeMs()}
         ref={currentTimeRef}
       />
-      <StyledTimeLabel text='/' />
-      <StyledTimeLabel
+      <StyledTimecodeLabel text='/' />
+      <StyledTimecodeLabel
         text={formatTimeMs()}
         ref={durationRef}
       />
-    </StyledTimeContainer>
+    </StyledTimecodeContainer>
   );
 };
 
-export { TimelineTime };
+export { TimelineTimecode };
