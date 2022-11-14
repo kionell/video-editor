@@ -15,6 +15,11 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
   index: number;
 
   /**
+   * A unique ID for this timeline track.
+   */
+  uniqueId = crypto.randomUUID();
+
+  /**
    * Type of this media.
    */
   type: MediaType;

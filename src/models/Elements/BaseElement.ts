@@ -32,6 +32,11 @@ export abstract class BaseElement {
    */
   type: MediaType = MediaType.Unknown;
 
+  /**
+   * A unique ID for this element.
+   */
+  uniqueId = crypto.randomUUID();
+
   protected _durationMs: number | null = null;
 
   /**
