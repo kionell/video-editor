@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BaseElement } from '../../models/Elements/BaseElement';
 import { ITimelineZoomLevel } from '../../models/Timeline/ITimelineZoomLevel';
 import { Timeline } from '../../models/Timeline/Timeline';
@@ -140,8 +140,6 @@ const timelineSlice = createSlice({
           track.index = index;
         });
       }
-
-      console.log(current(state));
     },
 
     addElement(state, action: PayloadAction<AddElementOperation>) {
