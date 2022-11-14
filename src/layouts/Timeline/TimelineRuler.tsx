@@ -7,6 +7,7 @@ import {
   PREVIEW_FRAME_WIDTH,
   SECONDARY_FONT,
   SMALL_FONT_SIZE,
+  TIMELINE_OFFSET_X,
 } from '../../constants';
 
 interface TimelineRulerProps {
@@ -267,7 +268,7 @@ TimelineRuler.defaultProps = {
   segments: 1,
   longLineSize: 14,
   shortLineSize: 8,
-  offsetX: 40,
+  offsetX: TIMELINE_OFFSET_X,
   textOffsetX: -32,
   textOffsetY: 20,
   textFormat: formatTimelineUnit,

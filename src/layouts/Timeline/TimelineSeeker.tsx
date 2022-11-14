@@ -2,6 +2,7 @@ import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } fr
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
+import { TIMELINE_OFFSET_X } from '../../constants';
 
 interface SeekerProps extends HTMLAttributes<HTMLDivElement> {
   movementCallback?: MouseEventHandler;
@@ -19,7 +20,7 @@ const StyledTimelineSeekerLine = styled.div`
 
 const StyledTimelineSeekerWrapper = styled.div`
   height: 100%;
-  translate: calc(-50% + 40px);
+  translate: calc(-50% + ${TIMELINE_OFFSET_X}px);
   position: absolute;
   display: inline-flex;
   flex-direction: column;

@@ -8,6 +8,7 @@ import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/timelin
 import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
 import { TimelineTrackArea } from './TimelineTrackArea';
+import { TIMELINE_OFFSET_X } from '../../constants';
 
 const StyledTimelineTrackpadContainer = styled(FlexContainer)`
   height: 100%;
@@ -38,7 +39,7 @@ const TimelineTrackpad: React.FC = () => {
   const setSeekerPosition = (event: MouseEvent<HTMLDivElement>) => {
     if (!seekerRef.current || !scrollbarRef.current) return;
 
-    const clientX = event.clientX - 40;
+    const clientX = event.clientX - TIMELINE_OFFSET_X;
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);

@@ -118,3 +118,4 @@ export const DEFAULT_WEIGHT = 'Regular';
 export const SECONDARY_FONT = 'sans-serif';
 
 export const PREVIEW_FRAME_WIDTH = 88;
+export const TIMELINE_OFFSET_X = 40;
