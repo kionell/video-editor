@@ -57,7 +57,13 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
   useUpdateEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    ref.current.classList.toggle('toggled');
+    if (toggled && !ref.current.classList.contains('toggled')) {
+      ref.current.classList.add('toggled');
+    }
+
+    if (!toggled && ref.current.classList.contains('toggled')) {
+      ref.current.classList.remove('toggled');
+    }
   }, [toggled]);
 
   return (
