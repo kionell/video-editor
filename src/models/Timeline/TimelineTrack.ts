@@ -22,13 +22,13 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
   /**
    * Type of this media.
    */
-  type: MediaType;
+  type: MediaType = MediaType.Unknown;
 
   private _elements: T[] = [];
 
-  constructor(index: number, type: MediaType) {
+  constructor(index: number, type?: MediaType) {
     this.index = index;
-    this.type = type;
+    this.type = type ?? this.type;
   }
 
   /**
