@@ -1,38 +1,37 @@
 import styled from 'styled-components';
 import Scrollbars from 'react-custom-scrollbars-2';
-import { ForwardedRef, forwardRef, MouseEvent, useEffect, useRef } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
 import { ScrollableContainer } from '../../components/Containers/ScrollableContainer';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { TimelineTrack } from './TimelineTrack';
-import { TimelineTrackControl } from './TimelineTrackControl';
+import { TimelineRow } from './TimelineRow';
+import { FlexContainer } from '../../components/Containers/FlexContainer';
+import { TIMELINE_OFFSET_X } from '../../constants';
 
 interface TimelineScrollableProps {
   onScroll?: React.UIEventHandler<any>;
 }
 
 const StyledTimelineTrackArea = styled(ScrollableContainer)`
-  height: 100%;
-  flex-wrap: nowrap;
-  gap: 0px;
+  min-width: 100%;
   padding: 0px;
+  gap: 0px;
+  user-select: none;
 `;
 
-const StyledTimelineTrackContainer = styled(FlexContainer)`
-  flex-direction: column;
-  padding: 6px 0px;
-`;
-
-const StyledTrackControlContainer = styled(StyledTimelineTrackContainer)`
-  position: relative;
-  width: 40px;
-  left: 0px;
-  flex-grow: 0;
-  flex-shrink: 0;
+const StyledTimelineTrackControlBackground = styled.div`
+  position: absolute;
+  width: ${TIMELINE_OFFSET_X}px;
+  height: 100%;
   background-color: ${(props) => props.theme.secondary.surface};
 `;
 
-const StyledTrackContainer = styled(StyledTimelineTrackContainer)``;
+const StyledTimelineTrackWrapper = styled(FlexContainer)`
+  min-width: 100%;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 0px;
+`;
 
 const TimelineTrackArea = forwardRef<Scrollbars, TimelineScrollableProps>((
   props: TimelineScrollableProps,
@@ -42,33 +41,22 @@ const TimelineTrackArea = forwardRef<Scrollbars, TimelineScrollableProps>((
 
   const trackAreaRef = useRef<HTMLDivElement>(null);
 
-  const handleClick = (event: MouseEvent) => {
-    event.stopPropagation();
-  };
-
   useEffect(() => {
-    if (!trackAreaRef.current) return;
+    if (!trackAreaRef?.current) return;
 
-    trackAreaRef.current.style.width = `calc(100% + ${timeline.width}px)`;
+    trackAreaRef.current.style.width = timeline.width + 'px';
   }, [timeline.width]);
 
   return (
-    <StyledTimelineTrackArea onScroll={props.onScroll} ref={ref}>
-      <StyledTrackControlContainer onClick={handleClick}>
-        {
-          timeline.tracks.map((track, i) => {
-            return <TimelineTrackControl track={track} key={i} />;
-          })
-        }
-      </StyledTrackControlContainer>
-
-      <StyledTrackContainer ref={trackAreaRef}>
+    <StyledTimelineTrackArea onScroll={props.onScroll} ref={ref} innerRef={trackAreaRef}>
+      <StyledTimelineTrackControlBackground />
+      <StyledTimelineTrackWrapper>
         {
           timeline.tracks.map((track) => {
-            return <TimelineTrack track={track} key={track.index}/>;
+            return <TimelineRow track={track} key={track.index}/>;
           })
         }
-      </StyledTrackContainer>
+      </StyledTimelineTrackWrapper>
     </StyledTimelineTrackArea>
   );
 });
