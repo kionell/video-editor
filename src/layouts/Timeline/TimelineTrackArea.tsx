@@ -53,7 +53,10 @@ const TimelineTrackArea = forwardRef<Scrollbars, TimelineScrollableProps>((
       <StyledTimelineTrackWrapper>
         {
           timeline.tracks.map((track) => {
-            return <TimelineRow track={track} key={track.index}/>;
+            // Combination of track index and unique ID should do the trick.
+            const uniqueKey = `${track.index}_${track.uniqueId}`;
+
+            return <TimelineRow track={track} key={uniqueKey} />;
           })
         }
       </StyledTimelineTrackWrapper>
