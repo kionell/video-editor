@@ -1,44 +1,56 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 import { BaseElement } from '../../models/Elements/BaseElement';
 import { ITimelineZoomLevel } from '../../models/Timeline/ITimelineZoomLevel';
 import { Timeline } from '../../models/Timeline/Timeline';
 import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
+import { clamp } from '../../utils/math';
 
 const initialState: Timeline = new Timeline();
 
-interface TrackAddOperation {
+interface AddTrackOperation {
   track: TimelineTrack;
 }
 
-interface TrackRemoveOperation {
-  track?: TimelineTrack;
-  index?: number;
+interface RemoveTrackOperation {
+  track: TimelineTrack;
 }
 
-interface TrackMoveOperation {
-  track?: TimelineTrack;
-  fromIndex?: number;
+interface RemoveTrackByIndexOperation {
+  index: number;
+}
+
+interface MoveTrackOperation {
+  track: TimelineTrack;
   toIndex: number;
 }
 
-interface ElementAddOperation {
-  track?: TimelineTrack;
-  trackIndex?: number;
+interface MoveTrackByIndexOperation {
+  fromIndex: number;
+  toIndex: number;
+}
+
+interface AddElementOperation {
+  track: TimelineTrack;
   element: BaseElement;
 }
 
-interface ElementRemoveOperation {
-  track?: TimelineTrack;
-  trackIndex?: number;
-  element?: BaseElement;
-  timeMs?: number;
+interface AddElementByIndexOperation {
+  trackIndex: number;
+  element: BaseElement;
 }
 
-interface ElementMoveOperation {
-  track?: TimelineTrack;
-  trackIndex?: number;
-  element?: BaseElement;
-  fromMs?: number;
+interface RemoveElementOperation {
+  track: TimelineTrack;
+  trackIndex: number;
+  element: BaseElement;
+  timeMs: number;
+}
+
+interface MoveElementOperation {
+  track: TimelineTrack;
+  trackIndex: number;
+  element: BaseElement;
+  fromMs: number;
   toMs: number;
 }
 
@@ -46,60 +58,134 @@ const timelineSlice = createSlice({
   name: 'timeline',
   initialState,
   reducers: {
-    setCurrentTimeMs(state, action: PayloadAction<number>) {
-      state.currentTimeMs = action.payload;
+    setSnapMode(state, action: PayloadAction<boolean>) {
+      state.snapMode = action.payload;
     },
 
-    setCurrentZoom(state, action: PayloadAction<ITimelineZoomLevel>) {
-      state.currentZoom = action.payload;
+    setCurrentTimeMs(state, action: PayloadAction<number>) {
+      state.currentTimeMs = action.payload;
     },
 
     setCurrentScroll(state, action: PayloadAction<number>) {
       state.currentScroll = action.payload;
     },
 
-    setSnapMode(state, action: PayloadAction<boolean>) {
-      state.snapMode = action.payload;
+    setCurrentZoom(state, action: PayloadAction<ITimelineZoomLevel>) {
+      state.currentZoom = action.payload;
     },
 
-    addTrack(state, action: PayloadAction<TrackAddOperation>) {
-      state.addTrack(action.payload.track);
+    addTrack(state, action: PayloadAction<AddTrackOperation>) {
+      const track = action.payload.track;
+
+      state.tracks.splice(track.index, 0, track);
+
+      state.tracks.forEach((track, index) => {
+        track.index = index;
+      });
     },
 
-    removeTrack(state, action: PayloadAction<TrackRemoveOperation>) {
-      if (action.payload.track) {
-        state.removeTrack(action.payload.track);
+    removeTrack(state, action: PayloadAction<RemoveTrackOperation>) {
+      const track = action.payload.track;
+      const index = state.tracks.findIndex((t) => t.index === track.index);
+
+      if (index >= 0 && index < state.totalTracks) {
+        state.tracks.splice(index, 1);
+
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
       }
-      else if (typeof action.payload.index === 'number') {
-        state.removeTrackByIndex(action.payload.index);
+    },
+
+    removeTrackByIndex(state, action: PayloadAction<RemoveTrackByIndexOperation>) {
+      const index = action.payload.index;
+
+      if (index >= 0 && index < state.totalTracks) {
+        state.tracks.splice(index, 1);
+
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
       }
     },
 
-    moveTrack(state, action: PayloadAction<TrackMoveOperation>) {
-      const payload = action.payload;
+    moveTrack(state, action: PayloadAction<MoveTrackOperation>) {
+      const track = action.payload.track;
+      const fromIndex = track.index;
+      const toIndex = action.payload.toIndex;
 
-      if (payload.track) {
-        state.moveTrack(payload.track, payload.toIndex);
-      }
-      else if (typeof payload.fromIndex === 'number') {
-        state.moveTrackByIndex(payload.fromIndex, payload.toIndex);
+      if (fromIndex >= 0 && fromIndex < state.totalTracks) {
+        const index = clamp(toIndex, 0, state.totalTracks - 1);
+        const track = state.tracks.splice(fromIndex, 1);
+
+        state.tracks.splice(index, 0, track[0]);
+
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
       }
     },
 
-    addElement(state, action: PayloadAction<ElementAddOperation>) {
-      const payload = action.payload;
+    moveTrackByIndex(state, action: PayloadAction<MoveTrackByIndexOperation>) {
+      const fromIndex = action.payload.fromIndex;
+      const toIndex = action.payload.toIndex;
 
-      if (!payload.element) return;
+      if (fromIndex >= 0 && fromIndex < state.totalTracks) {
+        const index = clamp(toIndex, 0, state.totalTracks - 1);
+        const track = state.tracks.splice(fromIndex, 1);
 
-      const element = payload.element;
-      const track = payload.track
-        ?? state.getTrackByIndex(payload.trackIndex as number)
-        ?? state.addTrack(new TimelineTrack(0, element.type));
+        state.tracks.splice(index, 0, track[0]);
 
-      track.addElement(payload.element);
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
+      }
+
+      console.log(current(state));
     },
 
-    removeElement(state, action: PayloadAction<ElementRemoveOperation>) {
+    addElement(state, action: PayloadAction<AddElementOperation>) {
+      const element = action.payload.element;
+      const track = action.payload.track;
+
+      if (track) {
+        track.addElement(element);
+      }
+      else {
+        const newTrack = new TimelineTrack(0, element.type);
+
+        state.tracks.splice(newTrack.index, 0, newTrack);
+
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
+
+        newTrack.addElement(element);
+      }
+    },
+
+    addElementByIndex(state, action: PayloadAction<AddElementByIndexOperation>) {
+      const element = action.payload.element;
+      const trackIndex = action.payload.trackIndex;
+      const track = state.getTrackByIndex(trackIndex);
+
+      if (track) {
+        track.addElement(element);
+      }
+      else {
+        const newTrack = new TimelineTrack(0, element.type);
+
+        state.tracks.splice(newTrack.index, 0, newTrack);
+
+        state.tracks.forEach((track, index) => {
+          track.index = index;
+        });
+
+        newTrack.addElement(element);
+      }
+    },
+
+    removeElement(state, action: PayloadAction<RemoveElementOperation>) {
       const payload = action.payload;
 
       if (!payload.track && typeof payload.trackIndex !== 'number') return;
@@ -117,7 +203,7 @@ const timelineSlice = createSlice({
       }
     },
 
-    moveElement(state, action: PayloadAction<ElementMoveOperation>) {
+    moveElement(state, action: PayloadAction<MoveElementOperation>) {
       const payload = action.payload;
 
       if (!payload.track && typeof payload.trackIndex !== 'number') return;
@@ -138,14 +224,17 @@ const timelineSlice = createSlice({
 });
 
 export const {
-  setCurrentTimeMs,
-  setCurrentZoom,
-  setCurrentScroll,
   setSnapMode,
+  setCurrentTimeMs,
+  setCurrentScroll,
+  setCurrentZoom,
   addTrack,
   removeTrack,
+  removeTrackByIndex,
   moveTrack,
+  moveTrackByIndex,
   addElement,
+  addElementByIndex,
   removeElement,
   moveElement,
 } = timelineSlice.actions;
