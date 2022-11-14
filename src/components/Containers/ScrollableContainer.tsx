@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, RefObject } from 'react';
 import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars-2';
 import { FlexProps, FlexContainer } from './FlexContainer';
 
-type ScrollableProps = FlexProps | ScrollbarProps;
+type ScrollableProps = FlexProps & ScrollbarProps & {
+  innerRef?: RefObject<HTMLDivElement>;
+};
 
 const StyledScrollbars = styled(Scrollbars)`
   width: 100%;
@@ -24,14 +26,16 @@ const ScrollableContainer = forwardRef<Scrollbars, ScrollableProps>((
   props: ScrollableProps,
   ref: ForwardedRef<Scrollbars>,
 ) => {
+  const { onScroll, innerRef, ...rest } = props;
+
   return (
     <StyledScrollbars
       hideTracksWhenNotNeeded
       autoHide
-      onScroll={props.onScroll}
+      onScroll={onScroll}
       ref={ref}
     >
-      <FlexContainer {...props as FlexProps} />
+      <FlexContainer {...rest } ref={innerRef} />
     </StyledScrollbars>
   );
 });
