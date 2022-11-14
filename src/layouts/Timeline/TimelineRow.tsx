@@ -2,7 +2,7 @@ import React, { createRef, HTMLAttributes, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Text } from '../../components/Text';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { TimelineTrack as TrackModel } from '../../models/Timeline/TimelineTrack';
+import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker } from '../../utils/position';
@@ -10,7 +10,7 @@ import { moveTrackByIndex } from '../../store/Reducers/timelineSlice';
 import { useAppDispatch } from '../../hooks';
 
 interface TimelineTrackProps extends HTMLAttributes<HTMLDivElement> {
-  track: TrackModel;
+  track: TimelineTrack;
 }
 
 const StyledTimelineTrackControl = styled(FlexContainer)`

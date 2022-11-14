@@ -84,6 +84,10 @@ const timelineSlice = createSlice({
       });
     },
 
+    pushTrack(state) {
+      state.tracks.push(new TimelineTrack(state.totalTracks));
+    },
+
     removeTrack(state, action: PayloadAction<RemoveTrackOperation>) {
       const track = action.payload.track;
       const index = state.tracks.findIndex((t) => t.index === track.index);
@@ -227,6 +231,7 @@ export const {
   setCurrentScroll,
   setCurrentZoom,
   addTrack,
+  pushTrack,
   removeTrack,
   removeTrackByIndex,
   moveTrack,

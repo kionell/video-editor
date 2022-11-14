@@ -2,13 +2,10 @@ import styled from 'styled-components';
 import { forwardRef } from 'react';
 import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
-import { Icon } from '../Icon';
+import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
 import { withClickable } from '../../hoc';
-import {
-  SMALL_FONT_SIZE,
-  LARGE_ICON_SIZE,
-} from '../../constants';
+import { SMALL_FONT_SIZE } from '../../constants';
 
 interface FlatButtonProps extends ButtonProps {
   showBackground?: boolean;
@@ -52,7 +49,7 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
 `;
 
 const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
-  const { showIcon, iconType, showLabel, label, toggled } = props;
+  const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
 
   useUpdateEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
@@ -71,7 +68,7 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
       <Icon
         visible={showIcon}
         variant={iconType}
-        size={LARGE_ICON_SIZE}
+        size={getIconSizeBySizeType(iconSize)}
       />
       <Text
         visible={showLabel}
@@ -87,6 +84,7 @@ BaseFlatButton.displayName = 'Flat Button';
 
 BaseFlatButton.defaultProps = {
   showBackground: false,
+  iconSize: 'Large',
   width: 70,
   height: 70,
 };

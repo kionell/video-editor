@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineRow } from './TimelineRow';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { TIMELINE_OFFSET_X } from '../../constants';
+import { TimelineRowAddButton } from './TimelineRowAddButton';
 
 interface TimelineScrollableProps {
   onScroll?: React.UIEventHandler<any>;
@@ -59,6 +60,7 @@ const TimelineTrackArea = forwardRef<Scrollbars, TimelineScrollableProps>((
             return <TimelineRow track={track} key={uniqueKey} />;
           })
         }
+        <TimelineRowAddButton />
       </StyledTimelineTrackWrapper>
     </StyledTimelineTrackArea>
   );
