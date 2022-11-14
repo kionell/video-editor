@@ -6,7 +6,7 @@ import { TimelineTrack as TrackModel } from '../../models/Timeline/TimelineTrack
 import { TimelineElement } from './TimelineElement';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker } from '../../utils/position';
-import { moveTrack } from '../../store/Reducers/timelineSlice';
+import { moveTrackByIndex } from '../../store/Reducers/timelineSlice';
 import { useAppDispatch } from '../../hooks';
 
 interface TimelineTrackProps extends HTMLAttributes<HTMLDivElement> {
@@ -104,6 +104,13 @@ const TimelineRow: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) =>
       }
     });
 
+    // Element is at the end of the sortable list.
+    if (state.index === -1) {
+      // This list doesn't have current dragging element.
+      state.index = draggableElements.length;
+      state.element = draggableElements[state.index - 1];
+    }
+
     return state;
   }
 
@@ -117,26 +124,26 @@ const TimelineRow: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) =>
   const onMouseUp = (event: MouseEvent) => {
     event.preventDefault();
 
-    rowContainer.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    position = tracker.update(event);
 
-    if (rowElement.classList.contains('dragging')) {
-      rowElement.classList.remove('dragging');
+    const state = findAfterState();
+
+    if (state.index !== track.index) {
+      dispatch(moveTrackByIndex({
+        fromIndex: track.index,
+        toIndex: state.index,
+      }));
     }
 
     rowElement.style.zIndex = zIndex;
     rowElement.style.top = '';
 
-    position = tracker.update(event);
+    if (rowElement.classList.contains('dragging')) {
+      rowElement.classList.remove('dragging');
+    }
 
-    const state = findAfterState();
-
-    if (state.index === track.index) return;
-
-    dispatch(moveTrack({
-      fromIndex: track.index,
-      toIndex: state.index,
-    }))
+    rowContainer.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
   }
 
   const onMouseDown = (event: MouseEvent) => {
@@ -170,7 +177,7 @@ const TimelineRow: React.FC<TimelineTrackProps> = (props: TimelineTrackProps) =>
 
   return (
     <StyledTimelineRow className='timeline-row'>
-      <StyledTimelineTrackControl ref={controlRef} key={track.index}>
+      <StyledTimelineTrackControl ref={controlRef}>
         <StyledTrackNumber text={`${track.index + 1}`} />
       </StyledTimelineTrackControl>
 
