@@ -91,8 +91,8 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
       }
 
       translate(
-        position.startPageX - position.startOffsetX + position.offsetX,
-        position.startPageY - position.startOffsetY + position.offsetY,
+        position.startPageX - position.startOffsetX + position.relativeX,
+        position.startPageY - position.startOffsetY + position.relativeY,
       );
 
       emitter.trigger('move', {

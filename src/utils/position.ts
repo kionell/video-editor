@@ -14,15 +14,19 @@ interface IPositionTrackerState {
   pageY: number;
   offsetX: number;
   offsetY: number;
+  relativeX: number;
+  relativeY: number;
   isOutside: boolean;
   isChanged: boolean;
 }
 
+type PositionEvent = MouseEvent | DragEvent | TouchEvent;
+
 interface IPositionTracker {
-  update(event: DragEvent | TouchEvent): IPositionTrackerState;
+  update(event: PositionEvent): IPositionTrackerState;
 }
 
-export function createPositionTracker(event: DragEvent | TouchEvent): IPositionTracker {
+export function createPositionTracker(event: PositionEvent): IPositionTracker {
   const state: IPositionTrackerState = {
     startPageX: 0,
     startPageY: 0,
@@ -32,6 +36,8 @@ export function createPositionTracker(event: DragEvent | TouchEvent): IPositionT
     pageY: 0,
     offsetX: 0,
     offsetY: 0,
+    relativeX: 0,
+    relativeY: 0,
     isOutside: false,
     isChanged: false,
   };
@@ -46,13 +52,15 @@ export function createPositionTracker(event: DragEvent | TouchEvent): IPositionT
   state.startOffsetY = eventPosition.offsetY;
 
   return {
-    update(event: DragEvent | TouchEvent): IPositionTrackerState {
+    update(event: PositionEvent): IPositionTrackerState {
       eventPosition = getPosition(event);
 
       state.pageX = eventPosition.pageX;
       state.pageY = eventPosition.pageY;
-      state.offsetX = eventPosition.pageX - state.startPageX;
-      state.offsetY = eventPosition.pageY - state.startPageY;
+      state.offsetX = eventPosition.offsetX;
+      state.offsetY = eventPosition.offsetY;
+      state.relativeX = eventPosition.pageX - state.startPageX;
+      state.relativeY = eventPosition.pageY - state.startPageY;
 
       const scrollLeft = document.documentElement.scrollLeft;
       const scrollTop = document.documentElement.scrollTop;
@@ -71,11 +79,11 @@ export function createPositionTracker(event: DragEvent | TouchEvent): IPositionT
   };
 }
 
-function getPosition(event: DragEvent | TouchEvent): IEventPosition {
+function getPosition(event: PositionEvent): IEventPosition {
   const touchEvent = event as TouchEvent;
-  const dragEvent = event as DragEvent;
+  const positionEvent = event as DragEvent | MouseEvent;
 
-  const source = touchEvent.touches ? touchEvent.touches[0] : dragEvent;
+  const source = touchEvent.touches ? touchEvent.touches[0] : positionEvent;
 
   if (touchEvent.touches && touchEvent.target) {
     const target = touchEvent.target as HTMLElement;
@@ -89,12 +97,12 @@ function getPosition(event: DragEvent | TouchEvent): IEventPosition {
     };
   }
 
-  if (dragEvent.dataTransfer) {
+  if (event.type.startsWith('mouse') || event.type.startsWith('drag')) {
     return {
-      pageX: dragEvent.pageX,
-      pageY: dragEvent.pageY,
-      offsetX: dragEvent.offsetX,
-      offsetY: dragEvent.offsetY,
+      pageX: positionEvent.pageX,
+      pageY: positionEvent.pageY,
+      offsetX: positionEvent.offsetX,
+      offsetY: positionEvent.offsetY,
     }
   }
 
