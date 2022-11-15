@@ -23,10 +23,11 @@ interface IPositionTrackerState {
 type PositionEvent = MouseEvent | DragEvent | TouchEvent;
 
 interface IPositionTracker {
+  start(event: PositionEvent): IPositionTrackerState;
   update(event: PositionEvent): IPositionTrackerState;
 }
 
-export function createPositionTracker(event: PositionEvent): IPositionTracker {
+export function createPositionTracker(): IPositionTracker {
   const state: IPositionTrackerState = {
     startPageX: 0,
     startPageY: 0,
@@ -42,18 +43,22 @@ export function createPositionTracker(event: PositionEvent): IPositionTracker {
     isChanged: false,
   };
 
-  let eventPosition = getPosition(event);
-  let lastPageX = eventPosition.pageX;
-  let lastPageY = eventPosition.pageY;
-
-  state.startPageX = eventPosition.pageX;
-  state.startPageY = eventPosition.pageY;
-  state.startOffsetX = eventPosition.offsetX;
-  state.startOffsetY = eventPosition.offsetY;
+  let lastPageX: number | null = null;
+  let lastPageY: number | null = null;
 
   return {
+    start(event: PositionEvent): IPositionTrackerState {
+      const eventPosition = getPosition(event);
+
+      state.startPageX = eventPosition.pageX;
+      state.startPageY = eventPosition.pageY;
+      state.startOffsetX = eventPosition.offsetX;
+      state.startOffsetY = eventPosition.offsetY;
+
+      return this.update(event);
+    },
     update(event: PositionEvent): IPositionTrackerState {
-      eventPosition = getPosition(event);
+      const eventPosition = getPosition(event);
 
       state.pageX = eventPosition.pageX;
       state.pageY = eventPosition.pageY;
