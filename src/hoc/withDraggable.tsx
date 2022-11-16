@@ -1,6 +1,6 @@
 import { forwardRef, useEffect } from 'react';
 import { createPositionTracker } from '../utils/position';
-import Sister from 'sister';
+import Sister, { SisterEventListener } from 'sister';
 
 type DraggableEventType = 'start' | 'move' | 'end';
 
@@ -43,6 +43,10 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     let clone: HTMLElement;
     let tracker: ReturnType<typeof createPositionTracker>;
     let position: ReturnType<typeof tracker.update>;
+
+    let firstMove = true;
+    let startDisplay: string;
+    let startOpacity: string;
 
     element.draggable = true;
     element.style.userSelect = 'none';
@@ -88,6 +92,13 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
 
       position = tracker.update(event);
 
+      if (firstMove) {
+        startDisplay = element.style.display;
+        element.style.display = 'none';
+
+        firstMove = false;
+      }
+
       if (!position.isChanged || position.isOutside) {
         return;
       }
@@ -127,6 +138,8 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
         target: element,
         handle: clone,
       });
+
+      firstMove = true;
     };
 
     let startCallbackListener: SisterEventListener | null = null;
