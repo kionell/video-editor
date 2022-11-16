@@ -36,7 +36,7 @@ const TimelineTrackpad: React.FC = () => {
     seekerRef.current.style.left = clientX - scrollX + 'px';
   }
 
-  const setSeekerPosition = (event: MouseEvent<HTMLDivElement>) => {
+  const setSeekerPosition = (event: MouseEvent<HTMLElement>) => {
     if (!seekerRef.current || !scrollbarRef.current) return;
 
     const clientX = event.clientX - TIMELINE_OFFSET_X;
@@ -64,6 +64,19 @@ const TimelineTrackpad: React.FC = () => {
     dispatch(setCurrentTimeMs(timeMs));
   };
 
+  const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
+    const targetElement = event.target as HTMLElement;
+
+    const isRuler = targetElement.classList.contains('timeline-ruler');
+    const isTrackArea = targetElement.classList.contains('timeline-track-area');
+    const isTrack = targetElement.classList.contains('timeline-row-track');
+
+    // This is the protection against "fake" seeks. 
+    if (!isRuler && !isTrackArea && !isTrack) return;
+
+    setSeekerPosition(event);
+  }
+
   const handleScroll = () => {
     if (!scrollbarRef.current) return;
 
@@ -77,17 +90,28 @@ const TimelineTrackpad: React.FC = () => {
   useEffect(updatePosByTime, [timeline.currentZoom]);
 
   return (
-    <StyledTimelineTrackpadContainer onClick={setSeekerPosition}>
+    <StyledTimelineTrackpadContainer
+      onMouseDown={handleMouseDown}
+      onDoubleClick={setSeekerPosition}
+    >
       <TimelineRuler
+        ref={rulerRef}
         unit={timeline.currentZoom.unit}
         segments={timeline.currentZoom.segments}
         zoom={timeline.currentZoom.zoom}
         scrollPos={timeline.currentScroll}
-        ref={rulerRef}
       />
 
-      <TimelineSeeker ref={seekerRef} movementCallback={setCurrentTime} />
-      <TimelineTrackArea ref={scrollbarRef} onScroll={handleScroll} />
+      <TimelineSeeker
+        ref={seekerRef}
+        onMove={setCurrentTime}
+      />
+
+      <TimelineTrackArea
+        scrollbarRef={scrollbarRef}
+        seekerRef={seekerRef}
+        onScroll={handleScroll}
+      />
     </StyledTimelineTrackpadContainer>
   );
 };

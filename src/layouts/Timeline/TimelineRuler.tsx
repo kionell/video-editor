@@ -109,6 +109,7 @@ class BaseTimelineRuler extends PureComponent<ThemedRulerProps> {
       <canvas
         ref={convertToRef(this, 'canvasElement')}
         height={this.height}
+        style={{ pointerEvents: 'none' }}
       />
     );
   }
@@ -253,7 +254,7 @@ const ThemedTimelineRuler = withTheme(BaseTimelineRuler);
 
 const TimelineRuler = forwardRef<HTMLDivElement, TimelineRulerProps>((props, ref) => {
   return (
-    <StyledTimelineRulerContainer ref={ref} >
+    <StyledTimelineRulerContainer className='timeline-ruler' ref={ref} >
       <ThemedTimelineRuler {...props} />
     </StyledTimelineRulerContainer>
   );

@@ -10,12 +10,18 @@ const StyledTimelineRowAddButton = styled(FlatButton)`
   height: 50px;
   cursor: pointer;
   background: ${(props) => props.theme.secondary.surface};
+
+  &:hover {
+    background: ${(props) => props.theme.secondary.hover};
+  }
 `;
 
 const TimelineRowAddButton: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const onClick = () => dispatch(pushTrack());
+  const onClick = () => {
+    dispatch(pushTrack());
+  };
 
   return (
     <StyledTimelineRowAddButton

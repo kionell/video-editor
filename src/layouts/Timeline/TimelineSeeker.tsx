@@ -1,11 +1,11 @@
-import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
+import React, { ForwardedRef, HTMLAttributes, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { withFocusable, withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 
 interface SeekerProps extends HTMLAttributes<HTMLDivElement> {
-  movementCallback?: MouseEventHandler;
+  onMove?: MouseEventHandler;
 }
 
 const StyledTimelineSeekerHead = styled(Icon)`
@@ -28,8 +28,9 @@ const StyledTimelineSeekerWrapper = styled.div`
   border: none;
   outline: none;
   user-select: none;
-  z-index: 2;
+  z-index: 3;
   cursor: ew-resize;
+  pointer-events: painted;
 
   & > * {
     pointer-events: none;
@@ -56,40 +57,38 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
   props: SeekerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
+  const { onMove, ...rest } = props;
+
   const stopSeekerMovement = () => {
-    if (props.movementCallback) {
-      document.removeEventListener('mousemove', props.movementCallback as any);
+    if (onMove) {
+      document.removeEventListener('mousemove', onMove as any);
     }
 
-    document.removeEventListener('mouseup', stopSeekerMovement as any);
+    document.removeEventListener('mouseup', stopSeekerMovement);
   };
 
   const startSeekerMovement = () => {
-    if (props.movementCallback) {
-      document.addEventListener('mousemove', props.movementCallback as any);
+    if (onMove) {
+      document.addEventListener('mousemove', onMove as any);
     }
 
-    document.addEventListener('mouseup', stopSeekerMovement as any);
+    document.addEventListener('mouseup', stopSeekerMovement);
   }
-
-  const handleClick = (event: MouseEvent) => {
-    event.stopPropagation();
-  };
 
   return (
     <StyledTimelineSeekerWrapper
-      {...props}
+      {...rest}
+      className='timeline-seeker'
       ref={ref}
-      onClick={handleClick}
       onMouseDown={startSeekerMovement}
     >
       <StyledTimelineSeekerHead
         size={20}
         variant='Seeker'
-        className='seeker-icon'
+        className='timeline-seeker-icon'
       />
       <StyledTimelineSeekerLine
-        className='seeker-line'
+        className='timeline-seeker-line'
       />
     </StyledTimelineSeekerWrapper>
   );

@@ -1,6 +1,6 @@
-import { forwardRef, ForwardedRef, useEffect, MouseEvent } from 'react';
+import { forwardRef, ForwardedRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { withDraggable, withFocusable, withStretchableX } from '../../hoc';
+import { withDraggable, withFocusable } from '../../hoc';
 import { Icon } from '../../components/Icon';
 import { BaseElement } from '../../models/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
@@ -21,8 +21,9 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
+  z-index: 1;
 
-  .edges {
+  .timeline-element__edges {
     background: transparent;
   }
 
@@ -32,20 +33,20 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
     const hoverColor = props.theme.primary.hover;
 
     return css`
-      .preview {
+      .timeline-element__preview {
         border: ${isFocused ? `2px solid ${pressColor}` : 'none'};
       }
       
-      .edges {
+      .timeline-element__edges {
         visibility: ${isFocused ? 'visible' : 'hidden'};
       }
 
       &:hover:not(.focused) {
-        .preview {
+        .timeline-element__preview {
           border: 2px solid ${hoverColor};
         }
         
-        .edges {
+        .timeline-element__edges {
           display: ${isFocused ? 'visible' : 'hidden'};
         }
       }
@@ -103,21 +104,17 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ref.current.style.width = units + 'px';
   }, [timeline.currentZoom, timeline.totalLengthMs, timeline.totalTracks]);
 
-  const handleClick = (event: MouseEvent) => {
-    event.stopPropagation();
-  };
-
   return (
-    <StyledTimelineElementWrapper ref={ref} {...props} onClick={handleClick}>
-      <StyledTimelineElementEdge className='edges'>
+    <StyledTimelineElementWrapper className='timeline-element' ref={ref} {...props}>
+      <StyledTimelineElementEdge className='timeline-element__edges'>
         <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementEdge>
 
-      <StyledTimelineElementPreview className='preview'>
+      <StyledTimelineElementPreview className='timeline-element__preview'>
 
       </StyledTimelineElementPreview>
 
-      <StyledTimelineElementEdge className='edges'>
+      <StyledTimelineElementEdge className='timeline-element__edges'>
         <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementEdge>
     </StyledTimelineElementWrapper>
@@ -126,6 +123,4 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
 
 BaseTimelineElement.displayName = 'Timeline Element';
 
-export const TimelineElement = (
-  withDraggable(withFocusable(withStretchableX(BaseTimelineElement)))
-);
+export const TimelineElement = withDraggable(BaseTimelineElement);
