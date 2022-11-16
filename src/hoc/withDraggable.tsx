@@ -41,7 +41,7 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     const emitter = new Sister();
 
     let clone: HTMLElement;
-    let tracker: ReturnType<typeof createPositionTracker>;
+    const tracker = createPositionTracker();
     let position: ReturnType<typeof tracker.update>;
 
     let firstMove = true;
@@ -58,10 +58,10 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     };
 
     const onDragStart = (event: DragEvent | TouchEvent) => {
-      tracker = createPositionTracker(event);
       clone = makeClone(element);
+      tracker.start(event);
 
-      element.style.cursor = 'grabbing !important';
+      startOpacity = element.style.opacity;
       element.style.opacity = '0';
 
       document.addEventListener('dragover', onDragMove, false);
@@ -117,7 +117,7 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
       });
     }
 
-    const onDrop = (event: DragEvent) => {
+    const onDrop = (event: DragEvent | TouchEvent) => {
       event.stopPropagation();
       event.preventDefault();
     }
@@ -125,7 +125,8 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     const onDragEnd = () => {
       clone.parentNode?.removeChild(clone);
 
-      element.style.opacity = '1';
+      element.style.display = startDisplay;
+      element.style.opacity = startOpacity;
       element.style.cursor = 'grab';
 
       element.removeEventListener('drag', onDragMove);
