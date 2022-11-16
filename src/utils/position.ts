@@ -88,33 +88,19 @@ function getPosition(event: PositionEvent): IEventPosition {
   const touchEvent = event as TouchEvent;
   const positionEvent = event as DragEvent | MouseEvent;
 
-  const source = touchEvent.touches ? touchEvent.touches[0] : positionEvent;
+  const source = touchEvent.touches
+    ? touchEvent.touches[0]
+    : positionEvent;
 
-  if (touchEvent.touches && touchEvent.target) {
-    const target = touchEvent.target as HTMLElement;
-    const rect = target.getBoundingClientRect();
-
-    return {
-      pageX: source.pageX,
-      pageY: source.pageY,
-      offsetX: source.pageX - rect.left,
-      offsetY: source.pageY - rect.top,
-    };
-  }
-
-  if (event.type.startsWith('mouse') || event.type.startsWith('drag')) {
-    return {
-      pageX: positionEvent.pageX,
-      pageY: positionEvent.pageY,
-      offsetX: positionEvent.offsetX,
-      offsetY: positionEvent.offsetY,
-    }
-  }
+  const target = event.target as HTMLElement;
+  const rect = target?.getBoundingClientRect() ?? null;
 
   return {
     pageX: source.pageX,
     pageY: source.pageY,
-    offsetX: 0,
-    offsetY: 0,
-  }
+    offsetX: source.pageX - (rect?.left ?? 0),
+    offsetY: source.pageY - (rect?.top ?? 0),
+    targetX: (rect?.left ?? 0),
+    targetY: (rect?.top ?? 0),
+  };
 }
