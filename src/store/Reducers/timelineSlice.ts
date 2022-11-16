@@ -30,13 +30,13 @@ interface MoveTrackByIndexOperation {
 }
 
 interface AddElementOperation {
-  track: TimelineTrack;
   element: BaseElement;
+  track?: TimelineTrack;
 }
 
 interface AddElementByIndexOperation {
-  trackIndex: number;
   element: BaseElement;
+  trackIndex?: number;
 }
 
 interface RemoveElementOperation {
