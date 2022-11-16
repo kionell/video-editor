@@ -66,7 +66,9 @@ export class Timeline {
    * @param index Target index of a track.
    * @returns Found timeline track or null.
    */
-  getTrackByIndex(index: number): TimelineTrack | null {
+  getTrackByIndex(index?: number): TimelineTrack | null {
+    if (typeof index !== 'number') return null;
+
     if (index < 0 || index >= this.totalTracks) {
       return null;
     }
