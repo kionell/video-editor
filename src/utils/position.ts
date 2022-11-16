@@ -3,28 +3,28 @@ interface IEventPosition {
   pageY: number;
   offsetX: number;
   offsetY: number;
-}
-
-interface IPositionTrackerState {
-  startPageX: number;
-  startPageY: number;
-  startOffsetX: number;
-  startOffsetY: number;
-  pageX: number;
-  pageY: number;
-  offsetX: number;
-  offsetY: number;
-  relativeX: number;
-  relativeY: number;
-  isOutside: boolean;
-  isChanged: boolean;
+  targetX: number;
+  targetY: number;
 }
 
 type PositionEvent = MouseEvent | DragEvent | TouchEvent;
 
-interface IPositionTracker {
+export interface IPositionTracker {
   start(event: PositionEvent): IPositionTrackerState;
   update(event: PositionEvent): IPositionTrackerState;
+}
+
+export interface IPositionTrackerState extends IEventPosition {
+  startPageX: number;
+  startPageY: number;
+  startOffsetX: number;
+  startOffsetY: number;
+  startTargetX: number;
+  startTargetY: number;
+  relativeX: number;
+  relativeY: number;
+  isOutside: boolean;
+  isChanged: boolean;
 }
 
 export function createPositionTracker(): IPositionTracker {
@@ -33,10 +33,14 @@ export function createPositionTracker(): IPositionTracker {
     startPageY: 0,
     startOffsetX: 0,
     startOffsetY: 0,
+    startTargetX: 0,
+    startTargetY: 0,
     pageX: 0,
     pageY: 0,
     offsetX: 0,
     offsetY: 0,
+    targetX: 0,
+    targetY: 0,
     relativeX: 0,
     relativeY: 0,
     isOutside: false,
@@ -54,6 +58,8 @@ export function createPositionTracker(): IPositionTracker {
       state.startPageY = eventPosition.pageY;
       state.startOffsetX = eventPosition.offsetX;
       state.startOffsetY = eventPosition.offsetY;
+      state.startTargetX = eventPosition.targetX;
+      state.startTargetY = eventPosition.targetY;
 
       return this.update(event);
     },
@@ -64,6 +70,8 @@ export function createPositionTracker(): IPositionTracker {
       state.pageY = eventPosition.pageY;
       state.offsetX = eventPosition.offsetX;
       state.offsetY = eventPosition.offsetY;
+      state.targetX = eventPosition.targetX;
+      state.targetY = eventPosition.targetY;
       state.relativeX = eventPosition.pageX - state.startPageX;
       state.relativeY = eventPosition.pageY - state.startPageY;
 
