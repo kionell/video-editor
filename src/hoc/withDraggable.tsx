@@ -129,19 +129,40 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
       });
     };
 
-    element.addEventListener('dragstart', onDragStart, false);
-    element.addEventListener('touchstart', onDragStart, false);
+    let startCallbackListener: SisterEventListener | null = null;
+    let moveCallbackListener: SisterEventListener | null = null;
+    let endCallbackListener: SisterEventListener | null = null;
 
     if (props.dragStartCallback) {
-      emitter.on('start', props.dragStartCallback);
+      startCallbackListener = emitter.on('start', props.dragStartCallback);
     }
 
     if (props.dragMoveCallback) {
-      emitter.on('move', props.dragMoveCallback);
+      moveCallbackListener = emitter.on('move', props.dragMoveCallback);
     }
 
     if (props.dragEndCallback) {
-      emitter.on('end', props.dragEndCallback);
+      endCallbackListener = emitter.on('end', props.dragEndCallback);
+    }
+
+    element.addEventListener('dragstart', onDragStart, false);
+    element.addEventListener('touchstart', onDragStart, false);
+
+    return () => {
+      if (startCallbackListener) {
+        emitter.off(startCallbackListener);
+      }
+
+      if (moveCallbackListener) {
+        emitter.off(moveCallbackListener);
+      }
+
+      if (endCallbackListener) {
+        emitter.off(endCallbackListener);
+      }
+
+      element.removeEventListener('dragstart', onDragStart, false);
+      element.removeEventListener('touchstart', onDragStart, false);
     }
   };
 
@@ -149,7 +170,7 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
-      makeDraggable(ref.current, props);
+      return makeDraggable(ref.current, props);
     }, []);
 
     return <Component {...props} ref={ref} />;
