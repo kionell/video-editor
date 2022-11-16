@@ -129,8 +129,12 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
       element.style.opacity = startOpacity;
       element.style.cursor = 'grab';
 
-      element.removeEventListener('drag', onDragMove);
-      element.removeEventListener('dragend', onDragEnd);
+      document.removeEventListener('dragover', onDragMove, false);
+      document.removeEventListener('drop', onDrop, false);
+
+      element.removeEventListener('dragend', onDragEnd, false);
+      element.removeEventListener('touchmove', onDragMove, false);
+      element.removeEventListener('touchend', onDragEnd, false);
 
       emitter.trigger('end', {
         type: 'end',
