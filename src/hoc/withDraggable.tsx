@@ -4,15 +4,16 @@ import Sister from 'sister';
 
 type DraggableEventType = 'start' | 'move' | 'end';
 
-interface DraggableState {
+export interface DraggableState {
   type: DraggableEventType;
   offsetX: number;
   offsetY: number;
   target: HTMLElement;
   handle: HTMLElement;
+  draggingOver: HTMLElement;
 }
 
-type DraggableCallback = (state: DraggableState) => void;
+export type DraggableCallback = (state: DraggableState) => void;
 
 interface DraggableProps {
   dragStartCallback?: DraggableCallback;
