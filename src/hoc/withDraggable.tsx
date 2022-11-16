@@ -29,6 +29,7 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     cloned.style.width = element.offsetWidth + 'px';
     cloned.style.height = element.offsetHeight + 'px';
     cloned.style.pointerEvents = 'none';
+    cloned.classList.add('dragging');
 
     element.parentNode?.insertBefore(cloned, element);
 
