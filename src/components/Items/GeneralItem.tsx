@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, Ref, useRef } from 'react';
+import { ForwardedRef, forwardRef, HTMLAttributes, MouseEventHandler, RefObject, useRef } from 'react';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
@@ -24,7 +24,7 @@ export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
   showLabel?: boolean;
   label?: string;
   file?: UploadedFile;
-  ref?: Ref<HTMLDivElement>;
+  ref?: RefObject<HTMLDivElement>;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -37,11 +37,11 @@ const StyledGeneralItemWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  .labels {
+  .general-item__label {
     color: ${(props) => props.theme.text.normal};
   }
 
-  &:hover .labels {
+  &:hover .general-item__label {
     color: ${(props) => props.theme.text.lighter};
   }
 `;
@@ -64,7 +64,7 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
       : 'flex-end';
   }};
 
-  .button-wrapper {
+  .general-item__buttons {
     display: flex;
     opacity: 0;
     transition: opacity 150ms;
@@ -73,7 +73,7 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   &:hover {
     outline-color: ${(props) => props.theme.primary.hover};
     
-    .button-wrapper {
+    .general-item__buttons {
       opacity: 1;
     }
   }
@@ -144,7 +144,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
   return (
     <StyledGeneralItemWrapper {...props}>
-      <DraggableGeneralItem {...props} ref={itemRef}>
+      <DraggableGeneralItem className='general-item' {...props} ref={itemRef}>
         <StyledGeneralItemDuration
           text={formatDuration(duration)}
           visible={showDuration}
@@ -160,7 +160,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         </StyledGeneralItemPreview>
 
         <StyledGeneralItemButtonWrapper
-          className='button-wrapper'
+          className='general-item__buttons'
           padding={0}
         >
           <PrimaryButton
@@ -191,7 +191,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
       </DraggableGeneralItem>
 
       <StyledGeneralItemLabel
-        className='labels'
+        className='general-item__label'
         visible={showLabel}
         text={label}
         size={SMALL_FONT_SIZE}
