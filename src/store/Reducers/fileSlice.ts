@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UploadedFile } from '../../models/Files/UploadedFile';
-
-interface IFileState {
-  list: UploadedFile[];
-}
+import { IFileState } from '../../models/IFileState';
 
 const initialState: IFileState = {
   list: [],
