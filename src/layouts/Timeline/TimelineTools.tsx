@@ -68,12 +68,28 @@ const TimelineTools: React.FC = () => {
   return (
     <StyledTimelineTools>
       <ButtonGroup gap={6}>
-        <StyledTimelineToolButton iconType='Undo' />
-        <StyledTimelineToolButton iconType='Redo' />
-        <StyledTimelineToolButton iconType='Split' />
-        <StyledTimelineToolButton iconType='BringForward' />
-        <StyledTimelineToolButton iconType='SendBackward' />
-        <StyledTimelineToolButton iconType='Delete' />
+        <StyledTimelineToolButton
+          iconType='Undo'
+        />
+        <StyledTimelineToolButton
+          iconType='Redo'
+        />
+        <StyledTimelineToolButton
+          iconType='Split'
+          disabled={!timeline.focusedTracks.length}
+        />
+        <StyledTimelineToolButton
+          iconType='BringForward'
+          disabled={!timeline.focusedTracks.length}
+        />
+        <StyledTimelineToolButton
+          iconType='SendBackward'
+          disabled={!timeline.focusedTracks.length}
+        />
+        <StyledTimelineToolButton
+          iconType='Delete'
+          disabled={!timeline.focusedTracks.length}
+        />
       </ButtonGroup>
 
       <StyledTimelineTimecodeWrapper>
