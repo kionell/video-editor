@@ -55,17 +55,25 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
 `;
 
 const StyledTimelineElementEdge = styled.div`
+  width: 10px;
   height: 100%;
   visibility: hidden;
   z-index: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
   cursor: ew-resize;
 `;
 
+const StyledTimelineElementLeftEdge = styled(StyledTimelineElementEdge)`
+  justify-content: flex-end;
+`;
+
+const StyledTimelineElementRightEdge = styled(StyledTimelineElementEdge)`
+  justify-content: flex-start;
+`;
+
 const StyledTimelineElementEdgeIcon = styled(Icon)`
-  width: 15px;
+  width: 4px;
   height: 25px;
   fill: ${(props) => props.theme.primary.press};
 `;
