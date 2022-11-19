@@ -10,7 +10,6 @@ export interface DraggableState {
   offsetY: number;
   target: HTMLElement;
   handle: HTMLElement;
-  draggingOver: HTMLElement;
 }
 
 export type DraggableCallback = (state: DraggableState) => void;
@@ -38,10 +37,10 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
   };
 
   const makeDraggable = (element: HTMLElement, props: T & DraggableProps) => {
+    const tracker = createPositionTracker();
     const emitter = new Sister();
 
     let clone: HTMLElement;
-    const tracker = createPositionTracker();
     let position: ReturnType<typeof tracker.update>;
 
     let firstMove = true;
