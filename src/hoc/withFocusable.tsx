@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect } from 'react';
 import Sister, { SisterEventListener } from 'sister';
 
 type FocusableEventType = 'focus' | 'blur';
@@ -18,8 +18,6 @@ interface FocusableProps {
 
 export const withFocusable = <T, >(Component: React.FC<T>) => {
   const FocusedComponent = forwardRef<HTMLElement, T & FocusableProps>((props, ref) => {
-    const [focused, setFocused] = useState(false);
-
     useEffect(() => {
       if (ref instanceof Function || !ref?.current) return;
 
@@ -29,9 +27,11 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
         const focusElement = (event: MouseEvent) => {
           event.stopPropagation();
 
-          if (focused) return;
+          if (element.classList.contains('focused')) {
+            return;
+          }
 
-          setFocused(true);
+          element.classList.add('focused');
 
           document.addEventListener('mousedown', unfocusElement);
 
@@ -45,10 +45,14 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
         const unfocusElement = (event: MouseEvent) => {
           event.stopPropagation();
 
+          if (!element.classList.contains('focused')) {
+            return;
+          }
+
           const targetPath = event.composedPath();
 
           if (event.target !== element && !targetPath?.includes(element)) {
-            setFocused(false);
+            element.classList.remove('focused');
 
             document.removeEventListener('mousedown', unfocusElement);
 
@@ -89,11 +93,7 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
       return makeFocusable(ref.current, props);
     }, []);
 
-    return <Component
-      {...props}
-      ref={ref}
-      className={focused ? 'focused' : ''}
-    />;
+    return <Component {...props} ref={ref} />;
   });
 
   FocusedComponent.displayName = 'Focused Component';
