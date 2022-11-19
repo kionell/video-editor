@@ -1,5 +1,5 @@
 import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../constants';
-import { IFileState } from '../models/IFileState';
+import { IFileState } from '../models/State/IFileState';
 import { Timeline } from '../models/Timeline/Timeline';
 
 export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline, files: IFileState): number {

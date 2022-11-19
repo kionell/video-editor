@@ -4,7 +4,7 @@ import { MouseEvent, useEffect, useRef } from 'react';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/timelineSlice';
+import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
 import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
 import { TimelineTrackArea } from './TimelineTrackArea';

@@ -3,7 +3,7 @@ import { useRef, MouseEvent } from 'react';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { setCurrentZoom, setSnapMode } from '../../store/Reducers/timelineSlice';
+import { setCurrentZoom, setSnapMode } from '../../store/Reducers/TimelineSlice';
 import { TimelineTimecode } from './TimelineTimecode';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';

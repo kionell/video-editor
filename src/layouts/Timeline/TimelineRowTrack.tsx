@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionTracker, IPositionTrackerState } from '../../utils/position';
 import { getWidthFromDraggable } from '../../utils/timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
-import { focusElement, unfocusElement } from '../../store/Reducers/timelineSlice';
+import { focusElement, unfocusElement } from '../../store/Reducers/TimelineSlice';
 import { BaseElement } from '../../models/Elements/BaseElement';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {

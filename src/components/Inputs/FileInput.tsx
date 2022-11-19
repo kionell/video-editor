@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { forwardRef, Ref, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { addFile } from '../../store/Reducers/fileSlice';
+import { addFile } from '../../store/Reducers/FileSlice';
 import { ffmpeg } from '../../lib/FFmpeg';
 import { loadFile } from '../../utils/files';
 import { fetchFile } from '@ffmpeg/ffmpeg';

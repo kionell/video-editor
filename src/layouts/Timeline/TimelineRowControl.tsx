@@ -5,7 +5,7 @@ import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../utils/position';
-import { moveTrack } from '../../store/Reducers/timelineSlice';
+import { moveTrack } from '../../store/Reducers/TimelineSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
@@ -103,8 +103,8 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
 
     if (state.index !== track.index) {
       dispatch(moveTrack({
-        fromTrackIndex: track.index,
-        toTrackIndex: state.index,
+        fromIndex: track.index,
+        toIndex: state.index,
       }));
     }
 

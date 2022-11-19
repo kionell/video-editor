@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UploadedFile } from '../../models/Files/UploadedFile';
-import { IFileState } from '../../models/IFileState';
+import { IFileState } from '../../models/State/IFileState';
 
 const initialState: IFileState = {
   list: [],
 };
 
-const fileSlice = createSlice({
+const FileSlice = createSlice({
   name: 'file',
   initialState,
   reducers: {
@@ -30,5 +30,9 @@ const fileSlice = createSlice({
   },
 });
 
-export const { addFile, removeFile } = fileSlice.actions;
-export const fileReducer = fileSlice.reducer;
+export const {
+  addFile,
+  removeFile,
+} = FileSlice.actions;
+
+export const FileReducer = FileSlice.reducer;

@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SidebarCategory } from '../../models/Enums/SidebarCategory';
-import { IGeneralState } from '../../models/IGeneralState';
+import { IGeneralState } from '../../models/State/IGeneralState';
 
 const initialState: IGeneralState = {
   currentCategory: 'None',
 };
 
-const generalSlice = createSlice({
+const GeneralSlice = createSlice({
   name: 'general',
   initialState,
   reducers: {
@@ -18,6 +18,6 @@ const generalSlice = createSlice({
 
 export const {
   setSidebarCategory,
-} = generalSlice.actions;
+} = GeneralSlice.actions;
 
-export const generalReducer = generalSlice.reducer;
+export const GeneralReducer = GeneralSlice.reducer;

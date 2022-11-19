@@ -1,7 +1,7 @@
 import { immerable } from 'immer';
 import { PREVIEW_FRAME_WIDTH, TIMELINE_ZOOM_LEVELS } from '../../constants';
-import { ITimelineZoomState } from './ITimelineZoomState';
-import { ITimelineScrollState } from './ITimelineScrollState';
+import { ITimelineZoomState } from '../State/ITimelineZoomState';
+import { ITimelineScrollState } from '../State/ITimelineScrollState';
 import { TimelineTrack } from './TimelineTrack';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';

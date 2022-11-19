@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AspectRatio } from '../../models/Enums/AspectRatio';
-import { IVideoPreviewState } from '../../models/IVideoPreviewState';
+import { IVideoPreviewState } from '../../models/State/IVideoPreviewState';
 
 const initialState: IVideoPreviewState = {
   aspectRatio: 1,
@@ -11,7 +11,7 @@ const initialState: IVideoPreviewState = {
   isExpanded: false,
 };
 
-const previewSlice = createSlice({
+const PreviewSlice = createSlice({
   name: 'preview',
   initialState,
   reducers: {
@@ -48,6 +48,6 @@ export const {
   setPreviewFrameRate,
   setPlaying,
   setExpanded,
-} = previewSlice.actions;
+} = PreviewSlice.actions;
 
-export const previewReducer = previewSlice.reducer;
+export const PreviewReducer = PreviewSlice.reducer;

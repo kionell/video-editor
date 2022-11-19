@@ -11,8 +11,8 @@ import { ImagePreview } from '../ImagePreview';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { UploadedFile } from '../../models/Files/UploadedFile';
-import { removeFile } from '../../store/Reducers/fileSlice';
-import { pushElement } from '../../store/Reducers/timelineSlice';
+import { removeFile } from '../../store/Reducers/FileSlice';
+import { pushElement } from '../../store/Reducers/TimelineSlice';
 import { convertUploadedFileToElement } from '../../utils/files';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {

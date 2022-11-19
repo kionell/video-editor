@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { fileReducer } from './Reducers/fileSlice';
-import { generalReducer } from './Reducers/generalSlice';
-import { previewReducer } from './Reducers/previewSlice';
-import { timelineReducer } from './Reducers/timelineSlice';
+import { FileReducer } from './Reducers/FileSlice';
+import { GeneralReducer } from './Reducers/GeneralSlice';
+import { PreviewReducer } from './Reducers/PreviewSlice';
+import { TimelineReducer } from './Reducers/TimelineSlice';
 
-export const rootReducer = combineReducers({
-  general: generalReducer,
-  files: fileReducer,
-  timeline: timelineReducer,
-  preview: previewReducer,
+export const RootReducer = combineReducers({
+  general: GeneralReducer,
+  files: FileReducer,
+  timeline: TimelineReducer,
+  preview: PreviewReducer,
 });
