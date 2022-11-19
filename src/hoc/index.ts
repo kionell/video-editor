@@ -1,4 +1,3 @@
-export * from './withClickable';
 export * from './withDraggable';
 export * from './withFocusable';
 export * from './withMovableX';

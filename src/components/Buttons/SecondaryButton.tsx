@@ -4,7 +4,6 @@ import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
-import { withClickable } from '../../hoc';
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.secondary.accent};
@@ -58,6 +57,6 @@ const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, r
   );
 });
 
-BaseSecondaryButton.displayName = 'Secondary Button';
+SecondaryButton.displayName = 'Secondary Button';
 
-export const SecondaryButton = withClickable(BaseSecondaryButton);
+export { SecondaryButton };

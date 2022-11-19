@@ -4,7 +4,6 @@ import { useUpdateEffect } from '../../hooks';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
-import { withClickable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
 
 interface FlatButtonProps extends ButtonProps {
@@ -48,7 +47,7 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   }
 `;
 
-const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
+const FlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
   const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
 
   useUpdateEffect(() => {
@@ -80,13 +79,13 @@ const BaseFlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, re
   );
 });
 
-BaseFlatButton.displayName = 'Flat Button';
+FlatButton.displayName = 'Flat Button';
 
-BaseFlatButton.defaultProps = {
+FlatButton.defaultProps = {
   showBackground: false,
   iconSize: 'Large',
   width: 70,
   height: 70,
 };
 
-export const FlatButton = withClickable(BaseFlatButton);
+export { FlatButton };

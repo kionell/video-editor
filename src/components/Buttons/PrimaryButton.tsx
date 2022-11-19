@@ -3,7 +3,6 @@ import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
-import { withClickable } from '../../hoc';
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.primary.accent};
@@ -17,7 +16,7 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+const PrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { showIcon, iconType, iconSize, showLabel, label } = props;
 
   return (
@@ -35,6 +34,6 @@ const BasePrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref
   );
 });
 
-BasePrimaryButton.displayName = 'Primary Button';
+PrimaryButton.displayName = 'Primary Button';
 
-export const PrimaryButton = withClickable(BasePrimaryButton);
+export { PrimaryButton };
