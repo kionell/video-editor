@@ -1,7 +1,7 @@
-import { UploadedFile } from '../models/Files/UploadedFile';
-import { VideoFile } from '../models/Files/VideoFile';
-import { ImageFile } from '../models/Files/ImageFile';
-import { AudioFile } from '../models/Files/AudioFile';
+import { UploadedFile } from '../Files/UploadedFile';
+import { VideoFile } from '../Files/VideoFile';
+import { ImageFile } from '../Files/ImageFile';
+import { AudioFile } from '../Files/AudioFile';
 
 interface ThumbnailOptions {
   file?: UploadedFile;
@@ -73,10 +73,9 @@ function drawImage(options?: ThumbnailOptions): string {
 }
 
 /**
- * Draw a waveform on a canvas
- * buffer - waveform buffer
- * canvas - HTML5 canvas reference
- * style - line style to use (color)
+ * Draws a waveform on a canvas.
+ * @param bounds Audio bounds of each step in the buffer.
+ * @param options Thumbnail options.
  */
  export function drawWaveform(bounds: AudioBounds[], options?: ThumbnailOptions): string {
   if (!bounds.length) return '';
@@ -133,7 +132,6 @@ interface AudioBounds {
  * Calculates all wave data points depending on the total width and width of a point.
  * @param buffer Buffer with audio data.
  * @param width Total width of the waveform in pixels.
- * @param pointWidth Width of one waveform bar.
  */
 function calculateWaveData(buffer: AudioBuffer | null, width?: number): AudioBounds[] {
   if (!buffer || !width) return [];

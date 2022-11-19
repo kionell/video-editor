@@ -1,4 +1,4 @@
-import { PREVIEW_FRAME_WIDTH } from '../constants';
+import { PREVIEW_FRAME_WIDTH } from '../../constants';
 
 /**
  * Converts raw time value to the readable format.

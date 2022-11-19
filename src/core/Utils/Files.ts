@@ -1,13 +1,13 @@
-import { UploadedFile } from '../models/Files/UploadedFile';
-import { ImageFile } from '../models/Files/ImageFile';
-import { VideoFile } from '../models/Files/VideoFile';
-import { AudioFile } from '../models/Files/AudioFile';
-import { MIMEType } from '../models/Enums/MIMEType';
-import { MediaType } from '../models/Enums/MediaType';
-import { BaseElement } from '../models/Elements/BaseElement';
-import { VideoElement } from '../models/Elements/VideoElement';
-import { AudioElement } from '../models/Elements/AudioElement';
-import { ImageElement } from '../models/Elements/ImageElement';
+import { UploadedFile } from '../Files/UploadedFile';
+import { ImageFile } from '../Files/ImageFile';
+import { VideoFile } from '../Files/VideoFile';
+import { AudioFile } from '../Files/AudioFile';
+import { MIMEType } from '../Enums/MIMEType';
+import { MediaType } from '../Enums/MediaType';
+import { BaseElement } from '../Elements/BaseElement';
+import { VideoElement } from '../Elements/VideoElement';
+import { AudioElement } from '../Elements/AudioElement';
+import { ImageElement } from '../Elements/ImageElement';
 
 export async function loadFile(file: File): Promise<UploadedFile | null> {
   const mediaType = convertMIMEToMediaType(file.type as MIMEType);
