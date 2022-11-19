@@ -1,6 +1,6 @@
 import React, { ForwardedRef, HTMLAttributes, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import { withFocusable, withMovableX } from '../../hoc';
+import { withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 
@@ -18,7 +18,7 @@ const StyledTimelineSeekerLine = styled.div`
   margin-top: -3px;
 `;
 
-const StyledTimelineSeekerWrapper = styled.div`
+const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   height: 100%;
   translate: calc(-50% + ${TIMELINE_OFFSET_X}px);
   position: absolute;
@@ -28,7 +28,7 @@ const StyledTimelineSeekerWrapper = styled.div`
   border: none;
   outline: none;
   user-select: none;
-  z-index: 3;
+  z-index: 5;
   cursor: ew-resize;
   pointer-events: painted;
 
@@ -37,19 +37,11 @@ const StyledTimelineSeekerWrapper = styled.div`
   }
 
   & > ${StyledTimelineSeekerLine} {
-    background: ${(props) => {
-      return props.className?.includes('focused')
-        ? props.theme.primary.press
-        : props.theme.text.lighter;
-    }};
+    background: ${(props) => props.theme.text.lighter};
   }
 
   & > * > svg {
-    fill: ${(props) => {
-      return props.className?.includes('focused')
-        ? props.theme.primary.press
-        : props.theme.text.lighter;
-    }};
+    fill: ${(props) => props.theme.text.lighter};
   }
 `;
 
@@ -96,4 +88,4 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
 
 BaseTimelineSeeker.displayName = 'Timeline Seeker';
 
-export const TimelineSeeker = withFocusable(withMovableX(BaseTimelineSeeker));
+export const TimelineSeeker = withMovableX(BaseTimelineSeeker);
