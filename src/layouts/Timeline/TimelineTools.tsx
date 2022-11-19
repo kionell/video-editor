@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRef } from 'react';
+import { useRef, MouseEvent } from 'react';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -43,25 +43,62 @@ const TimelineTools: React.FC = () => {
 
   const snapButtonRef = useRef(null);
 
-  const onZoomOutClick = () => {
+  const focusedTracks = timeline.focusedTracks;
+  // const minFocusedTrack = 
+
+  const onUndoClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onRedoClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onSplitClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onBringForwardClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
+    // if (timeline)
+  };
+
+  const onSendBackwardClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onDeleteClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onZoomOutClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
     const zoomLevel = timeline.getPreviousZoomLevel();
 
     dispatch(setCurrentZoom(zoomLevel));
   };
 
-  const onZoomInClick = () => {
+  const onZoomInClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
     const zoomLevel = timeline.getNextZoomLevel();
 
     dispatch(setCurrentZoom(zoomLevel));
   };
 
-  const onZoomFitClick = () => {
+  const onZoomFitClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
     const zoomLevel = timeline.getPreviousZoomLevel();
 
     dispatch(setCurrentZoom(zoomLevel));
   };
 
-  const onSnapClick = () => {
+  const onSnapClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
     dispatch(setSnapMode(!timeline.snapMode));
   };
 
@@ -70,24 +107,30 @@ const TimelineTools: React.FC = () => {
       <ButtonGroup gap={6}>
         <StyledTimelineToolButton
           iconType='Undo'
+          onClick={onUndoClick}
         />
         <StyledTimelineToolButton
           iconType='Redo'
+          onClick={onRedoClick}
         />
         <StyledTimelineToolButton
           iconType='Split'
-          disabled={!timeline.focusedTracks.length}
+          onClick={onSplitClick}
+          disabled={!focusedTracks.length}
         />
         <StyledTimelineToolButton
           iconType='BringForward'
-          disabled={!timeline.focusedTracks.length}
+          onClick={onBringForwardClick}
+          disabled={!focusedTracks.length || timeline.totalTracks < 2}
         />
         <StyledTimelineToolButton
           iconType='SendBackward'
-          disabled={!timeline.focusedTracks.length}
+          onClick={onSendBackwardClick}
+          disabled={!timeline.focusedTracks.length || timeline.totalTracks < 2}
         />
         <StyledTimelineToolButton
           iconType='Delete'
+          onClick={onDeleteClick}
           disabled={!timeline.focusedTracks.length}
         />
       </ButtonGroup>

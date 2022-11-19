@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { FlatButton } from '../../components/Buttons/FlatButton';
 import { TIMELINE_OFFSET_X } from '../../constants';
@@ -19,7 +19,9 @@ const StyledTimelineRowAddButton = styled(FlatButton)`
 const TimelineRowAddButton: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const onClick = () => {
+  const onClick = (event: MouseEvent) => {
+    event.stopPropagation();
+
     dispatch(pushTrack());
   };
 
