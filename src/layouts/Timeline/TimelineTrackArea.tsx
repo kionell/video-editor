@@ -68,7 +68,6 @@ const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineSc
               <TimelineRow
                 track={track}
                 key={uniqueKey}
-                scrollbarRef={props.scrollbarRef}
                 seekerRef={props.seekerRef}
               />
             );

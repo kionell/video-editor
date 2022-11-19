@@ -1,17 +1,15 @@
 import { HTMLAttributes, useEffect, useRef, RefObject } from 'react';
-import Scrollbars from 'react-custom-scrollbars-2';
 import styled from 'styled-components';
 import { Text } from '../../components/Text';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../utils/position';
-import { moveTrackByIndex } from '../../store/Reducers/timelineSlice';
-import { useAppDispatch } from '../../hooks';
+import { moveTrack } from '../../store/Reducers/timelineSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
-  scrollbarRef?: RefObject<Scrollbars>;
   seekerRef?: RefObject<HTMLDivElement>;
 }
 
@@ -36,9 +34,11 @@ const StyledRowNumber = styled(Text)`
 
 const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
   const dispatch = useAppDispatch();
+  const timeline = useAppSelector((state) => state.timeline);
+
   const tracker = useRef(createPositionTracker()) as RefObject<IPositionTracker>;
   const controlRef = useRef<HTMLDivElement>(null);
-  const { seekerRef, scrollbarRef, track } = props;
+  const { seekerRef, track } = props;
 
   let rowContainer: HTMLElement;
   let rowElement: HTMLElement;
@@ -90,11 +90,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     if (!tracker.current) return;
 
     position = tracker.current.update(event);
-
-    if (scrollbarRef?.current) {
-      scrollOffset = scrollbarRef.current.getScrollTop() - scrollTop;
-    }
-
+    scrollOffset = timeline.currentScroll.top - scrollTop;
     rowElement.style.top = position.relativeY + scrollOffset + 'px';
   };
 
@@ -106,9 +102,9 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     const state = findAfterState();
 
     if (state.index !== track.index) {
-      dispatch(moveTrackByIndex({
-        fromIndex: track.index,
-        toIndex: state.index,
+      dispatch(moveTrack({
+        fromTrackIndex: track.index,
+        toTrackIndex: state.index,
       }));
     }
 
@@ -132,10 +128,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     zIndex = rowElement.style.zIndex;
     rowElement.style.zIndex = '3';
     seekerRef.current.style.pointerEvents = 'none';
-
-    if (scrollbarRef?.current) {
-      scrollTop = scrollbarRef.current.getScrollTop();
-    }
+    scrollTop = timeline.currentScroll.top;
 
     if (!rowElement.classList.contains('grabbing')) {
       rowElement.classList.add('grabbing');

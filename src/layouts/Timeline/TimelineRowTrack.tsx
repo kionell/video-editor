@@ -1,4 +1,3 @@
-import Scrollbars from 'react-custom-scrollbars-2';
 import styled from 'styled-components';
 import { HTMLAttributes, createRef, RefObject, useState, useRef, DragEvent } from 'react';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
@@ -15,7 +14,6 @@ import { BaseElement } from '../../models/Elements/BaseElement';
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
   seekerRef?: RefObject<HTMLDivElement>;
-  scrollbarRef?: RefObject<Scrollbars>;
 }
 
 const StyledTimelineRowTrack = styled(FlexContainer)`
@@ -34,7 +32,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const [isDragging, setDragging] = useState(false);
 
   const dropZoneRef = useRef<HTMLDivElement>(null);
-  const { seekerRef, scrollbarRef, track } = props;
+  const { seekerRef, track } = props;
 
   const tracker = useRef(createPositionTracker());
   const elementLeft = useRef(0);
@@ -56,12 +54,12 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   };
 
   const onDragOver = (event: DragEvent<HTMLElement>) => {
-    if (!dropZoneRef.current || !scrollbarRef?.current) return;
+    if (!dropZoneRef.current) return;
 
     position = tracker.current.update(event.nativeEvent);
 
     const dropZoneLeft = elementLeft.current + position.relativeX;
-    const scrollLeft = scrollbarRef.current.getScrollLeft();
+    const scrollLeft = timeline.currentScroll.left;
 
     dropZoneRef.current.style.left = dropZoneLeft + scrollLeft + 'px';
     dropZoneRef.current.style.width = elementWidth.current + 'px';
