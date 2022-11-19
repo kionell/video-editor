@@ -10,6 +10,6 @@ declare module 'sister' {
   export default class Sister {
     on(name: SisterEventName, handler: SisterEventHandler): SisterEventListener;
     off(listener: SisterEventListener): void;
-    trigger(name: SisterEventName, data: any): void;
+    trigger<N extends SisterEventName, D = unknown>(name: N, data: D): void;
   }
 }
