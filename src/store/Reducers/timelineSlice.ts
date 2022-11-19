@@ -54,6 +54,13 @@ interface MoveElementOperation {
   toMs: number;
 }
 
+function createAction(payload: Record<any, any>): PayloadAction<any> {
+  return {
+    type: '',
+    payload,
+  }
+}
+
 const timelineSlice = createSlice({
   name: 'timeline',
   initialState,
@@ -74,31 +81,34 @@ const timelineSlice = createSlice({
       state.currentZoom = action.payload;
     },
 
-    addTrack(state, action: PayloadAction<AddTrackOperation>) {
-      const track = action.payload.track;
-
-      state.tracks.splice(track.index, 0, track);
-
+    reindexTracks(state) {
       state.tracks.forEach((track, index) => {
         track.index = index;
       });
     },
 
+    addTrack(state, action: PayloadAction<AddTrackOperation>) {
+      const track = action.payload.track;
+
+      state.tracks.splice(track.index, 0, track);
+
+      timelineSlice.caseReducers.reindexTracks(state);
+    },
+
     pushTrack(state) {
       state.tracks.push(new TimelineTrack(state.totalTracks));
+
+      timelineSlice.caseReducers.reindexTracks(state);
     },
 
     removeTrack(state, action: PayloadAction<RemoveTrackOperation>) {
       const track = action.payload.track;
-      const index = state.tracks.findIndex((t) => t.index === track.index);
 
-      if (index >= 0 && index < state.totalTracks) {
-        state.tracks.splice(index, 1);
+      const newAction = createAction({
+        index: state.tracks.findIndex((t) => t.index === track.index),
+      });
 
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
-      }
+      timelineSlice.caseReducers.removeTrackByIndex(state, newAction);
     },
 
     removeTrackByIndex(state, action: PayloadAction<RemoveTrackByIndexOperation>) {
@@ -107,27 +117,17 @@ const timelineSlice = createSlice({
       if (index >= 0 && index < state.totalTracks) {
         state.tracks.splice(index, 1);
 
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
+        timelineSlice.caseReducers.reindexTracks(state);
       }
     },
 
     moveTrack(state, action: PayloadAction<MoveTrackOperation>) {
-      const track = action.payload.track;
-      const fromIndex = track.index;
-      const toIndex = action.payload.toIndex;
+      const newAction = createAction({
+        fromIndex: action.payload.track.index,
+        toIndex: action.payload.toIndex,
+      });
 
-      if (fromIndex >= 0 && fromIndex < state.totalTracks) {
-        const index = clamp(toIndex, 0, state.totalTracks - 1);
-        const track = state.tracks.splice(fromIndex, 1);
-
-        state.tracks.splice(index, 0, track[0]);
-
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
-      }
+      timelineSlice.caseReducers.moveTrackByIndex(state, newAction);
     },
 
     moveTrackByIndex(state, action: PayloadAction<MoveTrackByIndexOperation>) {
@@ -140,30 +140,17 @@ const timelineSlice = createSlice({
 
         state.tracks.splice(index, 0, track[0]);
 
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
+        timelineSlice.caseReducers.reindexTracks(state);
       }
     },
 
     addElement(state, action: PayloadAction<AddElementOperation>) {
-      const element = action.payload.element;
-      const track = action.payload.track;
+      const newAction = createAction({
+        element: action.payload.element,
+        trackIndex: action.payload.track.index,
+      });
 
-      if (track) {
-        track.addElement(element);
-      }
-      else {
-        const newTrack = new TimelineTrack(0, element.type);
-
-        state.tracks.splice(newTrack.index, 0, newTrack);
-
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
-
-        newTrack.addElement(element);
-      }
+      timelineSlice.caseReducers.addElementByIndex(state, newAction);
     },
 
     addElementByIndex(state, action: PayloadAction<AddElementByIndexOperation>) {
@@ -171,20 +158,28 @@ const timelineSlice = createSlice({
       const trackIndex = action.payload.trackIndex;
       const track = state.getTrackByIndex(trackIndex);
 
-      if (track) {
-        track.addElement(element);
+      if (!track) {
+        const newAction = createAction({ element });
+
+        timelineSlice.caseReducers.pushElement(state, newAction);
+
+        return;
       }
-      else {
-        const newTrack = new TimelineTrack(0, element.type);
 
-        state.tracks.splice(newTrack.index, 0, newTrack);
+      track.addElement(element);
+    },
 
-        state.tracks.forEach((track, index) => {
-          track.index = index;
-        });
+    pushElement(state, action: PayloadAction<PushElementOperation>) {
+      const element = action.payload.element;
+      const newTrack = new TimelineTrack(0, element.type);
 
-        newTrack.addElement(element);
-      }
+      state.tracks.splice(newTrack.index, 0, newTrack);
+
+      state.tracks.forEach((track, index) => {
+        track.index = index;
+      });
+
+      newTrack.addElement(element);
     },
 
     removeElement(state, action: PayloadAction<RemoveElementOperation>) {
