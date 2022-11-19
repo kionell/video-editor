@@ -123,7 +123,7 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
   }
 
   get lastElement(): T | null {
-    return this._elements[this._elements.length - 1] ?? null;
+    return this._elements.at(-1) ?? null;
   }
 
   get startTimeMs(): number {

@@ -57,7 +57,7 @@ export function getNextZoomLevel(timeline: Timeline): ITimelineZoomState {
 }
 
 export function getPreviousZoomIndex(timeline: Timeline): number {
-  const lastLevel = TIMELINE_ZOOM_LEVELS[TIMELINE_ZOOM_LEVELS.length - 1];
+  const lastLevel = TIMELINE_ZOOM_LEVELS.at(-1);
   const isLastIndex = timeline.currentZoom === lastLevel;
   const nextZoomIndex = getNextZoomIndex(timeline);
   const previousZoomIndex = nextZoomIndex - (isLastIndex ? 1 : 2);
