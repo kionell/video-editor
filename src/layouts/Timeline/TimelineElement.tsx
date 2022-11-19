@@ -47,7 +47,7 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
         }
         
         .timeline-element__edges {
-          display: ${isFocused ? 'visible' : 'hidden'};
+          visibility: ${isFocused ? 'visible' : 'hidden'};
         }
       }
     `;
