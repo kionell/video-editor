@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Timeline } from '../../core/Timeline/Timeline';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
+import { getTrackByIndex } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
 
 import {
@@ -21,11 +22,12 @@ import {
   MoveElementAction,
   MoveTrackPayload,
   PushElementPayload,
+  FixOffsetPayload,
 } from '../Interfaces/Timeline';
 
 const initialState: Timeline = new Timeline();
 
-function createAction<T>(payload: T): PayloadAction<T> {
+function makeAction<T>(payload: T): PayloadAction<T> {
   return { type: '', payload } as PayloadAction<T>;
 }
 
@@ -47,10 +49,6 @@ const TimelineSlice = createSlice({
 
     setCurrentZoom(state, action: CurrentZoomAction) {
       state.currentZoom = action.payload;
-    },
-
-    reindexTracks(state) {
-      state.tracks.forEach((t, i) => t.index = i);
     },
 
     addTrack(state, action: AddTrackAction) {
@@ -96,7 +94,7 @@ const TimelineSlice = createSlice({
 
       if (trackIndex <= 0) return;
 
-      const newAction = createAction<MoveTrackPayload>({
+      const newAction = makeAction<MoveTrackPayload>({
         fromIndex: trackIndex,
         toIndex: trackIndex - 1,
       });
@@ -109,7 +107,7 @@ const TimelineSlice = createSlice({
 
       if (trackIndex >= state.totalTracks) return;
 
-      const newAction = createAction<MoveTrackPayload>({
+      const newAction = makeAction<MoveTrackPayload>({
         fromIndex: trackIndex,
         toIndex: trackIndex + 1,
       });
@@ -120,17 +118,20 @@ const TimelineSlice = createSlice({
     addElement(state, action: AddElementAction) {
       const element = action.payload.element;
       const trackIndex = action.payload.trackIndex;
-      const track = state.getTrackByIndex(trackIndex);
+      const track = getTrackByIndex(state as Timeline, trackIndex);
 
       if (!track) {
-        const newAction = createAction<PushElementPayload>({ element });
+        const newAction = makeAction<PushElementPayload>({ element });
 
         TimelineSlice.caseReducers.pushElement(state, newAction);
-
-        return;
       }
+      else {
+        track.addElement(element);
 
-      track.addElement(element);
+        const newAction = makeAction<FixOffsetPayload>({ trackIndex });
+
+        TimelineSlice.caseReducers.fixTimeOffsets(state, newAction);
+      }
     },
 
     pushElement(state, action: PushElementAction) {
@@ -147,7 +148,7 @@ const TimelineSlice = createSlice({
     removeElement(state, action: RemoveElementAction) {
       const timeMs = action.payload.timeMs;
       const trackIndex = action.payload.trackIndex;
-      const track = state.getTrackByIndex(trackIndex);
+      const track = getTrackByIndex(state as Timeline, trackIndex);
 
       if (!track) return;
 
@@ -156,7 +157,7 @@ const TimelineSlice = createSlice({
 
     moveElement(state, action: MoveElementAction) {
       const { fromMs, toMs, trackIndex } = action.payload;
-      const track = state.getTrackByIndex(trackIndex);
+      const track = getTrackByIndex(state as Timeline, trackIndex);
 
       if (!track) return;
 
@@ -191,12 +192,16 @@ const TimelineSlice = createSlice({
       }
     },
 
+    reindexTracks(state) {
+      state.tracks.forEach((t, i) => t.index = i);
+    },
+
     /**
      * Removes intersection between elements.
      */
     fixTimeOffsets(state, action: FixOffsetAction): void {
       const trackIndex = action.payload.trackIndex;
-      const track = state.getTrackByIndex(trackIndex);
+      const track = getTrackByIndex(state as Timeline, trackIndex);
 
       if (!track) return;
 
@@ -206,9 +211,9 @@ const TimelineSlice = createSlice({
       if (track.elements.length <= 1) return;
 
       // Min starting time of each next element.
-      let nextMinTime = this._elements[0].endTimeMs;
+      let nextMinTime = track.elements[0].endTimeMs;
 
-      this.elements.forEach((element, index) => {
+      track.elements.forEach((element, index) => {
         if (index === 0) return;
 
         const difference = element.startTimeMs - nextMinTime;
@@ -231,6 +236,8 @@ export const {
   pushTrack,
   removeTrack,
   moveTrack,
+  bringForward,
+  sendBackward,
   addElement,
   pushElement,
   removeElement,
