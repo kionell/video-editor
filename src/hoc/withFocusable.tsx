@@ -64,7 +64,7 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
           }
         };
 
-        element.addEventListener('click', focusElement);
+        element.addEventListener('mousedown', focusElement);
 
         let focusCallbackListener: SisterEventListener | null = null;
         let blurCallbackListener: SisterEventListener | null = null;
@@ -78,7 +78,7 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
         }
 
         return () => {
-          element.removeEventListener('click', focusElement);
+          element.removeEventListener('mousedown', focusElement);
 
           if (focusCallbackListener) {
             emitter.off(focusCallbackListener);
