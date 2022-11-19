@@ -14,9 +14,9 @@ export function App() {
   const [ready, setReady] = useState(false);
 
   const load = async () => {
-    if (!ffmpeg.isLoaded()) {
-      await ffmpeg.load();
-    }
+    // if (!ffmpeg.isLoaded()) {
+    //   await ffmpeg.load();
+    // }
 
     setReady(true);
   };
