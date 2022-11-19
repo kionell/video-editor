@@ -38,6 +38,7 @@ const TimelineRow: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
       <TimelineRowControl
         track={props.track}
         scrollbarRef={props.scrollbarRef}
+        seekerRef={props.seekerRef}
       />
       <TimelineRowTrack
         track={props.track}

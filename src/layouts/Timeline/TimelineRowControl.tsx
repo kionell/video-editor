@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../hooks';
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
   scrollbarRef?: RefObject<Scrollbars>;
+  seekerRef?: RefObject<HTMLDivElement>;
 }
 
 const StyledTimelineRowControl = styled(FlexContainer)`
@@ -37,8 +38,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
   const dispatch = useAppDispatch();
   const tracker = useRef(createPositionTracker()) as RefObject<IPositionTracker>;
   const controlRef = useRef<HTMLDivElement>(null);
-  const track = props.track;
-  const scrollbarRef = props.scrollbarRef;
+  const { seekerRef, scrollbarRef, track } = props;
 
   let rowContainer: HTMLElement;
   let rowElement: HTMLElement;
@@ -99,9 +99,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
   };
 
   const onMouseUp = (event: MouseEvent) => {
-    event.stopImmediatePropagation();
-
-    if (!tracker.current) return;
+    if (!tracker.current || !seekerRef?.current) return;
 
     position = tracker.current.update(event);
 
@@ -116,6 +114,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
 
     rowElement.style.zIndex = zIndex;
     rowElement.style.top = '';
+    seekerRef.current.style.pointerEvents = 'all';
 
     if (rowElement.classList.contains('grabbing')) {
       rowElement.classList.remove('grabbing');
@@ -126,14 +125,13 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
   }
 
   const onMouseDown = (event: MouseEvent) => {
-    event.stopImmediatePropagation();
-
-    if (!tracker.current) return;
+    if (!tracker.current || !seekerRef?.current) return;
 
     position = tracker.current.start(event);
 
     zIndex = rowElement.style.zIndex;
-    rowElement.style.zIndex = '2';
+    rowElement.style.zIndex = '3';
+    seekerRef.current.style.pointerEvents = 'none';
 
     if (scrollbarRef?.current) {
       scrollTop = scrollbarRef.current.getScrollTop();
