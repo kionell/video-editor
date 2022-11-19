@@ -1,5 +1,5 @@
 import { immerable } from 'immer';
-import { PREVIEW_FRAME_WIDTH, TIMELINE_ZOOM_LEVELS } from '../../constants';
+import { PREVIEW_FRAME_WIDTH } from '../../constants';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { ITimelineScrollState } from '../State/ITimelineScrollState';
 import { TimelineTrack } from './TimelineTrack';
@@ -8,8 +8,7 @@ import { ImageElement } from '../Elements/ImageElement';
 import { TextElement } from '../Elements/TextElement';
 import { VideoElement } from '../Elements/VideoElement';
 import { MediaType } from '../Enums/MediaType';
-import { clamp } from '../../utils/math';
-import { findIndex } from '../../utils/search';
+import { clamp } from '../Utils/Math';
 
 /**
  * A timeline.
@@ -55,29 +54,6 @@ export class Timeline {
 
   set currentTimeMs(timeMs: number) {
     this._currentTimeMs = timeMs;
-  }
-
-  getPreviousZoomLevel(): ITimelineZoomState {
-    return TIMELINE_ZOOM_LEVELS[this._getPreviousZoomIndex()];
-  }
-
-  getNextZoomLevel(): ITimelineZoomState {
-    return TIMELINE_ZOOM_LEVELS[this._getNextZoomIndex()];
-  }
-
-  /**
-   * Searches for a track by its index.
-   * @param index Target index of a track.
-   * @returns Found timeline track or null.
-   */
-  getTrackByIndex(index?: number): TimelineTrack | null {
-    if (typeof index !== 'number') return null;
-
-    if (index < 0 || index >= this.totalTracks) {
-      return null;
-    }
-
-    return this.tracks[index];
   }
 
   get focusedTracks(): TimelineTrack[] {
@@ -155,26 +131,5 @@ export class Timeline {
     const timeMs = frames * frameInterval;
 
     return clamp(timeMs, 0, this.totalLengthMs);
-  }
-
-  private _getPreviousZoomIndex(): number {
-    const lastLevel = TIMELINE_ZOOM_LEVELS[TIMELINE_ZOOM_LEVELS.length - 1];
-    const isLastIndex = this.currentZoom === lastLevel;
-    const nextZoomIndex = this._getNextZoomIndex();
-    const previousZoomIndex = nextZoomIndex - (isLastIndex ? 1 : 2);
-
-    // Limit zoom to the first default level.
-    return Math.max(0, previousZoomIndex);
-  }
-
-  private _getNextZoomIndex(): number {
-    const zoomLevels = TIMELINE_ZOOM_LEVELS;
-
-    const nextZoomIndex = findIndex(zoomLevels, (level) => {
-      return level.zoom > this.currentZoom.zoom;
-    });
-
-    // Limit zoom to the last default level.
-    return Math.min(zoomLevels.length - 1, nextZoomIndex);
   }
 }
