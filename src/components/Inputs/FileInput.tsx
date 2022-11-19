@@ -3,7 +3,7 @@ import React, { forwardRef, Ref, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { addFile } from '../../store/Reducers/FileSlice';
 import { ffmpeg } from '../../lib/FFmpeg';
-import { loadFile } from '../../utils/files';
+import { loadFile } from '../../core/Utils/Files';
 import { fetchFile } from '@ffmpeg/ffmpeg';
 import { useAppSelector } from '../../hooks/useAppSelector';
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SidebarCategory } from '../../models/Enums/SidebarCategory';
-import { IGeneralState } from '../../models/State/IGeneralState';
+import { SidebarCategory } from '../../core/Enums/SidebarCategory';
+import { IGeneralState } from '../../core/State/IGeneralState';
 
 const initialState: IGeneralState = {
   currentCategory: 'None',

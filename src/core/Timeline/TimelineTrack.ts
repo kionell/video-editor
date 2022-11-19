@@ -1,5 +1,5 @@
 import { immerable } from 'immer';
-import { findIndex } from '../Utils/search';
+import { findIndex } from '../Utils/Search';
 import { BaseElement } from '../Elements/BaseElement';
 import { MediaType } from '../Enums/MediaType';
 

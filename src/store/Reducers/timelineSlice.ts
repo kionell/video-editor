@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Timeline } from '../../models/Timeline/Timeline';
-import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
-import { clamp } from '../../utils/math';
+import { Timeline } from '../../core/Timeline/Timeline';
+import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
+import { clamp } from '../../core/Utils/Math';
 
 import {
   SnapModeAction,
@@ -195,15 +195,20 @@ const TimelineSlice = createSlice({
      * Removes intersection between elements.
      */
     fixTimeOffsets(state, action: FixOffsetAction): void {
-      this._elements.sort((a, b) => a.startTimeMs - b.startTimeMs);
+      const trackIndex = action.payload.trackIndex;
+      const track = state.getTrackByIndex(trackIndex);
+
+      if (!track) return;
+
+      track.elements.sort((a, b) => a.startTimeMs - b.startTimeMs);
 
       // There is no sense to change offsets when there are 1 element or less.
-      if (this._elements.length <= 1) return;
+      if (track.elements.length <= 1) return;
 
       // Min starting time of each next element.
       let nextMinTime = this._elements[0].endTimeMs;
 
-      this._elements.forEach((element, index) => {
+      this.elements.forEach((element, index) => {
         if (index === 0) return;
 
         const difference = element.startTimeMs - nextMinTime;

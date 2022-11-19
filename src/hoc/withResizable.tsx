@@ -1,5 +1,5 @@
 import { forwardRef, useEffect } from 'react';
-import { createPositionTracker, IPositionTrackerState } from '../utils/position';
+import { createPositionTracker, IPositionTrackerState } from '../core/Utils/Position';
 
 export const withResizable = <T, >(Component: React.FC<T>) => {
   const makeResizable = (element: HTMLElement) => {

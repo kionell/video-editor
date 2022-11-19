@@ -3,7 +3,7 @@ import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { Text } from '../../components/Text';
 import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { formatTimeMs } from '../../utils/format';
+import { formatTimeMs } from '../../core/Utils/Format';
 
 const StyledTimecodeContainer = styled(FlexContainer)`
   position: relative;

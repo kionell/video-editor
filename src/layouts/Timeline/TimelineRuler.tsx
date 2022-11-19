@@ -1,7 +1,7 @@
 import styled, { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
 import { PureComponent, forwardRef } from 'react';
-import { convertToRef } from '../../utils/react';
-import { formatTimelineUnit } from '../../utils/format';
+import { convertToRef } from '../../core/Utils/React';
+import { formatTimelineUnit } from '../../core/Utils/Format';
 
 import {
   PREVIEW_FRAME_WIDTH,

@@ -2,9 +2,9 @@ import { HTMLAttributes, useEffect, useRef, RefObject } from 'react';
 import styled from 'styled-components';
 import { Text } from '../../components/Text';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
+import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TIMELINE_OFFSET_X } from '../../constants';
-import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../utils/position';
+import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
 import { moveTrack } from '../../store/Reducers/TimelineSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 

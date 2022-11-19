@@ -1,8 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { BaseElement } from '../../models/Elements/BaseElement';
-import { ITimelineZoomState } from '../../models/State/ITimelineZoomState';
-import { ITimelineScrollState } from '../../models/State/ITimelineScrollState';
-import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
+import { BaseElement } from '../../core/Elements/BaseElement';
+import { ITimelineZoomState } from '../../core/State/ITimelineZoomState';
+import { ITimelineScrollState } from '../../core/State/ITimelineScrollState';
+import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 
 interface TrackPayload {
   track: TimelineTrack;

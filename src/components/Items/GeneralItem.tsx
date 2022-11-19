@@ -6,14 +6,14 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import { Text } from '../Text';
 import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
-import { formatDuration } from '../../utils/format';
 import { ImagePreview } from '../ImagePreview';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { UploadedFile } from '../../models/Files/UploadedFile';
+import { UploadedFile } from '../../core/Files/UploadedFile';
+import { formatDuration } from '../../core/Utils/Format';
+import { convertUploadedFileToElement } from '../../core/Utils/Files';
 import { removeFile } from '../../store/Reducers/FileSlice';
 import { pushElement } from '../../store/Reducers/TimelineSlice';
-import { convertUploadedFileToElement } from '../../utils/files';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
   previewElement?: HTMLElement;

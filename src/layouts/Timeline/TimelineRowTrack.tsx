@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import { HTMLAttributes, createRef, RefObject, useState, useRef, DragEvent } from 'react';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { TimelineTrack } from '../../models/Timeline/TimelineTrack';
+import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
 import { TimelineElementDropZone } from './TimelineElementDropZone';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createPositionTracker, IPositionTrackerState } from '../../utils/position';
-import { getWidthFromDraggable } from '../../utils/timeline';
+import { createPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
+import { getWidthFromDraggable } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { focusElement, unfocusElement } from '../../store/Reducers/TimelineSlice';
-import { BaseElement } from '../../models/Elements/BaseElement';
+import { BaseElement } from '../../core/Elements/BaseElement';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;

@@ -2,7 +2,7 @@ import { forwardRef, ForwardedRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { withDraggable, withResizable, withFocusable } from '../../hoc';
 import { Icon } from '../../components/Icon';
-import { BaseElement } from '../../models/Elements/BaseElement';
+import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface ElementProps {

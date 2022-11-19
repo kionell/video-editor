@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { UploadedFile } from '../models/Files/UploadedFile';
-import { getImageThumbnailURL } from '../utils/thumbnails';
+import { UploadedFile } from '../core/Files/UploadedFile';
+import { getImageThumbnailURL } from '../core/Utils/Thumbnails';
 
 export interface PreviewProps {
   width?: number;
