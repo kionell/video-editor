@@ -103,6 +103,17 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
     this.moveElementToTime(element, toMs);
   }
 
+  /**
+   * Whether this timeline track is focused or not.
+   */
+  get isFocused(): boolean {
+    return this._elements.some((e) => e.isFocused);
+  }
+
+  get focusedElements(): T[] {
+    return this._elements.filter((e) => e.isFocused);
+  }
+
   get elements(): T[] {
     return this._elements;
   }

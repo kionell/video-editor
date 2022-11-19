@@ -76,6 +76,10 @@ export class Timeline {
     return this.tracks[index];
   }
 
+  get focusedTracks(): TimelineTrack[] {
+    return this.tracks.filter((t) => t.focusedElements.length > 0);
+  }
+
   get totalTracks(): number {
     return this.tracks.length;
   }

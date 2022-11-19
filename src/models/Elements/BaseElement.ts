@@ -13,6 +13,11 @@ export abstract class BaseElement {
   static DEFAULT_DURATION = 4000;
 
   /**
+   * Whether this timeline element is focused or not.
+   */
+  isFocused = false;
+
+  /**
    * Current offset from the start of a track (from 0 ms).
    */
   offsetMs = 0;
@@ -62,5 +67,9 @@ export abstract class BaseElement {
 
   set durationMs(value: number) {
     this._durationMs = Math.max(0, value);
+  }
+
+  equals(other: BaseElement): boolean {
+    return this.uniqueId === other.uniqueId;
   }
 }
