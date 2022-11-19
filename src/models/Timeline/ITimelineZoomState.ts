@@ -1,7 +1,7 @@
 /**
  * A timeline zoom level state.
  */
-export interface ITimelineZoomLevel {
+export interface ITimelineZoomState {
   /**
    * The number of frames between each long line.
    */
