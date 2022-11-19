@@ -3,15 +3,23 @@ import { useRef, MouseEvent } from 'react';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { setCurrentZoom, setSnapMode } from '../../store/Reducers/TimelineSlice';
 import { TimelineTimecode } from './TimelineTimecode';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
+
 import {
   getNextZoomLevel,
   getPreviousZoomLevel,
   getFitZoomLevel,
 } from '../../core/Utils/Timeline';
+
+import {
+  setSnapMode,
+  setCurrentZoom,
+  bringForward,
+  sendBackward,
+  removeFocusedElements,
+} from '../../store/Reducers/TimelineSlice';
 
 const StyledTimelineTools = styled.div`
   height: 45px;
@@ -45,11 +53,21 @@ const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
 const TimelineTools: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
   const dispatch = useAppDispatch();
-
   const snapButtonRef = useRef(null);
 
   const focusedTracks = timeline.focusedTracks;
-  // const minFocusedTrack = 
+  const firstFocusedTrack = focusedTracks.at(0) ?? null;
+  const lastFocusedTrack = focusedTracks.at(-1) ?? null;
+
+  const allowBringForward = !focusedTracks.length
+    || timeline.totalTracks < 2
+    || !firstFocusedTrack
+    || firstFocusedTrack.index <= 0;
+
+  const allowSendBackward = !focusedTracks.length
+    || timeline.totalTracks < 2
+    || !lastFocusedTrack
+    || lastFocusedTrack.index >= timeline.totalTracks - 1;
 
   const onUndoClick = (event: MouseEvent) => {
     event.stopPropagation();
@@ -66,15 +84,19 @@ const TimelineTools: React.FC = () => {
   const onBringForwardClick = (event: MouseEvent) => {
     event.stopPropagation();
 
-    // if (timeline)
+    dispatch(bringForward());
   };
 
   const onSendBackwardClick = (event: MouseEvent) => {
     event.stopPropagation();
+
+    dispatch(sendBackward());
   };
 
   const onDeleteClick = (event: MouseEvent) => {
     event.stopPropagation();
+
+    dispatch(removeFocusedElements());
   };
 
   const onZoomOutClick = (event: MouseEvent) => {
@@ -126,12 +148,12 @@ const TimelineTools: React.FC = () => {
         <StyledTimelineToolButton
           iconType='BringForward'
           onClick={onBringForwardClick}
-          disabled={!focusedTracks.length || timeline.totalTracks < 2}
+          disabled={allowBringForward}
         />
         <StyledTimelineToolButton
           iconType='SendBackward'
           onClick={onSendBackwardClick}
-          disabled={!timeline.focusedTracks.length || timeline.totalTracks < 2}
+          disabled={allowSendBackward}
         />
         <StyledTimelineToolButton
           iconType='Delete'

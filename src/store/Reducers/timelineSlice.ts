@@ -12,8 +12,6 @@ import {
   AddTrackAction,
   RemoveTrackAction,
   MoveTrackAction,
-  BringForwardAction,
-  SendBackwardAction,
   FixOffsetAction,
   FocusElementAction,
   PushElementAction,
@@ -23,6 +21,7 @@ import {
   MoveTrackPayload,
   PushElementPayload,
   FixOffsetPayload,
+  RemoveElementPayload,
 } from '../Interfaces/Timeline';
 
 const initialState: Timeline = new Timeline();
@@ -89,30 +88,30 @@ const TimelineSlice = createSlice({
       }
     },
 
-    bringForward(state, action: BringForwardAction) {
-      const trackIndex = action.payload.trackIndex;
+    bringForward(state) {
+      const focusedTracks = state.focusedTracks;
 
-      if (trackIndex <= 0) return;
+      focusedTracks.forEach((track) => {
+        const newAction = makeAction<MoveTrackPayload>({
+          fromIndex: track.index,
+          toIndex: track.index - 1,
+        });
 
-      const newAction = makeAction<MoveTrackPayload>({
-        fromIndex: trackIndex,
-        toIndex: trackIndex - 1,
+        TimelineSlice.caseReducers.moveTrack(state, newAction);
       });
-
-      TimelineSlice.caseReducers.moveTrack(state, newAction);
     },
 
-    sendBackward(state, action: SendBackwardAction) {
-      const trackIndex = action.payload.trackIndex;
+    sendBackward(state) {
+      const focusedTracks = state.focusedTracks;
 
-      if (trackIndex >= state.totalTracks) return;
+      focusedTracks.forEach((track) => {
+        const newAction = makeAction<MoveTrackPayload>({
+          fromIndex: track.index,
+          toIndex: track.index + 1,
+        });
 
-      const newAction = makeAction<MoveTrackPayload>({
-        fromIndex: trackIndex,
-        toIndex: trackIndex + 1,
+        TimelineSlice.caseReducers.moveTrack(state, newAction);
       });
-
-      TimelineSlice.caseReducers.moveTrack(state, newAction);
     },
 
     addElement(state, action: AddElementAction) {
@@ -153,6 +152,21 @@ const TimelineSlice = createSlice({
       if (!track) return;
 
       track.removeElementAtTime(timeMs);
+    },
+
+    removeFocusedElements(state) {
+      const focusedTracks = state.focusedTracks;
+
+      focusedTracks.forEach((track) => {
+        track.focusedElements.forEach((element) => {
+          const newAction = makeAction<RemoveElementPayload>({
+            trackIndex: track.index,
+            timeMs: element.startTimeMs,
+          });
+
+          TimelineSlice.caseReducers.removeElement(state, newAction);
+        });
+      });
     },
 
     moveElement(state, action: MoveElementAction) {
@@ -241,6 +255,7 @@ export const {
   addElement,
   pushElement,
   removeElement,
+  removeFocusedElements,
   moveElement,
   focusElement,
   unfocusElement,
