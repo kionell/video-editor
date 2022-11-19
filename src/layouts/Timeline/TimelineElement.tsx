@@ -110,7 +110,7 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     const units = timeline.timeMsToUnits(durationMs);
 
     ref.current.style.width = units + 'px';
-  }, [timeline.currentZoom, timeline.totalLengthMs, timeline.totalTracks]);
+  }, [timeline.currentZoom]);
 
   return (
     <StyledTimelineElementWrapper className='timeline-element' ref={ref} {...props}>
