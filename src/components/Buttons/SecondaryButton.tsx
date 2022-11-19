@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { forwardRef } from 'react';
-import { useUpdateEffect } from '../../hooks';
+import { forwardRef, useEffect } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
@@ -30,13 +29,20 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const BaseSecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+const SecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    ref.current.classList.toggle('toggled');
+    const hasToggled = ref.current.classList.contains('toggled');
+
+    if (toggled && !hasToggled) {
+      ref.current.classList.add('toggled');
+    }
+    else if (!toggled && hasToggled) {
+      ref.current.classList.remove('toggled');
+    }
   }, [toggled]);
 
   return (
