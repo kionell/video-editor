@@ -30,6 +30,14 @@ const StyledBottomPart = styled.div`
 `;
 
 export const MainPage: React.FC = () => {
+  window.addEventListener('dragover', (event) => {
+    event.preventDefault();
+  });
+
+  window.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+  });
+
   return (
     <StyledMainPage>
       <StyledTopPart>
