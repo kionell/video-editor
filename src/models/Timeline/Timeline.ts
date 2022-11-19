@@ -1,6 +1,7 @@
 import { immerable } from 'immer';
 import { PREVIEW_FRAME_WIDTH, TIMELINE_ZOOM_LEVELS } from '../../constants';
-import { ITimelineZoomLevel } from './ITimelineZoomLevel';
+import { ITimelineZoomState } from './ITimelineZoomState';
+import { ITimelineScrollState } from './ITimelineScrollState';
 import { TimelineTrack } from './TimelineTrack';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';
@@ -24,7 +25,7 @@ export class Timeline {
   /**
    * Current zoom of this timeline.
    */
-  currentZoom: ITimelineZoomLevel = {
+  currentZoom: ITimelineZoomState = {
     unit: 1,
     zoom: 1,
     segments: 1,
@@ -33,7 +34,10 @@ export class Timeline {
   /**
    * Current scroll position of this timeline.
    */
-  currentScroll = 0;
+  currentScroll: ITimelineScrollState = {
+    left: 0,
+    top: 0,
+  };
 
   /**
    * Whether the snap mode is activated or not.
@@ -53,11 +57,11 @@ export class Timeline {
     this._currentTimeMs = timeMs;
   }
 
-  getPreviousZoomLevel(): ITimelineZoomLevel {
+  getPreviousZoomLevel(): ITimelineZoomState {
     return TIMELINE_ZOOM_LEVELS[this._getPreviousZoomIndex()];
   }
 
-  getNextZoomLevel(): ITimelineZoomLevel {
+  getNextZoomLevel(): ITimelineZoomState {
     return TIMELINE_ZOOM_LEVELS[this._getNextZoomIndex()];
   }
 
