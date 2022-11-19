@@ -217,6 +217,34 @@ const timelineSlice = createSlice({
         track.moveElementFromTimeToTime(payload.fromMs, payload.toMs);
       }
     },
+
+    focusElement(state, action: PayloadAction<FocusElementOperation>) {
+      const element = action.payload.element;
+
+      for (const track of state.tracks) {
+        const targetElement = track.elements.find((e) => e.equals(element));
+
+        if (targetElement) {
+          targetElement.isFocused = true;
+
+          return;
+        }
+      }
+    },
+
+    unfocusElement(state, action: PayloadAction<FocusElementOperation>) {
+      const element = action.payload.element;
+
+      for (const track of state.tracks) {
+        const targetElement = track.elements.find((e) => e.equals(element));
+
+        if (targetElement) {
+          targetElement.isFocused = false;
+
+          return;
+        }
+      }
+    },
   },
 });
 
@@ -233,8 +261,11 @@ export const {
   moveTrackByIndex,
   addElement,
   addElementByIndex,
+  pushElement,
   removeElement,
   moveElement,
+  focusElement,
+  unfocusElement,
 } = timelineSlice.actions;
 
 export const timelineReducer = timelineSlice.reducer;
