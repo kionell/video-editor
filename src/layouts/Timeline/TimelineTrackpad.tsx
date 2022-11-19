@@ -80,11 +80,14 @@ const TimelineTrackpad: React.FC = () => {
   const handleScroll = () => {
     if (!scrollbarRef.current) return;
 
-    const scrollLeft = scrollbarRef.current.getScrollLeft();
+    const scrollState = {
+      left: scrollbarRef.current.getScrollLeft(),
+      top: scrollbarRef.current.getScrollTop(),
+    };
 
     updatePosByTime();
 
-    dispatch(setCurrentScroll(scrollLeft));
+    dispatch(setCurrentScroll(scrollState));
   };
 
   useEffect(updatePosByTime, [timeline.currentZoom]);
@@ -99,7 +102,7 @@ const TimelineTrackpad: React.FC = () => {
         unit={timeline.currentZoom.unit}
         segments={timeline.currentZoom.segments}
         zoom={timeline.currentZoom.zoom}
-        scrollPos={timeline.currentScroll}
+        scrollPos={timeline.currentScroll.left}
       />
 
       <TimelineSeeker
