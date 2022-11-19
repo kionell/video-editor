@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionTracker, IPositionTrackerState } from '../../utils/position';
 import { getWidthFromDraggable } from '../../utils/timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
+import { focusElement, unfocusElement } from '../../store/Reducers/timelineSlice';
+import { BaseElement } from '../../models/Elements/BaseElement';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -32,8 +34,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const [isDragging, setDragging] = useState(false);
 
   const dropZoneRef = useRef<HTMLDivElement>(null);
-  const seekerRef = props.seekerRef;
-  const track = props.track;
+  const { seekerRef, scrollbarRef, track } = props;
 
   const tracker = useRef(createPositionTracker());
   const elementLeft = useRef(0);
@@ -55,11 +56,14 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   };
 
   const onDragOver = (event: DragEvent<HTMLElement>) => {
-    if (!dropZoneRef.current) return;
+    if (!dropZoneRef.current || !scrollbarRef?.current) return;
 
     position = tracker.current.update(event.nativeEvent);
 
-    dropZoneRef.current.style.left = elementLeft.current + position.relativeX + 'px';
+    const dropZoneLeft = elementLeft.current + position.relativeX;
+    const scrollLeft = scrollbarRef.current.getScrollLeft();
+
+    dropZoneRef.current.style.left = dropZoneLeft + scrollLeft + 'px';
     dropZoneRef.current.style.width = elementWidth.current + 'px';
     dropZoneRef.current.style.translate = '0%';
 
@@ -86,6 +90,14 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     onDragLeave();
   }
 
+  const focusCallback = (element: BaseElement) => {
+    dispatch(focusElement({ element }));
+  };
+
+  const blurCallback = (element: BaseElement) => {
+    dispatch(unfocusElement({ element }));
+  };
+
   return (
     <StyledTimelineRowTrack
       className='timeline-row-track'
@@ -101,6 +113,8 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
             element={element}
             key={element.uniqueId}
             ref={createRef()}
+            focusCallback={() => focusCallback(element)}
+            blurCallback={() => blurCallback(element)}
           />
         ))
       }
