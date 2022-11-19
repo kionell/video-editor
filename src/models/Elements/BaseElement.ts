@@ -1,4 +1,5 @@
 import { immerable } from 'immer';
+import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../../constants';
 import { MediaType } from '../Enums/MediaType';
 
 /**
@@ -10,7 +11,7 @@ export abstract class BaseElement {
   /**
    * Default duration of the file in ms.
    */
-  static DEFAULT_DURATION = 4000;
+  static DEFAULT_DURATION = BASE_TIMELINE_ELEMENT_DURATION_MS;
 
   /**
    * Whether this timeline element is focused or not.

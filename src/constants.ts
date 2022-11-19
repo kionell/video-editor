@@ -119,3 +119,5 @@ export const SECONDARY_FONT = 'sans-serif';
 
 export const PREVIEW_FRAME_WIDTH = 88;
 export const TIMELINE_OFFSET_X = 40;
+
+export const BASE_TIMELINE_ELEMENT_DURATION_MS = 4000;

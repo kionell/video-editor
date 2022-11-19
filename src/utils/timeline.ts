@@ -1,3 +1,4 @@
+import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../constants';
 import { IFileState } from '../models/IFileState';
 import { Timeline } from '../models/Timeline/Timeline';
 
@@ -12,7 +13,9 @@ export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline
 
     if (!file) return 0;
 
-    return timeline.timeMsToUnits(file.duration * 1000);
+    const duration = (file.duration * 1000) || BASE_TIMELINE_ELEMENT_DURATION_MS;
+
+    return timeline.timeMsToUnits(duration);
   }
 
   if (draggable.classList.contains('timeline-element')) {
