@@ -1,4 +1,4 @@
-import { SidebarCategory } from './Enums/SidebarCategory';
+import { SidebarCategory } from '../Enums/SidebarCategory';
 
 export interface IGeneralState {
   currentCategory: keyof typeof SidebarCategory;
