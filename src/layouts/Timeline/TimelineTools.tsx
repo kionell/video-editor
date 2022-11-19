@@ -7,6 +7,11 @@ import { setCurrentZoom, setSnapMode } from '../../store/Reducers/TimelineSlice'
 import { TimelineTimecode } from './TimelineTimecode';
 import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
 import { FlexContainer } from '../../components/Containers/FlexContainer';
+import {
+  getNextZoomLevel,
+  getPreviousZoomLevel,
+  getFitZoomLevel,
+} from '../../core/Utils/Timeline';
 
 const StyledTimelineTools = styled.div`
   height: 45px;
@@ -75,7 +80,7 @@ const TimelineTools: React.FC = () => {
   const onZoomOutClick = (event: MouseEvent) => {
     event.stopPropagation();
 
-    const zoomLevel = timeline.getPreviousZoomLevel();
+    const zoomLevel = getPreviousZoomLevel(timeline);
 
     dispatch(setCurrentZoom(zoomLevel));
   };
@@ -83,7 +88,7 @@ const TimelineTools: React.FC = () => {
   const onZoomInClick = (event: MouseEvent) => {
     event.stopPropagation();
 
-    const zoomLevel = timeline.getNextZoomLevel();
+    const zoomLevel = getNextZoomLevel(timeline);
 
     dispatch(setCurrentZoom(zoomLevel));
   };
@@ -91,7 +96,7 @@ const TimelineTools: React.FC = () => {
   const onZoomFitClick = (event: MouseEvent) => {
     event.stopPropagation();
 
-    const zoomLevel = timeline.getPreviousZoomLevel();
+    const zoomLevel = getFitZoomLevel(timeline);
 
     dispatch(setCurrentZoom(zoomLevel));
   };

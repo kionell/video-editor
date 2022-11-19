@@ -44,6 +44,10 @@ export function getTrackByIndex(timeline: Timeline, index?: number): TimelineTra
   return timeline.tracks[index];
 }
 
+export function getFitZoomLevel(timeline: Timeline): ITimelineZoomState {
+  return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(timeline)];
+}
+
 export function getPreviousZoomLevel(timeline: Timeline): ITimelineZoomState {
   return TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(timeline)];
 }
