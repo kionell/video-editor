@@ -1,4 +1,4 @@
-import { AspectRatio } from './Enums/AspectRatio';
+import { AspectRatio } from '../Enums/AspectRatio';
 
 /**
  * Video preview state.

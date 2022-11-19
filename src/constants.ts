@@ -1,4 +1,4 @@
-import { ITimelineZoomState } from './models/Timeline/ITimelineZoomState';
+import { ITimelineZoomState } from './models/State/ITimelineZoomState';
 
 export const TIMELINE_ZOOM_LEVELS: ITimelineZoomState[] = [
   { // 1x distance (minute 0 to minute 5, 5 segments).

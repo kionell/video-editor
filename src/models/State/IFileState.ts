@@ -1,4 +1,4 @@
-import { UploadedFile } from './Files/UploadedFile';
+import { UploadedFile } from '../Files/UploadedFile';
 
 export interface IFileState {
   list: UploadedFile[];
