@@ -12,7 +12,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { UploadedFile } from '../../models/Files/UploadedFile';
 import { removeFile } from '../../store/Reducers/fileSlice';
-import { addElement } from '../../store/Reducers/timelineSlice';
+import { pushElement } from '../../store/Reducers/timelineSlice';
 import { convertUploadedFileToElement } from '../../utils/files';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
@@ -133,7 +133,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
     if (!element) return;
 
-    dispatch(addElement({ element }));
+    dispatch(pushElement({ element }));
   };
 
   const onDeleteClick = () => {
