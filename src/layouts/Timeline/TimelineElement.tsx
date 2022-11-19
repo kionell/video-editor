@@ -23,35 +23,30 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
   cursor: pointer;
   z-index: 1;
 
+  .timeline-element__preview {
+    border: 2px solid ${(props) => props.theme.primary.press};
+  }
+  
   .timeline-element__edges {
     background: transparent;
+    visibility: visible;
   }
 
-  ${(props) => {
-    const isFocused = props.className?.includes('focused');
-    const pressColor = props.theme.primary.press;
-    const hoverColor = props.theme.primary.hover;
+  &:not(.focused) {
+    .timeline-element__edges {
+      visibility: hidden;
+    }
 
-    return css`
-      .timeline-element__preview {
-        border: ${isFocused ? `2px solid ${pressColor}` : 'none'};
-      }
-      
-      .timeline-element__edges {
-        visibility: ${isFocused ? 'visible' : 'hidden'};
-      }
+    .timeline-element__preview {
+      border: none;
+    }
+  }
 
-      &:hover:not(.focused) {
-        .timeline-element__preview {
-          border: 2px solid ${hoverColor};
-        }
-        
-        .timeline-element__edges {
-          visibility: ${isFocused ? 'visible' : 'hidden'};
-        }
-      }
-    `;
-  }};
+  &:hover:not(.focused) {
+    .timeline-element__preview {
+      border: 2px solid ${(props) => props.theme.primary.hover};
+    }
+  }
 `;
 
 const StyledTimelineElementEdge = styled.div`
