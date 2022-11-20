@@ -5,7 +5,6 @@ import { getTrackByIndex } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
 
 import {
-  SnapModeAction,
   CurrentTimeAction,
   CurrentZoomAction,
   CurrentScrollAction,
@@ -34,8 +33,8 @@ const TimelineSlice = createSlice({
   name: 'timeline',
   initialState,
   reducers: {
-    setSnapMode(state, action: SnapModeAction) {
-      state.snapMode = action.payload;
+    switchSnapMode(state) {
+      state.snapMode = !state.snapMode;
     },
 
     setCurrentTimeMs(state, action: CurrentTimeAction) {
@@ -242,7 +241,7 @@ const TimelineSlice = createSlice({
 });
 
 export const {
-  setSnapMode,
+  switchSnapMode,
   setCurrentTimeMs,
   setCurrentScroll,
   setCurrentZoom,

@@ -14,7 +14,7 @@ import {
 } from '../../core/Utils/Timeline';
 
 import {
-  setSnapMode,
+  switchSnapMode,
   setCurrentZoom,
   bringForward,
   sendBackward,
@@ -69,65 +69,27 @@ const TimelineTools: React.FC = () => {
     || !lastFocusedTrack
     || lastFocusedTrack.index >= timeline.totalTracks - 1;
 
-  const onUndoClick = (event: MouseEvent) => {
-    event.stopPropagation();
+  // const onUndoClick = () => {};
+  // const onRedoClick = () => {};
+  // const onSplitClick = () => {};
+  const onBringForwardClick = () => dispatch(bringForward());
+  const onSendBackwardClick = () => dispatch(sendBackward());
+  const onDeleteClick = () => dispatch(removeFocusedElements());
+  const onSnapClick = () => dispatch(switchSnapMode());
+
+  const onZoomOutClick = () => {
+    dispatch(setCurrentZoom(getPreviousZoomLevel(timeline)));
   };
 
-  const onRedoClick = (event: MouseEvent) => {
-    event.stopPropagation();
+  const onZoomInClick = () => {
+    dispatch(setCurrentZoom(getNextZoomLevel(timeline)));
   };
 
-  const onSplitClick = (event: MouseEvent) => {
-    event.stopPropagation();
+  const onZoomFitClick = () => {
+    dispatch(setCurrentZoom(getFitZoomLevel(timeline)));
   };
 
-  const onBringForwardClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    dispatch(bringForward());
-  };
-
-  const onSendBackwardClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    dispatch(sendBackward());
-  };
-
-  const onDeleteClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    dispatch(removeFocusedElements());
-  };
-
-  const onZoomOutClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    const zoomLevel = getPreviousZoomLevel(timeline);
-
-    dispatch(setCurrentZoom(zoomLevel));
-  };
-
-  const onZoomInClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    const zoomLevel = getNextZoomLevel(timeline);
-
-    dispatch(setCurrentZoom(zoomLevel));
-  };
-
-  const onZoomFitClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    const zoomLevel = getFitZoomLevel(timeline);
-
-    dispatch(setCurrentZoom(zoomLevel));
-  };
-
-  const onSnapClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
-    dispatch(setSnapMode(!timeline.snapMode));
-  };
+  const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
   return (
     <StyledTimelineTools>
