@@ -20,6 +20,11 @@ const StyledScrollbars = styled(Scrollbars)`
     scrollbar-width: none;  /* Firefox */
     margin: 0 !important; /* Overwrites negative margin from scrollbar lib */
   }
+
+  // Should match scrollbar divs.
+  & > :not(:first-child) {
+    z-index: 9999;
+  }
 `;
 
 const ScrollableContainer = forwardRef<Scrollbars, ScrollableProps>((

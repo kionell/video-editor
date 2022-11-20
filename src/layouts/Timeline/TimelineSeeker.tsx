@@ -28,7 +28,7 @@ const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   border: none;
   outline: none;
   user-select: none;
-  z-index: 5;
+  z-index: 999;
   cursor: ew-resize;
   pointer-events: painted;
 
