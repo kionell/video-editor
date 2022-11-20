@@ -96,6 +96,7 @@ const TimelineTrackpad: React.FC = () => {
 
   return (
     <StyledTimelineTrackpadContainer
+      className='timeline-trackpad'
       onMouseDown={handleMouseDown}
       onDoubleClick={setSeekerPosition}
     >
