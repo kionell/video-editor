@@ -1,10 +1,11 @@
-import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../../constants';
+import { BASE_TIMELINE_ELEMENT_DURATION_MS, TIMELINE_OFFSET_X } from '../../constants';
 import { BaseElement } from '../Elements/BaseElement';
 import { IFileState } from '../State/IFileState';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { Timeline } from '../Timeline/Timeline';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { TIMELINE_ZOOM_LEVELS } from '../Timeline/TimelineZoom';
+import { clamp } from './Math';
 import { findIndex } from './Search';
 
 export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline, files: IFileState): number {
@@ -58,16 +59,48 @@ export function getElementAtTime<T extends BaseElement>(track: TimelineTrack<T>,
   return index >= 0 ? track.elements[index] : null;
 }
 
-export function getFitZoomLevel(timeline: Timeline): ITimelineZoomState {
-  return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(timeline)];
-}
-
 export function getPreviousZoomLevel(timeline: Timeline): ITimelineZoomState {
   return TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(timeline)];
 }
 
 export function getNextZoomLevel(timeline: Timeline): ITimelineZoomState {
   return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(timeline)];
+}
+
+export function getFitZoomLevel(timeline: Timeline, totalLengthMs?: number): ITimelineZoomState {
+  const getVisibleWidth = () => {
+    const scrollOffset = TIMELINE_OFFSET_X - timeline.currentScroll.left;
+    const clampedScrollOffset = Math.max(0, scrollOffset);
+
+    const trackpad = document.querySelector('.timeline-trackpad') as HTMLElement;
+    const offsetWidth = trackpad?.offsetWidth ?? document.body.offsetWidth;
+
+    // Use 1 to prevent NaN because of dividing by 0.
+    return Math.max(1, offsetWidth - clampedScrollOffset);
+  };
+
+  const getFullWidth = () => {
+    if (typeof totalLengthMs === 'number') {
+      return timeline.timeMsToUnits(totalLengthMs);
+    }
+
+    return timeline.width;
+  };
+
+  const multiplier = getVisibleWidth() / getFullWidth();
+  const targetZoom = timeline.currentZoom.zoom * multiplier;
+
+  const fitZoomIndex = findIndex(TIMELINE_ZOOM_LEVELS, (level) => {
+    return level.zoom > targetZoom;
+  });
+
+  const clampedIndex = clamp(fitZoomIndex, 0, TIMELINE_ZOOM_LEVELS.length - 1);
+
+  return {
+    ...TIMELINE_ZOOM_LEVELS[clampedIndex],
+    zoom: targetZoom,
+    unit: 1 / targetZoom,
+  };
 }
 
 export function getPreviousZoomIndex(timeline: Timeline): number {

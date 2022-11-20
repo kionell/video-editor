@@ -118,6 +118,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
+  const timeline = useAppSelector((state) => state.timeline);
   const files = useAppSelector((state) => state.files);
   const dispatch = useAppDispatch();
 
@@ -133,6 +134,12 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
     if (!element) return;
 
     dispatch(pushElement({ element }));
+
+    if (timeline.totalTracks === 0) {
+      const zoomLevel = getFitZoomLevel(timeline, element.durationMs);
+
+      dispatch(setCurrentZoom(zoomLevel));
+    }
   };
 
   const onDeleteClick = () => {
