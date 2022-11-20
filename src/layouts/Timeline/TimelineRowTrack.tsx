@@ -75,19 +75,6 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const onDragLeave = () => {
     if (!dropZoneRef.current) return;
 
-    const newElementLeft = parseFloat(dropZoneRef.current.style.left);
-
-    focusedTracks.forEach((focusedTrack) => {
-      focusedTrack.focusedElements.forEach((element) => {
-        dispatch(moveElement({
-          fromIndex: focusedTrack.index,
-          toIndex: currentTrack.index,
-          fromMs: element.offsetMs,
-          toMs: timeline.unitsToTimeMs(newElementLeft),
-        }));
-      });
-    });
-
     dropZoneRef.current.style.translate = '-100%';
     dropZoneRef.current.style.left = '';
     dropZoneRef.current.style.width = '';
@@ -103,6 +90,25 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     onDragLeave();
   }
 
+  const onDrop = () => {
+    if (!dropZoneRef.current) return;
+
+    const newElementLeft = parseFloat(dropZoneRef.current.style.left);
+
+    focusedTracks.forEach((focusedTrack) => {
+      focusedTrack.focusedElements.forEach((element) => {
+        dispatch(moveElement({
+          fromIndex: focusedTrack.index,
+          toIndex: currentTrack.index,
+          fromMs: element.offsetMs,
+          toMs: timeline.unitsToTimeMs(newElementLeft),
+        }));
+      });
+    });
+
+    onDragEnd();
+  };
+
   return (
     <StyledTimelineRowTrack
       className='timeline-row-track'
@@ -110,7 +116,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDragEnd={onDragEnd}
-      onDrop={onDragEnd}
+      onDrop={onDrop}
     >
       {
         currentTrack.elements.map((element) => (
