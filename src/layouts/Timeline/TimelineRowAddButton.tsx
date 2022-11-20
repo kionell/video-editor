@@ -23,9 +23,7 @@ const TimelineRowAddButton: React.FC = () => {
     dispatch(pushTrack());
   };
 
-  const onMouseDown = (event: MouseEvent) => {
-    event.stopPropagation();
-  }
+  const stopPropagation = (e: MouseEvent) => e.stopPropagation();
 
   return (
     <StyledTimelineRowAddButton
@@ -34,7 +32,8 @@ const TimelineRowAddButton: React.FC = () => {
       iconType='Plus'
       showLabel={false}
       onClick={onClick}
-      onMouseDown={onMouseDown}
+      onMouseDown={stopPropagation}
+      onDoubleClick={stopPropagation}
     />
   );
 };
