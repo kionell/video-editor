@@ -6,7 +6,8 @@ import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
 import { moveTrack } from '../../store/Reducers/TimelineSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;

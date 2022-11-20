@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { Ref, useEffect } from 'react';
 import { createPositionTracker } from '../core/Utils/Position';
 import Sister, { SisterEventListener } from 'sister';
 
@@ -14,13 +14,13 @@ export interface DraggableState {
 
 export type DraggableCallback = (state: DraggableState) => void;
 
-interface DraggableProps {
+export interface DraggableProps {
   dragStartCallback?: DraggableCallback;
   dragMoveCallback?: DraggableCallback;
   dragEndCallback?: DraggableCallback;
 }
 
-export const withDraggable = <T, >(Component: React.FC<T>) => {
+export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void {
   const makeClone = (element: HTMLElement): HTMLElement => {
     const cloned = element.cloneNode(true) as HTMLElement;
 
@@ -34,9 +34,9 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     element.parentNode?.insertBefore(cloned, element);
 
     return cloned;
-  };
+  }
 
-  const makeDraggable = (element: HTMLElement, props: T & DraggableProps) => {
+  const makeDraggable = (element: HTMLElement, props: DraggableProps) => {
     const tracker = createPositionTracker();
     const emitter = new Sister();
 
@@ -183,17 +183,9 @@ export const withDraggable = <T, >(Component: React.FC<T>) => {
     }
   };
 
-  const DraggableComponent = forwardRef<HTMLElement, T & DraggableProps>((props, ref) => {
-    useEffect(() => {
-      if (ref instanceof Function || !ref?.current) return;
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
 
-      return makeDraggable(ref.current, props);
-    }, []);
-
-    return <Component {...props} ref={ref} />;
-  });
-
-  DraggableComponent.displayName = 'Draggable Component';
-
-  return DraggableComponent;
-};
+    return makeDraggable(ref.current, props);
+  }, []);
+}

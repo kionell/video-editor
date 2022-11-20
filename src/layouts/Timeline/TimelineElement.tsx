@@ -1,11 +1,13 @@
 import { forwardRef, ForwardedRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { withDraggable, withResizable, withFocusable } from '../../hoc';
 import { Icon } from '../../components/Icon';
 import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { DraggableProps, useDraggable } from '../../hooks/useDraggable';
+import { FocusableProps, useFocusable } from '../../hooks/useFocusable';
+import { useResizable } from '../../hooks/useResizable';
 
-interface ElementProps {
+interface ElementProps extends DraggableProps, FocusableProps {
   element: BaseElement;
 }
 
@@ -92,7 +94,7 @@ const StyledTimelineElementPreview = styled.div`
   }}
 `;
 
-const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
+const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   props: ElementProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -106,6 +108,11 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
 
     ref.current.style.width = units + 'px';
   }, [timeline.currentZoom]);
+
+
+  useDraggable(ref, props);
+  useFocusable(ref, props);
+  useResizable(ref);
 
   return (
     <StyledTimelineElementWrapper className='timeline-element' ref={ref} {...props}>
@@ -124,6 +131,6 @@ const BaseTimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   );
 });
 
-BaseTimelineElement.displayName = 'Timeline Element';
+TimelineElement.displayName = 'Timeline Element';
 
-export const TimelineElement = withFocusable(withResizable(withDraggable(BaseTimelineElement)));
+export { TimelineElement };

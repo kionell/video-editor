@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { forwardRef } from 'react';
-import { useUpdateEffect } from '../../hooks';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';

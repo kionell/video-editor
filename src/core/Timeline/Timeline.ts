@@ -126,7 +126,7 @@ export class Timeline {
   }
 
   unitsToTimeMs(units: number): number {
-    const frames = units / this.zoomedFrameWidth
+    const frames = units / this.zoomedFrameWidth;
     const frameInterval = 1000 / 60;
     const timeMs = frames * frameInterval;
 

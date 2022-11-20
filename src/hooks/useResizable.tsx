@@ -1,7 +1,7 @@
-import { forwardRef, useEffect } from 'react';
+import { Ref, useEffect } from 'react';
 import { createPositionTracker, IPositionTrackerState } from '../core/Utils/Position';
 
-export const withResizable = <T, >(Component: React.FC<T>) => {
+export function useResizable(ref: Ref<HTMLElement>): void {
   const makeResizable = (element: HTMLElement) => {
     const tracker = createPositionTracker();
 
@@ -67,17 +67,9 @@ export const withResizable = <T, >(Component: React.FC<T>) => {
     };
   };
 
-  const ResizableComponent = forwardRef<HTMLElement, T>((props, ref) => {
-    useEffect(() => {
-      if (ref instanceof Function || !ref?.current) return;
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
 
-      return makeResizable(ref.current);
-    }, []);
-
-    return <Component ref={ref} {...props} />;
-  });
-
-  ResizableComponent.displayName = 'Resizable Component';
-
-  return ResizableComponent;
-};
+    return makeResizable(ref.current);
+  }, []);
+}

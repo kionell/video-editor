@@ -4,7 +4,6 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { Text } from '../Text';
-import { withDraggable } from '../../hoc';
 import { SMALL_FONT_SIZE } from '../../constants';
 import { ImagePreview } from '../ImagePreview';
 import { useAppSelector } from '../../hooks/useAppSelector';
@@ -13,9 +12,11 @@ import { UploadedFile } from '../../core/Files/UploadedFile';
 import { formatDuration } from '../../core/Utils/Format';
 import { convertUploadedFileToElement } from '../../core/Utils/Files';
 import { removeFile } from '../../store/Reducers/FileSlice';
-import { pushElement } from '../../store/Reducers/TimelineSlice';
+import { pushElement, setCurrentZoom } from '../../store/Reducers/TimelineSlice';
+import { getFitZoomLevel } from '../../core/Utils/Timeline';
+import { DraggableProps, useDraggable } from '../../hooks/useDraggable';
 
-export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement>, DraggableProps {
   previewElement?: HTMLElement;
   deletable?: boolean;
   addable?: boolean;
@@ -79,8 +80,6 @@ const StyledGeneralItem = styled.div<GeneralItemProps>`
   }
 `;
 
-const DraggableGeneralItem = withDraggable(StyledGeneralItem);
-
 const StyledGeneralItemPreview = styled.div`
   width: 144px;
   height: 81px;
@@ -142,9 +141,11 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
     if (targetFile) dispatch(removeFile(targetFile));
   };
 
+  useDraggable(itemRef, props);
+
   return (
     <StyledGeneralItemWrapper {...props}>
-      <DraggableGeneralItem className='general-item' {...props} ref={itemRef}>
+      <StyledGeneralItem className='general-item' {...props} ref={itemRef}>
         <StyledGeneralItemDuration
           text={formatDuration(duration)}
           visible={showDuration}
@@ -188,7 +189,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             paddingVertical={3}
           />
         </StyledGeneralItemButtonWrapper>
-      </DraggableGeneralItem>
+      </StyledGeneralItem>
 
       <StyledGeneralItemLabel
         className='general-item__label'

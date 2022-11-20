@@ -1,6 +1,6 @@
 import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import { withMovableX } from '../../hoc';
+import { useMovableX } from '../../hooks/useMovableX';
 import { Icon } from '../../components/Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 
@@ -45,11 +45,13 @@ const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   }
 `;
 
-const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
+const TimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
   props: SeekerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { onMove, ...rest } = props;
+
+  useMovableX(ref);
 
   const stopSeekerMovement = () => {
     if (onMove) {
@@ -88,6 +90,6 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
   );
 });
 
-BaseTimelineSeeker.displayName = 'Timeline Seeker';
+TimelineSeeker.displayName = 'Timeline Seeker';
 
-export const TimelineSeeker = withMovableX(BaseTimelineSeeker);
+export { TimelineSeeker };
