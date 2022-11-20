@@ -74,8 +74,8 @@ const TimelineTools: React.FC = () => {
   // const onSplitClick = () => {};
   const onBringForwardClick = () => dispatch(bringForward());
   const onSendBackwardClick = () => dispatch(sendBackward());
-  const onDeleteClick = () => dispatch(removeFocusedElements());
   const onSnapClick = () => dispatch(switchSnapMode());
+  const onDeleteClick = () => dispatch(removeFocusedElements());
 
   const onZoomOutClick = () => {
     dispatch(setCurrentZoom(getPreviousZoomLevel(timeline)));

@@ -43,10 +43,11 @@ const TimelineTrackpad: React.FC = () => {
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
+    const clampedTimeMs = Math.min(timeMs, timeline.totalLengthMs);
 
-    updatePosByTime(timeMs);
+    updatePosByTime(clampedTimeMs);
 
-    dispatch(setCurrentTimeMs(timeMs));
+    dispatch(setCurrentTimeMs(clampedTimeMs));
   };
 
   const setCurrentTime = () => {
@@ -56,12 +57,13 @@ const TimelineTrackpad: React.FC = () => {
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
+    const clampedTimeMs = Math.min(timeMs, timeline.totalLengthMs);
 
-    if (timeMs >= timeline.durationMs) {
-      updatePosByTime(timeMs);
+    if (clampedTimeMs >= timeline.totalLengthMs) {
+      updatePosByTime(clampedTimeMs);
     }
 
-    dispatch(setCurrentTimeMs(timeMs));
+    dispatch(setCurrentTimeMs(clampedTimeMs));
   };
 
   const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
