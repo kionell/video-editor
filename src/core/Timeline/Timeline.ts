@@ -119,7 +119,7 @@ export class Timeline {
   }
 
   timeMsToUnits(timeMs = this.currentTimeMs): number {
-    const clampedTime = clamp(timeMs, 0, this.totalLengthMs);
+    const clampedTime = Math.max(0, timeMs);
     const frames = clampedTime * (60 / 1000);
 
     return frames * this.zoomedFrameWidth;
@@ -130,6 +130,6 @@ export class Timeline {
     const frameInterval = 1000 / 60;
     const timeMs = frames * frameInterval;
 
-    return clamp(timeMs, 0, this.totalLengthMs);
+    return Math.max(0, timeMs);
   }
 }
