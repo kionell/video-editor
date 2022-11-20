@@ -23,7 +23,7 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
    */
   type: MediaType = MediaType.Unknown;
 
-  private _elements: T[] = [];
+  readonly elements: T[] = [];
 
   constructor(index: number, type?: MediaType) {
     this.index = index;
@@ -34,23 +34,19 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
    * Whether this timeline track is focused or not.
    */
   get isFocused(): boolean {
-    return this._elements.some((e) => e.isFocused);
+    return this.elements.some((e) => e.isFocused);
   }
 
   get focusedElements(): T[] {
-    return this._elements.filter((e) => e.isFocused);
-  }
-
-  get elements(): T[] {
-    return this._elements;
+    return this.elements.filter((e) => e.isFocused);
   }
 
   get firstElement(): T | null {
-    return this._elements[0] ?? null;
+    return this.elements[0] ?? null;
   }
 
   get lastElement(): T | null {
-    return this._elements.at(-1) ?? null;
+    return this.elements.at(-1) ?? null;
   }
 
   get startTimeMs(): number {
