@@ -1,4 +1,5 @@
 import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../../constants';
+import { BaseElement } from '../Elements/BaseElement';
 import { IFileState } from '../State/IFileState';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { Timeline } from '../Timeline/Timeline';
@@ -34,14 +35,27 @@ export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline
  * @param index Target index of a track.
  * @returns Found timeline track or null.
  */
-export function getTrackByIndex(timeline: Timeline, index?: number): TimelineTrack | null {
-  if (typeof index !== 'number') return null;
-
+export function getTrackByIndex(timeline: Timeline, index: number): TimelineTrack | null {
   if (index < 0 || index >= timeline.totalTracks) {
     return null;
   }
 
   return timeline.tracks[index];
+}
+
+/**
+ * Searches for an element which is played at the specified time.
+ * @param time Time in milliseconds.
+ * @returns Found element or null.
+ */
+export function getElementAtTime<T extends BaseElement>(track: TimelineTrack<T>, time: number): T | null {
+  const predicate = (element: T) => {
+    return element.startTimeMs >= time && element.endTimeMs <= time;
+  };
+
+  const index = findIndex(track.elements, predicate);
+
+  return index >= 0 ? track.elements[index] : null;
 }
 
 export function getFitZoomLevel(timeline: Timeline): ITimelineZoomState {

@@ -41,7 +41,7 @@ export type FocusElementPayload = ElementPayload;
 export type PushElementPayload = ElementPayload;
 export type AddElementPayload = ElementPayload & TrackIndexPayload;
 export type RemoveElementPayload = TimePayload & TrackIndexPayload;
-export type MoveElementPayload = TimeRangePayload & TrackIndexPayload;
+export type MoveElementPayload = TimeRangePayload & TrackIndexRangePayload;
 
 export type CurrentTimeAction = PayloadAction<CurrentTimePayload>;
 export type CurrentZoomAction = PayloadAction<CurrentZoomPayload>;

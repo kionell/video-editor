@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Timeline } from '../../core/Timeline/Timeline';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
-import { getTrackByIndex } from '../../core/Utils/Timeline';
+import { getElementAtTime, getTrackByIndex } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
 
 import {
@@ -21,6 +21,7 @@ import {
   PushElementPayload,
   FixOffsetPayload,
   RemoveElementPayload,
+  AddElementPayload,
 } from '../Interfaces/Timeline';
 
 const initialState: Timeline = new Timeline();
@@ -124,7 +125,7 @@ const TimelineSlice = createSlice({
         TimelineSlice.caseReducers.pushElement(state, newAction);
       }
       else {
-        track.addElement(element);
+        track.elements.push(element);
 
         const newAction = makeAction<FixOffsetPayload>({ trackIndex });
 
@@ -136,7 +137,7 @@ const TimelineSlice = createSlice({
       const element = action.payload.element;
       const newTrack = new TimelineTrack(0, element.type);
 
-      newTrack.addElement(element);
+      newTrack.elements.push(element);
 
       state.tracks.splice(newTrack.index, 0, newTrack);
 
@@ -150,7 +151,15 @@ const TimelineSlice = createSlice({
 
       if (!track) return;
 
-      track.removeElementAtTime(timeMs);
+      const element = getElementAtTime(track, timeMs);
+
+      if (!element) return;
+
+      const index = track.elements.findIndex((el) => el === element);
+
+      if (index !== -1) {
+        track.elements.splice(index, 1);
+      }
     },
 
     removeFocusedElements(state) {
@@ -169,12 +178,36 @@ const TimelineSlice = createSlice({
     },
 
     moveElement(state, action: MoveElementAction) {
-      const { fromMs, toMs, trackIndex } = action.payload;
-      const track = getTrackByIndex(state as Timeline, trackIndex);
+      const { fromMs, toMs, fromIndex, toIndex } = action.payload;
 
-      if (!track) return;
+      const fromTrack = getTrackByIndex(state as Timeline, fromIndex);
 
-      track.moveElementFromTimeToTime(fromMs, toMs);
+      if (!fromTrack) return;
+
+      const toTrack = getTrackByIndex(state as Timeline, toIndex) ?? fromTrack;
+
+      // There are no elements outside of track's total length.
+      if (fromMs < 0 || fromMs > fromTrack.totalLength) return;
+
+      const element = getElementAtTime(fromTrack, fromMs);
+
+      if (!element) return;
+
+      const removeAction = makeAction<RemoveElementPayload>({
+        trackIndex: fromTrack.index,
+        timeMs: element.startTimeMs,
+      });
+
+      TimelineSlice.caseReducers.removeElement(state, removeAction);
+
+      element.offsetMs = Math.max(0, toMs);
+
+      const addAction = makeAction<AddElementPayload>({
+        trackIndex: toTrack.index,
+        element,
+      });
+
+      TimelineSlice.caseReducers.addElement(state, addAction);
     },
 
     focusElement(state, action: FocusElementAction) {
