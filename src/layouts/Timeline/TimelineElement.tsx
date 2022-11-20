@@ -99,6 +99,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const timeline = useAppSelector((state) => state.timeline);
+  const element = props.element;
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
@@ -109,6 +110,13 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ref.current.style.width = units + 'px';
   }, [timeline.currentZoom]);
 
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    const units = timeline.timeMsToUnits(element.startTimeMs);
+
+    ref.current.style.left = units + 'px';
+  }, [element.startTimeMs])
 
   useDraggable(ref, props);
   useFocusable(ref, props);
