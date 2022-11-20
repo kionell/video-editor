@@ -20,9 +20,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
   const makeFocusable = (element: HTMLElement, props: FocusableProps) => {
     const emitter = new Sister();
 
-    const focusElement = (event: MouseEvent) => {
-      event.stopPropagation();
-
+    const focusElement = () => {
       if (element.classList.contains('focused')) {
         return;
       }
@@ -48,7 +46,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
       if (!element.contains(event.target as HTMLElement)) {
         element.classList.remove('focused');
 
-        document.removeEventListener('click', unfocusElement);
+        document.removeEventListener('mousedown', unfocusElement);
 
         emitter.trigger<FocusableEventType, FocusableState>('blur', {
           type: 'blur',
@@ -72,7 +70,8 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
     }
 
     return () => {
-      document.removeEventListener('click', focusElement);
+      element.removeEventListener('mousedown', focusElement);
+      document.removeEventListener('mousedown', unfocusElement);
 
       if (focusCallbackListener) {
         emitter.off(focusCallbackListener);

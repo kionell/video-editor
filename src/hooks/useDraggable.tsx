@@ -86,8 +86,6 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
     };
 
     const onDragMove = (event: DragEvent | TouchEvent) => {
-      event.preventDefault();
-
       position = tracker.update(event);
 
       if (firstMove) firstMove = false;
