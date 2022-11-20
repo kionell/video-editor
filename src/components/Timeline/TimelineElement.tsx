@@ -104,10 +104,14 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
+    const startTimeMs = props.element.startTimeMs;
     const durationMs = props.element.durationMs;
-    const units = timeline.timeMsToUnits(durationMs);
 
-    ref.current.style.width = units + 'px';
+    const left = timeline.timeMsToUnits(startTimeMs);
+    const width = timeline.timeMsToUnits(durationMs);
+
+    ref.current.style.left = left + 'px';
+    ref.current.style.width = width + 'px';
   }, [timeline.currentZoom]);
 
   useEffect(() => {
