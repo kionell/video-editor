@@ -58,6 +58,10 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
 
     element.addEventListener('mousedown', onElementClick);
 
+    if (element.classList.contains('focused')) {
+      document.addEventListener('mousedown', onOutsideClick);
+    }
+
     let focusCallbackListener: SisterEventListener | null = null;
     let blurCallbackListener: SisterEventListener | null = null;
 
@@ -72,9 +76,6 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
     return () => {
       element.removeEventListener('mousedown', onElementClick);
       document.removeEventListener('mousedown', onOutsideClick);
-
-      // This should be done to update store properly.
-      unfocusElement();
 
       if (focusCallbackListener) {
         emitter.off(focusCallbackListener);
