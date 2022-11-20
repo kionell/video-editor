@@ -12,7 +12,7 @@ interface ElementProps extends DraggableProps, FocusableProps {
 }
 
 const StyledTimelineElementWrapper = styled.div<ElementProps>`
-  position: relative;
+  position: absolute;
   height: 50px;
   display: inline-flex;
   justify-content: space-between;
