@@ -20,14 +20,14 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
   const makeFocusable = (element: HTMLElement, props: FocusableProps) => {
     const emitter = new Sister();
 
-    const focusElement = () => {
+    const onElementClick = () => {
       if (element.classList.contains('focused')) {
         return;
       }
 
       element.classList.add('focused');
 
-      document.addEventListener('mousedown', unfocusElement);
+      document.addEventListener('mousedown', onOutsideClick);
 
       emitter.trigger<FocusableEventType, FocusableState>('focus', {
         type: 'focus',
@@ -36,7 +36,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
       });
     };
 
-    const unfocusElement = (event: MouseEvent) => {
+    const onOutsideClick = (event: MouseEvent) => {
       event.stopPropagation();
 
       if (!element.classList.contains('focused')) {
@@ -44,19 +44,23 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
       }
 
       if (!element.contains(event.target as HTMLElement)) {
-        element.classList.remove('focused');
-
-        document.removeEventListener('mousedown', unfocusElement);
-
-        emitter.trigger<FocusableEventType, FocusableState>('blur', {
-          type: 'blur',
-          target: element,
-          isFocused: false,
-        });
+        unfocusElement();
       }
     };
 
-    element.addEventListener('mousedown', focusElement);
+    const unfocusElement = () => {
+      element.classList.remove('focused');
+
+      document.removeEventListener('mousedown', onOutsideClick);
+
+      emitter.trigger<FocusableEventType, FocusableState>('blur', {
+        type: 'blur',
+        target: element,
+        isFocused: false,
+      });
+    }
+
+    element.addEventListener('mousedown', onElementClick);
 
     let focusCallbackListener: SisterEventListener | null = null;
     let blurCallbackListener: SisterEventListener | null = null;
@@ -70,8 +74,11 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
     }
 
     return () => {
-      element.removeEventListener('mousedown', focusElement);
-      document.removeEventListener('mousedown', unfocusElement);
+      element.removeEventListener('mousedown', onElementClick);
+      document.removeEventListener('mousedown', onOutsideClick);
+
+      // This should be done to update store properly.
+      unfocusElement();
 
       if (focusCallbackListener) {
         emitter.off(focusCallbackListener);
