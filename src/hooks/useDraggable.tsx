@@ -44,7 +44,6 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
     let position: ReturnType<typeof tracker.update>;
 
     let firstMove = true;
-    let startDisplay: string;
     let startOpacity: string;
 
     element.draggable = true;
@@ -91,12 +90,7 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
 
       position = tracker.update(event);
 
-      if (firstMove) {
-        startDisplay = element.style.display;
-        element.style.display = 'none';
-
-        firstMove = false;
-      }
+      if (firstMove) firstMove = false;
 
       if (!position.isChanged || position.isOutside) {
         return;
@@ -124,7 +118,6 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
     const onDragEnd = () => {
       clone.parentNode?.removeChild(clone);
 
-      element.style.display = startDisplay;
       element.style.opacity = startOpacity;
       element.style.cursor = 'grab';
 
