@@ -19,11 +19,8 @@ const StyledTimelineRowAddButton = styled(FlatButton)`
 const TimelineRowAddButton: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const onClick = () => {
-    dispatch(pushTrack());
-  };
-
   const stopPropagation = (e: MouseEvent) => e.stopPropagation();
+  const onClick = () => dispatch(pushTrack());
 
   return (
     <StyledTimelineRowAddButton
