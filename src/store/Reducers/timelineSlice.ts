@@ -193,21 +193,23 @@ const TimelineSlice = createSlice({
 
       if (!element) return;
 
-      const removeAction = makeAction<RemoveElementPayload>({
-        trackIndex: fromTrack.index,
-        timeMs: element.startTimeMs,
-      });
+      if (fromIndex !== toIndex) {
+        const removeAction = makeAction<RemoveElementPayload>({
+          trackIndex: fromTrack.index,
+          timeMs: element.startTimeMs,
+        });
 
-      TimelineSlice.caseReducers.removeElement(state, removeAction);
+        TimelineSlice.caseReducers.removeElement(state, removeAction);
+
+        const addAction = makeAction<AddElementPayload>({
+          trackIndex: toTrack.index,
+          element,
+        });
+
+        TimelineSlice.caseReducers.addElement(state, addAction);
+      }
 
       element.offsetMs = Math.max(0, toMs);
-
-      const addAction = makeAction<AddElementPayload>({
-        trackIndex: toTrack.index,
-        element,
-      });
-
-      TimelineSlice.caseReducers.addElement(state, addAction);
     },
 
     focusElement(state, action: FocusElementAction) {
