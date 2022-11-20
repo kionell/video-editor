@@ -136,7 +136,8 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
     dispatch(pushElement({ element }));
 
     if (timeline.totalTracks === 0) {
-      const zoomLevel = getFitZoomLevel(timeline, element.durationMs);
+      const defaultDurationMs = element.durationMs * 2;
+      const zoomLevel = getFitZoomLevel(timeline, defaultDurationMs);
 
       dispatch(setCurrentZoom(zoomLevel));
     }
