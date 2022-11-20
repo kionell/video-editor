@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
 import { getWidthFromDraggable } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
-import { focusElement, unfocusElement } from '../../store/Reducers/TimelineSlice';
+import { focusElement, moveElement, unfocusElement } from '../../store/Reducers/TimelineSlice';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -31,11 +31,14 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const [isDragging, setDragging] = useState(false);
 
   const dropZoneRef = useRef<HTMLDivElement>(null);
-  const { seekerRef, track } = props;
+  const seekerRef = props.seekerRef;
+  const currentTrack = props.track;
 
   const tracker = useRef(createPositionTracker());
   const elementLeft = useRef(0);
   const elementWidth = useRef(0);
+
+  const focusedTracks = timeline.focusedTracks;
 
   let position: IPositionTrackerState;
 
@@ -72,6 +75,19 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const onDragLeave = () => {
     if (!dropZoneRef.current) return;
 
+    const newElementLeft = parseFloat(dropZoneRef.current.style.left);
+
+    focusedTracks.forEach((focusedTrack) => {
+      focusedTrack.focusedElements.forEach((element) => {
+        dispatch(moveElement({
+          fromIndex: focusedTrack.index,
+          toIndex: currentTrack.index,
+          fromMs: element.offsetMs,
+          toMs: timeline.unitsToTimeMs(newElementLeft),
+        }));
+      });
+    });
+
     dropZoneRef.current.style.translate = '-100%';
     dropZoneRef.current.style.left = '';
     dropZoneRef.current.style.width = '';
@@ -97,7 +113,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
       onDrop={onDragEnd}
     >
       {
-        track.elements.map((element) => (
+        currentTrack.elements.map((element) => (
           <TimelineElement
             element={element}
             key={element.uniqueId}
