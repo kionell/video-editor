@@ -210,6 +210,12 @@ const TimelineSlice = createSlice({
       }
 
       element.offsetMs = Math.max(0, toMs);
+
+      const fixAction = makeAction<FixOffsetPayload>({
+        trackIndex: toTrack.index,
+      });
+
+      TimelineSlice.caseReducers.fixTimeOffsets(state, fixAction);
     },
 
     focusElement(state, action: FocusElementAction) {
