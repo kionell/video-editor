@@ -19,11 +19,13 @@ const StyledTimelineRowAddButton = styled(FlatButton)`
 const TimelineRowAddButton: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const onClick = (event: MouseEvent) => {
-    event.stopPropagation();
-
+  const onClick = () => {
     dispatch(pushTrack());
   };
+
+  const onMouseDown = (event: MouseEvent) => {
+    event.stopPropagation();
+  }
 
   return (
     <StyledTimelineRowAddButton
@@ -32,6 +34,7 @@ const TimelineRowAddButton: React.FC = () => {
       iconType='Plus'
       showLabel={false}
       onClick={onClick}
+      onMouseDown={onMouseDown}
     />
   );
 };

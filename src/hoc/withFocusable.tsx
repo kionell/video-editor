@@ -33,7 +33,7 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
 
           element.classList.add('focused');
 
-          document.addEventListener('click', unfocusElement);
+          document.addEventListener('mousedown', unfocusElement);
 
           emitter.trigger<FocusableEventType, FocusableState>('focus', {
             type: 'focus',
@@ -49,12 +49,10 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
             return;
           }
 
-          const targetPath = event.composedPath();
-
-          if (event.target !== element && !targetPath?.includes(element)) {
+          if (!element.contains(event.target as HTMLElement)) {
             element.classList.remove('focused');
 
-            document.removeEventListener('click', unfocusElement);
+            document.removeEventListener('mousedown', unfocusElement);
 
             emitter.trigger<FocusableEventType, FocusableState>('blur', {
               type: 'blur',
@@ -78,7 +76,7 @@ export const withFocusable = <T, >(Component: React.FC<T>) => {
         }
 
         return () => {
-          element.removeEventListener('mousedown', focusElement);
+          document.removeEventListener('mousedown', focusElement);
 
           if (focusCallbackListener) {
             emitter.off(focusCallbackListener);

@@ -96,30 +96,33 @@ const TimelineTools: React.FC = () => {
       <ButtonGroup gap={6}>
         <StyledTimelineToolButton
           iconType='Undo'
-          onClick={onUndoClick}
+          onMouseDown={stopPropagation}
         />
         <StyledTimelineToolButton
           iconType='Redo'
-          onClick={onRedoClick}
+          onMouseDown={stopPropagation}
         />
         <StyledTimelineToolButton
           iconType='Split'
-          onClick={onSplitClick}
+          onMouseDown={stopPropagation}
           disabled={!focusedTracks.length}
         />
         <StyledTimelineToolButton
           iconType='BringForward'
           onClick={onBringForwardClick}
+          onMouseDown={stopPropagation}
           disabled={allowBringForward}
         />
         <StyledTimelineToolButton
           iconType='SendBackward'
           onClick={onSendBackwardClick}
+          onMouseDown={stopPropagation}
           disabled={allowSendBackward}
         />
         <StyledTimelineToolButton
           iconType='Delete'
           onClick={onDeleteClick}
+          onMouseDown={stopPropagation}
           disabled={!timeline.focusedTracks.length}
         />
       </ButtonGroup>
@@ -133,22 +136,26 @@ const TimelineTools: React.FC = () => {
           iconType='Snap'
           ref={snapButtonRef}
           onClick={onSnapClick}
+          onMouseDown={stopPropagation}
           toggled={timeline.snapMode}
           disabled={!timeline.totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Minus'
           onClick={onZoomOutClick}
+          onMouseDown={stopPropagation}
           disabled={!timeline.totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Plus'
           onClick={onZoomInClick}
+          onMouseDown={stopPropagation}
           disabled={!timeline.totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Fit'
           onClick={onZoomFitClick}
+          onMouseDown={stopPropagation}
           disabled={!timeline.totalTracks}
         />
       </ButtonGroup>

@@ -30,7 +30,6 @@ interface TimeRangePayload {
   toMs: number;
 }
 
-export type SnapModePayload = boolean;
 export type CurrentTimePayload = number;
 export type CurrentZoomPayload = ITimelineZoomState;
 export type CurrentScrollPayload = ITimelineScrollState;
@@ -44,7 +43,6 @@ export type AddElementPayload = ElementPayload & TrackIndexPayload;
 export type RemoveElementPayload = TimePayload & TrackIndexPayload;
 export type MoveElementPayload = TimeRangePayload & TrackIndexPayload;
 
-export type SnapModeAction = PayloadAction<SnapModePayload>;
 export type CurrentTimeAction = PayloadAction<CurrentTimePayload>;
 export type CurrentZoomAction = PayloadAction<CurrentZoomPayload>;
 export type CurrentScrollAction = PayloadAction<CurrentScrollPayload>;

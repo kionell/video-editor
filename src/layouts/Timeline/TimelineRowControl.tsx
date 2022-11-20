@@ -121,6 +121,8 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
   }
 
   const onMouseDown = (event: MouseEvent) => {
+    event.stopPropagation();
+
     if (!tracker.current || !seekerRef?.current) return;
 
     position = tracker.current.start(event);
