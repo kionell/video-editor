@@ -42,13 +42,14 @@ const StyledTimelineTrackWrapper = styled(FlexContainer)`
 
 const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineScrollableProps) => {
   const timeline = useAppSelector((state) => state.timeline);
-
   const trackAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!trackAreaRef?.current) return;
 
-    trackAreaRef.current.style.width = timeline.width + 'px';
+    const timelineWidth = timeline.width + TIMELINE_OFFSET_X;
+
+    trackAreaRef.current.style.width = timelineWidth + 'px';
   }, [timeline.width]);
 
   return (
