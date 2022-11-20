@@ -67,12 +67,12 @@ const TimelineTrackpad: React.FC = () => {
   const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
     const targetElement = event.target as HTMLElement;
 
-    const isRuler = targetElement.classList.contains('timeline-ruler');
-    const isTrackArea = targetElement.classList.contains('timeline-track-area');
-    const isTrack = targetElement.classList.contains('timeline-row-track');
+    const isElement = targetElement.classList.contains('timeline-element');
+    const isRowControl = targetElement.classList.contains('timeline-row-control');
+    const isRowAdd = targetElement.classList.contains('timeline-row-add');
 
     // This is the protection against "fake" seeks. 
-    if (!isRuler && !isTrackArea && !isTrack) return;
+    if (isElement || isRowControl || isRowAdd) return;
 
     setSeekerPosition(event);
   }
