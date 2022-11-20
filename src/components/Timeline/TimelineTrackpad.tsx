@@ -92,7 +92,16 @@ const TimelineTrackpad: React.FC = () => {
     dispatch(setCurrentScroll(scrollState));
   };
 
+  /**
+   * Updates position of the timeline seeker relatively to the current zoom.
+   */
   useEffect(updatePosByTime, [timeline.currentZoom]);
+
+  /**
+   * In case if last track was shifted to left.
+   * Right now our current time is larger than total time.
+   */
+  useEffect(setCurrentTime, [timeline.totalLengthMs]);
 
   return (
     <StyledTimelineTrackpadContainer
