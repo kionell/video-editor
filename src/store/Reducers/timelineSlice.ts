@@ -249,12 +249,10 @@ const TimelineSlice = createSlice({
       const trackIndex = action.payload.trackIndex;
       const track = getTrackByIndex(state as Timeline, trackIndex);
 
-      if (!track) return;
+      // There is no sense to change offsets when there are 1 element or less.
+      if (!track || track.elements.length <= 1) return;
 
       track.elements.sort((a, b) => a.startTimeMs - b.startTimeMs);
-
-      // There is no sense to change offsets when there are 1 element or less.
-      if (track.elements.length <= 1) return;
 
       // Min starting time of each next element.
       let nextMinTime = track.elements[0].endTimeMs;
