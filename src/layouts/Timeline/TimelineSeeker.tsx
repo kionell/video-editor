@@ -1,4 +1,4 @@
-import React, { ForwardedRef, HTMLAttributes, MouseEventHandler } from 'react';
+import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { withMovableX } from '../../hoc';
 import { Icon } from '../../components/Icon';
@@ -59,7 +59,9 @@ const BaseTimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
     document.removeEventListener('mouseup', stopSeekerMovement);
   };
 
-  const startSeekerMovement = () => {
+  const startSeekerMovement = (event: MouseEvent) => {
+    event.stopPropagation();
+
     if (onMove) {
       document.addEventListener('mousemove', onMove as any);
     }
