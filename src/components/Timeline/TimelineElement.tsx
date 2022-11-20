@@ -122,6 +122,18 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ref.current.style.left = units + 'px';
   }, [element.startTimeMs])
 
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    if (element.isFocused && !ref.current.classList.contains('focused')) {
+      ref.current.classList.add('focused');
+    }
+
+    if (!element.isFocused && ref.current.classList.contains('focused')) {
+      ref.current.classList.remove('focused');
+    }
+  }, [element.isFocused]);
+
   useDraggable(ref, props);
   useFocusable(ref, props);
   useResizable(ref);

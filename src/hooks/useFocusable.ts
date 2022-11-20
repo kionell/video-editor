@@ -25,8 +25,6 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
         return;
       }
 
-      element.classList.add('focused');
-
       document.addEventListener('mousedown', onOutsideClick);
 
       emitter.trigger<FocusableEventType, FocusableState>('focus', {
@@ -49,8 +47,6 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
     };
 
     const unfocusElement = () => {
-      element.classList.remove('focused');
-
       document.removeEventListener('mousedown', onOutsideClick);
 
       emitter.trigger<FocusableEventType, FocusableState>('blur', {
