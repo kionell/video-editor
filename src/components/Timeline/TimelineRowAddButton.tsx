@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
-import { FlatButton } from '../../components/Buttons/FlatButton';
+import { FlatButton } from '../Buttons/FlatButton';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { pushTrack } from '../../store/Reducers/TimelineSlice';

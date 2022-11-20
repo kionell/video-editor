@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { createRef, PropsWithChildren } from 'react';
-import { ScrollableContainer } from '../../../components/Containers/ScrollableContainer';
-import { GeneralItem } from '../../../components/Items/GeneralItem';
-import { UploadItem } from '../../../components/Items/UploadItem';
+import { ScrollableContainer } from '../../Containers/ScrollableContainer';
+import { GeneralItem } from '../../Items/GeneralItem';
+import { UploadItem } from '../../Items/UploadItem';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 
 interface SidebarCategoryProps extends PropsWithChildren {

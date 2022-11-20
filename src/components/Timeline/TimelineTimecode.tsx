@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { Text } from '../../components/Text';
+import { FlexContainer } from '../Containers/FlexContainer';
+import { Text } from '../Text';
 import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { formatTimeMs } from '../../core/Utils/Format';

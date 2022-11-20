@@ -1,6 +1,6 @@
 import { HTMLAttributes, RefObject } from 'react';
 import styled from 'styled-components';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TimelineRowControl } from './TimelineRowControl';
 import { TimelineRowTrack } from './TimelineRowTrack';

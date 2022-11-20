@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
-import { Text } from '../../components/Text';
+import { Text } from '../Text';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { LARGE_FONT_SIZE } from '../../constants';
 
 const StyledTimelineTrackpadPlaceholderContainer = styled(FlexContainer)`

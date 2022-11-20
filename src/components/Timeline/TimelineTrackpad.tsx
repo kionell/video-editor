@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { MouseEvent, useEffect, useRef } from 'react';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { setCurrentScroll, setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';

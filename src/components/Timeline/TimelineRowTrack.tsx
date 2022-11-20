@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { HTMLAttributes, createRef, RefObject, useState, useRef, DragEvent } from 'react';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
 import { TimelineElementDropZone } from './TimelineElementDropZone';

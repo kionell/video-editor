@@ -1,7 +1,7 @@
 import { HTMLAttributes, useEffect, useRef, RefObject } from 'react';
 import styled from 'styled-components';
-import { Text } from '../../components/Text';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
+import { Text } from '../Text';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';

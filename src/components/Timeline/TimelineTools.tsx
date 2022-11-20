@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useRef, MouseEvent } from 'react';
-import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
+import { ButtonGroup } from '../Buttons/ButtonGroup';
+import { SecondaryButton } from '../Buttons/SecondaryButton';
+import { FlexContainer } from '../Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { TimelineTimecode } from './TimelineTimecode';
-import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
 
 import {
   getNextZoomLevel,

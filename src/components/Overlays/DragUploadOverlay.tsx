@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { FormEventHandler, ForwardedRef, forwardRef, HTMLAttributes } from 'react';
-import { Text } from '../../components/Text';
-import { getIconSizeBySizeType, Icon } from '../../components/Icon';
-import { FileInput } from '../../components/Inputs/FileInput';
+import { Text } from '../Text';
+import { getIconSizeBySizeType, Icon } from '../Icon';
+import { FileInput } from '../Inputs/FileInput';
 import { LARGER_FONT_SIZE } from '../../constants';
 
 export interface DragUploaderProps extends HTMLAttributes<HTMLDivElement> {

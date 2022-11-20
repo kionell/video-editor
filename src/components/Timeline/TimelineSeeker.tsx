@@ -1,7 +1,7 @@
 import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { useMovableX } from '../../hooks/useMovableX';
-import { Icon } from '../../components/Icon';
+import { Icon } from '../Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 
 interface SeekerProps extends HTMLAttributes<HTMLDivElement> {

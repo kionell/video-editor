@@ -1,6 +1,6 @@
 import { forwardRef, ForwardedRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { Icon } from '../../components/Icon';
+import { Icon } from '../Icon';
 import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { DraggableProps, useDraggable } from '../../hooks/useDraggable';

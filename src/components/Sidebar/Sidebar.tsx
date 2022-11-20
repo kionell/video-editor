@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
-import { ButtonGroup } from '../../components/Buttons/ButtonGroup';
-import { FlatButton } from '../../components/Buttons/FlatButton';
+import { ButtonGroup } from '../Buttons/ButtonGroup';
+import { FlatButton } from '../Buttons/FlatButton';
 import { SidebarSubmenu } from './SidebarSubmenu';
 
 interface SidebarProps {

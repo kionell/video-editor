@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { RefObject, useEffect, useRef } from 'react';
-import { ScrollableContainer } from '../../components/Containers/ScrollableContainer';
+import { FlexContainer } from '../Containers/FlexContainer';
+import { ScrollableContainer } from '../Containers/ScrollableContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineRow } from './TimelineRow';
-import { FlexContainer } from '../../components/Containers/FlexContainer';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { TimelineRowAddButton } from './TimelineRowAddButton';
 

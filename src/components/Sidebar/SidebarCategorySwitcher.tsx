@@ -1,16 +1,10 @@
 import styled from 'styled-components';
 import { PropsWithChildren } from 'react';
 import { MediaCategory } from './Categories/MediaCategory';
-
-const enum CategoryType {
-  Media,
-  Text,
-  Transition,
-  Settings,
-}
+import { SidebarCategory } from '../../core/Enums/SidebarCategory';
 
 interface SidebarCategoryProps extends PropsWithChildren {
-  categoryType?: keyof typeof CategoryType;
+  categoryType?: keyof typeof SidebarCategory;
   className?: string;
 }
 
@@ -21,7 +15,7 @@ const StyledSidebarCategorySwitcher = styled.div<SidebarCategoryProps>`
   height: 100%;
 `;
 
-function getCategoryByType(category: keyof typeof CategoryType) {
+function getCategoryByType(category: keyof typeof SidebarCategory) {
   switch (category) {
     case 'Media': return MediaCategory;
   }
@@ -29,7 +23,7 @@ function getCategoryByType(category: keyof typeof CategoryType) {
   return MediaCategory;
 }
 
-const SidebarCategorySwitcher: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
+const SidebarCategorySwitcher: React.FC<SidebarCategoryProps> = () => {
   const SidebarCategory = getCategoryByType('Media');
 
   return (
