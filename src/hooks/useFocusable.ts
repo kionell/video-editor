@@ -1,5 +1,6 @@
-import { Ref, useEffect } from 'react';
 import Sister, { SisterEventListener } from 'sister';
+import { Ref, useEffect } from 'react';
+import { PositionEvent } from '../core/Utils/Position';
 
 type FocusableEventType = 'focus' | 'blur';
 
@@ -34,7 +35,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): voi
       });
     };
 
-    const onOutsideClick = (event: MouseEvent) => {
+    const onOutsideClick = (event: PositionEvent) => {
       event.stopPropagation();
 
       if (!element.classList.contains('focused')) {

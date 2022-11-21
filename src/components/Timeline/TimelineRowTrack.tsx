@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { HTMLAttributes, createRef, RefObject, useState, useRef, DragEvent } from 'react';
+import { HTMLAttributes, createRef, RefObject, useState, useRef } from 'react';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TimelineElement } from './TimelineElement';
 import { TimelineElementDropZone } from './TimelineElementDropZone';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { createPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
+import { createPositionTracker, IPositionTrackerState, PositionEvent } from '../../core/Utils/Position';
 import { getElementFromDraggable, getWidthFromDraggable } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { addElement, moveElement } from '../../store/Reducers/TimelineSlice';
@@ -43,12 +43,12 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
 
   let position: IPositionTrackerState;
 
-  const onDragEnter = (event: DragEvent<HTMLElement>) => {
+  const onDragEnter = (event: PositionEvent) => {
     if (!dropZoneRef.current || !seekerRef?.current) return;
 
     const draggable = document.querySelector('.dragging') as HTMLElement;
 
-    position = tracker.current.start(event.nativeEvent);
+    position = tracker.current.start(event);
 
     elementLeft.current = parseFloat(draggable.style.left) - TIMELINE_OFFSET_X;
     elementWidth.current = getWidthFromDraggable(draggable, timeline, files);
@@ -56,10 +56,10 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     seekerRef.current.style.pointerEvents = 'none';
   };
 
-  const onDragOver = (event: DragEvent<HTMLElement>) => {
+  const onDragOver = (event: PositionEvent) => {
     if (!dropZoneRef.current) return;
 
-    position = tracker.current.update(event.nativeEvent);
+    position = tracker.current.update(event);
 
     const dropZoneLeft = elementLeft.current + position.relativeX;
     const scrollLeft = timeline.currentScroll.left;

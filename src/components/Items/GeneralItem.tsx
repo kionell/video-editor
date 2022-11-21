@@ -15,6 +15,7 @@ import { removeFile } from '../../store/Reducers/FileSlice';
 import { pushElement, setCurrentZoom } from '../../store/Reducers/TimelineSlice';
 import { getFitZoomLevel } from '../../core/Utils/Timeline';
 import { DraggableProps, useDraggable } from '../../hooks/useDraggable';
+import { PositionEvent } from '../../core/Utils/Position';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement>, DraggableProps {
   previewElement?: HTMLElement;
@@ -126,7 +127,9 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const showDuration = file?.hasDuration ?? props.showDuration;
   const duration = file?.duration ?? props.duration;
 
-  const onAddClick = () => {
+  const onAddClick = (event: PositionEvent) => {
+    event.stopPropagation();
+
     if (!file) return;
 
     const element = convertUploadedFileToElement(file);
@@ -143,7 +146,9 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
     }
   };
 
-  const onDeleteClick = () => {
+  const onDeleteClick = (event: PositionEvent) => {
+    event.stopPropagation();
+
     const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
 
     if (targetFile) dispatch(removeFile(targetFile));
@@ -175,6 +180,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           <PrimaryButton
             ref={addButtonRef}
             onClick={onAddClick}
+            onTouchStart={onAddClick}
             visible={addable}
             showLabel={false}
             iconType='Plus'
@@ -187,6 +193,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           <SecondaryButton
             ref={deleteButtonRef}
             onClick={onDeleteClick}
+            onTouchStart={onDeleteClick}
             visible={deletable}
             showLabel={false}
             iconType='Delete'
