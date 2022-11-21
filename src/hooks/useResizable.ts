@@ -24,7 +24,7 @@ export function useResizable(ref: Ref<HTMLElement>): void {
       position = tracker.start(event);
       initialStyle = window.getComputedStyle(element);
       initialWidth = parseFloat(initialStyle.width);
-      initialHeight = parseFloat(initialStyle.width);
+      initialHeight = parseFloat(initialStyle.height);
       initialTop = parseFloat(initialStyle.top);
       initialLeft = parseFloat(initialStyle.left);
 
