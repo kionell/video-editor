@@ -1,15 +1,14 @@
 import { Ref, useEffect } from 'react';
-import { createPositionTracker } from '../core/Utils/Position';
 import Sister, { SisterEventListener } from 'sister';
+import { createPositionTracker, IPositionTrackerState } from '../core/Utils/Position';
 
 type DraggableEventType = 'start' | 'move' | 'end';
 
 export interface DraggableState {
   type: DraggableEventType;
-  offsetX: number;
-  offsetY: number;
   target: HTMLElement;
   handle: HTMLElement;
+  position: IPositionTrackerState,
 }
 
 export type DraggableCallback = (state: DraggableState) => void;
@@ -78,10 +77,9 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
 
       emitter.trigger('start', {
         type: 'start',
-        offsetX: position.offsetX,
-        offsetY: position.offsetY,
         target: element,
         handle: clone,
+        position,
       });
     };
 
@@ -101,10 +99,9 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
 
       emitter.trigger('move', {
         type: 'move',
-        offsetX: position.offsetX,
-        offsetY: position.offsetY,
         target: element,
         handle: clone,
+        position,
       });
     }
 
@@ -128,10 +125,9 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
 
       emitter.trigger('end', {
         type: 'end',
-        offsetX: position.offsetX,
-        offsetY: position.offsetY,
         target: element,
         handle: clone,
+        position,
       });
 
       firstMove = true;
