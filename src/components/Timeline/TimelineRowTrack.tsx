@@ -7,9 +7,9 @@ import { TimelineElementDropZone } from './TimelineElementDropZone';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { createPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
-import { getWidthFromDraggable } from '../../core/Utils/Timeline';
+import { getElementFromDraggable, getWidthFromDraggable } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
-import { moveElement } from '../../store/Reducers/TimelineSlice';
+import { addElement, moveElement } from '../../store/Reducers/TimelineSlice';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -95,17 +95,35 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     if (!dropZoneRef.current) return;
 
     const newElementLeft = parseFloat(dropZoneRef.current.style.left);
+    const newTimeMs = timeline.unitsToTimeMs(newElementLeft);
 
-    focusedTracks.forEach((focusedTrack) => {
-      focusedTrack.focusedElements.forEach((element) => {
-        dispatch(moveElement({
-          fromIndex: focusedTrack.index,
-          toIndex: currentTrack.index,
-          fromMs: element.offsetMs,
-          toMs: timeline.unitsToTimeMs(newElementLeft),
-        }));
+    if (focusedTracks.length > 0) {
+      focusedTracks.forEach((focusedTrack) => {
+        focusedTrack.focusedElements.forEach((focusedElement) => {
+          const moveAction = moveElement({
+            fromIndex: focusedTrack.index,
+            fromMs: focusedElement.offsetMs,
+            toIndex: currentTrack.index,
+            toMs: newTimeMs,
+          });
+
+          dispatch(moveAction);
+        });
       });
-    });
+    }
+    else {
+      const draggable = document.querySelector('.dragging') as HTMLElement;
+      const element = getElementFromDraggable(draggable, files);
+
+      if (element) {
+        element.offsetMs = newTimeMs;
+
+        dispatch(addElement({
+          trackIndex: currentTrack.index,
+          element,
+        }));
+      }
+    }
 
     onDragEnd();
   };
