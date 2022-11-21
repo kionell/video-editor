@@ -117,7 +117,7 @@
       }
     ],
     "quotes": ["error", "single"],
-    "semi": "off",
+    "semi": "error",
     "semi-spacing": ["error", {
       "before": false, 
       "after": true
