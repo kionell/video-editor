@@ -54,7 +54,9 @@ export function convertMIMEToMediaType(type: MIMEType): MediaType {
   }
 }
 
-export function convertUploadedFileToElement(file: UploadedFile): BaseElement | null {
+export function convertUploadedFileToElement(file: UploadedFile | null): BaseElement | null {
+  if (!file) return null;
+
   const mediaType = convertMIMEToMediaType(file.type as MIMEType);
 
   switch (mediaType) {

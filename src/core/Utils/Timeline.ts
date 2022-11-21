@@ -26,6 +26,16 @@ export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline
   return 0;
 }
 
+export function getElementFromDraggable(draggable: HTMLElement, files: IFileState): BaseElement | null {
+  if (draggable.classList.contains('general-item')) {
+    const file = getFileFromDraggable(draggable, files);
+
+    return convertUploadedFileToElement(file);
+  }
+
+  return null;
+}
+
 /**
  * Searches for a track by its index.
  * @param index Target index of a track.
