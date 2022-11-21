@@ -51,7 +51,7 @@ export function getTrackByIndex(timeline: Timeline, index: number): TimelineTrac
  */
 export function getElementAtTime<T extends BaseElement>(track: TimelineTrack<T>, time: number): T | null {
   const predicate = (element: T) => {
-    return element.startTimeMs >= time && element.endTimeMs <= time;
+    return time >= element.startTimeMs && time < element.endTimeMs;
   };
 
   const index = findIndex(track.elements, predicate);
