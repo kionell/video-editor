@@ -167,6 +167,10 @@ export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): voi
 
       element.removeEventListener('dragstart', onDragStart, false);
       element.removeEventListener('touchstart', onDragStart, false);
+
+      if (clone.isConnected) {
+        onDragEnd();
+      }
     }
   };
 
