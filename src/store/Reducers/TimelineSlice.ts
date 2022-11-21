@@ -200,7 +200,11 @@ const TimelineSlice = createSlice({
         });
 
         TimelineSlice.caseReducers.removeElement(state, removeAction);
+      }
 
+      element.offsetMs = Math.max(0, toMs);
+
+      if (fromIndex !== toIndex) {
         const addAction = makeAction<AddElementPayload>({
           trackIndex: toTrack.index,
           element,
@@ -208,8 +212,6 @@ const TimelineSlice = createSlice({
 
         TimelineSlice.caseReducers.addElement(state, addAction);
       }
-
-      element.offsetMs = Math.max(0, toMs);
 
       const fixAction = makeAction<FixOffsetPayload>({
         trackIndex: toTrack.index,
