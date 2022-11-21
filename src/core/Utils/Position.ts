@@ -1,3 +1,9 @@
+import {
+  MouseEvent as ReactMouseEvent,
+  DragEvent as ReactDragEvent,
+  TouchEvent as ReactTouchEvent,
+} from 'react';
+
 interface IEventPosition {
   pageX: number;
   pageY: number;
@@ -7,7 +13,10 @@ interface IEventPosition {
   targetY: number;
 }
 
-type PositionEvent = MouseEvent | DragEvent | TouchEvent;
+export type PositionEvent = MouseEvent | DragEvent | TouchEvent
+  | ReactMouseEvent<HTMLElement>
+  | ReactDragEvent<HTMLElement>
+  | ReactTouchEvent<HTMLElement>;
 
 export interface IPositionTracker {
   start(event: PositionEvent): IPositionTrackerState;
