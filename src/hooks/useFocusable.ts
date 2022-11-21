@@ -16,8 +16,8 @@ export interface FocusableProps {
   blurCallback?: FocusableCallback;
 }
 
-export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void {
-  const makeFocusable = (element: HTMLElement, props: FocusableProps) => {
+export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): void {
+  const makeFocusable = (element: HTMLElement, props?: FocusableProps) => {
     const emitter = new Sister();
 
     const onElementClick = () => {
@@ -65,11 +65,11 @@ export function useFocusable(ref: Ref<HTMLElement>, props: FocusableProps): void
     let focusCallbackListener: SisterEventListener | null = null;
     let blurCallbackListener: SisterEventListener | null = null;
 
-    if (props.focusCallback) {
+    if (props?.focusCallback) {
       focusCallbackListener = emitter.on('focus', props.focusCallback);
     }
 
-    if (props.blurCallback) {
+    if (props?.blurCallback) {
       blurCallbackListener = emitter.on('blur', props.blurCallback);
     }
 

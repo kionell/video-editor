@@ -19,7 +19,7 @@ export interface DraggableProps {
   dragEndCallback?: DraggableCallback;
 }
 
-export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void {
+export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): void {
   const makeClone = (element: HTMLElement): HTMLElement => {
     const cloned = element.cloneNode(true) as HTMLElement;
 
@@ -35,7 +35,7 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
     return cloned;
   }
 
-  const makeDraggable = (element: HTMLElement, props: DraggableProps) => {
+  const makeDraggable = (element: HTMLElement, props?: DraggableProps) => {
     const tracker = createPositionTracker();
     const emitter = new Sister();
 
@@ -137,15 +137,15 @@ export function useDraggable(ref: Ref<HTMLElement>, props: DraggableProps): void
     let moveCallbackListener: SisterEventListener | null = null;
     let endCallbackListener: SisterEventListener | null = null;
 
-    if (props.dragStartCallback) {
+    if (props?.dragStartCallback) {
       startCallbackListener = emitter.on('start', props.dragStartCallback);
     }
 
-    if (props.dragMoveCallback) {
+    if (props?.dragMoveCallback) {
       moveCallbackListener = emitter.on('move', props.dragMoveCallback);
     }
 
-    if (props.dragEndCallback) {
+    if (props?.dragEndCallback) {
       endCallbackListener = emitter.on('end', props.dragEndCallback);
     }
 
