@@ -1,8 +1,25 @@
 import { Ref, useEffect } from 'react';
+import Sister, { SisterEventListener } from 'sister';
 import { createPositionTracker, IPositionTrackerState } from '../core/Utils/Position';
 
-export function useResizable(ref: Ref<HTMLElement>): void {
-  const makeResizable = (element: HTMLElement) => {
+type ResizableEventType = 'resize' | 'stop-resize';
+
+export interface ResizableState {
+  type: ResizableEventType;
+  target: HTMLElement;
+  position: IPositionTrackerState;
+}
+
+export type ResizableCallback = (state: ResizableState) => void;
+
+export interface ResizableProps {
+  resizeCallback?: ResizableCallback;
+  stopResizeCallback?: ResizableCallback;
+}
+
+export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): void {
+  const makeResizable = (element: HTMLElement, props?: ResizableProps) => {
+    const emitter = new Sister();
     const tracker = createPositionTracker();
 
     let targetElement: HTMLElement;
@@ -52,24 +69,57 @@ export function useResizable(ref: Ref<HTMLElement>): void {
       if (targetElement.classList.contains('resizer-bottom')) {
         element.style.height = initialHeight + position.relativeY + 'px';
       }
+
+      emitter.trigger<ResizableEventType, ResizableState>('resize', {
+        type: 'resize',
+        target: element,
+        position,
+      });
     };
 
-    const stopResizing = () => {
+    const stopResizing = (event: MouseEvent) => {
+      position = tracker.update(event);
+
       document.removeEventListener('mousemove', resizeElement);
       document.removeEventListener('mouseup', stopResizing);
+
+      emitter.trigger<ResizableEventType, ResizableState>('stop-resize', {
+        type: 'stop-resize',
+        target: element,
+        position,
+      });
     };
 
     element.addEventListener('mousedown', startResizing);
 
+    let resizeCallbackListener: SisterEventListener | null = null;
+    let stopResizeCallbackListener: SisterEventListener | null = null;
+
+    if (props?.resizeCallback) {
+      resizeCallbackListener = emitter.on('focus', props.resizeCallback);
+    }
+
+    if (props?.stopResizeCallback) {
+      stopResizeCallbackListener = emitter.on('focus', props.stopResizeCallback);
+    }
+
     // Callback for removing event listener when component is unmounted.
     return () => {
       element.removeEventListener('mousedown', startResizing);
+
+      if (resizeCallbackListener) {
+        emitter.off(resizeCallbackListener);
+      }
+
+      if (stopResizeCallbackListener) {
+        emitter.off(stopResizeCallbackListener);
+      }
     };
   };
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    return makeResizable(ref.current);
+    return makeResizable(ref.current, props);
   }, []);
 }
