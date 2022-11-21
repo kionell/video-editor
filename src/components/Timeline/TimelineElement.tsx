@@ -26,7 +26,9 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
   z-index: 1;
 
   .timeline-element__preview {
-    border: 2px solid ${(props) => props.theme.primary.press};
+    transition: border 150ms;
+    border: 2px solid;
+    border-color: ${(props) => props.theme.primary.press};
   }
   
   .timeline-element__edges {
@@ -40,13 +42,13 @@ const StyledTimelineElementWrapper = styled.div<ElementProps>`
     }
 
     .timeline-element__preview {
-      border: none;
+      border-color: transparent;
     }
   }
 
   &:hover:not(.focused) {
     .timeline-element__preview {
-      border: 2px solid ${(props) => props.theme.primary.hover};
+      border-color: ${(props) => props.theme.primary.hover};
     }
   }
 `;
