@@ -3,11 +3,16 @@ import styled, { css } from 'styled-components';
 import { Icon } from '../Icon';
 import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { DraggableProps, useDraggable } from '../../hooks/useDraggable';
-import { FocusableProps, useFocusable } from '../../hooks/useFocusable';
+import { useDraggable } from '../../hooks/useDraggable';
+import { useFocusable } from '../../hooks/useFocusable';
 import { useResizable } from '../../hooks/useResizable';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import {
+  focusElement,
+  unfocusElement,
+} from '../../store/Reducers/TimelineSlice';
 
-interface ElementProps extends DraggableProps, FocusableProps {
+interface ElementProps {
   element: BaseElement;
 }
 
@@ -100,6 +105,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   props: ElementProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
+  const dispatch = useAppDispatch();
   const timeline = useAppSelector((state) => state.timeline);
   const element = props.element;
 
@@ -136,9 +142,13 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     }
   }, [element.isFocused]);
 
-  useDraggable(ref, props);
-  useFocusable(ref, props);
+  useFocusable(ref, {
+    focusCallback: () => dispatch(focusElement({ element })),
+    blurCallback: () => dispatch(unfocusElement({ element })),
+  });
+
   useResizable(ref);
+  useDraggable(ref);
 
   return (
     <StyledTimelineElementWrapper className='timeline-element' ref={ref} {...props}>

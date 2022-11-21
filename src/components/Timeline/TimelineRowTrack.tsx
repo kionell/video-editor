@@ -9,7 +9,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { createPositionTracker, IPositionTrackerState } from '../../core/Utils/Position';
 import { getWidthFromDraggable } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
-import { focusElement, moveElement, unfocusElement } from '../../store/Reducers/TimelineSlice';
+import { moveElement } from '../../store/Reducers/TimelineSlice';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -125,12 +125,6 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
             element={element}
             key={element.uniqueId}
             ref={createRef()}
-            focusCallback={() =>
-              dispatch(focusElement({ element }))
-            }
-            blurCallback={() =>
-              dispatch(unfocusElement({ element }))
-            }
           />
         ))
       }
