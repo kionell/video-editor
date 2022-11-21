@@ -25,6 +25,8 @@ export function useMovableX(ref: Ref<HTMLElement>): void {
 
     return () => {
       element.removeEventListener('mousedown', startMoving);
+
+      stopMoving();
     }
   };
 
