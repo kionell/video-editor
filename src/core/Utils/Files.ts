@@ -8,6 +8,7 @@ import { BaseElement } from '../Elements/BaseElement';
 import { VideoElement } from '../Elements/VideoElement';
 import { AudioElement } from '../Elements/AudioElement';
 import { ImageElement } from '../Elements/ImageElement';
+import { IFileState } from '../State/IFileState';
 
 export async function loadFile(file: File): Promise<UploadedFile | null> {
   const mediaType = convertMIMEToMediaType(file.type as MIMEType);
@@ -65,6 +66,19 @@ export function convertUploadedFileToElement(file: UploadedFile): BaseElement | 
 
     case MediaType.Image:
       return new ImageElement(file as ImageFile);
+  }
+
+  return null;
+}
+
+export function getFileFromDraggable(draggable: HTMLElement, files: IFileState): UploadedFile | null {
+  if (draggable.classList.contains('general-item')) {
+    const parentElement = draggable.parentElement as HTMLElement;
+    const labelElement = parentElement.querySelector<HTMLElement>('.general-item__label');
+
+    if (!labelElement) return null;
+
+    return files.list.find((f) => f.name === labelElement.innerText) ?? null;
   }
 
   return null;

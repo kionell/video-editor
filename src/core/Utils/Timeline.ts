@@ -5,23 +5,18 @@ import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { Timeline } from '../Timeline/Timeline';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { TIMELINE_ZOOM_LEVELS } from '../Timeline/TimelineZoom';
+import { convertUploadedFileToElement, getFileFromDraggable } from './Files';
 import { clamp } from './Math';
 import { findIndex } from './Search';
 
 export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline, files: IFileState): number {
   if (draggable.classList.contains('general-item')) {
-    const parentElement = draggable.parentElement as HTMLElement;
-    const labelElement = parentElement.querySelector<HTMLElement>('.general-item__label');
+    const file = getFileFromDraggable(draggable, files);
+    const fileDurationMs = (file?.duration ?? 0) * 1000;
 
-    if (!labelElement) return 0;
+    const durationMs = fileDurationMs || BASE_TIMELINE_ELEMENT_DURATION_MS;
 
-    const file = files.list.find((f) => f.name === labelElement.innerText);
-
-    if (!file) return 0;
-
-    const duration = (file.duration * 1000) || BASE_TIMELINE_ELEMENT_DURATION_MS;
-
-    return timeline.timeMsToUnits(duration);
+    return timeline.timeMsToUnits(durationMs);
   }
 
   if (draggable.classList.contains('timeline-element')) {
