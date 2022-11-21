@@ -12,7 +12,7 @@ const StyledTimelineElementDropZoneWrapper = styled.div<ElementDropZoneProps>`
   justify-content: space-between;
   align-items: center;
   user-select: none;
-  border: 2px dashed ${(props) => props.theme.primary.accent};
+  border: 2px solid ${(props) => props.theme.primary.accent};
   border-radius: 6px;
   overflow: hidden;
   z-index: 1;
