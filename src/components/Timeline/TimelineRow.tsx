@@ -1,5 +1,5 @@
 import { HTMLAttributes, RefObject } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { TimelineRowControl } from './TimelineRowControl';
@@ -28,6 +28,18 @@ const StyledTimelineRow = styled(FlexContainer)<TimelineRowProps>`
       background: ${(props) => props.theme.secondary.surface};
     }
   }
+
+  ${(props) => {
+    return props.track.isFocused && css`
+      .timeline-row-control {
+        background: ${(props) => props.theme.secondary.press};
+      }
+
+      .timeline-row-track {
+        background: ${(props) => props.theme.secondary.surface};
+      }
+    `;
+  }}
 `;
 
 const TimelineRow: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
