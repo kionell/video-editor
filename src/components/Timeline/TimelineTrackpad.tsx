@@ -9,6 +9,7 @@ import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
 import { TimelineTrackArea } from './TimelineTrackArea';
 import { TIMELINE_OFFSET_X } from '../../constants';
+import { clamp } from '../../core/Utils/Math';
 
 const StyledTimelineTrackpadContainer = styled(FlexContainer)`
   height: 100%;
@@ -43,7 +44,7 @@ const TimelineTrackpad: React.FC = () => {
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
-    const clampedTimeMs = Math.min(timeMs, timeline.totalLengthMs);
+    const clampedTimeMs = clamp(timeMs, 0, timeline.totalLengthMs);
 
     updatePosByTime(clampedTimeMs);
 
@@ -57,9 +58,9 @@ const TimelineTrackpad: React.FC = () => {
     const scrollX = scrollbarRef.current.getScrollLeft();
 
     const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
-    const clampedTimeMs = Math.min(timeMs, timeline.totalLengthMs);
+    const clampedTimeMs = clamp(timeMs, 0, timeline.totalLengthMs);
 
-    if (clampedTimeMs >= timeline.totalLengthMs) {
+    if (timeMs < 0 || timeMs > timeline.totalLengthMs) {
       updatePosByTime(clampedTimeMs);
     }
 
