@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ScrollableContainer } from '../components/Containers/ScrollableContainer';
-import { Sidebar } from '../layouts/Sidebar/Sidebar';
-import { Timeline } from '../layouts/Timeline/Timeline';
+import { Sidebar } from '../components/Sidebar/Sidebar';
+import { Timeline } from '../components/Timeline/Timeline';
 
 const StyledMainPage = styled(ScrollableContainer)`
   height: 100%;
