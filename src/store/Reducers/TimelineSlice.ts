@@ -250,7 +250,7 @@ const TimelineSlice = createSlice({
       state.tracks.forEach((t, i) => t.index = i);
     },
 
-    /** 
+    /**
      * Removes intersection between elements.
      */
     fixTimeOffsets(state, action: FixOffsetAction): void {
