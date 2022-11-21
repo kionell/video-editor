@@ -6,7 +6,10 @@ import { Text } from '../Text';
 
 const StyledSecondaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.secondary.accent};
-  
+  border: 1px solid;
+  border-color: transparent;
+  transition: border 100ms ease-in-out;
+
   &:hover:enabled {
     background: ${(props) => props.theme.secondary.hover};
   }
@@ -16,15 +19,14 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 
   &.toggled {
-    outline: 1px solid;
-    outline-color: ${(props) => props.theme.primary.accent};
+    border-color: ${(props) => props.theme.primary.accent};
 
     &:hover:enabled {
-      outline-color: ${(props) => props.theme.primary.hover};
+      border-color: ${(props) => props.theme.primary.hover};
     }
 
     &:active:enabled {
-      outline-color: ${(props) => props.theme.primary.press};
+      border-color: ${(props) => props.theme.primary.press};
     }
   }
 `;
