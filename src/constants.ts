@@ -1,6 +1,6 @@
 export const GIANT_ICON_SIZE = 100;
 export const LARGE_ICON_SIZE = 30;
-export const NORMAL_ICON_SIZE = 20;
+export const NORMAL_ICON_SIZE = 18;
 export const SMALL_ICON_SIZE = 14;
 
 export const LARGER_FONT_SIZE = 30;

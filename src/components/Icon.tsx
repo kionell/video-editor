@@ -132,10 +132,10 @@ export function getIconSizeBySizeType(iconSize?: keyof typeof IconSize): number 
   switch (iconSize) {
     case 'Giant': return GIANT_ICON_SIZE;
     case 'Large': return LARGE_ICON_SIZE;
-    case 'Normal': return NORMAL_ICON_SIZE;
+    case 'Small': return SMALL_ICON_SIZE;
   }
 
-  return SMALL_ICON_SIZE;
+  return NORMAL_ICON_SIZE;
 }
 
 const Icon: React.FC<IconProps> = (props: IconProps) => {
