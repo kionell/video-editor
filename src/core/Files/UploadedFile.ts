@@ -32,7 +32,7 @@ export abstract class UploadedFile {
   /**
    * HTML element that will store file data.
    */
-  abstract element: HTMLElement;
+  abstract source: HTMLElement;
 
   constructor(file: File) {
     this.name = file.name;

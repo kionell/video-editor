@@ -13,13 +13,13 @@ export class VideoFile extends UploadedFile {
   /**
    * HTML video element that will store file data.
    */
-  element: HTMLVideoElement;
+  source: HTMLVideoElement;
 
   constructor(file: File) {
     super(file);
 
     this.type = file.type as VideoType;
-    this.element = document.createElement('video');
+    this.source = document.createElement('video');
   }
 
   /**
@@ -27,18 +27,18 @@ export class VideoFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.addEventListener('canplaythrough', () => {
+      this.source.addEventListener('canplaythrough', () => {
         resolve(this);
       });
 
-      this.element.addEventListener('error', () => {
+      this.source.addEventListener('error', () => {
         console.warn(`Video "${this.name}" failed to load!`);
 
         resolve(this);
       });
 
-      this.element.src = this.url;
-      this.element.load();
+      this.source.src = this.url;
+      this.source.load();
     });
   }
 
@@ -46,7 +46,7 @@ export class VideoFile extends UploadedFile {
    * Duration of this video file in seconds.
    */
   get duration(): number {
-    return this.element.duration || 0;
+    return this.source.duration || 0;
   }
 
   get hasDuration(): boolean {

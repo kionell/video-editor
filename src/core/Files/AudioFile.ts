@@ -13,7 +13,7 @@ export class AudioFile extends UploadedFile {
   /**
    * HTML audio element that will store file data.
    */
-  element: HTMLAudioElement;
+  source: HTMLAudioElement;
 
   /**
    * Reference to this file for getting audio buffer.
@@ -24,7 +24,7 @@ export class AudioFile extends UploadedFile {
     super(file);
 
     this.type = file.type as AudioType;
-    this.element = document.createElement('audio');
+    this.source = document.createElement('audio');
     this._file = file;
   }
 
@@ -33,18 +33,18 @@ export class AudioFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.addEventListener('canplaythrough', () => {
+      this.source.addEventListener('canplaythrough', () => {
         resolve(this);
       });
 
-      this.element.addEventListener('error', () => {
+      this.source.addEventListener('error', () => {
         console.warn(`Audio "${this.name}" failed to load!`);
 
         resolve(this);
       });
 
-      this.element.src = this.url;
-      this.element.load();
+      this.source.src = this.url;
+      this.source.load();
     });
   }
 
@@ -74,7 +74,7 @@ export class AudioFile extends UploadedFile {
    * Duration of this audio file in seconds.
    */
   get duration(): number {
-    return this.element.duration || 0;
+    return this.source.duration || 0;
   }
 
   get hasDuration(): boolean {

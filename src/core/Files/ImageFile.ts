@@ -13,13 +13,13 @@ export class ImageFile extends UploadedFile {
   /**
    * HTML image element that will store file data.
    */
-  element: HTMLImageElement;
+  source: HTMLImageElement;
 
   constructor(file: File) {
     super(file);
 
     this.type = file.type as ImageType;
-    this.element = document.createElement('img');
+    this.source = document.createElement('img');
   }
 
   /**
@@ -27,17 +27,17 @@ export class ImageFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.element.onload = () => {
+      this.source.onload = () => {
         resolve(this);
       };
 
-      this.element.onerror = () => {
+      this.source.onerror = () => {
         console.warn(`Image "${this.name}" failed to load!`);
 
         resolve(this);
       };
 
-      this.element.src = this.url;
+      this.source.src = this.url;
     });
   }
 
