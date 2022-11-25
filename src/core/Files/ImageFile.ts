@@ -8,7 +8,7 @@ export class ImageFile extends UploadedFile {
   /**
    * Image MIME type.
    */
-	type: ImageType;
+	declare type: ImageType;
 
   /**
    * HTML image element that will store file data.

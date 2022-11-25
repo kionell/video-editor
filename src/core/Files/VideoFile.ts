@@ -8,7 +8,7 @@ export class VideoFile extends UploadedFile {
   /**
    * Video MIME type.
    */
-	type: VideoType;
+	declare type: VideoType;
 
   /**
    * HTML video element that will store file data.

@@ -8,7 +8,7 @@ export class AudioFile extends UploadedFile {
   /**
    * Audio MIME type.
    */
-	type: AudioType;
+	declare type: AudioType;
 
   /**
    * HTML audio element that will store file data.
