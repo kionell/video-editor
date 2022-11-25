@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ScrollableContainer } from '../components/Containers/ScrollableContainer';
+import { Player } from '../components/Player/Player';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { Timeline } from '../components/Timeline/Timeline';
 
@@ -42,6 +43,7 @@ export const MainPage: React.FC = () => {
     <StyledMainPage>
       <StyledTopPart>
         <Sidebar />
+        <Player />
       </StyledTopPart>
 
       <StyledBottomPart>
