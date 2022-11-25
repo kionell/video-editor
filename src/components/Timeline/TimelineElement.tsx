@@ -128,7 +128,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     const units = timeline.timeMsToUnits(element.startTimeMs);
 
     ref.current.style.left = units + 'px';
-  }, [element.startTimeMs])
+  }, [element.startTimeMs]);
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;

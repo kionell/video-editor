@@ -35,10 +35,10 @@ const TimelineTrackpad: React.FC = () => {
     const clientX = timeline.timeMsToUnits(timeMs);
 
     seekerRef.current.style.left = clientX - scrollX + 'px';
-  }
+  };
 
-  const setSeekerPosition = (event: MouseEvent<HTMLElement>) => {
-    if (!seekerRef.current || !scrollbarRef.current) return;
+  const setCurrentTime = (event: MouseEvent<HTMLElement>) => {
+    if (!scrollbarRef.current || !seekerRef.current) return;
 
     const clientX = event.clientX - TIMELINE_OFFSET_X;
     const scrollX = scrollbarRef.current.getScrollLeft();
@@ -47,22 +47,6 @@ const TimelineTrackpad: React.FC = () => {
     const clampedTimeMs = clamp(timeMs, 0, timeline.totalLengthMs);
 
     updatePosByTime(clampedTimeMs);
-
-    dispatch(setCurrentTimeMs(clampedTimeMs));
-  };
-
-  const setCurrentTime = () => {
-    if (!scrollbarRef.current || !seekerRef.current) return;
-
-    const clientX = parseFloat(seekerRef.current.style.left);
-    const scrollX = scrollbarRef.current.getScrollLeft();
-
-    const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
-    const clampedTimeMs = clamp(timeMs, 0, timeline.totalLengthMs);
-
-    if (timeMs < 0 || timeMs > timeline.totalLengthMs) {
-      updatePosByTime(clampedTimeMs);
-    }
 
     dispatch(setCurrentTimeMs(clampedTimeMs));
   };
@@ -77,8 +61,8 @@ const TimelineTrackpad: React.FC = () => {
     // This is the protection against "fake" seeks. 
     if (isElement || isRowControl || isRowAdd) return;
 
-    setSeekerPosition(event);
-  }
+    setCurrentTime(event);
+  };
 
   const handleScroll = () => {
     if (!scrollbarRef.current) return;
@@ -87,8 +71,6 @@ const TimelineTrackpad: React.FC = () => {
       left: scrollbarRef.current.getScrollLeft(),
       top: scrollbarRef.current.getScrollTop(),
     };
-
-    updatePosByTime();
 
     dispatch(setCurrentScroll(scrollState));
   };
@@ -102,13 +84,13 @@ const TimelineTrackpad: React.FC = () => {
    * In case if last track was shifted to left.
    * Right now our current time is larger than total time.
    */
-  useEffect(setCurrentTime, [timeline.totalLengthMs]);
+  useEffect(updatePosByTime, [timeline.currentTimeMs]);
 
   return (
     <StyledTimelineTrackpadContainer
       className='timeline-trackpad'
       onMouseDown={handleMouseDown}
-      onDoubleClick={setSeekerPosition}
+      onDoubleClick={setCurrentTime}
     >
       <TimelineRuler
         ref={rulerRef}

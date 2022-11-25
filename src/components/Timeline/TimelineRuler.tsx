@@ -273,6 +273,6 @@ TimelineRuler.defaultProps = {
   textOffsetX: -32,
   textOffsetY: 20,
   textFormat: formatTimelineUnit,
-}
+};
 
 export { TimelineRuler };

@@ -89,7 +89,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     seekerRef.current.style.pointerEvents = '';
 
     onDragLeave();
-  }
+  };
 
   const onDrop = () => {
     if (!dropZoneRef.current) return;

@@ -69,7 +69,7 @@ const TimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
     }
 
     document.addEventListener('mouseup', stopSeekerMovement);
-  }
+  };
 
   return (
     <StyledTimelineSeekerWrapper

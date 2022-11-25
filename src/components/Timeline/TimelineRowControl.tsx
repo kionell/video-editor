@@ -64,7 +64,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
       index: -1,
       offsetY: -Infinity,
       element: rowElement,
-    }
+    };
 
     otherElements.forEach((element, index) => {
       const rect = element.getBoundingClientRect();
@@ -85,7 +85,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     }
 
     return state;
-  }
+  };
 
   const onMouseMove = (event: MouseEvent) => {
     if (!tracker.current) return;
@@ -119,7 +119,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
 
     rowContainer.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-  }
+  };
 
   const onMouseDown = (event: MouseEvent) => {
     event.stopPropagation();
@@ -153,7 +153,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
 
     return () => {
       controlRef.current?.removeEventListener('mousedown', onMouseDown);
-    }
+    };
   }, []);
 
   return (
