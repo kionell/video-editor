@@ -9,6 +9,6 @@ export function useDebounce(cb: DebounceCallback): DebounceFunc {
   return (event, timeout = 0) => {
     if (timer) clearTimeout(timer);
 
-    timer = setTimeout(cb, timeout, event)
-  }
+    timer = setTimeout(cb, timeout, event);
+  };
 }

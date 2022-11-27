@@ -46,7 +46,7 @@ export function useMovableX(ref: Ref<HTMLElement>): void {
       element.removeEventListener('mousedown', startMoving);
 
       stopMoving();
-    }
+    };
   };
 
   useEffect(() => {

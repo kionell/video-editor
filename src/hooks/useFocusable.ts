@@ -55,7 +55,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): voi
         target: element,
         isFocused: false,
       });
-    }
+    };
 
     element.addEventListener('mousedown', onElementClick);
 
