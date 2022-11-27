@@ -20,21 +20,6 @@ export interface DraggableProps {
 }
 
 export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): void {
-  const makeClone = (element: HTMLElement): HTMLElement => {
-    const cloned = element.cloneNode(true) as HTMLElement;
-
-    cloned.style.position = 'fixed';
-    cloned.style.zIndex = '9999';
-    cloned.style.width = element.offsetWidth + 'px';
-    cloned.style.height = element.offsetHeight + 'px';
-    cloned.style.pointerEvents = 'none';
-    cloned.classList.add('dragging');
-
-    element.parentNode?.insertBefore(cloned, element);
-
-    return cloned;
-  }
-
   const makeDraggable = (element: HTMLElement, props?: DraggableProps) => {
     const tracker = createPositionTracker();
     const emitter = new Sister();
@@ -52,6 +37,29 @@ export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): voi
     const translate = (x: number, y: number) => {
       clone.style.left = x + 'px';
       clone.style.top = y + 'px';
+    };
+
+    const makeClone = (element: HTMLElement): HTMLElement => {
+      const oldClone = document.querySelector('.dragging');
+
+      if (oldClone) {
+        oldClone.parentNode?.removeChild(oldClone);
+
+        resetDrag();
+      }
+
+      const cloned = element.cloneNode(true) as HTMLElement;
+
+      cloned.style.position = 'fixed';
+      cloned.style.zIndex = '9999';
+      cloned.style.width = element.offsetWidth + 'px';
+      cloned.style.height = element.offsetHeight + 'px';
+      cloned.style.pointerEvents = 'none';
+      cloned.classList.add('dragging');
+
+      element.parentNode?.insertBefore(cloned, element);
+
+      return cloned;
     };
 
     const onDragStart = (event: DragEvent | TouchEvent) => {
@@ -103,16 +111,27 @@ export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): voi
         handle: clone,
         position,
       });
-    }
+    };
 
     const onDrop = (event: DragEvent | TouchEvent) => {
       event.stopPropagation();
       event.preventDefault();
-    }
+    };
 
     const onDragEnd = () => {
       clone.parentNode?.removeChild(clone);
 
+      resetDrag();
+
+      emitter.trigger('end', {
+        type: 'end',
+        target: element,
+        handle: clone,
+        position,
+      });
+    };
+
+    const resetDrag = () => {
       element.style.opacity = startOpacity;
       element.style.cursor = 'grab';
 
@@ -122,13 +141,6 @@ export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): voi
       element.removeEventListener('dragend', onDragEnd, false);
       element.removeEventListener('touchmove', onDragMove, false);
       element.removeEventListener('touchend', onDragEnd, false);
-
-      emitter.trigger('end', {
-        type: 'end',
-        target: element,
-        handle: clone,
-        position,
-      });
 
       firstMove = true;
     };
@@ -171,7 +183,7 @@ export function useDraggable(ref: Ref<HTMLElement>, props?: DraggableProps): voi
       if (clone?.isConnected) {
         onDragEnd();
       }
-    }
+    };
   };
 
   useEffect(() => {
