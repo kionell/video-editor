@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { VideoElement } from '../../core/Elements';
 import { Timeline } from '../../core/Timeline/Timeline';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { getElementAtTime, getTrackByIndex } from '../../core/Utils/Timeline';
@@ -22,6 +23,7 @@ import {
   FixOffsetPayload,
   RemoveElementPayload,
   AddElementPayload,
+  RemoveElementsByFileAction,
 } from '../Interfaces/Timeline';
 
 const initialState: Timeline = new Timeline();
@@ -162,6 +164,34 @@ const TimelineSlice = createSlice({
       }
     },
 
+    removeElementsByFile(state, action: RemoveElementsByFileAction) {
+      if (!state.tracks.length) return;
+
+      const targetFile = action.payload.file;
+      const removeActions: PayloadAction<RemoveElementPayload>[] = [];
+
+      state.tracks.forEach((track) => {
+        track.elements.forEach((element) => {
+          const mediaElement = element as VideoElement;
+
+          if (!mediaElement.file) return;
+
+          if (mediaElement.file.equals(targetFile)) {
+            const newAction = makeAction<RemoveElementPayload>({
+              trackIndex: track.index,
+              timeMs: element.startTimeMs,
+            });
+
+            removeActions.push(newAction);
+          }
+        });
+      });
+
+      removeActions.forEach((action) => {
+        TimelineSlice.caseReducers.removeElement(state, action);
+      });
+    },
+
     removeFocusedElements(state) {
       const focusedTracks = state.focusedTracks;
 
@@ -295,6 +325,7 @@ export const {
   addElement,
   pushElement,
   removeElement,
+  removeElementsByFile,
   removeFocusedElements,
   moveElement,
   focusElement,

@@ -12,10 +12,14 @@ import { UploadedFile } from '../../core/Files/UploadedFile';
 import { formatDuration } from '../../core/Utils/Format';
 import { convertUploadedFileToElement } from '../../core/Utils/Files';
 import { removeFile } from '../../store/Reducers/FileSlice';
-import { pushElement, setCurrentZoom } from '../../store/Reducers/TimelineSlice';
 import { getFitZoomLevel } from '../../core/Utils/Timeline';
 import { DraggableProps, useDraggable } from '../../hooks/useDraggable';
 import { PositionEvent } from '../../core/Utils/Position';
+import {
+  pushElement,
+  removeElementsByFile,
+  setCurrentZoom,
+} from '../../store/Reducers/TimelineSlice';
 
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement>, DraggableProps {
   previewElement?: HTMLElement;
@@ -151,7 +155,10 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
     const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
 
-    if (targetFile) dispatch(removeFile(targetFile));
+    if (!targetFile) return;
+
+    dispatch(removeFile(targetFile));
+    dispatch(removeElementsByFile({ file: targetFile }));
   };
 
   useDraggable(itemRef, props);
