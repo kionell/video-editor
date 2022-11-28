@@ -1,23 +1,43 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SidebarCategory } from '../../core/Enums/SidebarCategory';
+import { createSlice } from '@reduxjs/toolkit';
 import { IGeneralState } from '../../core/State/IGeneralState';
+import { CategoryAction } from '../Interfaces/GeneralPayload';
 
 const initialState: IGeneralState = {
-  currentCategory: 'None',
+  mediaCategory: 'Media',
+  settingsCategory: null,
 };
 
 const GeneralSlice = createSlice({
   name: 'general',
   initialState,
   reducers: {
-    setSidebarCategory(state, action: PayloadAction<keyof typeof SidebarCategory>) {
-      state.currentCategory = action.payload;
+    setMediaCategory(state, action: CategoryAction) {
+      if (state.mediaCategory !== action.payload) {
+        state.mediaCategory = action.payload;
+      }
+      else {
+        state.mediaCategory = null;
+      }
+
+      console.log(state.mediaCategory);
+    },
+
+    setSettingsCategory(state, action: CategoryAction) {
+      if (state.settingsCategory !== action.payload) {
+        state.settingsCategory = action.payload;
+      }
+      else {
+        state.settingsCategory = null;
+      }
+
+      console.log(state.settingsCategory);
     },
   },
 });
 
 export const {
-  setSidebarCategory,
+  setMediaCategory,
+  setSettingsCategory,
 } = GeneralSlice.actions;
 
 export const GeneralReducer = GeneralSlice.reducer;
