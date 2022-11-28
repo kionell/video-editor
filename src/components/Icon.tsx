@@ -9,7 +9,7 @@ import {
 } from '../constants';
 
 export enum IconType {
-  Adjustments,
+  Adjust,
   Backward,
   BringForward,
   Check,
@@ -44,7 +44,7 @@ export enum IconType {
   Split,
   Text,
   Transform,
-  Transition,
+  Transitions,
   Undo,
   VerticalFlip,
   Volume,
@@ -85,7 +85,7 @@ const IconWrapper = styled.div<IconProps>`
 
 function getIconByType(type?: keyof typeof IconType): React.FC {
   switch (type) {
-    case 'Adjustments': return Icons.AdjustmentsIcon;
+    case 'Adjust': return Icons.AdjustmentsIcon;
     case 'Backward': return Icons.BackwardIcon;
     case 'BringForward': return Icons.BringForwardIcon;
     case 'ChevronDown': return Icons.ChevronDownIcon;
@@ -119,7 +119,7 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
     case 'Split': return Icons.SplitIcon;
     case 'Text': return Icons.TextIcon;
     case 'Transform': return Icons.TransformIcon;
-    case 'Transition': return Icons.TransitionIcon;
+    case 'Transitions': return Icons.TransitionIcon;
     case 'Undo': return Icons.UndoIcon;
     case 'VerticalFlip': return Icons.VerticalFlipIcon;
     case 'Volume': return Icons.VolumeIcon;
