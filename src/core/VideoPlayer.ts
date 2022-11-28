@@ -10,6 +10,7 @@ import {
 
 import { Timeline } from './Timeline/Timeline';
 import { MediaType } from './Enums/MediaType';
+import { getViewport } from './Utils/Render';
 
 /**
  * A wrapper around etro movie instance that works with timeline elements.
@@ -17,12 +18,14 @@ import { MediaType } from './Enums/MediaType';
 export class VideoPlayer {
   private _movie: etro.Movie;
 
+  private _elementToLayerMap: Map<BaseElement, etro.layer.Base> = new Map();
+
   constructor(options: etro.MovieOptions) {
     this._movie = new etro.Movie(options);
   }
 
-  play(): void {
-    this._movie.play();
+  async play(): Promise<void> {
+    return this._movie.play();
   }
 
   pause(): void {
@@ -57,29 +60,30 @@ export class VideoPlayer {
   }
 
   syncWithTimeline(timeline: Timeline) {
-    const isPlaying = !this._movie.paused;
+    const elements = timeline.tracks.flatMap((t) => t.elements);
 
-    if (isPlaying) this._movie.pause();
+    this._removeOldMappings(elements);
 
-    const currentTime = this._movie.currentTime;
-
-    const newLayers = timeline.tracks.flatMap((track) => {
-      return track.elements.map((e) => this._getLayerFromElement(e));
-    });
+    const newLayers = elements.map((e) => this._getLayerFromElement(e));
 
     // First track should be at the top.
     newLayers.reverse();
 
-    this._movie.layers.length = 0;
+    if (this._areLayersUpdated(this._movie.layers, newLayers)) {
+      this._movie.pause();
 
-    newLayers.forEach((layer) => {
-      if (layer) this._movie.addLayer(layer);
-    });
+      const currentTime = this._movie.currentTime;
 
-    this._movie.currentTime = currentTime;
-    this._movie.refresh();
+      if (this._movie.layers.length > 0) {
+        this._movie.layers.length = 0;
+      }
 
-    if (isPlaying) this._movie.play();
+      newLayers.forEach((layer) => {
+        if (layer) this._movie.addLayer(layer);
+      });
+
+      this.currentTime = currentTime;
+    }
   }
 
   private _getLayerFromElement(element: BaseElement): etro.layer.Base | null {
@@ -92,10 +96,24 @@ export class VideoPlayer {
       return found;
     }
 
-    return this._convertElement(element);
+    const layer = this._convertToLayer(element);
+
+    this._elementToLayerMap.set(element, layer);
+
+    const sourceLayer = layer as etro.layer.VisualSource;
+
+    if (sourceLayer.source) {
+      sourceLayer.source.addEventListener(
+        'loadeddata',
+        () => this._movie.refresh(),
+        { once: true },
+      );
+    }
+
+    return layer;
   }
 
-  private _convertElement(element: BaseElement): etro.layer.Base | null {
+  private _convertToLayer(element: BaseElement): etro.layer.Base | null {
     switch (element.type) {
       case MediaType.Video:
         return this._convertVideoElement(element as VideoElement);
@@ -115,16 +133,10 @@ export class VideoPlayer {
 
   private _convertVideoElement(element: VideoElement): etro.layer.Video {
     const layer = new etro.layer.Video({
-      startTime: element.startTimeMs / 1000,
-      duration: element.durationMs / 1000,
-      opacity: element.opacity,
-      sourceStartTime: element.startTrimMs,
-      source: element.file.source,
-      muted: element.file.source.muted,
-      volume: element.file.source.volume,
-      playbackRate: element.file.source.playbackRate,
-      destWidth: this._movie.canvas.width,
-      destHeight: this._movie.canvas.height,
+      ...this._getBaseOptions(element),
+      ...this._getVisualOptions(element),
+      ...this._getAudioOptions(element),
+      source: element.file.source.cloneNode(true) as HTMLVideoElement,
     });
 
     return layer;
@@ -132,13 +144,9 @@ export class VideoPlayer {
 
   private _convertAudioElement(element: AudioElement): etro.layer.Audio {
     const layer = new etro.layer.Audio({
-      startTime: element.startTimeMs / 1000,
-      duration: element.durationMs / 1000,
-      sourceStartTime: element.startTrimMs,
-      source: element.file.source,
-      muted: element.file.source.muted,
-      volume: element.file.source.volume,
-      playbackRate: element.file.source.playbackRate,
+      ...this._getBaseOptions(element),
+      ...this._getAudioOptions(element),
+      source: element.file.source.cloneNode(true) as HTMLAudioElement,
     });
 
     return layer;
@@ -146,11 +154,9 @@ export class VideoPlayer {
 
   private _convertImageElement(element: ImageElement): etro.layer.Image {
     const layer = new etro.layer.Image({
-      startTime: element.startTimeMs / 1000,
-      duration: element.durationMs / 1000,
+      ...this._getBaseOptions(element),
+      ...this._getVisualOptions(element),
       source: element.file.source,
-      destWidth: this._movie.canvas.width,
-      destHeight: this._movie.canvas.height,
     });
 
     return layer;
@@ -158,8 +164,7 @@ export class VideoPlayer {
 
   private _convertTextElement(element: TextElement): etro.layer.Text {
     const layer = new etro.layer.Text({
-      startTime: element.startTimeMs / 1000,
-      duration: element.durationMs / 1000,
+      ...this._getBaseOptions(element),
       text: element.text,
       font: element.font,
       opacity: element.opacity,
@@ -170,27 +175,65 @@ export class VideoPlayer {
     return layer;
   }
 
-  private _findExistingMediaLayer(element: BaseElement): etro.layer.Base | null {
-    const mediaElement = element as VideoElement | AudioElement | ImageElement;
+  private _getBaseOptions(element: BaseElement): etro.layer.BaseOptions {
+    return {
+      startTime: element.startTimeMs / 1000,
+      duration: element.durationMs / 1000,
+    };
+  }
 
-    if (!mediaElement.file) return null;
-
-    const found = this._movie.layers.find((layer) => {
-      if (layer instanceof etro.layer.Video) {
-        return layer.source === mediaElement.file.source;
-      }
-
-      if (layer instanceof etro.layer.Audio) {
-        return layer.source === mediaElement.file.source;
-      }
-
-      if (layer instanceof etro.layer.Image) {
-        return layer.source === mediaElement.file.source;
-      }
-
-      return false;
+  private _getVisualOptions(element: VideoElement | ImageElement): etro.layer.VisualSourceOptions {
+    const viewport = getViewport({
+      file: element.file,
+      width: this._movie.canvas.width,
+      height: this._movie.canvas.height,
     });
 
-    return found ?? null;
+    return {
+      x: viewport.dx,
+      y: viewport.dy,
+      width: viewport.dw,
+      height: viewport.dh,
+      destWidth: viewport.dw,
+      destHeight: viewport.dh,
+    } as etro.layer.VisualSourceOptions;
+  }
+
+  private _getAudioOptions(element: VideoElement | AudioElement): etro.layer.AudioOptions {
+    return {
+      sourceStartTime: element.startTrimMs,
+      muted: element.file.source.muted,
+      volume: element.file.source.volume,
+      playbackRate: element.file.source.playbackRate,
+    } as etro.layer.AudioOptions;
+  }
+
+  private _findExistingMediaLayer(element: BaseElement): etro.layer.Base | null {
+    if (this._elementToLayerMap.has(element)) {
+      return this._elementToLayerMap.get(element) as etro.layer.Base;
+    }
+
+    return null;
+  }
+
+  private _removeOldMappings(elements: BaseElement[]): void {
+    this._elementToLayerMap.forEach((_, key, map) => {
+      if (elements.find((element) => element === key)) return;
+
+      map.delete(key);
+    });
+  }
+
+  private _areLayersUpdated(original: etro.layer.Base[], other: etro.layer.Base[]): boolean {
+    if (original.length !== other.length) {
+      return true;
+    }
+
+    return original.some((layer, i) => {
+      const sameStartTime = layer.startTime === other[i].startTime;
+      const sameDuration = layer.duration === other[i].duration;
+
+      return !sameStartTime || !sameDuration;
+    });
   }
 }
