@@ -43,6 +43,11 @@ export class Timeline {
    */
   snapMode = false;
 
+  /**
+   * Last manual seek time.
+   */
+  lastSeekTimeMs = 0;
+
   private _currentTimeMs = 0;
 
   /**
@@ -100,6 +105,10 @@ export class Timeline {
       .reduce((ms, t) => Math.max(ms, t.endTimeMs), -Infinity);
 
     return timeMs === -Infinity ? 0 : timeMs;
+  }
+
+  get ended(): boolean {
+    return this.currentTimeMs >= this.totalLengthMs;
   }
 
   get durationMs(): number {
