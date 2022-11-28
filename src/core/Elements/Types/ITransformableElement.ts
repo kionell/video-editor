@@ -1,4 +1,4 @@
-import { Bounds } from '../Bounds';
+import { VisualBounds } from '../../Types/VisualBounds';
 
 /**
  * An element that can be transformed.
@@ -7,7 +7,7 @@ export interface ITransformableElement {
 	/**
    * Element bounds.
    */
-  bounds: Bounds;
+  bounds: VisualBounds;
 
   /**
    * Element rotation in degrees.

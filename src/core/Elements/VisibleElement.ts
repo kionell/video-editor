@@ -1,6 +1,6 @@
 import { Filter } from '../Enums/Filter';
 import { BaseElement } from './BaseElement';
-import { Bounds } from './Bounds';
+import { VisualBounds } from '../Types/VisualBounds';
 import { IFadeableElement } from './Types/IFadeableElement';
 import { IHasColorAdjustments } from './Types/IHasColorAdjustments';
 import { IHasFilters } from './Types/IHasFilters';
@@ -15,7 +15,7 @@ export abstract class VisibleElement extends BaseElement implements
   fadeInTimeMs = 0;
   fadeOutTimeMs = 0;
 
-  bounds = new Bounds();
+  bounds = new VisualBounds();
   rotation = 0;
   scale = 1;
   zoom = 1;
