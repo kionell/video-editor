@@ -32,6 +32,7 @@ const StyledTimelineTools = styled.div`
 `;
 
 const StyledTimelineToolButton = styled(SecondaryButton)`
+  width: 42px;
   height: 35px;
 
   label {
