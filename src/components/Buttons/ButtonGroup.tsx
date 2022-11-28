@@ -39,7 +39,13 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props: ButtonGroupProps) => {
     }
   };
 
-  return <FlexContainer {...props} onClick={selectButton} />;
+  return (
+    <FlexContainer
+      {...props}
+      className='button-group'
+      onClick={selectButton}
+    />
+  );
 };
 
 ButtonGroup.defaultProps = {
