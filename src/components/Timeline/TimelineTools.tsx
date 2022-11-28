@@ -22,13 +22,12 @@ import {
 } from '../../store/Reducers/TimelineSlice';
 
 const StyledTimelineTools = styled.div`
-  height: 45px;
+  height: 50px;
   display: flex;
   position: relative;
-  padding: 6px 12px;
+  padding: 8px 12px;
   justify-content: space-between;
   align-items: center;
-  box-sizing: content-box;
   background: ${(props) => props.theme.primary.surface};
 `;
 
