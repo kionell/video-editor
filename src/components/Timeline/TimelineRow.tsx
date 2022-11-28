@@ -19,6 +19,14 @@ const StyledTimelineRow = styled(FlexContainer)<TimelineRowProps>`
   flex-wrap: nowrap;
   align-items: center;
 
+  .timeline-row-control {
+    transition: background 150ms;
+  }
+
+  .timeline-row-track {
+    transition: background 150ms;
+  }
+
   &:hover {
     .timeline-row-control {
       background: ${(props) => props.theme.secondary.hover};
