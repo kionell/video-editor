@@ -26,7 +26,12 @@ const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryPro
 
   return (
     <StyledSidebarMediaCategory>
-      <ScrollableContainer {...props} gap={12} padding={12} align='start' justify='space-between'>
+      <ScrollableContainer
+        {...props}
+        gap={16}
+        padding={16}
+        align='start'
+      >
         <UploadItem />
         {
           files.list.map((file, index) => {
