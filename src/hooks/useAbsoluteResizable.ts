@@ -17,7 +17,7 @@ export interface ResizableProps {
   stopResizeCallback?: ResizableCallback;
 }
 
-export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): void {
+export function useAbsoluteResizable(ref: Ref<HTMLElement>, props?: ResizableProps): void {
   const makeResizable = (element: HTMLElement, props?: ResizableProps) => {
     const emitter = new Sister();
     const tracker = createPositionTracker();
@@ -27,6 +27,10 @@ export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): voi
     let initialStyle: CSSStyleDeclaration;
     let initialWidth: number;
     let initialHeight: number;
+    let initialTop: number;
+    let initialLeft: number;
+
+    element.style.position = 'absolute';
 
     const startResizing = (event: MouseEvent) => {
       targetElement = event.target as HTMLElement;
@@ -40,6 +44,8 @@ export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): voi
       initialStyle = window.getComputedStyle(element);
       initialWidth = parseFloat(initialStyle.width);
       initialHeight = parseFloat(initialStyle.height);
+      initialTop = parseFloat(initialStyle.top);
+      initialLeft = parseFloat(initialStyle.left);
 
       document.addEventListener('mousemove', resizeElement);
       document.addEventListener('mouseup', stopResizing);
@@ -49,10 +55,12 @@ export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): voi
       position = tracker.update(event);
 
       if (targetElement.classList.contains('resizer-left')) {
+        element.style.left = initialLeft + position.relativeX + 'px';
         element.style.width = initialWidth - position.relativeX + 'px';
       }
 
       if (targetElement.classList.contains('resizer-top')) {
+        element.style.top = initialTop + position.relativeY + 'px';
         element.style.height = initialHeight - position.relativeY + 'px';
       }
 

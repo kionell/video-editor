@@ -5,7 +5,7 @@ import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useDraggable } from '../../hooks/useDraggable';
 import { useFocusable } from '../../hooks/useFocusable';
-import { useResizable } from '../../hooks/useResizable';
+import { useAbsoluteResizable } from '../../hooks/useAbsoluteResizable';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import {
   focusElement,
@@ -147,7 +147,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     blurCallback: () => dispatch(unfocusElement({ element })),
   });
 
-  useResizable(ref);
+  useAbsoluteResizable(ref);
   useDraggable(ref);
 
   return (
