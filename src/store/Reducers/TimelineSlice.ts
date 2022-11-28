@@ -24,7 +24,7 @@ import {
   RemoveElementPayload,
   AddElementPayload,
   RemoveElementsByFileAction,
-} from '../Interfaces/Timeline';
+} from '../Interfaces/TimelinePayload';
 
 const initialState: Timeline = new Timeline();
 
