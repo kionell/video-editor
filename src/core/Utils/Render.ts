@@ -2,9 +2,11 @@ import { UploadedFile } from '../Files/UploadedFile';
 import { VideoFile } from '../Files/VideoFile';
 import { ImageFile } from '../Files/ImageFile';
 import { AudioFile } from '../Files/AudioFile';
+import { AudioBounds } from '../Types/AudioBounds';
+import { Viewport } from '../Types/Viewport';
 
 interface ThumbnailOptions {
-  file?: UploadedFile;
+  file: UploadedFile;
   width?: number;
   height?: number;
   backgroundColor?: string;
@@ -38,14 +40,29 @@ export async function getImageThumbnailURL(options?: ThumbnailOptions): Promise<
  * @param options Thumbnail options
  * @returns Thumbnail URL or empty string.
  */
-function drawImage(options?: ThumbnailOptions): string {
-  if (!options?.file?.element) return '';
+function drawImage(options: ThumbnailOptions): string {
+  if (!options.file.source) return '';
 
-  const source = options.file.element as CanvasImageSource;
+  const source = options.file.source as CanvasImageSource;
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
 
   if (!context) return '';
+
+  const { sw, sh, dx, dy, dw, dh } = getViewport(options);
+
+  canvas.width = options.width || sw;
+  canvas.height = options.height || sh;
+
+  context.fillStyle = options.backgroundColor ?? 'black';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(source, 0, 0, sw, sh, dx, dy, dw, dh);
+
+  return canvas.toDataURL();
+}
+
+export function getViewport(options: ThumbnailOptions): Viewport {
+  const source = options.file.source as CanvasImageSource;
 
   const sw = source instanceof HTMLVideoElement
     ? source.videoWidth
@@ -55,21 +72,17 @@ function drawImage(options?: ThumbnailOptions): string {
     ? source.videoHeight
     : source.height as number;
 
-  canvas.width = options.width || sw;
-  canvas.height = options.height || sh;
+  const width = options.width || sw;
+  const height = options.height || sh;
 
-  const scale = sh ? canvas.height / sh : 1;
+  const scale = sh ? height / sh : 1;
 
   const dw = sw * scale;
   const dh = sh * scale;
-  const dx = canvas.width / 2 - dw / 2;
-  const dy = canvas.height / 2 - dh / 2;
+  const dx = width / 2 - dw / 2;
+  const dy = height / 2 - dh / 2;
 
-  context.fillStyle = options.backgroundColor ?? 'black';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(source, 0, 0, sw, sh, dx, dy, dw, dh);
-
-  return canvas.toDataURL();
+  return new Viewport({ sw, sh, dx, dy, dw, dh });
 }
 
 /**
@@ -77,7 +90,7 @@ function drawImage(options?: ThumbnailOptions): string {
  * @param bounds Audio bounds of each step in the buffer.
  * @param options Thumbnail options.
  */
- export function drawWaveform(bounds: AudioBounds[], options?: ThumbnailOptions): string {
+ export function drawWaveform(bounds: AudioBounds[], options: ThumbnailOptions): string {
   if (!bounds.length) return '';
 
   const canvas = document.createElement('canvas');
@@ -123,11 +136,6 @@ function drawImage(options?: ThumbnailOptions): string {
   return canvas.toDataURL();
 }
 
-interface AudioBounds {
-  min: number;
-  max: number;
-}
-
 /**
  * Calculates all wave data points depending on the total width and width of a point.
  * @param buffer Buffer with audio data.
@@ -140,7 +148,7 @@ function calculateWaveData(buffer: AudioBuffer | null, width?: number): AudioBou
   const totalPoints = width;
 
   // Get array of bounds of each step
-  return getBoundArray(wave, totalPoints);
+  return getAudioBoundArray(wave, totalPoints);
 }
 
 /**
@@ -148,7 +156,7 @@ function calculateWaveData(buffer: AudioBuffer | null, width?: number): AudioBou
  * @param wave Current audio channel data.
  * @param totalPoints How many points will be drawn.
  */
-function getBoundArray(wave: Float32Array, totalPoints: number) {
+function getAudioBoundArray(wave: Float32Array, totalPoints: number) {
   // Find how many steps we are going to draw
   const step = Math.ceil(wave.length / totalPoints);
 
@@ -157,7 +165,7 @@ function getBoundArray(wave: Float32Array, totalPoints: number) {
   for (let i = 0; i < totalPoints; i++) {
     const waveSlice = wave.slice(i * step, i * step + step);
 
-    bounds.push(getBounds(waveSlice));
+    bounds.push(getAudioBounds(waveSlice));
   }
 
   return bounds;
@@ -168,11 +176,11 @@ function getBoundArray(wave: Float32Array, totalPoints: number) {
  * @param waveSlice Slice of the wave data.
  * @returns Min and max points at this slice.
  */
-function getBounds(waveSlice: Float32Array): AudioBounds {
+function getAudioBounds(waveSlice: Float32Array): AudioBounds {
   return waveSlice.reduce((total: AudioBounds, nextValue: number) => {
     total.max = nextValue > total.max ? nextValue : total.max;
     total.min = nextValue < total.min ? nextValue : total.min;
 
     return total;
-  }, { max: -1.0, min: 1.0 });
+  }, new AudioBounds());
 }
