@@ -40,6 +40,10 @@ const TimelineSlice = createSlice({
       state.snapMode = !state.snapMode;
     },
 
+    setLastSeekTimeMs(state, action: CurrentTimeAction) {
+      state.lastSeekTimeMs = action.payload;
+    },
+
     setCurrentTimeMs(state, action: CurrentTimeAction) {
       state.currentTimeMs = action.payload;
     },
@@ -119,7 +123,7 @@ const TimelineSlice = createSlice({
     addElement(state, action: AddElementAction) {
       const element = action.payload.element;
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as Timeline, trackIndex);
+      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
 
       if (!track) {
         const newAction = makeAction<PushElementPayload>({ element });
@@ -149,7 +153,7 @@ const TimelineSlice = createSlice({
     removeElement(state, action: RemoveElementAction) {
       const timeMs = action.payload.timeMs;
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as Timeline, trackIndex);
+      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
 
       if (!track) return;
 
@@ -210,11 +214,11 @@ const TimelineSlice = createSlice({
     moveElement(state, action: MoveElementAction) {
       const { fromMs, toMs, fromIndex, toIndex } = action.payload;
 
-      const fromTrack = getTrackByIndex(state as Timeline, fromIndex);
+      const fromTrack = getTrackByIndex(state as unknown as Timeline, fromIndex);
 
       if (!fromTrack) return;
 
-      const toTrack = getTrackByIndex(state as Timeline, toIndex) ?? fromTrack;
+      const toTrack = getTrackByIndex(state as unknown as Timeline, toIndex) ?? fromTrack;
 
       // There are no elements outside of track's total length.
       if (fromMs < 0 || fromMs > fromTrack.totalLength) return;
@@ -287,7 +291,7 @@ const TimelineSlice = createSlice({
      */
     fixTimeOffsets(state, action: FixOffsetAction): void {
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as Timeline, trackIndex);
+      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
 
       // There is no sense to change offsets when there are 1 element or less.
       if (!track || track.elements.length <= 1) return;
@@ -313,6 +317,7 @@ const TimelineSlice = createSlice({
 
 export const {
   switchSnapMode,
+  setLastSeekTimeMs,
   setCurrentTimeMs,
   setCurrentScroll,
   setCurrentZoom,
