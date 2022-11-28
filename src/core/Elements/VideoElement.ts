@@ -1,13 +1,18 @@
 import { MediaType } from '../Enums/MediaType';
 import { VideoFile } from '../Files/VideoFile';
 import { IFileElement } from './Types/IFileElement';
+import { IHasAudio } from './Types/IHasAudio';
 import { IPlayableElement } from './Types/IPlayableElement';
 import { VisibleElement } from './VisibleElement';
 
 /**
  * A video element that can be placed on a timeline track.
  */
-export class VideoElement extends VisibleElement implements IFileElement, IPlayableElement {
+export class VideoElement extends VisibleElement
+  implements IFileElement, IPlayableElement, IHasAudio {
+
+  volume = 1;
+
   speed = 1;
   reversed = false;
 
