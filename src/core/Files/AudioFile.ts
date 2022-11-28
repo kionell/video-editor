@@ -33,15 +33,15 @@ export class AudioFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.source.addEventListener('canplaythrough', () => {
+      this.source.addEventListener('loadeddata', () => {
         resolve(this);
-      });
+      }, { once: true });
 
       this.source.addEventListener('error', () => {
         console.warn(`Audio "${this.name}" failed to load!`);
 
         resolve(this);
-      });
+      }, { once: true });
 
       this.source.src = this.url;
       this.source.load();

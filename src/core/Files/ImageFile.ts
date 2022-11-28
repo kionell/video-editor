@@ -27,15 +27,15 @@ export class ImageFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.source.onload = () => {
+      this.source.addEventListener('loadeddata', () => {
         resolve(this);
-      };
+      }, { once: true });
 
-      this.source.onerror = () => {
+      this.source.addEventListener('error', () => {
         console.warn(`Image "${this.name}" failed to load!`);
 
         resolve(this);
-      };
+      }, { once: true });
 
       this.source.src = this.url;
     });
