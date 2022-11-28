@@ -9,7 +9,6 @@ type SelectEventHandler<T = HTMLButtonElement> = EventHandler<SelectEvent<T>>;
 
 interface ButtonGroupProps extends FlexProps {
   selectedIndex?: number;
-  children?: JSX.Element[];
   onClick?: SelectEventHandler;
 }
 
@@ -40,7 +39,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props: ButtonGroupProps) => {
     }
   };
 
-  return <FlexContainer {...props} onClick={selectButton} />
+  return <FlexContainer {...props} onClick={selectButton} />;
 };
 
 ButtonGroup.defaultProps = {
