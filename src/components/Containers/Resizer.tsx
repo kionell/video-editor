@@ -84,11 +84,9 @@ const StyledResizerLine = styled.div<ResizerProps>`
   transition: background-color 150ms;
 `;
 
-const ResizerLine: React.FC<ResizerProps> = (props) => {
-  const other = props;
-
+const ResizerLine: React.FC<ResizerProps> = (props: ResizerProps) => {
   return (
-    <StyledResizerArea {...props} className={`resizer-${other.direction}`}>
+    <StyledResizerArea {...props} className={`resizer-${props.direction}`}>
       <StyledResizerLine {...props} className='resizer-line' />
     </StyledResizerArea>
   );
