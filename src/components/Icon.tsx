@@ -47,6 +47,7 @@ export enum IconType {
   Transition,
   Undo,
   VerticalFlip,
+  Volume,
   Seeker,
   Edge,
 }
@@ -121,6 +122,7 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
     case 'Transition': return Icons.TransitionIcon;
     case 'Undo': return Icons.UndoIcon;
     case 'VerticalFlip': return Icons.VerticalFlipIcon;
+    case 'Volume': return Icons.VolumeIcon;
     case 'Seeker': return Icons.SeekerIcon;
     case 'Edge': return Icons.EdgeIcon;
   }
