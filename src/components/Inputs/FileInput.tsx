@@ -47,8 +47,8 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
 
     // ffmpeg.FS('writeFile', file.name, await fetchFile(file));
 
-    // // Reset input files to allow repeated upload.
-    // input.value = '';
+    // Reset input files to allow repeated upload.
+    input.value = '';
 
     // // if (files.list.length < 3) return;
 
