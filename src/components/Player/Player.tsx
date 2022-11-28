@@ -6,9 +6,9 @@ import { FlatButton } from '../Buttons/FlatButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { VideoPlayer } from '../../core/VideoPlayer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
 import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
 import { setPlaying } from '../../store/Reducers/PreviewSlice';
-
 import {
   DEFAULT_SCALED_PREVIEW_HEIGHT,
   DEFAULT_SCALED_PREVIEW_WIDTH,
@@ -21,6 +21,7 @@ const StyledPlayerArea = styled(FlexContainer)`
   gap: 0px;
   justify-content: center;
   align-content: center;
+  overflow: hidden;
 `;
 
 const StyledPlayerWrapper = styled(FlexContainer)`
@@ -50,6 +51,7 @@ const Player: React.FC = () => {
   const timeline = useAppSelector((state) => state.timeline);
   const preview = useAppSelector((state) => state.preview);
 
+  const playPromise = useRef<Promise<void>>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const playerRef = useRef<VideoPlayer>();
 
@@ -60,11 +62,11 @@ const Player: React.FC = () => {
     const movie = playerRef.current.movie;
 
     subscribe(movie, 'movie.play', () => {
-      dispatch(setPlaying(true));
+      dispatch(setPlaying(!movie.paused));
     });
 
     subscribe(movie, 'movie.pause', () => {
-      dispatch(setPlaying(false));
+      dispatch(setPlaying(!movie.paused));
     });
 
     subscribe(movie, 'movie.ended', () => {
@@ -76,25 +78,34 @@ const Player: React.FC = () => {
     });
   };
 
+  const checkOrCreatePlayer = () => {
+    if (playerRef.current) return;
+
+    playerRef.current = new VideoPlayer({
+      canvas: canvasRef.current,
+      autoRefresh: false,
+    });
+
+    subscribeToEvents();
+
+    playerRef.current.syncWithTimeline(timeline);
+  };
+
   const play = () => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || playPromise.current) return;
 
-    if (!playerRef.current) {
-      playerRef.current = new VideoPlayer({
-        canvas: canvasRef.current,
-      });
-
-      subscribeToEvents();
-
-      playerRef.current.syncWithTimeline(timeline);
-    }
+    checkOrCreatePlayer();
 
     if (!playerRef.current.movie.rendering) {
-      if (playerRef.current.ended) {
+      if (playerRef.current.ended && timeline.ended) {
         playerRef.current.currentTime = 0;
       }
 
-      playerRef.current.play();
+      playPromise.current = playerRef.current.play();
+
+      playPromise.current.then(() => {
+        playPromise.current = null;
+      });
     }
   };
 
@@ -106,17 +117,22 @@ const Player: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (!playerRef.current) return;
+  useTimelineUpdate(() => {
+    checkOrCreatePlayer();
 
     playerRef.current.syncWithTimeline(timeline);
-  }, [timeline.tracks]);
+  });
 
-  // useEffect(() => {
-  //   if (!playerRef.current) return;
+  useEffect(() => {
+    checkOrCreatePlayer();
 
-  //   
-  // }, [timeline.currentTimeMs]);
+    const seekTime = timeline.lastSeekTimeMs / 1000;
+
+    if (playerRef.current.currentTime !== seekTime) {
+      playerRef.current.pause();
+      playerRef.current.currentTime = seekTime;
+    }
+  }, [timeline.lastSeekTimeMs]);
 
   return (
     <StyledPlayerArea className='player-area'>
