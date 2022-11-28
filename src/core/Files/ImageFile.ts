@@ -27,7 +27,7 @@ export class ImageFile extends UploadedFile {
    */
   async load(): Promise<this> {
     return new Promise((resolve) => {
-      this.source.addEventListener('loadeddata', () => {
+      this.source.addEventListener('load', () => {
         resolve(this);
       }, { once: true });
 
