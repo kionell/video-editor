@@ -14,9 +14,9 @@ export const DarkTheme: ITheme = {
     surface: '#2B2B3B',
   },
   text: {
-    normal: '#A6A6BF',
-    lighter: '#EDEDF2',
-    darker: '#6E6E77',
+    normal: '#ababba',
+    lighter: '#d5d5dd',
+    darker: '#797986',
   },
   background: '#181820',
 };
