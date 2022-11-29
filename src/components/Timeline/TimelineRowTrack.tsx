@@ -66,7 +66,6 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
 
     dropZoneRef.current.style.left = dropZoneLeft + scrollLeft + 'px';
     dropZoneRef.current.style.width = elementWidth.current + 'px';
-    dropZoneRef.current.style.translate = '0%';
 
     if (!isDragging) {
       setDragging(true);
@@ -76,7 +75,6 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const onDragLeave = () => {
     if (!dropZoneRef.current) return;
 
-    dropZoneRef.current.style.translate = '-100%';
     dropZoneRef.current.style.left = '';
     dropZoneRef.current.style.width = '';
 
