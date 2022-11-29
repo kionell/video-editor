@@ -4,11 +4,11 @@ export enum Category {
   Transitions,
   Settings,
   Transform,
+  Volume,
   Speed,
   Fade,
   Filters,
   Adjust,
-  Volume,
 }
 
 export type CategoryName = keyof typeof Category;
