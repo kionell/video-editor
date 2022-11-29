@@ -25,7 +25,7 @@ export abstract class VisibleElement extends BaseElement implements
   exposure = 0.5;
   saturation = 0.5;
   temperature = 0.5;
-  constrast = 1;
+  contrast = 1;
   opacity = 1;
   blur = 0;
 

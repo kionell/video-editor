@@ -18,9 +18,9 @@ export interface IHasColorAdjustments {
 	temperature: number;
 
   /**
-   * Element constrast. 
+   * Element contrast. 
    */
-	constrast: number;
+	contrast: number;
 
   /**
    * Element opacity. 
