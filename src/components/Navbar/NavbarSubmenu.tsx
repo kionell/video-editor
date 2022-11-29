@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useRef } from 'react';
 import { useResizable } from '../../hooks/useResizable';
 import { ResizerLine } from '../Containers/Resizer';
-import { CategorySwitcher } from '../Categories/CategorySwitcher';
+import { CategorySwitcher } from '../Submenus/CategorySwitcher';
 import { NavbarProps } from './NavbarProps';
 import {
   MIN_MEDIA_PANEL_WIDTH,
