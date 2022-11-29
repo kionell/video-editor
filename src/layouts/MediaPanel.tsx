@@ -13,7 +13,7 @@ const MediaPanel: React.FC = () => {
   const submenuRef = useRef<HTMLDivElement>(null);
 
   const onStopResize = () => {
-    if (!submenuRef.current) return;
+    if (!submenuRef?.current.style.width) return;
 
     const width = parseFloat(submenuRef.current.style.width);
 
