@@ -10,3 +10,5 @@ export enum Category {
   Adjust,
   Volume,
 }
+
+export type CategoryName = keyof typeof Category;

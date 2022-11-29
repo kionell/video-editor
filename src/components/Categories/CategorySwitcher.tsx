@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Category } from '../../core/Enums/Category';
+import { CategoryName } from '../../core/Enums/Category';
 import { MediaCategory } from './MediaCategory';
 
-type SelectedCategory = keyof typeof Category;
-
 interface CategorySwitcherProps {
-  selected: SelectedCategory;
+  selected: CategoryName;
 }
 
-function getCategoryBySelected(selected: SelectedCategory): React.FC {
+function getCategoryBySelected(selected: CategoryName): React.FC {
   switch (selected) {
     case 'Media': return MediaCategory;
   }
 }
 
 const CategorySwitcher: React.FC<CategorySwitcherProps> = (props: CategorySwitcherProps) => {
-  const [category, setCategory] = useState<keyof typeof Category>();
+  const [category, setCategory] = useState<CategoryName>();
 
   useEffect(() => {
     if (!props.selected) return;

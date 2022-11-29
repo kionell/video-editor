@@ -1,17 +1,16 @@
 import { RefObject } from 'react';
-import { Category } from '../../core/Enums/Category';
+import { CategoryName } from '../../core/Enums/Category';
 
 type NavbarDirection = 'left' | 'right' | 'bottom';
-type NavbarCategoryName = keyof typeof Category;
 
 export interface NavbarProps {
   direction: NavbarDirection;
-  categories: NavbarCategoryName[];
-  selected?: NavbarCategoryName | null;
+  categories: CategoryName[];
+  selected?: CategoryName | null;
   resizable?: boolean;
   submenuWidth?: number;
   submenuRef?: RefObject<HTMLDivElement>;
-  onSelect?: (category: NavbarCategoryName | null) => void;
+  onSelect?: (category: CategoryName | null) => void;
   onResize?: () => void;
   onStopResize?: () => void;
 }

@@ -1,10 +1,10 @@
-import { Category } from '../Enums/Category';
+import { CategoryName } from '../Enums/Category';
 
 export interface IGeneralState {
   /**
    * Current media category.
    */
-  mediaCategory: keyof typeof Category | null;
+  mediaCategory: CategoryName | null;
 
   /**
    * Current media category width.
@@ -14,5 +14,5 @@ export interface IGeneralState {
   /**
    * Current element settings category.
    */
-  settingsCategory: keyof typeof Category | null;
+  settingsCategory: CategoryName | null;
 }
