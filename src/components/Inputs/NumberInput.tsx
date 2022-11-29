@@ -24,8 +24,7 @@ const StyledNumberInputWrapper = styled.div<NumberInputProps>`
   justify-content: left;
   align-items: center;
   position: relative;
-  margin: 12px;
-  gap: 5px;
+  gap: 12px;
 
   flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
 `;
@@ -33,7 +32,6 @@ const StyledNumberInputWrapper = styled.div<NumberInputProps>`
 const StyledNumberInputContainer = styled(FlexContainer)`
   padding: 0px;
   gap: 0px;
-  min-width: 180px;
 `;
 
 const StyledMinusButton = styled(SecondaryButton)`
@@ -54,7 +52,6 @@ const StyledPlusButton = styled(SecondaryButton)`
 
 const StyledNumberInput = styled(StyledTextInput).attrs({ type: 'number' })<NumberInputProps>`
   -moz-appearance: textfield;
-  width: 50px;
   padding: 0px;
   flex: 1;
   border-radius: 0px;

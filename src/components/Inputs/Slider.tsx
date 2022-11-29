@@ -15,13 +15,13 @@ export interface SliderProps {
 }
 
 const StyledSliderContainer = styled.div<SliderProps>`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
   position: relative;
-  margin: 12px;
-  gap: 10px;
+  gap: 6px;
   user-select: none;
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
@@ -35,6 +35,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   outline: none;
   position: relative;
   width: 100%;
+  height: 100%;
 
   &::-moz-range-track {
     appearance: none;
@@ -75,7 +76,8 @@ const StyledSliderWrapper = styled.div<SliderProps>`
   --ratio: calc((var(--value) - var(--min)) / var(--range));
   --sx: calc(0.5 * 10px + var(--ratio) * (100% - 10px));
 
-  height: 0px;
+  width: 100%;
+  height: 100%;
 
   input[type=range]::-moz-range-track {
     background: ${(props) => {
