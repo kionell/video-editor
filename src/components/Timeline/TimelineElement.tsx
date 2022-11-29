@@ -145,6 +145,13 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   useFocusable(ref, {
     focusCallback: () => dispatch(focusElement({ element })),
     blurCallback: () => dispatch(unfocusElement({ element })),
+    allowedClasses: [
+      'timeline-trackpad',
+      'timeline-ruler',
+      'timeline-row-track',
+      'timeline-track-area',
+      'timeline-scrollable-area',
+    ],
   });
 
   useAbsoluteResizable(ref);

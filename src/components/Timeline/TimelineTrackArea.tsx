@@ -16,6 +16,7 @@ interface TimelineScrollableProps {
 
 const StyledTimelineTrackArea = styled(ScrollableContainer)`
   min-width: 100%;
+  min-height: 100%;
   padding: 0px;
   gap: 0px;
   user-select: none;
@@ -54,6 +55,7 @@ const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineSc
 
   return (
     <StyledTimelineTrackArea
+      className='timeline-scrollable-area'
       onScroll={props.onScroll}
       ref={props.scrollbarRef}
       innerRef={trackAreaRef}

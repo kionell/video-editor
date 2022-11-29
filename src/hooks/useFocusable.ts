@@ -15,11 +15,22 @@ export type FocusableCallback = (state: FocusableState) => void;
 export interface FocusableProps {
   focusCallback?: FocusableCallback;
   blurCallback?: FocusableCallback;
+  allowedClasses?: string[];
 }
 
 export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): void {
   const makeFocusable = (element: HTMLElement, props?: FocusableProps) => {
     const emitter = new Sister();
+
+    const isAllowed = (event: PositionEvent) => {
+      const allowedClasses = props.allowedClasses;
+
+      if (!allowedClasses) return true;
+
+      return allowedClasses.some((key) => {
+        return (event.target as HTMLElement).classList.contains(key);
+      });
+    };
 
     const onElementClick = () => {
       if (element.classList.contains('focused')) {
@@ -42,7 +53,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): voi
         return;
       }
 
-      if (!element.contains(event.target as HTMLElement)) {
+      if (!element.contains(event.target as HTMLElement) && isAllowed(event)) {
         unfocusElement();
       }
     };
