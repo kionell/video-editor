@@ -90,11 +90,11 @@ export function useResizable(ref: Ref<HTMLElement>, props?: ResizableProps): voi
     let stopResizeCallbackListener: SisterEventListener | null = null;
 
     if (props?.resizeCallback) {
-      resizeCallbackListener = emitter.on('focus', props.resizeCallback);
+      resizeCallbackListener = emitter.on('resize', props.resizeCallback);
     }
 
     if (props?.stopResizeCallback) {
-      stopResizeCallbackListener = emitter.on('focus', props.stopResizeCallback);
+      stopResizeCallbackListener = emitter.on('stop-resize', props.stopResizeCallback);
     }
 
     // Callback for removing event listener when component is unmounted.
