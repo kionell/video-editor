@@ -17,7 +17,13 @@ const SettingsPanel: React.FC = () => {
   const firstFocused = focusedTracks[0]?.focusedElements[0];
 
   useEffect(() => {
-    setSettings(getAllowedSettings(firstFocused));
+    const allowed = getAllowedSettings(firstFocused);
+
+    if (!allowed.includes(general.settingsCategory) || !focusedTracks.length) {
+      dispatch(setSettingsCategory(null));
+    }
+
+    setSettings(allowed);
   }, [firstFocused]);
 
   return (
