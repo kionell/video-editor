@@ -23,8 +23,8 @@ const MediaCategory: React.FC = () => {
   return (
     <StyledMediaCategory>
       <ScrollableContainer
-        gap={16}
-        padding={16}
+        gap={20}
+        padding={20}
         align='start'
       >
         <UploadItem />

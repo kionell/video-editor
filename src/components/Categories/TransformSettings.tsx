@@ -21,8 +21,8 @@ const TransformSettings: React.FC = () => {
     <StyledTransformSettings>
       <ScrollableContainer
         direction='column'
-        gap={24}
-        padding={24}
+        gap={20}
+        padding={20}
         align='start'
       >
         <LabeledContainer label='Transform'>
@@ -34,7 +34,7 @@ const TransformSettings: React.FC = () => {
           <SecondaryButton
             showLabel
             label='Scale'
-            iconType='Resize'
+            iconType='Scale'
           />
         </LabeledContainer>
 
