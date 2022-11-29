@@ -21,6 +21,7 @@ export enum IconType {
   Crop,
   Delete,
   Expand,
+  Export,
   Fade,
   Filters,
   Fit,
@@ -32,10 +33,10 @@ export enum IconType {
   Play,
   Plus,
   Redo,
-  Resize,
   Rotate,
   RotateLeft,
   RotateRight,
+  Scale,
   SendBackward,
   Settings,
   Shapes,
@@ -96,6 +97,7 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
     case 'Crop': return Icons.CropIcon;
     case 'Delete': return Icons.DeleteIcon;
     case 'Expand': return Icons.ExpandIcon;
+    case 'Export': return Icons.ExportIcon;
     case 'Fade': return Icons.FadeIcon;
     case 'Filters': return Icons.FiltersIcon;
     case 'Fit': return Icons.FitIcon;
@@ -107,10 +109,10 @@ function getIconByType(type?: keyof typeof IconType): React.FC {
     case 'Play': return Icons.PlayIcon;
     case 'Plus': return Icons.PlusIcon;
     case 'Redo': return Icons.RedoIcon;
-    case 'Resize': return Icons.ResizeIcon;
     case 'Rotate': return Icons.RotateIcon;
     case 'RotateLeft': return Icons.RotateLeftIcon;
     case 'RotateRight': return Icons.RotateRightIcon;
+    case 'Scale': return Icons.ScaleIcon;
     case 'SendBackward': return Icons.SendBackwardIcon;
     case 'Settings': return Icons.SettingsIcon;
     case 'Shapes': return Icons.ShapesIcon;
