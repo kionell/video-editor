@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
 import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
 import { setPlaying } from '../../store/Reducers/PreviewSlice';
+import { PrimaryButton } from '../Buttons/PrimaryButton';
 import {
   DEFAULT_SCALED_PREVIEW_HEIGHT,
   DEFAULT_SCALED_PREVIEW_WIDTH,
@@ -44,6 +45,13 @@ const StyledPlayerButton = styled(FlatButton)`
   width: 40px;
   height: 40px;
   padding: 0px;
+`;
+
+const ExportButton = styled(PrimaryButton)`
+  height: 35px;
+  position: absolute;
+  right: 30px;
+  top: 15px;
 `;
 
 const Player: React.FC = () => {
@@ -160,6 +168,12 @@ const Player: React.FC = () => {
           />
         </StyledPlayerButtonWrapper>
       </StyledPlayerWrapper>
+
+      <ExportButton
+        showLabel
+        label='Export'
+        iconType='Export'
+      />
     </StyledPlayerArea>
   );
 };
