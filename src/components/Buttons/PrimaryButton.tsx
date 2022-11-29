@@ -36,4 +36,9 @@ const PrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
 
 PrimaryButton.displayName = 'Primary Button';
 
+PrimaryButton.defaultProps = {
+  showLabel: false,
+  label: 'Button',
+};
+
 export { PrimaryButton };

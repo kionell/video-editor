@@ -67,4 +67,9 @@ const SecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) 
 
 SecondaryButton.displayName = 'Secondary Button';
 
+SecondaryButton.defaultProps = {
+  showLabel: false,
+  label: 'Button',
+};
+
 export { SecondaryButton };
