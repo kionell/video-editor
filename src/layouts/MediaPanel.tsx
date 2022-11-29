@@ -4,7 +4,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
 import {
   setMediaCategory,
-  setMediaCategoryWidth,
+  setMediaPanelWidth,
 } from '../store/Reducers/GeneralSlice';
 
 const MediaPanel: React.FC = () => {
@@ -17,7 +17,7 @@ const MediaPanel: React.FC = () => {
 
     const width = parseFloat(submenuRef.current.style.width);
 
-    dispatch(setMediaCategoryWidth(width));
+    dispatch(setMediaPanelWidth(width));
   };
 
   return (
@@ -31,7 +31,7 @@ const MediaPanel: React.FC = () => {
         'Transitions',
         'Settings',
       ]}
-      submenuWidth={general.mediaCategoryWidth}
+      submenuWidth={general.mediaPanelWidth}
       submenuRef={submenuRef}
       onSelect={(category) => {
         dispatch(setMediaCategory(category));

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar/Navbar';
+import { DEFAULT_SETTINGS_PANEL_WIDTH } from '../constants';
 import { getAllowedSettings } from '../core/Utils/Timeline';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -25,6 +26,7 @@ const SettingsPanel: React.FC = () => {
       selected={general.settingsCategory}
       categories={settings}
       disabled={!focusedTracks.length}
+      submenuWidth={DEFAULT_SETTINGS_PANEL_WIDTH}
       onSelect={(category) => {
         dispatch(setSettingsCategory(category));
       }}

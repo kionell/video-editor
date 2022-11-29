@@ -7,9 +7,9 @@ export interface IGeneralState {
   mediaCategory: CategoryName | null;
 
   /**
-   * Current media category width.
+   * Current media panel width.
    */
-  mediaCategoryWidth: number;
+  mediaPanelWidth: number;
 
   /**
    * Current element settings category.

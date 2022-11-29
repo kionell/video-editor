@@ -197,6 +197,7 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
       <StyledSliderLabel
         visible={showLabel}
         text={label}
+        weight='Medium'
         size={NORMAL_FONT_SIZE}
       />
       <StyledSliderWrapper {...props} ref={wrapperRef}>
