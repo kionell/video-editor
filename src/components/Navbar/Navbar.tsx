@@ -66,6 +66,7 @@ const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
                 <FlatButton
                   key={i}
                   ref={createRef()}
+                  disabled={props.disabled}
                   toggled={category === props.selected}
                   label={category}
                   iconType={category}

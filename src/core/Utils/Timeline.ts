@@ -1,5 +1,7 @@
 import { BASE_TIMELINE_ELEMENT_DURATION_MS, TIMELINE_OFFSET_X } from '../../constants';
 import { BaseElement } from '../Elements/BaseElement';
+import { CategoryName } from '../Enums/Category';
+import { MediaType } from '../Enums/MediaType';
 import { IFileState } from '../State/IFileState';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { Timeline } from '../Timeline/Timeline';
@@ -8,6 +10,34 @@ import { TIMELINE_ZOOM_LEVELS } from '../Timeline/TimelineZoom';
 import { convertUploadedFileToElement, getFileFromDraggable } from './Files';
 import { clamp } from './Math';
 import { findIndex } from './Search';
+
+export function getAllowedSettings(element?: BaseElement): CategoryName[] {
+  const categories: Set<CategoryName> = new Set([
+    'Transform',
+    'Volume',
+    'Speed',
+    'Fade',
+    'Filters',
+    'Adjust',
+  ]);
+
+  switch (element?.type) {
+    case MediaType.Audio: {
+      categories.delete('Transform');
+      categories.delete('Filters');
+      categories.delete('Adjust');
+      break;
+    }
+
+    case MediaType.Image: {
+      categories.delete('Volume');
+      categories.delete('Speed');
+      break;
+    }
+  }
+
+  return [...categories];
+}
 
 export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline, files: IFileState): number {
   if (draggable.classList.contains('general-item')) {

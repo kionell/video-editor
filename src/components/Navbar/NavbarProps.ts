@@ -7,6 +7,7 @@ export interface NavbarProps {
   direction: NavbarDirection;
   categories: CategoryName[];
   selected?: CategoryName | null;
+  disabled?: boolean;
   resizable?: boolean;
   submenuWidth?: number;
   submenuRef?: RefObject<HTMLDivElement>;
