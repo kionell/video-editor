@@ -21,7 +21,7 @@ const StyledTimelineRowTrack = styled(FlexContainer)`
   height: 50px;
   padding: 0px;
   gap: 0px;
-  background: ${(props) => props.theme.secondary.surface + '50'};
+  background: ${(props) => props.theme.secondary.surface + '60'};
 `;
 
 const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
