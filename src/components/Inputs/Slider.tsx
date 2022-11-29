@@ -51,8 +51,8 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
 
   &::-moz-range-thumb {
     appearance: none;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     outline: none;
     border: none;
@@ -61,12 +61,12 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   
   &::-webkit-slider-thumb {
     appearance: none;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     outline: none;
     border: none;
-    transform: translateY(-3px);
+    transform: translateY(-5px);
     background: ${(props) => props.theme.primary.accent};
   }
 `;
