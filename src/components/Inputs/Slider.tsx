@@ -65,7 +65,7 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
     border-radius: 50%;
     outline: none;
     border: none;
-    translate: 0px -3px;
+    transform: translateY(-3px);
     background: ${(props) => props.theme.primary.accent};
   }
 `;
@@ -143,7 +143,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
         position: absolute;
         z-index: 1;
         left: var(--sx);
-        translate: -50% -125%;
+        transform: translate(-50%, -125%);
         opacity: 0;
         transition: opacity 100ms;
         content: var(--display);

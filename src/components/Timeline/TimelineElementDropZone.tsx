@@ -17,7 +17,7 @@ const StyledTimelineElementDropZoneWrapper = styled.div<ElementDropZoneProps>`
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
-  translate: -100%;
+  transform: translateX(-100%);
   background-color: ${(props) => props.theme.primary.accent + '30'};
 `;
 

@@ -20,7 +20,7 @@ const StyledTimelineSeekerLine = styled.div`
 
 const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   height: 100%;
-  translate: calc(-50% + ${TIMELINE_OFFSET_X}px);
+  transform: translateX(calc(-50% + ${TIMELINE_OFFSET_X}px));
   position: absolute;
   display: inline-flex;
   flex-direction: column;
