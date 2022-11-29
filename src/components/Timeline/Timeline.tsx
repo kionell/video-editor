@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import styled from 'styled-components';
+import { useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useResizable } from '../../hooks/useResizable';
 import { ResizerLine } from '../Containers/Resizer';
@@ -9,7 +9,7 @@ import { TimelineTrackpadPlaceholder } from './TimelineTrackpadPlaceholder';
 
 const StyledTimeline = styled.div`
   width: 100%;
-  height: 350px;
+  height: 300px;
   min-height: 50px;
   display: flex;
   flex-direction: column;
