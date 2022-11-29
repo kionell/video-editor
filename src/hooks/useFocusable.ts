@@ -15,21 +15,31 @@ export type FocusableCallback = (state: FocusableState) => void;
 export interface FocusableProps {
   focusCallback?: FocusableCallback;
   blurCallback?: FocusableCallback;
-  allowedClasses?: string[];
+  unfocusClasses?: string[];
+  shiftClasses?: string[];
 }
 
 export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): void {
   const makeFocusable = (element: HTMLElement, props?: FocusableProps) => {
     const emitter = new Sister();
 
-    const isAllowed = (event: PositionEvent) => {
-      const allowedClasses = props.allowedClasses;
+    const shouldUnfocus = (event: PositionEvent) => {
+      const unfocusClasses = props.unfocusClasses;
+      const shiftClasses = props.shiftClasses;
 
-      if (!allowedClasses) return true;
+      if (!unfocusClasses && !shiftClasses) return true;
 
-      return allowedClasses.some((key) => {
-        return (event.target as HTMLElement).classList.contains(key);
+      const targetElement = event.target as HTMLElement;
+
+      const isUnfocusAllowed = unfocusClasses.some((key) => {
+        return targetElement.classList.contains(key);
       });
+
+      const isShiftPress = event.shiftKey && shiftClasses.some((key) => {
+        return targetElement.classList.contains(key);
+      });
+
+      return isUnfocusAllowed && !isShiftPress;
     };
 
     const onElementClick = () => {
@@ -53,7 +63,7 @@ export function useFocusable(ref: Ref<HTMLElement>, props?: FocusableProps): voi
         return;
       }
 
-      if (!element.contains(event.target as HTMLElement) && isAllowed(event)) {
+      if (!element.contains(event.target as HTMLElement) && shouldUnfocus(event)) {
         unfocusElement();
       }
     };

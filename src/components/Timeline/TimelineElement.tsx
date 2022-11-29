@@ -145,12 +145,16 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   useFocusable(ref, {
     focusCallback: () => dispatch(focusElement({ element })),
     blurCallback: () => dispatch(unfocusElement({ element })),
-    allowedClasses: [
+    unfocusClasses: [
       'timeline-trackpad',
       'timeline-ruler',
       'timeline-row-track',
       'timeline-track-area',
       'timeline-scrollable-area',
+      'timeline-element',
+    ],
+    shiftClasses: [
+      'timeline-element',
     ],
   });
 
