@@ -147,7 +147,6 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           onClick={decrement}
           className="minus-button"
           iconType='Minus'
-          iconSize='Large'
           disabled={disabled}
           showLabel={false}
         />
@@ -162,7 +161,6 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
           onClick={increment}
           className="plus-button"
           iconType='Plus'
-          iconSize='Large'
           disabled={disabled}
           showLabel={false}
         />
