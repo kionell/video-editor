@@ -48,6 +48,12 @@ const StyledNavbar = styled.div<NavbarProps>`
   }
 `;
 
+const StyledNavbarButton = styled(FlatButton)`
+  &.toggled {
+    background: ${(props) => props.theme.secondary.surface};
+  }
+`;
+
 const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
   const { onSelect, onResize, onStopResize, ...other } = props;
 
@@ -63,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
           {
             other.categories.map((category, i) => {
               return (
-                <FlatButton
+                <StyledNavbarButton
                   key={i}
                   ref={createRef()}
                   disabled={props.disabled}
@@ -79,9 +85,9 @@ const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
       </StyledNavbar>
 
       {
-        props.selected && <NavbarSubmenu
-          {...props}
-          selected={props.selected}
+        other.selected && <NavbarSubmenu
+          {...other}
+          selected={other.selected}
           onResize={onResize}
           onStopResize={onStopResize}
         />

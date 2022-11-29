@@ -5,7 +5,7 @@ import { GeneralItem } from '../Items/GeneralItem';
 import { UploadItem } from '../Items/UploadItem';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
-const StyledNavbarMediaCategory = styled.div`
+const StyledMediaCategory = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -21,7 +21,7 @@ const MediaCategory: React.FC = () => {
   const files = useAppSelector((state) => state.files);
 
   return (
-    <StyledNavbarMediaCategory>
+    <StyledMediaCategory>
       <ScrollableContainer
         gap={16}
         padding={16}
@@ -38,7 +38,7 @@ const MediaCategory: React.FC = () => {
           })
         }
       </ScrollableContainer>
-    </StyledNavbarMediaCategory>
+    </StyledMediaCategory>
   );
 };
 

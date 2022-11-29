@@ -5,8 +5,8 @@ import { ResizerLine } from '../Containers/Resizer';
 import { CategorySwitcher } from '../Categories/CategorySwitcher';
 import { NavbarProps } from './NavbarProps';
 import {
-  MIN_NAVBAR_WIDTH,
-  MAX_NAVBAR_WIDTH,
+  MIN_MEDIA_PANEL_WIDTH,
+  MAX_MEDIA_PANEL_WIDTH,
 } from '../../constants';
 
 type NavbarSubmenuProps = Required<Pick<NavbarProps, 'selected'>>
@@ -15,8 +15,8 @@ type NavbarSubmenuProps = Required<Pick<NavbarProps, 'selected'>>
 const StyledNavbarSubmenu = styled.div<NavbarSubmenuProps>`
   display: flex;
   width: ${(props) => props.submenuWidth}px;
-  min-width: ${MIN_NAVBAR_WIDTH}px;
-  max-width: ${MAX_NAVBAR_WIDTH}px;
+  min-width: ${MIN_MEDIA_PANEL_WIDTH}px;
+  max-width: ${MAX_MEDIA_PANEL_WIDTH}px;
   height: 100%;
   position: relative;
   gap: 0px;
@@ -52,7 +52,7 @@ const NavbarSubmenu: React.FC<NavbarSubmenuProps> = (props: NavbarSubmenuProps) 
 
   return (
     <StyledNavbarSubmenu {...other} ref={submenuRef}>
-      <CategorySwitcher selected={other.selected} />
+      <CategorySwitcher selected={other.selected} element={other.element} />
       {
         other.resizable && <ResizerLine direction={getResizerDirection()} />
       }
