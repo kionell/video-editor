@@ -26,6 +26,7 @@ const SettingsPanel: React.FC = () => {
       selected={general.settingsCategory}
       categories={settings}
       disabled={!focusedTracks.length}
+      element={firstFocused}
       submenuWidth={DEFAULT_SETTINGS_PANEL_WIDTH}
       onSelect={(category) => {
         dispatch(setSettingsCategory(category));
