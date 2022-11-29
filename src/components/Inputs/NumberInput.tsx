@@ -5,6 +5,7 @@ import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { NORMAL_FONT_SIZE } from '../../constants';
 import { StyledTextInput } from './TextInput';
+import { clamp } from '../../core/Utils/Math';
 
 export interface NumberInputProps {
   disabled?: boolean;
@@ -14,6 +15,7 @@ export interface NumberInputProps {
   min?: number,
   max?: number,
   step?: number,
+  loop?: boolean,
   defaultValue?: number,
   onChange?: (event: Event) => void;
   className?: string;
@@ -91,32 +93,60 @@ const StyledNumberInputLabel = styled(Text)`
 const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
   const { showLabel, label, labelPosition, disabled } = props;
 
+  const lastValue = useRef<number>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const increment = () => {
-    inputRef.current?.stepUp();
-    inputRef.current?.dispatchEvent(new Event('change'));
+    if (props.loop && inputRef.current.valueAsNumber >= props.max) {
+      inputRef.current.valueAsNumber = props.min;
+    }
+    else {
+      inputRef.current?.stepUp();
+      inputRef.current?.dispatchEvent(new Event('change'));
+    }
   };
 
   const decrement = () => {
-    inputRef.current?.stepDown();
-    inputRef.current?.dispatchEvent(new Event('change'));
+    if (props.loop && inputRef.current.valueAsNumber <= props.min) {
+      inputRef.current.valueAsNumber = props.max;
+    }
+    else {
+      inputRef.current?.stepDown();
+      inputRef.current?.dispatchEvent(new Event('change'));
+    }
+  };
+
+  const getCurrentValue = (current: number, min: number, max: number) => {
+    if (props.loop) {
+      if (lastValue.current === current && current >= max) {
+        return min;
+      }
+
+      if (lastValue.current === current && current <= min) {
+        return max;
+      }
+    }
+
+    return clamp(current, min, max);
   };
 
   const updateValue = () => {
     if (!inputRef.current) return;
 
-    const minValue = props.min as number;
-    const maxValue = props.max as number;
+    const minValue = props.min;
+    const maxValue = props.max;
     const currentValue = inputRef.current.value
       ? parseFloat(inputRef.current.value)
-      : props.defaultValue as number;
+      : props.defaultValue;
 
-    const value = Math.max(minValue, Math.min(currentValue, maxValue));
-    const stringifiedStep = (props.step as number).toString();
+    const value = getCurrentValue(currentValue, minValue, maxValue);
+
+    const stringifiedStep = props.step.toString();
     const digits = stringifiedStep.split('.')[1]?.length ?? 0;
 
     inputRef.current.value = value.toFixed(digits);
+
+    lastValue.current = inputRef.current.valueAsNumber;
   };
 
   useEffect(() => {
@@ -169,6 +199,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
         visible={showLabel}
         disabled={disabled}
         text={label}
+        weight='Medium'
         size={NORMAL_FONT_SIZE}
       />
     </StyledNumberInputWrapper>
@@ -177,9 +208,10 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
 
 NumberInput.defaultProps = {
   disabled: false,
-  showLabel: true,
+  showLabel: false,
   label: 'Input',
   labelPosition: 'left',
+  loop: true,
   min: 0,
   max: 100,
   step: 1,
