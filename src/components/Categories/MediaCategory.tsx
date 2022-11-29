@@ -1,15 +1,11 @@
 import styled from 'styled-components';
-import { createRef, PropsWithChildren } from 'react';
-import { ScrollableContainer } from '../../Containers/ScrollableContainer';
-import { GeneralItem } from '../../Items/GeneralItem';
-import { UploadItem } from '../../Items/UploadItem';
-import { useAppSelector } from '../../../hooks/useAppSelector';
+import { createRef } from 'react';
+import { ScrollableContainer } from '../Containers/ScrollableContainer';
+import { GeneralItem } from '../Items/GeneralItem';
+import { UploadItem } from '../Items/UploadItem';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
-interface SidebarCategoryProps extends PropsWithChildren {
-  className?: string;
-}
-
-const StyledSidebarMediaCategory = styled.div<SidebarCategoryProps>`
+const StyledNavbarMediaCategory = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -21,13 +17,12 @@ const StyledSidebarMediaCategory = styled.div<SidebarCategoryProps>`
   overflow-y: auto;
 `;
 
-const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryProps) => {
+const MediaCategory: React.FC = () => {
   const files = useAppSelector((state) => state.files);
 
   return (
-    <StyledSidebarMediaCategory>
+    <StyledNavbarMediaCategory>
       <ScrollableContainer
-        {...props}
         gap={16}
         padding={16}
         align='start'
@@ -43,7 +38,7 @@ const MediaCategory: React.FC<SidebarCategoryProps> = (props: SidebarCategoryPro
           })
         }
       </ScrollableContainer>
-    </StyledSidebarMediaCategory>
+    </StyledNavbarMediaCategory>
   );
 };
 

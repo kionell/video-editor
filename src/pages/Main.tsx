@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { ScrollableContainer } from '../components/Containers/ScrollableContainer';
 import { Player } from '../components/Player/Player';
-import { Sidebar } from '../components/Sidebar/Sidebar';
 import { Timeline } from '../components/Timeline/Timeline';
+import { MediaPanel } from '../layouts/MediaPanel';
+import { SettingsPanel } from '../layouts/SettingsPanel';
 
 const StyledMainPage = styled(ScrollableContainer)`
   height: 100%;
@@ -42,8 +43,9 @@ export const MainPage: React.FC = () => {
   return (
     <StyledMainPage>
       <StyledTopPart>
-        <Sidebar />
+        <MediaPanel />
         <Player />
+        <SettingsPanel />
       </StyledTopPart>
 
       <StyledBottomPart>

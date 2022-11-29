@@ -1,9 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { DEFAULT_NAVBAR_WIDTH } from '../../constants';
 import { IGeneralState } from '../../core/State/IGeneralState';
-import { CategoryAction } from '../Interfaces/GeneralPayload';
+import {
+  CategoryAction,
+  CategoryWidthAction,
+} from '../Interfaces/GeneralPayload';
 
 const initialState: IGeneralState = {
-  mediaCategory: 'Media',
+  mediaCategory: null,
+  mediaCategoryWidth: DEFAULT_NAVBAR_WIDTH,
   settingsCategory: null,
 };
 
@@ -18,8 +23,10 @@ const GeneralSlice = createSlice({
       else {
         state.mediaCategory = null;
       }
+    },
 
-      console.log(state.mediaCategory);
+    setMediaCategoryWidth(state, action: CategoryWidthAction) {
+      state.mediaCategoryWidth = action.payload;
     },
 
     setSettingsCategory(state, action: CategoryAction) {
@@ -29,14 +36,13 @@ const GeneralSlice = createSlice({
       else {
         state.settingsCategory = null;
       }
-
-      console.log(state.settingsCategory);
     },
   },
 });
 
 export const {
   setMediaCategory,
+  setMediaCategoryWidth,
   setSettingsCategory,
 } = GeneralSlice.actions;
 
