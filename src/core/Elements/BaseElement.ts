@@ -43,7 +43,7 @@ export abstract class BaseElement {
    */
   uniqueId = crypto.randomUUID();
 
-  protected _durationMs: number | null = null;
+  protected _totalDurationMs: number | null = null;
 
   /**
    * Time at which this element starts.
@@ -56,18 +56,22 @@ export abstract class BaseElement {
    * Time at which this element ends.
    */
   get endTimeMs(): number {
-    return Math.max(0, this.startTimeMs + this.durationMs - this.endTrimMs);
+    return Math.max(0, this.startTimeMs + this.totalDurationMs - this.endTrimMs);
   }
 
   /**
    * Duration of this element.
    */
   get durationMs(): number {
-    return Math.max(0, this._durationMs ?? BaseElement.DEFAULT_DURATION);
+    return this.endTimeMs - this.startTimeMs;
   }
 
-  set durationMs(value: number) {
-    this._durationMs = Math.max(0, value);
+  get totalDurationMs(): number {
+    return Math.max(0, this._totalDurationMs ?? BaseElement.DEFAULT_DURATION);
+  }
+
+  set totalDurationMs(value: number) {
+    this._totalDurationMs = Math.max(0, value);
   }
 
   equals(other: BaseElement): boolean {
