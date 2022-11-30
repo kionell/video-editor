@@ -1,11 +1,13 @@
+import { SECONDARY_FONT } from '../../constants';
 import { MediaType } from '../Enums/MediaType';
 import { TextAlign, TextVerticalAlign } from '../Enums/TextAlign';
+import { IHasTextSettings } from './Types/IHasTextSettings';
 import { VisibleElement } from './VisibleElement';
 
 /**
  * A text element that can be placed on a timeline track.
  */
-export class TextElement extends VisibleElement {
+export class TextElement extends VisibleElement implements IHasTextSettings {
   /**
    * Text of this element.
    */
@@ -24,7 +26,7 @@ export class TextElement extends VisibleElement {
   /**
    * Font family.
    */
-	font = 'sans-serif';
+	font = SECONDARY_FONT;
 
   /**
    * Text align.
