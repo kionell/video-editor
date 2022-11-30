@@ -3,6 +3,11 @@ import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { ScrollableContainer } from '../Containers/ScrollableContainer';
 import { LabeledContainer } from '../Containers/LabeledContainer';
 import { NumberInput } from '../Inputs/NumberInput';
+import { BaseElement } from '../../core/Elements';
+import { ITransformableElement } from '../../core/Elements/Types/ITransformableElement';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectFocusedElement } from '../../store';
 
 const StyledTransformSettings = styled.div`
   width: 100%;
@@ -17,6 +22,10 @@ const StyledTransformSettings = styled.div`
 `;
 
 const TransformSettings: React.FC = () => {
+  const disptach = useAppDispatch();
+  const focusedElement = useAppSelector(selectFocusedElement);
+  const targetElement = focusedElement as BaseElement & ITransformableElement;
+
   return (
     <StyledTransformSettings>
       <ScrollableContainer
