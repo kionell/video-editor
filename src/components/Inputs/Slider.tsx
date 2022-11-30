@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { FormEventHandler, useRef, useEffect } from 'react';
+import { FormEventHandler, useRef, useEffect, RefObject } from 'react';
 import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
@@ -12,6 +12,7 @@ export interface SliderProps {
   defaultValue?: number;
   step?: number;
   onInput?: FormEventHandler<HTMLInputElement>;
+  sliderRef?: RefObject<HTMLInputElement>;
 }
 
 const StyledSliderContainer = styled.div<SliderProps>`
@@ -21,8 +22,9 @@ const StyledSliderContainer = styled.div<SliderProps>`
   align-items: start;
   justify-content: center;
   position: relative;
-  gap: 6px;
+  gap: 18px;
   user-select: none;
+  margin-bottom: 16px;
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
@@ -33,9 +35,9 @@ const StyledSlider = styled.input.attrs({ type: 'range' })<SliderProps>`
   outline: none;
   background: transparent;
   outline: none;
-  position: relative;
+  position: absolute;
   width: 100%;
-  height: 100%;
+  height: 24px;
 
   &::-moz-range-track {
     appearance: none;
@@ -77,17 +79,18 @@ const StyledSliderWrapper = styled.div<SliderProps>`
   --sx: calc(0.5 * 10px + var(--ratio) * (100% - 10px));
 
   width: 100%;
-  height: 100%;
 
   input[type=range]::-moz-range-track {
     background: ${(props) => {
       const rangeColor = props.theme.primary.accent;
-      const trackColor = props.theme.primary.accent;
+      const trackColor = props.theme.secondary.accent;
 
       return css`
         linear-gradient(${rangeColor}, ${rangeColor}) 0/var(--sx) 100% no-repeat, ${trackColor};
       `;
     }};
+
+    pointer-events: none;
   }
 
   input[type=range]::-webkit-slider-runnable-track {
@@ -166,18 +169,22 @@ const Slider: React.FC<SliderProps> = (props: SliderProps) => {
   const { showLabel, label, minValue, maxValue, step } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const sliderRef = useRef<HTMLInputElement>(null);
+  const sliderRef = props.sliderRef ?? useRef<HTMLInputElement>(null);
+
+  const stringifiedStep = props.step.toString();
+  const digits = stringifiedStep.split('.')[1]?.length ?? 0;
 
   const onInputListener = () => {
     if (!sliderRef.current || !wrapperRef.current) return;
 
     const wrapper = wrapperRef.current;
     const slider = sliderRef.current;
+    const value = sliderRef.current.valueAsNumber.toFixed(digits);
 
     wrapper.style.setProperty('--min', slider.min);
     wrapper.style.setProperty('--max', slider.max);
-    wrapper.style.setProperty('--value', slider.value);
-    wrapper.style.setProperty('--display', `"${slider.value}"`);
+    wrapper.style.setProperty('--value', value);
+    wrapper.style.setProperty('--display', `"${value}"`);
   };
 
   useEffect(() => {
