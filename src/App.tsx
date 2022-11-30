@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { DarkTheme } from './themes/dark.theme';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
-import { CustomFonts } from './styles/CustomFonts';
+import './styles/CustomFonts.css';
 import { ffmpeg } from './lib/FFmpeg';
 import { MainPage } from './pages/Main';
 import { DebugPage } from './pages/Debug';
@@ -31,7 +31,6 @@ export function App() {
     (
       <div style={{ width: '100%', height: '100%' }}>
         <BaseGlobalStyle />
-        <CustomFonts />
         <Provider store={store}>
           <ThemeProvider theme={theme}>
               <MainPage />
