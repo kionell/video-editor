@@ -14,6 +14,12 @@ import {
   DEFAULT_SCALED_PREVIEW_HEIGHT,
   DEFAULT_SCALED_PREVIEW_WIDTH,
 } from '../../constants';
+import {
+  selectIsEnded,
+  selectIsPlaying,
+  selectLastSeekTimeMs,
+  selectTracks,
+} from '../../store';
 
 const StyledPlayerArea = styled(FlexContainer)`
   width: 100%;
@@ -32,6 +38,7 @@ const StyledPlayerWrapper = styled(FlexContainer)`
 `;
 
 const StyledPlayer = styled.canvas`
+  height: 80%;
   background: black;
 `;
 
@@ -48,7 +55,6 @@ const StyledPlayerButton = styled(FlatButton)`
 `;
 
 const ExportButton = styled(PrimaryButton)`
-  height: 35px;
   position: absolute;
   right: 30px;
   top: 15px;
@@ -56,8 +62,11 @@ const ExportButton = styled(PrimaryButton)`
 
 const Player: React.FC = () => {
   const dispatch = useAppDispatch();
-  const timeline = useAppSelector((state) => state.timeline);
-  const preview = useAppSelector((state) => state.preview);
+
+  const lastSeekTimeMs = useAppSelector(selectLastSeekTimeMs);
+  const ended = useAppSelector(selectIsEnded);
+  const tracks = useAppSelector(selectTracks);
+  const isPlaying = useAppSelector(selectIsPlaying);
 
   const playPromise = useRef<Promise<void>>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,7 +105,7 @@ const Player: React.FC = () => {
 
     subscribeToEvents();
 
-    playerRef.current.syncWithTimeline(timeline);
+    playerRef.current.syncWithTimeline(tracks);
   };
 
   const play = () => {
@@ -105,7 +114,7 @@ const Player: React.FC = () => {
     checkOrCreatePlayer();
 
     if (!playerRef.current.movie.rendering) {
-      if (playerRef.current.ended && timeline.ended) {
+      if (playerRef.current.ended && ended) {
         playerRef.current.currentTime = 0;
       }
 
@@ -128,19 +137,19 @@ const Player: React.FC = () => {
   useTimelineUpdate(() => {
     checkOrCreatePlayer();
 
-    playerRef.current.syncWithTimeline(timeline);
+    playerRef.current.syncWithTimeline(tracks);
   });
 
   useEffect(() => {
     checkOrCreatePlayer();
 
-    const seekTime = timeline.lastSeekTimeMs / 1000;
+    const seekTime = lastSeekTimeMs / 1000;
 
     if (playerRef.current.currentTime !== seekTime) {
       playerRef.current.pause();
       playerRef.current.currentTime = seekTime;
     }
-  }, [timeline.lastSeekTimeMs]);
+  }, [lastSeekTimeMs]);
 
   return (
     <StyledPlayerArea className='player-area'>
@@ -158,8 +167,8 @@ const Player: React.FC = () => {
             showLabel={false}
           />
           <StyledPlayerButton
-            onClick={preview.isPlaying ? pause : play}
-            iconType={preview.isPlaying ? 'Pause' : 'Play'}
+            onClick={isPlaying ? pause : play}
+            iconType={isPlaying ? 'Pause' : 'Play'}
             showLabel={false}
           />
           <StyledPlayerButton

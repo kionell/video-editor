@@ -2,13 +2,15 @@ import { useRef } from 'react';
 import { Navbar } from '../components/Navbar/Navbar';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
+import { selectMediaCategory, selectMediaPanelWidth } from '../store';
 import {
   setMediaCategory,
   setMediaPanelWidth,
 } from '../store/Reducers/GeneralSlice';
 
 const MediaPanel: React.FC = () => {
-  const general = useAppSelector((state) => state.general);
+  const mediaCategory = useAppSelector(selectMediaCategory);
+  const mediaPanelWidth = useAppSelector(selectMediaPanelWidth);
   const dispatch = useAppDispatch();
   const submenuRef = useRef<HTMLDivElement>(null);
 
@@ -24,14 +26,14 @@ const MediaPanel: React.FC = () => {
     <Navbar
       resizable
       direction='left'
-      selected={general.mediaCategory}
+      selected={mediaCategory}
       categories={[
         'Media',
         'Text',
         'Transitions',
         'Settings',
       ]}
-      submenuWidth={general.mediaPanelWidth}
+      submenuWidth={mediaPanelWidth}
       submenuRef={submenuRef}
       onSelect={(category) => {
         dispatch(setMediaCategory(category));

@@ -8,12 +8,18 @@ import { TimelineSeeker } from './TimelineSeeker';
 import { TimelineRuler } from './TimelineRuler';
 import { TimelineTrackArea } from './TimelineTrackArea';
 import { TIMELINE_OFFSET_X } from '../../constants';
+import { unitsToTimeMs } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
 import {
   setCurrentScroll,
   setCurrentTimeMs,
   setLastSeekTimeMs,
 } from '../../store/Reducers/TimelineSlice';
+
+import {
+  selectCurrentZoom,
+  selectTotalLengthMs,
+} from '../../store';
 
 const StyledTimelineTrackpadContainer = styled(FlexContainer)`
   height: 100%;
@@ -25,28 +31,21 @@ const StyledTimelineTrackpadContainer = styled(FlexContainer)`
 `;
 
 const TimelineTrackpad: React.FC = () => {
-  const timeline = useAppSelector((state) => state.timeline);
   const dispatch = useAppDispatch();
+
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
 
   const scrollbarRef = useRef<Scrollbars>(null);
   const seekerRef = useRef<HTMLDivElement>(null);
   const rulerRef = useRef<HTMLDivElement>(null);
 
-  const updatePosByTime = (timeMs?: number) => {
-    if (!seekerRef.current || !scrollbarRef.current) return;
+  console.log('Trackpad render');
 
-    const scrollX = scrollbarRef.current.getScrollLeft();
-    const clientX = timeline.timeMsToUnits(timeMs);
+  const updateCurrentTime = (timeMs?: number) => {
+    timeMs ??= totalLengthMs;
 
-    seekerRef.current.style.left = clientX - scrollX + 'px';
-  };
-
-  const updatePosAndTime = (timeMs?: number) => {
-    timeMs ??= timeline.currentTimeMs;
-
-    const clampedTimeMs = clamp(timeMs, 0, timeline.totalLengthMs);
-
-    updatePosByTime(clampedTimeMs);
+    const clampedTimeMs = clamp(timeMs, 0, totalLengthMs);
 
     dispatch(setCurrentTimeMs(clampedTimeMs));
     dispatch(setLastSeekTimeMs(clampedTimeMs));
@@ -58,9 +57,9 @@ const TimelineTrackpad: React.FC = () => {
     const clientX = event.clientX - TIMELINE_OFFSET_X;
     const scrollX = scrollbarRef.current.getScrollLeft();
 
-    const timeMs = timeline.unitsToTimeMs(clientX + scrollX);
+    const timeMs = unitsToTimeMs(clientX + scrollX, currentZoom);
 
-    updatePosAndTime(timeMs);
+    updateCurrentTime(timeMs);
   };
 
   const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
@@ -88,20 +87,9 @@ const TimelineTrackpad: React.FC = () => {
   };
 
   /**
-   * 1) Updates seeker position relatively to the current zoom.
-   * 2) Updates seeker position on scroll.
-   * 3) Updates seeker position on current time change.
-   */
-  useEffect(updatePosByTime, [
-    timeline.currentZoom,
-    timeline.currentScroll,
-    timeline.currentTimeMs,
-  ]);
-
-  /**
    * Updates and clamps time and seeker position on total length change.
    */
-  useEffect(updatePosAndTime, [timeline.totalLengthMs]);
+  useEffect(updateCurrentTime, [totalLengthMs]);
 
   return (
     <StyledTimelineTrackpadContainer
@@ -111,16 +99,12 @@ const TimelineTrackpad: React.FC = () => {
     >
       <TimelineRuler
         ref={rulerRef}
-        unit={timeline.currentZoom.unit}
-        segments={timeline.currentZoom.segments}
-        zoom={timeline.currentZoom.zoom}
-        scrollPos={timeline.currentScroll.left}
+        unit={currentZoom.unit}
+        segments={currentZoom.segments}
+        zoom={currentZoom.zoom}
       />
 
-      <TimelineSeeker
-        ref={seekerRef}
-        onMove={setCurrentTime}
-      />
+      <TimelineSeeker seekerRef={seekerRef} />
 
       <TimelineTrackArea
         scrollbarRef={scrollbarRef}

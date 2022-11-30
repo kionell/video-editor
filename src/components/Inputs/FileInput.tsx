@@ -6,6 +6,7 @@ import { ffmpeg } from '../../lib/FFmpeg';
 import { loadFile } from '../../core/Utils/Files';
 import { fetchFile } from '@ffmpeg/ffmpeg';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectFiles } from '../../store';
 
 interface FileInputProps {
   disabled?: boolean;
@@ -27,7 +28,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
   props: FileInputProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) => {
-  const files = useAppSelector((state) => state.files);
+  const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
 
   const onChange = async (event: FormEvent<HTMLInputElement>) => {

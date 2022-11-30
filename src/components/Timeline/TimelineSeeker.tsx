@@ -1,11 +1,18 @@
-import React, { ForwardedRef, HTMLAttributes, MouseEvent, MouseEventHandler } from 'react';
+import React, { MouseEvent, RefObject, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useMovableX } from '../../hooks/useMovableX';
 import { Icon } from '../Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { timeMsToUnits } from '../../core/Utils/Timeline';
+import {
+  selectScrollLeft,
+  selectCurrentTimeMs,
+  selectCurrentZoom,
+} from '../../store';
 
-interface SeekerProps extends HTMLAttributes<HTMLDivElement> {
-  onMove?: MouseEventHandler;
+interface SeekerProps {
+  seekerRef?: RefObject<HTMLDivElement>;
 }
 
 const StyledTimelineSeekerHead = styled(Icon)`
@@ -45,37 +52,40 @@ const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   }
 `;
 
-const TimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
-  props: SeekerProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) => {
-  const { onMove, ...rest } = props;
+const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
+  const seekerRef = props.seekerRef ?? useRef<HTMLDivElement>(null);
 
-  useMovableX(ref);
+  const scrollX = useAppSelector(selectScrollLeft);
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const currentTimeMs = useAppSelector(selectCurrentTimeMs);
 
-  const stopSeekerMovement = () => {
-    if (onMove) {
-      document.removeEventListener('mousemove', onMove as any);
-    }
+  const updatePosByTime = () => {
+    if (!seekerRef.current) return;
 
-    document.removeEventListener('mouseup', stopSeekerMovement);
+    const seekerX = timeMsToUnits(currentTimeMs, currentZoom);
+
+    seekerRef.current.style.left = seekerX - scrollX + 'px';
   };
+
+  useMovableX(seekerRef, {
+    moveCallback: updatePosByTime,
+  });
+
+  /**
+   * 1) Updates seeker position relatively to the current zoom.
+   * 2) Updates seeker position on current time change.
+   * 3) Updates seeker position on scroll.
+   */
+  useEffect(updatePosByTime, [ currentZoom, currentTimeMs, scrollX ]);
 
   const startSeekerMovement = (event: MouseEvent) => {
     event.stopPropagation();
-
-    if (onMove) {
-      document.addEventListener('mousemove', onMove as any);
-    }
-
-    document.addEventListener('mouseup', stopSeekerMovement);
   };
 
   return (
     <StyledTimelineSeekerWrapper
-      {...rest}
       className='timeline-seeker'
-      ref={ref}
+      ref={seekerRef}
       onMouseDown={startSeekerMovement}
     >
       <StyledTimelineSeekerHead
@@ -88,8 +98,6 @@ const TimelineSeeker = React.forwardRef<HTMLDivElement, SeekerProps>((
       />
     </StyledTimelineSeekerWrapper>
   );
-});
-
-TimelineSeeker.displayName = 'Timeline Seeker';
+};
 
 export { TimelineSeeker };

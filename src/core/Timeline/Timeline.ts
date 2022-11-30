@@ -1,5 +1,4 @@
 import { immerable } from 'immer';
-import { PREVIEW_FRAME_WIDTH } from '../../constants';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { ITimelineScrollState } from '../State/ITimelineScrollState';
 import { TimelineTrack } from './TimelineTrack';
@@ -117,26 +116,5 @@ export class Timeline {
 
   get totalLengthMs(): number {
     return this.endTimeMs;
-  }
-
-  get width(): number {
-    return this.timeMsToUnits(this.totalLengthMs);
-  }
-
-  get zoomedFrameWidth(): number {
-    return PREVIEW_FRAME_WIDTH * this.currentZoom.zoom;
-  }
-
-  timeMsToUnits(timeMs = this.currentTimeMs): number {
-    const frames = timeMs * (60 / 1000);
-
-    return frames * this.zoomedFrameWidth;
-  }
-
-  unitsToTimeMs(units: number): number {
-    const frames = units / this.zoomedFrameWidth;
-    const frameInterval = 1000 / 60;
-
-    return frames * frameInterval;
   }
 }

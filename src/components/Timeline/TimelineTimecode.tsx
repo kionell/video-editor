@@ -4,6 +4,7 @@ import { Text } from '../Text';
 import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { formatTimeMs } from '../../core/Utils/Format';
+import { selectCurrentTimeMs, selectTotalLengthMs } from '../../store';
 
 const StyledTimecodeContainer = styled(FlexContainer)`
   position: relative;
@@ -18,7 +19,8 @@ const StyledTimecodeLabel = styled(Text)`
 `;
 
 const TimelineTimecode: React.FC = () => {
-  const timeline = useAppSelector((state) => state.timeline);
+  const currentTimeMs = useAppSelector(selectCurrentTimeMs);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
 
   const currentTimeRef = useRef<HTMLLabelElement>(null);
   const durationRef = useRef<HTMLLabelElement>(null);
@@ -26,14 +28,14 @@ const TimelineTimecode: React.FC = () => {
   useEffect(() => {
     if (!currentTimeRef.current) return;
 
-    currentTimeRef.current.innerText = formatTimeMs(timeline.currentTimeMs);
-  }, [timeline.currentTimeMs]);
+    currentTimeRef.current.innerText = formatTimeMs(currentTimeMs);
+  }, [currentTimeMs]);
 
   useEffect(() => {
     if (!durationRef.current) return;
 
-    durationRef.current.innerText = formatTimeMs(timeline.totalLengthMs);
-  }, [timeline.totalLengthMs]);
+    durationRef.current.innerText = formatTimeMs(totalLengthMs);
+  }, [totalLengthMs]);
 
   return (
     <StyledTimecodeContainer>

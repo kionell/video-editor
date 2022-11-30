@@ -6,6 +6,7 @@ import { ResizerLine } from '../Containers/Resizer';
 import { TimelineTools } from './TimelineTools';
 import { TimelineTrackpad } from './TimelineTrackpad';
 import { TimelineTrackpadPlaceholder } from './TimelineTrackpadPlaceholder';
+import { selectTotalTracks } from '../../store';
 
 const StyledTimeline = styled.div`
   width: 100%;
@@ -19,7 +20,7 @@ const StyledTimeline = styled.div`
 `;
 
 const Timeline: React.FC = () => {
-  const timeline = useAppSelector((state) => state.timeline);
+  const totalTracks = useAppSelector(selectTotalTracks);
   const timelineRef = useRef();
 
   useResizable(timelineRef);
@@ -29,7 +30,7 @@ const Timeline: React.FC = () => {
       <ResizerLine direction='top'/>
       <TimelineTools />
       {
-        timeline.tracks.length > 0
+        totalTracks > 0
           ? <TimelineTrackpad />
           : <TimelineTrackpadPlaceholder />
       }

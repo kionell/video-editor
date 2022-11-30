@@ -7,9 +7,10 @@ import { TimelineElementDropZone } from './TimelineElementDropZone';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { createPositionTracker, IPositionTrackerState, PositionEvent } from '../../core/Utils/Position';
-import { getElementFromDraggable, getWidthFromDraggable } from '../../core/Utils/Timeline';
+import { getElementFromDraggable, getWidthFromDraggable, unitsToTimeMs } from '../../core/Utils/Timeline';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { addElement, moveElement } from '../../store/Reducers/TimelineSlice';
+import { selectCurrentScroll, selectCurrentZoom, selectFiles, selectFocusedTracks } from '../../store';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -26,8 +27,10 @@ const StyledTimelineRowTrack = styled(FlexContainer)`
 
 const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
   const dispatch = useAppDispatch();
-  const timeline = useAppSelector((state) => state.timeline);
-  const files = useAppSelector((state) => state.files);
+  const currentScroll = useAppSelector(selectCurrentScroll);
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const focusedTracks = useAppSelector(selectFocusedTracks);
+  const files = useAppSelector(selectFiles);
 
   const [isDragging, setDragging] = useState(false);
 
@@ -39,8 +42,6 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
   const elementLeft = useRef(0);
   const elementWidth = useRef(0);
 
-  const focusedTracks = timeline.focusedTracks;
-
   let position: IPositionTrackerState;
 
   const onDragEnter = (event: PositionEvent) => {
@@ -51,7 +52,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     position = tracker.current.start(event);
 
     elementLeft.current = parseFloat(draggable.style.left) - TIMELINE_OFFSET_X;
-    elementWidth.current = getWidthFromDraggable(draggable, timeline, files);
+    elementWidth.current = getWidthFromDraggable(draggable, files, currentZoom);
 
     seekerRef.current.style.pointerEvents = 'none';
   };
@@ -62,7 +63,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     position = tracker.current.update(event);
 
     const dropZoneLeft = elementLeft.current + position.relativeX;
-    const scrollLeft = timeline.currentScroll.left;
+    const scrollLeft = currentScroll.left;
 
     dropZoneRef.current.style.left = dropZoneLeft + scrollLeft + 'px';
     dropZoneRef.current.style.width = elementWidth.current + 'px';
@@ -93,7 +94,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     if (!dropZoneRef.current) return;
 
     const newElementLeft = parseFloat(dropZoneRef.current.style.left);
-    const newTimeMs = timeline.unitsToTimeMs(newElementLeft);
+    const newTimeMs = unitsToTimeMs(newElementLeft, currentZoom);
 
     if (focusedTracks.length > 0) {
       focusedTracks.forEach((focusedTrack) => {

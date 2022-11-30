@@ -21,6 +21,17 @@ import {
   removeFocusedElements,
 } from '../../store/Reducers/TimelineSlice';
 
+import {
+  selectAllowBringForward,
+  selectAllowSendBackward,
+  selectCurrentScroll,
+  selectCurrentZoom,
+  selectFocusedTotalTracks,
+  selectSnapMode,
+  selectTotalLengthMs,
+  selectTotalTracks,
+} from '../../store';
+
 const StyledTimelineTools = styled.div`
   height: 50px;
   display: flex;
@@ -50,23 +61,18 @@ const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
 `;
 
 const TimelineTools: React.FC = () => {
-  const timeline = useAppSelector((state) => state.timeline);
+  const snapMode = useAppSelector(selectSnapMode);
+
+  const currentScroll = useAppSelector(selectCurrentScroll);
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const totalTracks = useAppSelector(selectTotalTracks);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
+  const focusedTotalTracks = useAppSelector(selectFocusedTotalTracks);
+  const allowBringForward = useAppSelector(selectAllowBringForward);
+  const allowSendBackward = useAppSelector(selectAllowSendBackward);
+
   const dispatch = useAppDispatch();
   const snapButtonRef = useRef(null);
-
-  const focusedTracks = timeline.focusedTracks;
-  const firstFocusedTrack = focusedTracks.at(0) ?? null;
-  const lastFocusedTrack = focusedTracks.at(-1) ?? null;
-
-  const allowBringForward = !focusedTracks.length
-    || timeline.totalTracks < 2
-    || !firstFocusedTrack
-    || firstFocusedTrack.index <= 0;
-
-  const allowSendBackward = !focusedTracks.length
-    || timeline.totalTracks < 2
-    || !lastFocusedTrack
-    || lastFocusedTrack.index >= timeline.totalTracks - 1;
 
   // const onUndoClick = () => {};
   // const onRedoClick = () => {};
@@ -77,15 +83,21 @@ const TimelineTools: React.FC = () => {
   const onDeleteClick = () => dispatch(removeFocusedElements());
 
   const onZoomOutClick = () => {
-    dispatch(setCurrentZoom(getPreviousZoomLevel(timeline)));
+    const previousZoom = getPreviousZoomLevel(currentZoom);
+
+    dispatch(setCurrentZoom(previousZoom));
   };
 
   const onZoomInClick = () => {
-    dispatch(setCurrentZoom(getNextZoomLevel(timeline)));
+    const nextZoom = getNextZoomLevel(currentZoom);
+
+    dispatch(setCurrentZoom(nextZoom));
   };
 
   const onZoomFitClick = () => {
-    dispatch(setCurrentZoom(getFitZoomLevel(timeline)));
+    const fitZoom = getFitZoomLevel(totalLengthMs, currentScroll, currentZoom);
+
+    dispatch(setCurrentZoom(fitZoom));
   };
 
   const stopPropagation = (e: MouseEvent) => e.stopPropagation();
@@ -104,7 +116,7 @@ const TimelineTools: React.FC = () => {
         <StyledTimelineToolButton
           iconType='Split'
           onMouseDown={stopPropagation}
-          disabled={!focusedTracks.length}
+          disabled={!focusedTotalTracks}
         />
         <StyledTimelineToolButton
           iconType='BringForward'
@@ -122,7 +134,7 @@ const TimelineTools: React.FC = () => {
           iconType='Delete'
           onClick={onDeleteClick}
           onMouseDown={stopPropagation}
-          disabled={!timeline.focusedTracks.length}
+          disabled={!focusedTotalTracks}
         />
       </ButtonGroup>
 
@@ -136,26 +148,26 @@ const TimelineTools: React.FC = () => {
           ref={snapButtonRef}
           onClick={onSnapClick}
           onMouseDown={stopPropagation}
-          toggled={timeline.snapMode}
-          disabled={!timeline.totalTracks}
+          toggled={snapMode}
+          disabled={!totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Minus'
           onClick={onZoomOutClick}
           onMouseDown={stopPropagation}
-          disabled={!timeline.totalTracks}
+          disabled={!totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Plus'
           onClick={onZoomInClick}
           onMouseDown={stopPropagation}
-          disabled={!timeline.totalTracks}
+          disabled={!totalTracks}
         />
         <StyledTimelineToolButton
           iconType='Fit'
           onClick={onZoomFitClick}
           onMouseDown={stopPropagation}
-          disabled={!timeline.totalTracks}
+          disabled={!totalTracks}
         />
       </ButtonGroup>
     </StyledTimelineTools>

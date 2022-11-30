@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { VideoElement } from '../../core/Elements';
 import { Timeline } from '../../core/Timeline/Timeline';
+import { MediaElement } from '../../core/Elements';
 import { TimelineTrack } from '../../core/Timeline/TimelineTrack';
 import { getElementAtTime, getTrackByIndex } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
@@ -24,6 +24,7 @@ import {
   RemoveElementPayload,
   AddElementPayload,
   RemoveElementsByFileAction,
+  UpdateElementAction,
 } from '../Interfaces/TimelinePayload';
 
 const initialState: Timeline = new Timeline();
@@ -123,7 +124,7 @@ const TimelineSlice = createSlice({
     addElement(state, action: AddElementAction) {
       const element = action.payload.element;
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
+      const track = getTrackByIndex(state.tracks as TimelineTrack[], trackIndex);
 
       if (!track) {
         const newAction = makeAction<PushElementPayload>({ element });
@@ -150,10 +151,29 @@ const TimelineSlice = createSlice({
       TimelineSlice.caseReducers.reindexTracks(state);
     },
 
+    updateElement(state, action: UpdateElementAction) {
+      const { element, ...settings } = action.payload;
+
+      for (const track of state.tracks) {
+        const targetElement = track.elements.find((e) => e.equals(element));
+        const anyElement = targetElement as any;
+
+        if (targetElement) {
+          for (const setting in settings) {
+            if (setting in targetElement) {
+              anyElement[setting] = settings[setting as keyof typeof settings];
+            }
+          }
+
+          return;
+        }
+      }
+    },
+
     removeElement(state, action: RemoveElementAction) {
       const timeMs = action.payload.timeMs;
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
+      const track = getTrackByIndex(state.tracks as TimelineTrack[], trackIndex);
 
       if (!track) return;
 
@@ -176,7 +196,7 @@ const TimelineSlice = createSlice({
 
       state.tracks.forEach((track) => {
         track.elements.forEach((element) => {
-          const mediaElement = element as VideoElement;
+          const mediaElement = element as MediaElement;
 
           if (!mediaElement.file) return;
 
@@ -214,11 +234,11 @@ const TimelineSlice = createSlice({
     moveElement(state, action: MoveElementAction) {
       const { fromMs, toMs, fromIndex, toIndex } = action.payload;
 
-      const fromTrack = getTrackByIndex(state as unknown as Timeline, fromIndex);
+      const fromTrack = getTrackByIndex(state.tracks as TimelineTrack[], fromIndex);
 
       if (!fromTrack) return;
 
-      const toTrack = getTrackByIndex(state as unknown as Timeline, toIndex) ?? fromTrack;
+      const toTrack = getTrackByIndex(state.tracks as TimelineTrack[], toIndex) ?? fromTrack;
 
       // There are no elements outside of track's total length.
       if (fromMs < 0 || fromMs > fromTrack.totalLength) return;
@@ -291,7 +311,7 @@ const TimelineSlice = createSlice({
      */
     fixTimeOffsets(state, action: FixOffsetAction): void {
       const trackIndex = action.payload.trackIndex;
-      const track = getTrackByIndex(state as unknown as Timeline, trackIndex);
+      const track = getTrackByIndex(state.tracks as TimelineTrack[], trackIndex);
 
       // There is no sense to change offsets when there are 1 element or less.
       if (!track || track.elements.length <= 1) return;
@@ -329,6 +349,7 @@ export const {
   sendBackward,
   addElement,
   pushElement,
+  updateElement,
   removeElement,
   removeElementsByFile,
   removeFocusedElements,

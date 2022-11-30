@@ -5,12 +5,14 @@ import { BaseElement } from '../../core/Elements/BaseElement';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useDraggable } from '../../hooks/useDraggable';
 import { useFocusable } from '../../hooks/useFocusable';
-import { useAbsoluteResizable } from '../../hooks/useAbsoluteResizable';
+import { useTrimmer } from '../../hooks/useTrimmer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import {
   focusElement,
   unfocusElement,
 } from '../../store/Reducers/TimelineSlice';
+import { selectCurrentZoom } from '../../store';
+import { timeMsToUnits } from '../../core/Utils/Timeline';
 
 interface ElementProps {
   element: BaseElement;
@@ -106,7 +108,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const dispatch = useAppDispatch();
-  const timeline = useAppSelector((state) => state.timeline);
+  const currentZoom = useAppSelector(selectCurrentZoom);
   const element = props.element;
 
   useEffect(() => {
@@ -115,17 +117,17 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     const startTimeMs = props.element.startTimeMs;
     const durationMs = props.element.durationMs;
 
-    const left = timeline.timeMsToUnits(startTimeMs);
-    const width = timeline.timeMsToUnits(durationMs);
+    const left = timeMsToUnits(startTimeMs, currentZoom);
+    const width = timeMsToUnits(durationMs, currentZoom);
 
     ref.current.style.left = left + 'px';
     ref.current.style.width = width + 'px';
-  }, [timeline.currentZoom]);
+  }, [currentZoom]);
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    const units = timeline.timeMsToUnits(element.startTimeMs);
+    const units = timeMsToUnits(element.startTimeMs, currentZoom);
 
     ref.current.style.left = units + 'px';
   }, [element.startTimeMs]);
@@ -158,7 +160,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ],
   });
 
-  useAbsoluteResizable(ref);
+  useTrimmer(ref);
   useDraggable(ref);
 
   return (

@@ -1,17 +1,17 @@
-import { BASE_TIMELINE_ELEMENT_DURATION_MS, TIMELINE_OFFSET_X } from '../../constants';
+import { BASE_TIMELINE_ELEMENT_DURATION_MS, PREVIEW_FRAME_WIDTH, TIMELINE_OFFSET_X } from '../../constants';
 import { BaseElement } from '../Elements/BaseElement';
 import { CategoryName } from '../Enums/Category';
 import { MediaType } from '../Enums/MediaType';
-import { IFileState } from '../State/IFileState';
+import { UploadedFile } from '../Files/UploadedFile';
+import { ITimelineScrollState } from '../State/ITimelineScrollState';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
-import { Timeline } from '../Timeline/Timeline';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { TIMELINE_ZOOM_LEVELS } from '../Timeline/TimelineZoom';
 import { convertUploadedFileToElement, getFileFromDraggable } from './Files';
 import { clamp } from './Math';
 import { findIndex } from './Search';
 
-export function getAllowedSettings(element?: BaseElement): CategoryName[] {
+export function getAllowedSettings(type: MediaType): CategoryName[] {
   const categories: Set<CategoryName> = new Set([
     'Transform',
     'Volume',
@@ -21,7 +21,7 @@ export function getAllowedSettings(element?: BaseElement): CategoryName[] {
     'Adjust',
   ]);
 
-  switch (element?.type) {
+  switch (type) {
     case MediaType.Audio: {
       categories.delete('Transform');
       categories.delete('Filters');
@@ -39,14 +39,18 @@ export function getAllowedSettings(element?: BaseElement): CategoryName[] {
   return [...categories];
 }
 
-export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline, files: IFileState): number {
+export function getWidthFromDraggable(
+  draggable: HTMLElement,
+  files: UploadedFile[],
+  currentZoom: ITimelineZoomState,
+): number {
   if (draggable.classList.contains('general-item')) {
     const file = getFileFromDraggable(draggable, files);
     const fileDurationMs = (file?.duration ?? 0) * 1000;
 
     const durationMs = fileDurationMs || BASE_TIMELINE_ELEMENT_DURATION_MS;
 
-    return timeline.timeMsToUnits(durationMs);
+    return timeMsToUnits(durationMs, currentZoom);
   }
 
   if (draggable.classList.contains('timeline-element')) {
@@ -56,7 +60,7 @@ export function getWidthFromDraggable(draggable: HTMLElement, timeline: Timeline
   return 0;
 }
 
-export function getElementFromDraggable(draggable: HTMLElement, files: IFileState): BaseElement | null {
+export function getElementFromDraggable(draggable: HTMLElement, files: UploadedFile[]): BaseElement | null {
   if (draggable.classList.contains('general-item')) {
     const file = getFileFromDraggable(draggable, files);
 
@@ -71,12 +75,12 @@ export function getElementFromDraggable(draggable: HTMLElement, files: IFileStat
  * @param index Target index of a track.
  * @returns Found timeline track or null.
  */
-export function getTrackByIndex(timeline: Timeline, index: number): TimelineTrack | null {
-  if (index < 0 || index >= timeline.totalTracks) {
+export function getTrackByIndex(tracks: TimelineTrack[], index: number): TimelineTrack | null {
+  if (index < 0 || index >= tracks.length) {
     return null;
   }
 
-  return timeline.tracks[index];
+  return tracks[index];
 }
 
 /**
@@ -94,17 +98,21 @@ export function getElementAtTime<T extends BaseElement>(track: TimelineTrack<T>,
   return index >= 0 ? track.elements[index] : null;
 }
 
-export function getPreviousZoomLevel(timeline: Timeline): ITimelineZoomState {
-  return TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(timeline)];
+export function getPreviousZoomLevel(currentZoom: ITimelineZoomState): ITimelineZoomState {
+  return TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(currentZoom)];
 }
 
-export function getNextZoomLevel(timeline: Timeline): ITimelineZoomState {
-  return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(timeline)];
+export function getNextZoomLevel(currentZoom: ITimelineZoomState): ITimelineZoomState {
+  return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(currentZoom)];
 }
 
-export function getFitZoomLevel(timeline: Timeline, totalLengthMs?: number): ITimelineZoomState {
+export function getFitZoomLevel(
+  totalLengthMs: number,
+  currentScroll: ITimelineScrollState,
+  currentZoom: ITimelineZoomState,
+): ITimelineZoomState {
   const getVisibleWidth = () => {
-    const scrollOffset = TIMELINE_OFFSET_X - timeline.currentScroll.left;
+    const scrollOffset = TIMELINE_OFFSET_X - currentScroll.left;
     const clampedScrollOffset = Math.max(0, scrollOffset);
 
     const trackpad = document.querySelector('.timeline-trackpad') as HTMLElement;
@@ -116,14 +124,14 @@ export function getFitZoomLevel(timeline: Timeline, totalLengthMs?: number): ITi
 
   const getFullWidth = () => {
     if (typeof totalLengthMs === 'number') {
-      return timeline.timeMsToUnits(totalLengthMs);
+      return timeMsToUnits(totalLengthMs, currentZoom);
     }
 
-    return timeline.width;
+    return calculateTimelineWidth(totalLengthMs, currentZoom);
   };
 
   const multiplier = getVisibleWidth() / getFullWidth();
-  const targetZoom = timeline.currentZoom.zoom * multiplier;
+  const targetZoom = currentZoom.zoom * multiplier;
 
   const fitZoomIndex = findIndex(TIMELINE_ZOOM_LEVELS, (level) => {
     return level.zoom > targetZoom;
@@ -138,21 +146,41 @@ export function getFitZoomLevel(timeline: Timeline, totalLengthMs?: number): ITi
   };
 }
 
-export function getPreviousZoomIndex(timeline: Timeline): number {
+export function getPreviousZoomIndex(currentZoom: ITimelineZoomState): number {
   const lastLevel = TIMELINE_ZOOM_LEVELS.at(-1);
-  const isLastIndex = timeline.currentZoom === lastLevel;
-  const nextZoomIndex = getNextZoomIndex(timeline);
+  const isLastIndex = currentZoom === lastLevel;
+  const nextZoomIndex = getNextZoomIndex(currentZoom);
   const previousZoomIndex = nextZoomIndex - (isLastIndex ? 1 : 2);
 
   // Limit zoom to the first default level.
   return Math.max(0, previousZoomIndex);
 }
 
-export function getNextZoomIndex(timeline: Timeline): number {
+export function getNextZoomIndex(currentZoom: ITimelineZoomState): number {
   const nextZoomIndex = findIndex(TIMELINE_ZOOM_LEVELS, (level) => {
-    return level.zoom > timeline.currentZoom.zoom;
+    return level.zoom > currentZoom.zoom;
   });
 
   // Limit zoom to the last default level.
   return Math.min(TIMELINE_ZOOM_LEVELS.length - 1, nextZoomIndex);
+}
+
+export function timeMsToUnits(timeMs: number, currentZoom: ITimelineZoomState): number {
+  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * currentZoom.zoom;
+  const frames = timeMs * (60 / 1000);
+
+  return frames * zoomedFrameWidth;
+}
+
+export function unitsToTimeMs(units: number, currentZoom: ITimelineZoomState): number {
+  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * currentZoom.zoom;
+
+  const frames = units / zoomedFrameWidth;
+  const frameInterval = 1000 / 60;
+
+  return frames * frameInterval;
+}
+
+export function calculateTimelineWidth(totalLengthMs: number, currentZoom: ITimelineZoomState): number {
+  return timeMsToUnits(totalLengthMs, currentZoom);
 }

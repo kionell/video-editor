@@ -52,7 +52,7 @@ const NavbarSubmenu: React.FC<NavbarSubmenuProps> = (props: NavbarSubmenuProps) 
 
   return (
     <StyledNavbarSubmenu {...other} ref={submenuRef}>
-      <CategorySwitcher selected={other.selected} element={other.element} />
+      <CategorySwitcher selected={other.selected} />
       {
         other.resizable && <ResizerLine direction={getResizerDirection()} />
       }

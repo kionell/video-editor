@@ -2,6 +2,8 @@ import styled, { DefaultTheme, ThemeProps, withTheme } from 'styled-components';
 import { PureComponent, forwardRef } from 'react';
 import { convertToRef } from '../../core/Utils/React';
 import { formatTimelineUnit } from '../../core/Utils/Format';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectScrollLeft } from '../../store';
 
 import {
   PREVIEW_FRAME_WIDTH,
@@ -253,9 +255,11 @@ class BaseTimelineRuler extends PureComponent<ThemedRulerProps> {
 const ThemedTimelineRuler = withTheme(BaseTimelineRuler);
 
 const TimelineRuler = forwardRef<HTMLDivElement, TimelineRulerProps>((props, ref) => {
+  const scrollLeft = useAppSelector(selectScrollLeft);
+
   return (
     <StyledTimelineRulerContainer className='timeline-ruler' ref={ref} >
-      <ThemedTimelineRuler {...props} />
+      <ThemedTimelineRuler {...props} scrollPos={scrollLeft} />
     </StyledTimelineRulerContainer>
   );
 });

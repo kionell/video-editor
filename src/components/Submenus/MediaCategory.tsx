@@ -4,6 +4,7 @@ import { ScrollableContainer } from '../Containers/ScrollableContainer';
 import { GeneralItem } from '../Items/GeneralItem';
 import { UploadItem } from '../Items/UploadItem';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectFiles } from '../../store';
 
 const StyledMediaCategory = styled.div`
   width: 100%;
@@ -18,7 +19,7 @@ const StyledMediaCategory = styled.div`
 `;
 
 const MediaCategory: React.FC = () => {
-  const files = useAppSelector((state) => state.files);
+  const files = useAppSelector(selectFiles);
 
   return (
     <StyledMediaCategory>
@@ -29,7 +30,7 @@ const MediaCategory: React.FC = () => {
       >
         <UploadItem />
         {
-          files.list.map((file, index) => {
+          files.map((file, index) => {
             return <GeneralItem
               file={file}
               key={index}

@@ -7,6 +7,8 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { TimelineRow } from './TimelineRow';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { TimelineRowAddButton } from './TimelineRowAddButton';
+import { selectCurrentZoom, selectTotalLengthMs, selectTracks } from '../../store';
+import { calculateTimelineWidth } from '../../core/Utils/Timeline';
 
 interface TimelineScrollableProps {
   onScroll?: React.UIEventHandler<any>;
@@ -42,16 +44,21 @@ const StyledTimelineTrackWrapper = styled(FlexContainer)`
 `;
 
 const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineScrollableProps) => {
-  const timeline = useAppSelector((state) => state.timeline);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const tracks = useAppSelector(selectTracks);
+
   const trackAreaRef = useRef<HTMLDivElement>(null);
+
+  const timelineWidth = calculateTimelineWidth(totalLengthMs, currentZoom);
+
+  // console.log('Timeline track area render');
 
   useEffect(() => {
     if (!trackAreaRef?.current) return;
 
-    const timelineWidth = timeline.width + TIMELINE_OFFSET_X;
-
-    trackAreaRef.current.style.width = timelineWidth + 'px';
-  }, [timeline.width]);
+    trackAreaRef.current.style.width = timelineWidth + + TIMELINE_OFFSET_X + 'px';
+  }, [timelineWidth]);
 
   return (
     <StyledTimelineTrackArea
@@ -63,7 +70,7 @@ const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineSc
       <StyledTimelineTrackControlBackground />
       <StyledTimelineTrackWrapper className='timeline-track-area'>
         {
-          timeline.tracks.map((track) => {
+          tracks.map((track) => {
             // Combination of track index and unique ID should do the trick.
             const uniqueKey = `${track.index}_${track.uniqueId}`;
 

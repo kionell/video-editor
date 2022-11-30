@@ -8,9 +8,9 @@ import {
   BaseElement,
 } from './Elements';
 
-import { Timeline } from './Timeline/Timeline';
 import { MediaType } from './Enums/MediaType';
 import { getViewport } from './Utils/Render';
+import { TimelineTrack } from './Timeline/TimelineTrack';
 
 /**
  * A wrapper around etro movie instance that works with timeline elements.
@@ -59,8 +59,8 @@ export class VideoPlayer {
     return this._movie;
   }
 
-  syncWithTimeline(timeline: Timeline) {
-    const elements = timeline.tracks.flatMap((t) => t.elements);
+  syncWithTimeline(tracks: TimelineTrack[]) {
+    const elements = tracks.flatMap((t) => t.elements);
 
     this._removeOldMappings(elements);
 

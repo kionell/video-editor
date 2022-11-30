@@ -1,38 +1,36 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar/Navbar';
 import { DEFAULT_SETTINGS_PANEL_WIDTH } from '../constants';
+import { MediaType } from '../core/Enums/MediaType';
 import { getAllowedSettings } from '../core/Utils/Timeline';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
+import { selectFocusedElementType, selectSettingsCategory } from '../store';
 import { setSettingsCategory } from '../store/Reducers/GeneralSlice';
 
 const SettingsPanel: React.FC = () => {
-  const general = useAppSelector((state) => state.general);
-  const timeline = useAppSelector((state) => state.timeline);
+  const settingsCategory = useAppSelector(selectSettingsCategory);
+  const focusedElementType = useAppSelector(selectFocusedElementType);
   const dispatch = useAppDispatch();
 
-  const [settings, setSettings] = useState(getAllowedSettings());
-
-  const focusedTracks = timeline.focusedTracks;
-  const firstFocused = focusedTracks[0]?.focusedElements[0];
+  const [settings, setSettings] = useState(getAllowedSettings(focusedElementType));
 
   useEffect(() => {
-    const allowed = getAllowedSettings(firstFocused);
+    const allowed = getAllowedSettings(focusedElementType);
 
-    if (!allowed.includes(general.settingsCategory) || !focusedTracks.length) {
+    if (!allowed.includes(settingsCategory) || focusedElementType === MediaType.Unknown) {
       dispatch(setSettingsCategory(null));
     }
 
     setSettings(allowed);
-  }, [firstFocused]);
+  }, [focusedElementType]);
 
   return (
     <Navbar
       direction='right'
-      selected={general.settingsCategory}
+      selected={settingsCategory}
       categories={settings}
-      disabled={!focusedTracks.length}
-      element={firstFocused}
+      disabled={focusedElementType === MediaType.Unknown}
       submenuWidth={DEFAULT_SETTINGS_PANEL_WIDTH}
       onSelect={(category) => {
         dispatch(setSettingsCategory(category));

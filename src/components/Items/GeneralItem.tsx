@@ -21,6 +21,13 @@ import {
   setCurrentZoom,
 } from '../../store/Reducers/TimelineSlice';
 
+import {
+  selectCurrentScroll,
+  selectCurrentZoom,
+  selectFiles,
+  selectTotalTracks,
+} from '../../store';
+
 export interface GeneralItemProps extends HTMLAttributes<HTMLDivElement>, DraggableProps {
   previewElement?: HTMLElement;
   deletable?: boolean;
@@ -123,8 +130,10 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
-  const timeline = useAppSelector((state) => state.timeline);
-  const files = useAppSelector((state) => state.files);
+  const currentScroll = useAppSelector(selectCurrentScroll);
+  const currentZoom = useAppSelector(selectCurrentZoom);
+  const totalTracks = useAppSelector(selectTotalTracks);
+  const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
 
   const label = file?.name ?? props.label;
@@ -142,9 +151,13 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
 
     dispatch(pushElement({ element }));
 
-    if (timeline.totalTracks === 0) {
-      const defaultDurationMs = element.durationMs * 2;
-      const zoomLevel = getFitZoomLevel(timeline, defaultDurationMs);
+    if (totalTracks === 0) {
+      const defaultDurationMs = element.totalDurationMs * 2;
+      const zoomLevel = getFitZoomLevel(
+        defaultDurationMs,
+        currentScroll,
+        currentZoom,
+      );
 
       dispatch(setCurrentZoom(zoomLevel));
     }
@@ -153,7 +166,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
   const onDeleteClick = (event: PositionEvent) => {
     event.stopPropagation();
 
-    const targetFile = file ? files.list.find((f) => f.equals(file)) : null;
+    const targetFile = file ? files.find((f) => f.equals(file)) : null;
 
     if (!targetFile) return;
 

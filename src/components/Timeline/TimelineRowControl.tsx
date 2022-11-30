@@ -8,6 +8,7 @@ import { createPositionTracker, IPositionTracker, IPositionTrackerState } from '
 import { moveTrack } from '../../store/Reducers/TimelineSlice';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectCurrentScroll } from '../../store';
 
 interface TimelineRowProps extends HTMLAttributes<HTMLDivElement> {
   track: TimelineTrack;
@@ -35,7 +36,7 @@ const StyledRowNumber = styled(Text)`
 
 const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps) => {
   const dispatch = useAppDispatch();
-  const timeline = useAppSelector((state) => state.timeline);
+  const currentScroll = useAppSelector(selectCurrentScroll);
 
   const tracker = useRef(createPositionTracker()) as RefObject<IPositionTracker>;
   const controlRef = useRef<HTMLDivElement>(null);
@@ -91,7 +92,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     if (!tracker.current) return;
 
     position = tracker.current.update(event);
-    scrollOffset = timeline.currentScroll.top - scrollTop;
+    scrollOffset = currentScroll.top - scrollTop;
     rowElement.style.top = position.relativeY + scrollOffset + 'px';
   };
 
@@ -131,7 +132,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     zIndex = rowElement.style.zIndex;
     rowElement.style.zIndex = '3';
     seekerRef.current.style.pointerEvents = 'none';
-    scrollTop = timeline.currentScroll.top;
+    scrollTop = currentScroll.top;
 
     if (!rowElement.classList.contains('grabbing')) {
       rowElement.classList.add('grabbing');
