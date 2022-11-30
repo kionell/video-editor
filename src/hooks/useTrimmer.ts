@@ -17,7 +17,7 @@ export interface ResizableProps {
   stopResizeCallback?: ResizableCallback;
 }
 
-export function useAbsoluteResizable(ref: Ref<HTMLElement>, props?: ResizableProps): void {
+export function useTrimmer(ref: Ref<HTMLElement>, props?: ResizableProps): void {
   const makeResizable = (element: HTMLElement, props?: ResizableProps) => {
     const emitter = new Sister();
     const tracker = createPositionTracker();
