@@ -16,9 +16,7 @@ export class AudioElement extends BaseElement
    * Volume of this audio element.
    */
   volume = 1;
-
   speed = 1;
-  reversed = false;
 
   fadeInTimeMs = 0;
   fadeOutTimeMs = 0;
@@ -39,15 +37,15 @@ export class AudioElement extends BaseElement
   /**
    * Duration of this audio element.
    */
-  get durationMs(): number {
+  get totalDurationMs(): number {
     const fileDurationMs = this.file.duration * 1000;
 
-    return Math.max(0, this._durationMs ?? fileDurationMs);
+    return Math.max(0, this._totalDurationMs ?? fileDurationMs);
   }
 
-	set durationMs(value: number) {
+	set totalDurationMs(value: number) {
     const fileDurationMs = this.file.duration * 1000;
 
-    this._durationMs = Math.max(0, Math.min(value, fileDurationMs));
+    this._totalDurationMs = Math.max(0, Math.min(value, fileDurationMs));
   }
 }
