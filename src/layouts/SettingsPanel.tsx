@@ -5,7 +5,7 @@ import { MediaType } from '../core/Enums/MediaType';
 import { getAllowedSettings } from '../core/Utils/Timeline';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { selectFocusedElementType, selectSettingsCategory } from '../store';
+import { selectFocusedElementType, selectSettingsCategory } from '../store/Selectors';
 import { setSettingsCategory } from '../store/Reducers/GeneralSlice';
 
 const SettingsPanel: React.FC = () => {
@@ -28,9 +28,9 @@ const SettingsPanel: React.FC = () => {
   return (
     <Navbar
       direction='right'
+      disabled={focusedElementType === MediaType.Unknown}
       selected={settingsCategory}
       categories={settings}
-      disabled={focusedElementType === MediaType.Unknown}
       submenuWidth={DEFAULT_SETTINGS_PANEL_WIDTH}
       onSelect={(category) => {
         dispatch(setSettingsCategory(category));
