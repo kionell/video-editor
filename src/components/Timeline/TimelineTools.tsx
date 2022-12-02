@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useRef, MouseEvent } from 'react';
 import { ButtonGroup } from '../Buttons/ButtonGroup';
-import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { FlexContainer } from '../Containers/FlexContainer';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { TimelineTimecode } from './TimelineTimecode';
+import { TimelineButton } from './TimelineButton';
 
 import {
   getNextZoomLevel,
@@ -24,9 +24,9 @@ import {
 import {
   selectAllowBringForward,
   selectAllowSendBackward,
-  selectCurrentScroll,
   selectCurrentZoom,
   selectFocusedTotalTracks,
+  selectScrollLeft,
   selectSnapMode,
   selectTotalLengthMs,
   selectTotalTracks,
@@ -42,15 +42,6 @@ const StyledTimelineTools = styled.div`
   background: ${(props) => props.theme.primary.surface};
 `;
 
-const StyledTimelineToolButton = styled(SecondaryButton)`
-  width: 42px;
-  height: 35px;
-
-  label {
-    display: none;
-  }
-`;
-
 const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
   position: absolute;
   left: 50%;
@@ -63,7 +54,7 @@ const StyledTimelineTimecodeWrapper = styled(FlexContainer)`
 const TimelineTools: React.FC = () => {
   const snapMode = useAppSelector(selectSnapMode);
 
-  const currentScroll = useAppSelector(selectCurrentScroll);
+  const scrollX = useAppSelector(selectScrollLeft);
   const currentZoom = useAppSelector(selectCurrentZoom);
   const totalTracks = useAppSelector(selectTotalTracks);
   const totalLengthMs = useAppSelector(selectTotalLengthMs);
@@ -95,7 +86,7 @@ const TimelineTools: React.FC = () => {
   };
 
   const onZoomFitClick = () => {
-    const fitZoom = getFitZoomLevel(totalLengthMs, currentScroll, currentZoom);
+    const fitZoom = getFitZoomLevel(totalLengthMs, scrollX, currentZoom.zoom);
 
     dispatch(setCurrentZoom(fitZoom));
   };
@@ -105,32 +96,32 @@ const TimelineTools: React.FC = () => {
   return (
     <StyledTimelineTools>
       <ButtonGroup gap={6}>
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Undo'
           onMouseDown={stopPropagation}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Redo'
           onMouseDown={stopPropagation}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Split'
           onMouseDown={stopPropagation}
           disabled={!focusedTotalTracks}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='BringForward'
           onClick={onBringForwardClick}
           onMouseDown={stopPropagation}
           disabled={allowBringForward}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='SendBackward'
           onClick={onSendBackwardClick}
           onMouseDown={stopPropagation}
           disabled={allowSendBackward}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Delete'
           onClick={onDeleteClick}
           onMouseDown={stopPropagation}
@@ -143,27 +134,27 @@ const TimelineTools: React.FC = () => {
       </StyledTimelineTimecodeWrapper>
 
       <ButtonGroup gap={6}>
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Snap'
-          ref={snapButtonRef}
+          buttonRef={snapButtonRef}
           onClick={onSnapClick}
           onMouseDown={stopPropagation}
           toggled={snapMode}
           disabled={!totalTracks}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Minus'
           onClick={onZoomOutClick}
           onMouseDown={stopPropagation}
           disabled={!totalTracks}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Plus'
           onClick={onZoomInClick}
           onMouseDown={stopPropagation}
           disabled={!totalTracks}
         />
-        <StyledTimelineToolButton
+        <TimelineButton
           iconType='Fit'
           onClick={onZoomFitClick}
           onMouseDown={stopPropagation}
