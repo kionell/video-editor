@@ -12,6 +12,7 @@ const StyledTimeline = styled.div`
   width: 100%;
   height: 300px;
   min-height: 50px;
+  max-height: 50vh;
   display: flex;
   flex-direction: column;
   position: relative;
