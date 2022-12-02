@@ -52,7 +52,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     position = tracker.current.start(event);
 
     elementLeft.current = parseFloat(draggable.style.left) - TIMELINE_OFFSET_X;
-    elementWidth.current = getWidthFromDraggable(draggable, files, currentZoom);
+    elementWidth.current = getWidthFromDraggable(draggable, files, currentZoom.zoom);
 
     seekerRef.current.style.pointerEvents = 'none';
   };
@@ -94,7 +94,7 @@ const TimelineRowTrack: React.FC<TimelineRowProps> = ((props: TimelineRowProps) 
     if (!dropZoneRef.current) return;
 
     const newElementLeft = parseFloat(dropZoneRef.current.style.left);
-    const newTimeMs = unitsToTimeMs(newElementLeft, currentZoom);
+    const newTimeMs = unitsToTimeMs(newElementLeft, currentZoom.zoom);
 
     if (focusedTracks.length > 0) {
       focusedTracks.forEach((focusedTrack) => {

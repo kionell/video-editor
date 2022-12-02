@@ -50,9 +50,7 @@ const TimelineTrackArea: React.FC<TimelineScrollableProps> = ((props: TimelineSc
 
   const trackAreaRef = useRef<HTMLDivElement>(null);
 
-  const timelineWidth = calculateTimelineWidth(totalLengthMs, currentZoom);
-
-  // console.log('Timeline track area render');
+  const timelineWidth = calculateTimelineWidth(totalLengthMs, currentZoom.zoom);
 
   useEffect(() => {
     if (!trackAreaRef?.current) return;

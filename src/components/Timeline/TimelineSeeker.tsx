@@ -62,7 +62,7 @@ const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
   const updatePosByTime = () => {
     if (!seekerRef.current) return;
 
-    const seekerX = timeMsToUnits(currentTimeMs, currentZoom);
+    const seekerX = timeMsToUnits(currentTimeMs, currentZoom.zoom);
 
     seekerRef.current.style.left = seekerX - scrollX + 'px';
   };
