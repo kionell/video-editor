@@ -4,7 +4,7 @@ import { RefObject, useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { FlatButton } from '../Buttons/FlatButton';
 import { FlexContainer } from '../Containers/FlexContainer';
-import { VideoPlayer } from '../../core/VideoPlayer';
+import { VideoPlayer } from '../../core/Render/VideoPlayer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
 import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';

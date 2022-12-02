@@ -6,11 +6,11 @@ import {
   ImageElement,
   TextElement,
   BaseElement,
-} from './Elements';
+} from '../Elements';
 
-import { MediaType } from './Enums/MediaType';
-import { getViewport } from './Utils/Render';
-import { TimelineTrack } from './Timeline/TimelineTrack';
+import { MediaType } from '../Enums/MediaType';
+import { getViewport } from '../Utils/Render';
+import { TimelineTrack } from '../Timeline/TimelineTrack';
 
 /**
  * A wrapper around etro movie instance that works with timeline elements.
