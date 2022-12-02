@@ -3,7 +3,6 @@ import { BaseElement } from '../Elements/BaseElement';
 import { CategoryName } from '../Enums/Category';
 import { MediaType } from '../Enums/MediaType';
 import { UploadedFile } from '../Files/UploadedFile';
-import { ITimelineScrollState } from '../State/ITimelineScrollState';
 import { ITimelineZoomState } from '../State/ITimelineZoomState';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { TIMELINE_ZOOM_LEVELS } from '../Timeline/TimelineZoom';
@@ -39,18 +38,14 @@ export function getAllowedSettings(type: MediaType): CategoryName[] {
   return [...categories];
 }
 
-export function getWidthFromDraggable(
-  draggable: HTMLElement,
-  files: UploadedFile[],
-  currentZoom: ITimelineZoomState,
-): number {
+export function getWidthFromDraggable(draggable: HTMLElement, files: UploadedFile[], zoom = 1): number {
   if (draggable.classList.contains('general-item')) {
     const file = getFileFromDraggable(draggable, files);
     const fileDurationMs = (file?.duration ?? 0) * 1000;
 
     const durationMs = fileDurationMs || BASE_TIMELINE_ELEMENT_DURATION_MS;
 
-    return timeMsToUnits(durationMs, currentZoom);
+    return timeMsToUnits(durationMs, zoom);
   }
 
   if (draggable.classList.contains('timeline-element')) {
@@ -99,20 +94,20 @@ export function getElementAtTime<T extends BaseElement>(track: TimelineTrack<T>,
 }
 
 export function getPreviousZoomLevel(currentZoom: ITimelineZoomState): ITimelineZoomState {
+  console.log(TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(currentZoom)]);
+
   return TIMELINE_ZOOM_LEVELS[getPreviousZoomIndex(currentZoom)];
 }
 
 export function getNextZoomLevel(currentZoom: ITimelineZoomState): ITimelineZoomState {
+  console.log(TIMELINE_ZOOM_LEVELS[getNextZoomIndex(currentZoom)]);
+
   return TIMELINE_ZOOM_LEVELS[getNextZoomIndex(currentZoom)];
 }
 
-export function getFitZoomLevel(
-  totalLengthMs: number,
-  currentScroll: ITimelineScrollState,
-  currentZoom: ITimelineZoomState,
-): ITimelineZoomState {
+export function getFitZoomLevel(totalLengthMs: number, scrollX = 0, zoom = 1): ITimelineZoomState {
   const getVisibleWidth = () => {
-    const scrollOffset = TIMELINE_OFFSET_X - currentScroll.left;
+    const scrollOffset = TIMELINE_OFFSET_X - scrollX;
     const clampedScrollOffset = Math.max(0, scrollOffset);
 
     const trackpad = document.querySelector('.timeline-trackpad') as HTMLElement;
@@ -124,14 +119,14 @@ export function getFitZoomLevel(
 
   const getFullWidth = () => {
     if (typeof totalLengthMs === 'number') {
-      return timeMsToUnits(totalLengthMs, currentZoom);
+      return timeMsToUnits(totalLengthMs, zoom);
     }
 
-    return calculateTimelineWidth(totalLengthMs, currentZoom);
+    return calculateTimelineWidth(totalLengthMs, zoom);
   };
 
   const multiplier = getVisibleWidth() / getFullWidth();
-  const targetZoom = currentZoom.zoom * multiplier;
+  const targetZoom = zoom * multiplier;
 
   const fitZoomIndex = findIndex(TIMELINE_ZOOM_LEVELS, (level) => {
     return level.zoom > targetZoom;
@@ -165,15 +160,15 @@ export function getNextZoomIndex(currentZoom: ITimelineZoomState): number {
   return Math.min(TIMELINE_ZOOM_LEVELS.length - 1, nextZoomIndex);
 }
 
-export function timeMsToUnits(timeMs: number, currentZoom: ITimelineZoomState): number {
-  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * currentZoom.zoom;
+export function timeMsToUnits(timeMs: number, zoom = 1): number {
+  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * zoom;
   const frames = timeMs * (60 / 1000);
 
   return frames * zoomedFrameWidth;
 }
 
-export function unitsToTimeMs(units: number, currentZoom: ITimelineZoomState): number {
-  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * currentZoom.zoom;
+export function unitsToTimeMs(units: number, zoom = 1): number {
+  const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * zoom;
 
   const frames = units / zoomedFrameWidth;
   const frameInterval = 1000 / 60;
@@ -181,6 +176,6 @@ export function unitsToTimeMs(units: number, currentZoom: ITimelineZoomState): n
   return frames * frameInterval;
 }
 
-export function calculateTimelineWidth(totalLengthMs: number, currentZoom: ITimelineZoomState): number {
-  return timeMsToUnits(totalLengthMs, currentZoom);
+export function calculateTimelineWidth(totalLengthMs: number, zoom = 1): number {
+  return timeMsToUnits(totalLengthMs, zoom);
 }
