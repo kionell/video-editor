@@ -4,54 +4,16 @@ import { RootState } from './Store';
 
 export const selectFiles = (state: RootState) => state.files;
 
-const selectGeneral = (state: RootState) => state.general;
-
-export const selectMediaCategory = createSelector(
-  selectGeneral,
-  (general) => general.mediaCategory,
-);
-
-export const selectMediaPanelWidth = createSelector(
-  selectGeneral,
-  (general) => general.mediaPanelWidth,
-);
-
-export const selectSettingsCategory = createSelector(
-  selectGeneral,
-  (general) => general.settingsCategory,
-);
-
-const selectPreview = (state: RootState) => state.preview;
-
-export const selectAspectRatio = createSelector(
-  selectPreview,
-  (preview) => preview.aspectRatio,
-);
-
-export const selectIsExpanded = createSelector(
-  selectPreview,
-  (preview) => preview.isExpanded,
-);
-
-export const selectIsPlaying = createSelector(
-  selectPreview,
-  (preview) => preview.isPlaying,
-);
-
-export const selectPreviewFPS = createSelector(
-  selectPreview,
-  (preview) => preview.previewFrameRate,
-);
-
-export const selectPreviewWidth = createSelector(
-  selectPreview,
-  (preview) => preview.previewWidth,
-);
-
-export const selectPreviewHeight = createSelector(
-  selectPreview,
-  (preview) => preview.previewHeight,
-);
+export const selectMediaCategory = (state: RootState) => state.general.mediaCategory;
+export const selectMediaPanelWidth = (state: RootState) => state.general.mediaPanelWidth;
+export const selectSettingsCategory = (state: RootState) => state.general.settingsCategory;
+export const selectShowExportMenu = (state: RootState) => state.general.showExportMenu;
+export const selectAspectRatio = (state: RootState) => state.preview.aspectRatio;
+export const selectIsExpanded = (state: RootState) => state.preview.isExpanded;
+export const selectIsPlaying = (state: RootState) => state.preview.isPlaying;
+export const selectPreviewFPS = (state: RootState) => state.preview.previewFrameRate;
+export const selectPreviewWidth = (state: RootState) => state.preview.previewWidth;
+export const selectPreviewHeight = (state: RootState) => state.preview.previewHeight;
 
 const selectTimeline = (state: RootState) => state.timeline;
 
@@ -106,52 +68,21 @@ export const selectFocusedTotalTracks = createSelector(
   (timeline) => timeline.focusedTracks.length,
 );
 
-export const selectTracks = createSelector(
-  selectTimeline,
-  (timeline) => timeline.tracks,
-);
-
-export const selectCurrentScroll = createSelector(
-  selectTimeline,
-  (timeline) => timeline.currentScroll,
-);
-
-export const selectScrollLeft = createSelector(
-  selectTimeline,
-  (timeline) => timeline.currentScroll.left,
-);
-
-export const selectCurrentZoom = createSelector(
-  selectTimeline,
-  (timeline) => timeline.currentZoom,
-);
-
-export const selectCurrentTimeMs = createSelector(
-  selectTimeline,
-  (timeline) => timeline.currentTimeMs,
-);
+export const selectTracks = (state: RootState) => state.timeline.tracks;
+export const selectCurrentScroll = (state: RootState) => state.timeline.currentScroll;
+export const selectScrollLeft = (state: RootState) => state.timeline.currentScroll.left;
+export const selectCurrentZoom = (state: RootState) => state.timeline.currentZoom;
+export const selectCurrentTimeMs = (state: RootState) => state.timeline.currentTimeMs;
+export const selectTotalTracks = (state: RootState) => state.timeline.totalTracks;
+export const selectSnapMode = (state: RootState) => state.timeline.snapMode;
+export const selectLastSeekTimeMs = (state: RootState) => state.timeline.lastSeekTimeMs;
 
 export const selectTotalLengthMs = createSelector(
   selectTimeline,
   (timeline) => timeline.totalLengthMs,
 );
 
-export const selectTotalTracks = createSelector(
-  selectTimeline,
-  (timeline) => timeline.totalTracks,
-);
-
-export const selectSnapMode = createSelector(
-  selectTimeline,
-  (timeline) => timeline.snapMode,
-);
-
 export const selectIsEnded = createSelector(
   selectTimeline,
   (timeline) => timeline.ended,
-);
-
-export const selectLastSeekTimeMs = createSelector(
-  selectTimeline,
-  (timeline) => timeline.lastSeekTimeMs,
 );
