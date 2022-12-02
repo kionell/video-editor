@@ -105,38 +105,34 @@ const AdjustSettings: React.FC = () => {
   useEffect(() => {
     if (!targetElement) return;
 
-    const triggerInput = (input: HTMLInputElement) => {
-      input.dispatchEvent(new Event('input'));
-    };
-
     if (exposureRef.current) {
       exposureRef.current.valueAsNumber = targetElement.exposure;
-      triggerInput(exposureRef.current);
+      exposureRef.current.dispatchEvent(new Event('input'));
     }
 
     if (saturationRef.current) {
       saturationRef.current.valueAsNumber = targetElement.saturation;
-      triggerInput(saturationRef.current);
+      saturationRef.current.dispatchEvent(new Event('input'));
     }
 
     if (temperatureRef.current) {
       temperatureRef.current.valueAsNumber = targetElement.temperature;
-      triggerInput(temperatureRef.current);
+      temperatureRef.current.dispatchEvent(new Event('input'));
     }
 
     if (contrastRef.current) {
       contrastRef.current.valueAsNumber = targetElement.contrast;
-      triggerInput(contrastRef.current);
+      contrastRef.current.dispatchEvent(new Event('input'));
     }
 
     if (opacityRef.current) {
       opacityRef.current.valueAsNumber = targetElement.opacity;
-      triggerInput(opacityRef.current);
+      opacityRef.current.dispatchEvent(new Event('input'));
     }
 
     if (blurRef.current) {
       blurRef.current.valueAsNumber = targetElement.blur;
-      triggerInput(blurRef.current);
+      blurRef.current.dispatchEvent(new Event('input'));
     }
 
     exposureRef.current?.addEventListener('input', onExposureInput);
@@ -156,7 +152,15 @@ const AdjustSettings: React.FC = () => {
       blurRef.current?.removeEventListener('input', onBlurInput);
       resetRef.current?.removeEventListener('click', onReset);
     };
-  }, [targetElement?.uniqueId]);
+  }, [
+    targetElement?.uniqueId,
+    targetElement?.exposure,
+    targetElement?.saturation,
+    targetElement?.temperature,
+    targetElement?.contrast,
+    targetElement?.opacity,
+    targetElement?.blur,
+  ]);
 
   return (
     <StyledAdjustSettings>
@@ -227,7 +231,7 @@ const AdjustSettings: React.FC = () => {
           showIcon={false}
           label='Reset'
           showLabel
-          ref={resetRef}
+          buttonRef={resetRef}
         />
       </ScrollableContainer>
     </StyledAdjustSettings>

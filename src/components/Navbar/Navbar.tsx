@@ -71,7 +71,7 @@ const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
               return (
                 <StyledNavbarButton
                   key={i}
-                  ref={createRef()}
+                  buttonRef={createRef()}
                   disabled={props.disabled}
                   toggled={category === props.selected}
                   label={category}

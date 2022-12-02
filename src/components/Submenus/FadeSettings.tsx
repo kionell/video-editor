@@ -61,18 +61,14 @@ const FadeSettings: React.FC = () => {
   useEffect(() => {
     if (!targetElement) return;
 
-    const triggerInput = (input: HTMLInputElement) => {
-      input.dispatchEvent(new Event('input'));
-    };
-
     if (fadeInRef.current) {
       fadeInRef.current.valueAsNumber = targetElement.fadeInTimeMs;
-      triggerInput(fadeInRef.current);
+      fadeInRef.current.dispatchEvent(new Event('input'));
     }
 
     if (fadeOutRef.current) {
       fadeOutRef.current.valueAsNumber = targetElement.fadeOutTimeMs;
-      triggerInput(fadeOutRef.current);
+      fadeOutRef.current.dispatchEvent(new Event('input'));
     }
 
     fadeInRef.current?.addEventListener('input', onFadeInInput);
@@ -84,7 +80,11 @@ const FadeSettings: React.FC = () => {
       fadeOutRef.current?.removeEventListener('input', onFadeOutInput);
       resetRef.current?.removeEventListener('click', onReset);
     };
-  }, [targetElement?.uniqueId]);
+  }, [
+    targetElement?.uniqueId,
+    targetElement?.fadeInTimeMs,
+    targetElement?.fadeOutTimeMs,
+  ]);
 
   return (
     <StyledFadeSettings>
@@ -118,7 +118,7 @@ const FadeSettings: React.FC = () => {
           showIcon={false}
           label='Reset'
           showLabel
-          ref={resetRef}
+          buttonRef={resetRef}
         />
       </ScrollableContainer>
     </StyledFadeSettings>

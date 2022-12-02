@@ -50,13 +50,9 @@ const VolumeSettings: React.FC = () => {
   useEffect(() => {
     if (!targetElement) return;
 
-    const triggerInput = (input: HTMLInputElement) => {
-      input.dispatchEvent(new Event('input'));
-    };
-
     if (volumeRef.current) {
       volumeRef.current.valueAsNumber = targetElement.volume;
-      triggerInput(volumeRef.current);
+      volumeRef.current.dispatchEvent(new Event('input'));
     }
 
     volumeRef.current?.addEventListener('input', onVolumeInput);
@@ -66,7 +62,10 @@ const VolumeSettings: React.FC = () => {
       volumeRef.current?.removeEventListener('input', onVolumeInput);
       resetRef.current?.removeEventListener('click', onReset);
     };
-  }, [targetElement?.uniqueId]);
+  }, [
+    targetElement?.uniqueId,
+    targetElement?.volume,
+  ]);
 
   return (
     <StyledVolumeSettings>
@@ -91,7 +90,7 @@ const VolumeSettings: React.FC = () => {
           showIcon={false}
           label='Reset'
           showLabel
-          ref={resetRef}
+          buttonRef={resetRef}
         />
       </ScrollableContainer>
     </StyledVolumeSettings>

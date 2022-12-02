@@ -9,6 +9,7 @@ import { IPlayableElement } from '../../core/Elements/Types/IPlayableElement';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const StyledSpeedSettings = styled.div`
   width: 100%;
@@ -30,14 +31,14 @@ const SpeedSettings: React.FC = () => {
   const speedRef = useRef<HTMLInputElement>(null);
   const resetRef = useRef<HTMLButtonElement>(null);
 
-  const onSpeedChange = (event: Event) => {
+  const onSpeedChange = useDebounce((event: Event) => {
     const input = event.target as HTMLInputElement;
 
     disptach(updateElement({
       speed: input.valueAsNumber,
       element: targetElement,
     }));
-  };
+  });
 
   const onReset = () => {
     disptach(updateElement({
@@ -60,7 +61,10 @@ const SpeedSettings: React.FC = () => {
       speedRef.current?.removeEventListener('change', onSpeedChange);
       resetRef.current?.removeEventListener('click', onReset);
     };
-  }, [targetElement?.uniqueId]);
+  }, [
+    targetElement?.uniqueId,
+    targetElement?.speed,
+  ]);
 
   return (
     <StyledSpeedSettings>
@@ -86,7 +90,7 @@ const SpeedSettings: React.FC = () => {
           showIcon={false}
           label='Reset'
           showLabel
-          ref={resetRef}
+          buttonRef={resetRef}
         />
       </ScrollableContainer>
     </StyledSpeedSettings>
