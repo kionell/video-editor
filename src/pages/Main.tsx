@@ -8,8 +8,11 @@ import { SettingsPanel } from '../layouts/SettingsPanel';
 
 const StyledMainPage = styled(ScrollableContainer)`
   height: 100%;
+  min-width: 800px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   gap: 0px;
   padding: 0px;
 `;
@@ -18,6 +21,7 @@ const StyledTopPart = styled.div`
   flex-grow: 1;
   flex-basis: 0;
   width: 100%;
+  min-width: 100%;
   height: 100%; 
   display: flex; 
   flex-direction: row;
@@ -26,6 +30,7 @@ const StyledTopPart = styled.div`
 
 const StyledBottomPart = styled.div`
   width: 100%;
+  min-width: 100%;
   flex-grow: 0;
   flex-basis: 0;
   display: flex; 
