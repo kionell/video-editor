@@ -1,40 +1,38 @@
 import { EffectCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from './useAppSelector';
-import { Timeline } from '../core/Timeline/Timeline';
 import { BaseElement } from '../core/Elements';
+import { selectFocusedTracks, selectTracks } from '../store/Selectors';
+import { TimelineTrack } from '../core/Timeline/TimelineTrack';
 
 export function useTimelineUpdate(cb: EffectCallback): void {
-  const timeline = useAppSelector((state) => state.timeline);
-  const previous = useRef<Timeline>();
+  const focusedTracks = useAppSelector(selectFocusedTracks);
+  const tracks = useAppSelector(selectTracks);
 
-  const checkSameFocused = (current: Timeline, previous: Timeline) => {
+  const previousFocused = useRef<TimelineTrack[]>();
+  const previousTracks = useRef<TimelineTrack[]>();
+
+  const checkSameFocused = (current: TimelineTrack[], previous: TimelineTrack[]) => {
     if (!current || !previous) return false;
 
-    const currentFocused = current.focusedTracks;
-    const previousFocused = previous.focusedTracks;
-
-    if (currentFocused.length !== previousFocused.length) {
+    if (current.length !== previous.length) {
       return false;
     }
 
-    return currentFocused.every((track, i) => {
-      return track.uniqueId === previousFocused[i].uniqueId;
+    return current.every((track, i) => {
+      return track.uniqueId === previous[i].uniqueId;
     });
   };
 
-  const checkUpdated = (current: Timeline, previous: Timeline) => {
+  const checkUpdated = (current: TimelineTrack[], previous: TimelineTrack[]) => {
     if (!current || !previous) return false;
 
-    const currentTracks = current.tracks;
-    const previousTracks = previous.tracks;
-
-    if (currentTracks.length !== previousTracks.length) {
+    if (current.length !== previous.length) {
       return true;
     }
 
-    return currentTracks.some((currentTrack, i) => {
+    return current.some((currentTrack, i) => {
       const currentElements = currentTrack.elements;
-      const previousElements = previousTracks[i].elements;
+      const previousElements = previousTracks.current[i].elements;
 
       if (currentElements.length !== previousElements.length) {
         return true;
@@ -54,11 +52,12 @@ export function useTimelineUpdate(cb: EffectCallback): void {
      * We should ignore all focus/blur updates as they doesn't actually update timeline.
      * All other actions are allowed and should be checked separately.
      */
-    const isUpdated = checkSameFocused(timeline, previous.current)
-      || checkUpdated(timeline, previous.current);
+    const isUpdated = checkSameFocused(focusedTracks, previousFocused.current)
+      || checkUpdated(tracks, previousTracks.current);
 
-    previous.current = timeline;
+    previousFocused.current = focusedTracks;
+    previousTracks.current = tracks;
 
     if (isUpdated) return cb();
-  }, [timeline.tracks]);
+  }, [tracks]);
 }
