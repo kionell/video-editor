@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { forwardRef } from 'react';
 import { useUpdateEffect } from '../../hooks/useUpdateEffect';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
 import { SMALL_FONT_SIZE } from '../../constants';
+import { useRef } from 'react';
 
 interface FlatButtonProps extends ButtonProps {
   showBackground?: boolean;
@@ -47,23 +47,32 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
   }
 `;
 
-const FlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) => {
-  const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
+const FlatButton: React.FC<FlatButtonProps> = (props: FlatButtonProps) => {
+  const {
+    showIcon,
+    iconType,
+    iconSize,
+    showLabel,
+    label,
+    toggled,
+  } = props;
+
+  const buttonRef = props.buttonRef ?? useRef<HTMLButtonElement>(null);
 
   useUpdateEffect(() => {
-    if (ref instanceof Function || !ref?.current) return;
+    if (!buttonRef.current) return;
 
-    if (toggled && !ref.current.classList.contains('toggled')) {
-      ref.current.classList.add('toggled');
+    if (toggled && !buttonRef.current.classList.contains('toggled')) {
+      buttonRef.current.classList.add('toggled');
     }
 
-    if (!toggled && ref.current.classList.contains('toggled')) {
-      ref.current.classList.remove('toggled');
+    if (!toggled && buttonRef.current.classList.contains('toggled')) {
+      buttonRef.current.classList.remove('toggled');
     }
   }, [toggled]);
 
   return (
-    <StyledFlatButton ref={ref} {...props}>
+    <StyledFlatButton ref={buttonRef} {...props}>
       <Icon
         visible={showIcon}
         variant={iconType}
@@ -77,9 +86,7 @@ const FlatButton = forwardRef<HTMLButtonElement, FlatButtonProps>((props, ref) =
       />
     </StyledFlatButton>
   );
-});
-
-FlatButton.displayName = 'Flat Button';
+};
 
 FlatButton.defaultProps = {
   showBackground: false,

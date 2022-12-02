@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, RefObject } from 'react';
 import styled, { css } from 'styled-components';
 import { IconType, IconSize } from '../Icon';
 
@@ -17,6 +17,7 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   iconSize?: keyof typeof IconSize;
   showLabel?: boolean;
   label?: string;
+  buttonRef?: RefObject<HTMLButtonElement>;
 }
 
 const StyledBaseButton = styled.button<ButtonProps>`

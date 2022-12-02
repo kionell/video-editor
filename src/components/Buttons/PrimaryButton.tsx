@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { forwardRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
+import { useRef } from 'react';
 
 const StyledPrimaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.primary.accent};
@@ -16,11 +16,19 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const PrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  const { showIcon, iconType, iconSize, showLabel, label } = props;
+const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
+  const {
+    showIcon,
+    iconType,
+    iconSize,
+    showLabel,
+    label,
+  } = props;
+
+  const buttonRef = props.buttonRef ?? useRef<HTMLButtonElement>(null);
 
   return (
-    <StyledPrimaryButton ref={ref} {...props}>
+    <StyledPrimaryButton ref={buttonRef} {...props}>
       <Icon
         visible={showIcon}
         variant={iconType}
@@ -32,9 +40,7 @@ const PrimaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
       />
     </StyledPrimaryButton>
   );
-});
-
-PrimaryButton.displayName = 'Primary Button';
+};
 
 PrimaryButton.defaultProps = {
   showLabel: false,

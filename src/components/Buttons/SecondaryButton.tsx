@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { forwardRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ButtonProps, StyledBaseButton } from './Button';
 import { getIconSizeBySizeType, Icon } from '../Icon';
 import { Text } from '../Text';
@@ -31,26 +31,35 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   }
 `;
 
-const SecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  const { showIcon, iconType, iconSize, showLabel, label, toggled } = props;
+const SecondaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
+  const {
+    showIcon,
+    iconType,
+    iconSize,
+    showLabel,
+    label,
+    toggled,
+  } = props;
+
+  const buttonRef = props.buttonRef ?? useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (ref instanceof Function || !ref?.current) return;
+    if (!buttonRef.current) return;
 
-    const hasToggled = ref.current.classList.contains('toggled');
+    const hasToggled = buttonRef.current.classList.contains('toggled');
 
     if (toggled && !hasToggled) {
-      ref.current.classList.add('toggled');
+      buttonRef.current.classList.add('toggled');
     }
     else if (!toggled && hasToggled) {
-      ref.current.classList.remove('toggled');
+      buttonRef.current.classList.remove('toggled');
     }
   }, [toggled]);
 
   return (
     <StyledSecondaryButton
       {...props}
-      ref={ref}
+      ref={buttonRef}
     >
       <Icon
         visible={showIcon}
@@ -63,9 +72,7 @@ const SecondaryButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) 
       />
     </StyledSecondaryButton>
   );
-});
-
-SecondaryButton.displayName = 'Secondary Button';
+};
 
 SecondaryButton.defaultProps = {
   showLabel: false,
