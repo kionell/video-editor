@@ -17,7 +17,7 @@ const StyledDragUploaderWrapper = styled.div<DragUploaderProps>`
   height: 100%;
   padding: 20px;
   backdrop-filter: blur(40px) brightness(50%);
-  z-index: 9999;
+  z-index: 99999;
   overflow: hidden;
 `;
 
