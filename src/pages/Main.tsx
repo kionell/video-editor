@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { ScrollableContainer } from '../components/Containers/ScrollableContainer';
-import { Player } from '../components/Player/Player';
+import { PreviewArea } from '../components/Preview/PreviewArea';
 import { Timeline } from '../components/Timeline/Timeline';
+import { ExportMenu } from '../layouts/ExportMenu';
 import { MediaPanel } from '../layouts/MediaPanel';
 import { SettingsPanel } from '../layouts/SettingsPanel';
 
@@ -44,13 +45,15 @@ export const MainPage: React.FC = () => {
     <StyledMainPage>
       <StyledTopPart>
         <MediaPanel />
-        <Player />
+        <PreviewArea />
         <SettingsPanel />
       </StyledTopPart>
 
       <StyledBottomPart>
         <Timeline />
       </StyledBottomPart>
+
+      <ExportMenu />
     </StyledMainPage>
   );
 };

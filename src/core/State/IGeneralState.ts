@@ -15,4 +15,9 @@ export interface IGeneralState {
    * Current element settings category.
    */
   settingsCategory: CategoryName | null;
+
+  /**
+   * Whether to show export menu or not.
+   */
+  showExportMenu?: boolean;
 }

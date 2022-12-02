@@ -4,12 +4,14 @@ import { IGeneralState } from '../../core/State/IGeneralState';
 import {
   CategoryAction,
   CategoryWidthAction,
+  ExportMenuVisibleAction,
 } from '../Interfaces/GeneralPayload';
 
 const initialState: IGeneralState = {
   mediaCategory: null,
   mediaPanelWidth: DEFAULT_MEDIA_PANEL_WIDTH,
   settingsCategory: null,
+  showExportMenu: false,
 };
 
 const GeneralSlice = createSlice({
@@ -37,6 +39,10 @@ const GeneralSlice = createSlice({
         state.settingsCategory = null;
       }
     },
+
+    setExportMenuVisible(state, action: ExportMenuVisibleAction) {
+      state.showExportMenu = action.payload;
+    },
   },
 });
 
@@ -44,6 +50,7 @@ export const {
   setMediaCategory,
   setMediaPanelWidth,
   setSettingsCategory,
+  setExportMenuVisible,
 } = GeneralSlice.actions;
 
 export const GeneralReducer = GeneralSlice.reducer;
