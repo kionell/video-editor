@@ -35,6 +35,7 @@ const TimelineTrackpad: React.FC = () => {
 
   const currentZoom = useAppSelector(selectCurrentZoom);
   const totalLengthMs = useAppSelector(selectTotalLengthMs);
+  const lastClampedTimeMs = useRef(0);
 
   const scrollbarRef = useRef<Scrollbars>(null);
   const seekerRef = useRef<HTMLDivElement>(null);
@@ -43,9 +44,11 @@ const TimelineTrackpad: React.FC = () => {
   console.log('Trackpad render');
 
   const updateCurrentTime = (timeMs?: number) => {
-    timeMs ??= totalLengthMs;
+    timeMs ??= lastClampedTimeMs.current;
 
     const clampedTimeMs = clamp(timeMs, 0, totalLengthMs);
+
+    lastClampedTimeMs.current = clampedTimeMs;
 
     dispatch(setCurrentTimeMs(clampedTimeMs));
     dispatch(setLastSeekTimeMs(clampedTimeMs));
@@ -57,7 +60,7 @@ const TimelineTrackpad: React.FC = () => {
     const clientX = event.clientX - TIMELINE_OFFSET_X;
     const scrollX = scrollbarRef.current.getScrollLeft();
 
-    const timeMs = unitsToTimeMs(clientX + scrollX, currentZoom);
+    const timeMs = unitsToTimeMs(clientX + scrollX, currentZoom.zoom);
 
     updateCurrentTime(timeMs);
   };

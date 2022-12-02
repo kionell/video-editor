@@ -1,6 +1,6 @@
 import React, { MouseEvent, RefObject, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useMovableX } from '../../hooks/useMovableX';
+import { useSeekerMove } from '../../hooks/useSeekerMove';
 import { Icon } from '../Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { useAppSelector } from '../../hooks/useAppSelector';
@@ -67,9 +67,7 @@ const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
     seekerRef.current.style.left = seekerX - scrollX + 'px';
   };
 
-  useMovableX(seekerRef, {
-    moveCallback: updatePosByTime,
-  });
+  useSeekerMove(seekerRef);
 
   /**
    * 1) Updates seeker position relatively to the current zoom.
