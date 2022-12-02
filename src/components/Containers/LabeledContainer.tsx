@@ -3,16 +3,24 @@ import styled, { css } from 'styled-components';
 import { Text } from '../Text';
 import { FlexContainer, FlexProps } from './FlexContainer';
 
+type LabelPosition = 'left' | 'center' | 'right';
+
 export interface LabeledFlexProps extends FlexProps {
-  showLabel?: boolean;
   label?: string;
+  labelPosition?: LabelPosition;
 }
 
 const StyledLabeledContainerWrapper = styled.div<LabeledFlexProps>`
   display: flex;
   flex-direction: column;
-  padding: ${(props) => props.padding}px;
+  padding: ${(props) => props.padding ?? 0}px;
   gap: 12px;
+
+  ${(props) => {
+    if (!props.fullWidth) return;
+
+    return css`width: 100%;`;
+  }}
 
   ${(props) => {
     if (!props.coverArea) return;
@@ -22,10 +30,6 @@ const StyledLabeledContainerWrapper = styled.div<LabeledFlexProps>`
       height: 100%;
     `;
   }}
-`;
-
-const StyledLabeledContainer = styled(FlexContainer)`
-  padding: 0px;
 `;
 
 const StyledContainerLabel = styled(Text)`
@@ -39,11 +43,11 @@ const LabeledContainer = forwardRef<HTMLDivElement, LabeledFlexProps>((
   return (
     <StyledLabeledContainerWrapper {...props}>
       <StyledContainerLabel
-        visible={props.showLabel}
+        align={props.labelPosition}
         text={props.label}
         weight='Medium'
       />
-      <StyledLabeledContainer
+      <FlexContainer
         {...props}
         ref={ref}
       />
@@ -51,10 +55,11 @@ const LabeledContainer = forwardRef<HTMLDivElement, LabeledFlexProps>((
   );
 });
 
-LabeledContainer.displayName = 'Flex Container';
+LabeledContainer.displayName = 'Labeled Container';
 
 LabeledContainer.defaultProps = {
-  showLabel: true,
+  labelPosition: 'left',
+  label: 'Container',
 };
 
 export { LabeledContainer };

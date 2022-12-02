@@ -16,7 +16,7 @@ const StyledDropdownHeader = styled.div<DropdownHeaderProps>`
   align-items: center;
   position: relative;
   width: 100%;
-  height: 40px;
+  height: 30px;
   outline: none;
   padding-left: 5px;
   outline: 1px solid;
@@ -42,8 +42,9 @@ const StyledDropdownHeaderText = styled(Text)<DropdownHeaderProps>`
 `;
 
 const StyledDropdownHeaderIcon = styled(Icon)<DropdownHeaderProps>`
+  width: 15px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   fill: ${(props) => props.theme.text.normal};
 `;
 

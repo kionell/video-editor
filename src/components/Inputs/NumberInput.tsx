@@ -26,7 +26,7 @@ const StyledNumberInputWrapper = styled.div<NumberInputProps>`
   justify-content: left;
   align-items: center;
   position: relative;
-  gap: 12px;
+  gap: 8px;
 
   flex-direction: ${(props) => props.labelPosition === 'left' ? 'row-reverse' : 'row'};
 `;
@@ -54,6 +54,7 @@ const StyledPlusButton = styled(SecondaryButton)`
 
 const StyledNumberInput = styled(StyledTextInput).attrs({ type: 'number' })<NumberInputProps>`
   -moz-appearance: textfield;
+  height: 40px;
   padding: 0px;
   flex: 1;
   border-radius: 0px;
@@ -207,6 +208,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
         disabled={disabled}
         text={label}
         weight='Medium'
+        overflow='visible'
         size={NORMAL_FONT_SIZE}
       />
     </StyledNumberInputWrapper>

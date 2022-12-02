@@ -155,8 +155,8 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
       const defaultDurationMs = element.totalDurationMs * 2;
       const zoomLevel = getFitZoomLevel(
         defaultDurationMs,
-        currentScroll,
-        currentZoom,
+        currentScroll.left,
+        currentZoom.zoom,
       );
 
       dispatch(setCurrentZoom(zoomLevel));
@@ -198,7 +198,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
           padding={0}
         >
           <PrimaryButton
-            ref={addButtonRef}
+            buttonRef={addButtonRef}
             onClick={onAddClick}
             onTouchStart={onAddClick}
             visible={addable}
@@ -211,7 +211,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
             paddingVertical={3}
           />
           <SecondaryButton
-            ref={deleteButtonRef}
+            buttonRef={deleteButtonRef}
             onClick={onDeleteClick}
             onTouchStart={onDeleteClick}
             visible={deletable}

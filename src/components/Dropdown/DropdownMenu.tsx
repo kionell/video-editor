@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   MouseEventHandler,
   ReactElement,
@@ -14,6 +14,8 @@ import { DropdownItem, DropdownItemProps, DropdownItemWrapper } from './Dropdown
 import { DropdownHeader } from './DropdownHeader';
 
 interface DropdownProps {
+  width?: number;
+  height?: number;
   disabled?: boolean;
   expanded?: boolean;
   showLabel?: boolean;
@@ -30,8 +32,13 @@ const StyledDropdownWrapper = styled.div<DropdownProps>`
   position: relative;
   display: flex;
   justify-content: left;
-  margin: 12px;
-  gap: 5px;
+  gap: 8px;
+
+  ${(props) => {
+    if (props.width) return;
+
+    return css`width: 100%;`;
+  }}
 
   flex-direction: ${(props) => {
     if (props.labelPosition === 'left') return 'row';
@@ -40,7 +47,9 @@ const StyledDropdownWrapper = styled.div<DropdownProps>`
     return 'column';
   }};
 
-  align-items: ${(props) => props.labelPosition === 'top' ? 'start' : 'center'};
+  align-items: ${(props) => {
+    return props.labelPosition === 'top' ? 'start' : 'center';
+  }};
 
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
@@ -49,11 +58,11 @@ const StyledDropdownMenu = styled.div<DropdownProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 150px;
   height: 100%;
   outline: none;
   border-radius: 4px;
   cursor: ${(props) => props.disabled ? 'inherit' : 'pointer'};
+  width: ${(props) => props.width ? props.width + 'px' : '100%'}; 
 `;
 
 const StyledDropdownLabel = styled(Text)`
@@ -62,6 +71,7 @@ const StyledDropdownLabel = styled(Text)`
 
 const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
   const {
+    width,
     showLabel,
     label,
     labelPosition,
@@ -129,12 +139,14 @@ const DropdownMenu: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <StyledDropdownWrapper
+      width={width}
       labelPosition={labelPosition}
       disabled={disabled}
     >
       <StyledDropdownLabel
         visible={showLabel}
         text={label}
+        overflow='visible'
       />
       <StyledDropdownMenu ref={dropdownRef} {...props}>
         <DropdownHeader

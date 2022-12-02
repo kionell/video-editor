@@ -6,6 +6,7 @@ type FlexJustifying = 'start' | 'end' | 'center' | 'space-between' | 'space-arou
 type FlexAligning = 'start' | 'end' | 'center';
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
+  fullWidth?: boolean;
   direction?: FlexDirection;
   reversed?: boolean;
   justify?: FlexJustifying;
@@ -33,6 +34,12 @@ const StyledFlexContainer = styled.div<FlexProps>`
   align-items: ${(props) => props.align};
 
   ${(props) => {
+    if (!props.fullWidth) return;
+
+    return css`width: 100%;`;
+  }}
+
+  ${(props) => {
     if (!props.coverArea) return;
 
     return css`
@@ -57,8 +64,8 @@ FlexContainer.defaultProps = {
   wrapElements: true,
   justify: 'start',
   align: 'start',
-  padding: 6,
-  gap: 6,
+  padding: 0,
+  gap: 0,
 };
 
 export { FlexContainer };

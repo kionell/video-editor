@@ -4,10 +4,13 @@ import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
 export interface TextInputProps {
+  width?: number;
+  height?: number;
   disabled?: boolean;
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'top' | 'left' | 'right';
+  labelWeight?: 'Regular' | 'Medium';
   placeholder?: string;
   className?: string;
   onChange?: FormEventHandler<HTMLInputElement>;
@@ -17,8 +20,13 @@ const StyledTextInputWrapper = styled.div<TextInputProps>`
   display: flex;
   justify-content: left;
   position: relative;
-  margin: 12px;
-  gap: 5px;
+  gap: 8px;
+
+  ${(props) => {
+    if (props.width) return;
+
+    return css`width: 100%;`;
+  }}
 
   flex-direction: ${(props) => {
     if (props.labelPosition === 'left') return 'row';
@@ -36,7 +44,6 @@ const StyledTextInputWrapper = styled.div<TextInputProps>`
 
 export const StyledTextInput = styled.input<TextInputProps>`
   position: relative;
-  height: 40px;
   outline: none;
   padding-left: 5px;
   border: 1px solid;
@@ -49,6 +56,9 @@ export const StyledTextInput = styled.input<TextInputProps>`
   font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;
   transition: 100ms;
+
+  width: ${(props) => props.width ? props.width + 'px' : '100%'};
+  height: ${(props) => props.height ?? 35}px; 
 
   ${(props) => {
     if (props.disabled) return;
@@ -72,16 +82,26 @@ const StyledTextInputLabel = styled(Text)`
 `;
 
 const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
-  const { showLabel, label, labelPosition, disabled } = props;
+  const {
+    width,
+    showLabel,
+    label,
+    labelPosition,
+    labelWeight,
+    disabled,
+  } = props;
 
   return (
     <StyledTextInputWrapper
+      width={width}
       labelPosition={labelPosition}
       disabled={disabled}
     >
       <StyledTextInputLabel
         visible={showLabel}
         text={label}
+        weight={labelWeight}
+        overflow='visible'
         size={NORMAL_FONT_SIZE}
       />
       <StyledTextInput {...props} />
@@ -94,6 +114,7 @@ TextInput.defaultProps = {
   showLabel: true,
   label: 'Input',
   labelPosition: 'left',
+  labelWeight: 'Regular',
   placeholder: 'Placeholder Text',
 };
 

@@ -18,7 +18,7 @@ const DropdownItemWrapper = styled.div<DropdownItemWrapperProps>`
   border-bottom-right-radius: 4px;
   overflow: hidden;
   outline: none;
-  z-index: 1;
+  z-index: 10;
   transition: opacity 100ms;
 `;
 
@@ -26,6 +26,7 @@ export interface DropdownItemProps {
   'data-index'?: number;
   selected?: boolean;
   text?: string;
+  height?: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -34,7 +35,7 @@ const StyledDropdownItem = styled.div<DropdownItemProps>`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 40px;
+  height: ${(props) => props.height}px;
   outline: none;
   padding-left: 5px;
   outline: none;
@@ -73,11 +74,12 @@ const DropdownItem: React.FC<DropdownItemProps> = (props: DropdownItemProps) => 
 DropdownItem.defaultProps = {
   selected: false,
   text: 'Option',
+  height: 30,
 };
 
 DropdownItemWrapper.defaultProps = {
   visible: false,
-  offset: 40,
+  offset: 30,
 };
 
 export { DropdownItem, DropdownItemWrapper };
