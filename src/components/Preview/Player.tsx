@@ -1,6 +1,6 @@
 import etro from 'etro';
 import styled from 'styled-components';
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { FlatButton } from '../Buttons/FlatButton';
 import { FlexContainer } from '../Containers/FlexContainer';
@@ -9,7 +9,6 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
 import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
 import { setPlaying } from '../../store/Reducers/PreviewSlice';
-import { PrimaryButton } from '../Buttons/PrimaryButton';
 import {
   DEFAULT_SCALED_PREVIEW_HEIGHT,
   DEFAULT_SCALED_PREVIEW_WIDTH,
@@ -21,15 +20,9 @@ import {
   selectTracks,
 } from '../../store';
 
-const StyledPlayerArea = styled(FlexContainer)`
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  gap: 0px;
-  justify-content: center;
-  align-content: center;
-  overflow: hidden;
-`;
+interface PlayerProps {
+  canvasRef?: RefObject<HTMLCanvasElement>;
+}
 
 const StyledPlayerWrapper = styled(FlexContainer)`
   padding: 0px;
@@ -37,8 +30,7 @@ const StyledPlayerWrapper = styled(FlexContainer)`
   flex-direction: column;
 `;
 
-const StyledPlayer = styled.canvas`
-  height: 80%;
+const StyledPlayerCanvas = styled.canvas`
   background: black;
 `;
 
@@ -49,18 +41,12 @@ const StyledPlayerButtonWrapper = styled(FlexContainer)`
 `;
 
 const StyledPlayerButton = styled(FlatButton)`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   padding: 0px;
 `;
 
-const ExportButton = styled(PrimaryButton)`
-  position: absolute;
-  right: 30px;
-  top: 15px;
-`;
-
-const Player: React.FC = () => {
+const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const dispatch = useAppDispatch();
 
   const lastSeekTimeMs = useAppSelector(selectLastSeekTimeMs);
@@ -68,9 +54,9 @@ const Player: React.FC = () => {
   const tracks = useAppSelector(selectTracks);
   const isPlaying = useAppSelector(selectIsPlaying);
 
-  const playPromise = useRef<Promise<void>>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = props.canvasRef ?? useRef<HTMLCanvasElement>(null);
   const playerRef = useRef<VideoPlayer>();
+  const playPromise = useRef<Promise<void>>(null);
 
   const subscribeToEvents = () => {
     if (!playerRef.current) return;
@@ -152,38 +138,33 @@ const Player: React.FC = () => {
   }, [lastSeekTimeMs]);
 
   return (
-    <StyledPlayerArea className='player-area'>
-      <StyledPlayerWrapper className='player-wrapper'>
-        <StyledPlayer
-          className='player-canvas'
-          width={DEFAULT_SCALED_PREVIEW_WIDTH}
-          height={DEFAULT_SCALED_PREVIEW_HEIGHT}
-          ref={canvasRef}
-        />
-
-        <StyledPlayerButtonWrapper className='player-buttons'>
-          <StyledPlayerButton
-            iconType='Backward'
-            showLabel={false}
-          />
-          <StyledPlayerButton
-            onClick={isPlaying ? pause : play}
-            iconType={isPlaying ? 'Pause' : 'Play'}
-            showLabel={false}
-          />
-          <StyledPlayerButton
-            iconType='Forward'
-            showLabel={false}
-          />
-        </StyledPlayerButtonWrapper>
-      </StyledPlayerWrapper>
-
-      <ExportButton
-        showLabel
-        label='Export'
-        iconType='Export'
+    <StyledPlayerWrapper className='preview-player-wrapper'>
+      <StyledPlayerCanvas
+        className='preview-player-canvas'
+        width={DEFAULT_SCALED_PREVIEW_WIDTH}
+        height={DEFAULT_SCALED_PREVIEW_HEIGHT}
+        ref={canvasRef}
       />
-    </StyledPlayerArea>
+
+      <StyledPlayerButtonWrapper className='preview-player-buttons'>
+        <StyledPlayerButton
+          className='preview-player-buttons__backwards'
+          iconType='Backward'
+          showLabel={false}
+        />
+        <StyledPlayerButton
+          className='preview-player-buttons__play'
+          onClick={isPlaying ? pause : play}
+          iconType={isPlaying ? 'Pause' : 'Play'}
+          showLabel={false}
+        />
+        <StyledPlayerButton
+          className='preview-player-buttons__forward'
+          iconType='Forward'
+          showLabel={false}
+        />
+      </StyledPlayerButtonWrapper>
+    </StyledPlayerWrapper>
   );
 };
 
