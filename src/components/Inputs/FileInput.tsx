@@ -72,7 +72,12 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
     // link.click();
   };
 
-  return <StyledFileInput {...props} onChange={onChange} ref={ref} />;
+  return <StyledFileInput
+    {...props}
+    title=' '
+    onChange={onChange}
+    ref={ref}
+  />;
 });
 
 FileInput.displayName = 'File Input';
