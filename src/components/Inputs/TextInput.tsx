@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, RefObject } from 'react';
 import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
@@ -13,6 +13,7 @@ export interface TextInputProps {
   labelWeight?: 'Regular' | 'Medium';
   placeholder?: string;
   className?: string;
+  inputRef?: RefObject<HTMLInputElement>;
   onChange?: FormEventHandler<HTMLInputElement>;
 }
 
@@ -82,6 +83,8 @@ const StyledTextInputLabel = styled(Text)`
 `;
 
 const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
+  const { inputRef, ...other } = props;
+
   const {
     width,
     showLabel,
@@ -89,7 +92,7 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
     labelPosition,
     labelWeight,
     disabled,
-  } = props;
+  } = other;
 
   return (
     <StyledTextInputWrapper
@@ -104,7 +107,7 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
         overflow='visible'
         size={NORMAL_FONT_SIZE}
       />
-      <StyledTextInput {...props} />
+      <StyledTextInput {...other} ref={inputRef} />
     </StyledTextInputWrapper>
   );
 };
