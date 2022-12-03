@@ -24,6 +24,10 @@ export class VideoPlayer {
     this._movie = new etro.Movie(options);
   }
 
+  async refresh(): Promise<void> {
+    this._movie.refresh();
+  }
+
   async play(): Promise<void> {
     return this._movie.play();
   }
