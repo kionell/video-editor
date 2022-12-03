@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { Text } from '../Text';
 import { Icon } from '../Icon';
 import {
@@ -13,6 +13,7 @@ export interface CheckboxProps {
   showLabel?: boolean;
   label?: string;
   labelPosition?: 'left' | 'right';
+  checkboxRef?: RefObject<HTMLInputElement>;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -88,7 +89,7 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
   const { showLabel, label, labelPosition, disabled } = props;
 
   const [checked, setChecked] = useState(props.checked);
-  const checkboxRef = useRef<HTMLInputElement>(null);
+  const checkboxRef = props.checkboxRef ?? useRef<HTMLInputElement>(null);
 
   const changeState = () => {
     if (disabled) return;
