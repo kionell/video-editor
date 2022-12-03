@@ -74,12 +74,12 @@ const DropdownItem: React.FC<DropdownItemProps> = (props: DropdownItemProps) => 
 DropdownItem.defaultProps = {
   selected: false,
   text: 'Option',
-  height: 30,
+  height: 35,
 };
 
 DropdownItemWrapper.defaultProps = {
   visible: false,
-  offset: 30,
+  offset: 35,
 };
 
 export { DropdownItem, DropdownItemWrapper };
