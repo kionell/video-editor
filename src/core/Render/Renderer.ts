@@ -74,11 +74,6 @@ export class Renderer {
   }
 
   _generateCommand(): string[] {
-    // return '-i 2_5424766006650216367.mp4 -i 2_5424766006650216367.mp4 -filter_complex [0:v][1:v]xfade=transition=fade:duration=2:offset=5,format=pix_fmts=yuv420p[outv] -map [outv] -preset ultrafast output.mp4'.split(' ');
-    // return '-y -i 2_5424766006650216367.mp4 -i 2_5424766006650216367.mp4 -filter_complex [0:v]trim=start=5:10,hsvkey=sat=-1,setpts=PTS-STARTPTS+10/TB[vt0];[1:v][vt0]overlay=x=0:y=0:enable=\'between(t,10,15)\'[outv] -map [outv] -c:v libx264 -preset ultrafast output.mp4'.split(' ');
-
-    // return '-y -itsoffset 5 -i 2_5424766006650216367.mp4 -itsoffset 20 -i 2_5424766006650216367.mp4 -filter_complex [0:v]trim=start=10:end=15,setpts=PTS-STARTPTS[v1];[0:v]trim=start=5:end=10,setpts=PTS-STARTPTS[v2];[v1][v2]concat=n=2:v=1:a=0[outv] -map [outv] -c:v libx264 -preset ultrafast output.mp4'.split(' ');
-
     const command: string[][] = [];
 
     command.push(this._getFileInputs());
@@ -116,12 +111,12 @@ export class Renderer {
     /**
      * Reserved input for blank space.
      */
-    // inputs.push('-f');
-    // inputs.push('lavfi');
-    // inputs.push('-t');
-    // inputs.push('5');
-    // inputs.push('-i');
-    // inputs.push(`color=c=black:s=${blankWidth}x${blankHeight}`);
+    inputs.push('-f');
+    inputs.push('lavfi');
+    inputs.push('-t');
+    inputs.push('5');
+    inputs.push('-i');
+    inputs.push(`color=c=black:s=${blankWidth}x${blankHeight}`);
 
     return inputs;
   }
