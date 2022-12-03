@@ -68,11 +68,13 @@ function getVideoFilters(
   }
 
   if (element.fadeInTimeMs) {
-    filters.push(`fade=in:0:d=${element.fadeInTimeMs}`);
+    filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
   }
 
   if (element.fadeOutTimeMs) {
-    filters.push(`fade=out:0:d=${element.fadeInTimeMs}`);
+    const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
+
+    filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
   }
 
   if (element.startTrimMs !== 0 || element.endTrimMs !== 0) {
