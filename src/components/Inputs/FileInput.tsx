@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import React, { forwardRef, Ref, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { addFile } from '../../store/Reducers/FileSlice';
-import { ffmpeg } from '../../lib/FFmpeg';
 import { loadFile } from '../../core/Utils/Files';
-import { fetchFile } from '@ffmpeg/ffmpeg';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFiles } from '../../store';
 
@@ -28,7 +26,6 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
   props: FileInputProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) => {
-  const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
 
   const onChange = async (event: FormEvent<HTMLInputElement>) => {

@@ -3,7 +3,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 import { MouseEvent, useEffect, useRef } from 'react';
 import { FlexContainer } from '../components/Containers/FlexContainer';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { selectShowExportMenu } from '../store/Selectors';
+import { selectShowExportMenu, selectTracks } from '../store/Selectors';
 import { setExportMenuVisible } from '../store/Reducers/GeneralSlice';
 import { TextInput } from '../components/Inputs/TextInput';
 import { DropdownMenu } from '../components/Dropdown/DropdownMenu';
@@ -11,6 +11,7 @@ import { LabeledContainer } from '../components/Containers/LabeledContainer';
 import { Checkbox } from '../components/Inputs/Checkbox';
 import { SecondaryButton } from '../components/Buttons/SecondaryButton';
 import { PrimaryButton } from '../components/Buttons/PrimaryButton';
+import { Renderer } from '../core/Render/Renderer';
 
 const StyledExportMenuArea = styled(FlexContainer)`
   visibility: hidden;
@@ -55,11 +56,48 @@ const StyledExportMenu = styled(FlexContainer)`
 const ExportMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const isVisible = useAppSelector(selectShowExportMenu);
+  const tracks = useAppSelector(selectTracks);
+
+  const renderer = useRef<Renderer>();
+
+  const fileNameRef = useRef<HTMLInputElement>(null);
+  const outputWidthRef = useRef<HTMLInputElement>(null);
+  const outputHeightRef = useRef<HTMLInputElement>(null);
+  const frameRateRef = useRef<HTMLInputElement>(null);
 
   const exportRef = useRef<HTMLDivElement>(null);
 
   const closeMenu = () => dispatch(setExportMenuVisible(false));
   const onMenuClick = (e: MouseEvent) => e.stopPropagation();
+
+  const renderVideo = async () => {
+    if (!renderer.current) {
+      const fileName = fileNameRef.current?.value
+        || fileNameRef.current?.placeholder;
+
+      const width = outputWidthRef.current?.valueAsNumber
+        || Number(outputWidthRef.current?.placeholder);
+
+      const height = outputHeightRef.current?.valueAsNumber
+        || Number(outputHeightRef.current?.placeholder);
+
+      const frameRate = frameRateRef.current?.valueAsNumber
+        || Number(frameRateRef.current?.placeholder);
+
+      renderer.current = new Renderer({
+        fileName,
+        width,
+        height,
+        frameRate,
+      });
+    }
+
+    await renderer.current.load();
+
+    const output = await renderer.current.render(tracks);
+
+    console.log(output);
+  };
 
   useEffect(() => {
     if (!exportRef.current) return;
@@ -87,6 +125,7 @@ const ExportMenu: React.FC = () => {
           labelPosition='top'
           labelWeight='Medium'
           placeholder='Untitled'
+          inputRef={fileNameRef}
           showLabel
         />
 
@@ -97,22 +136,25 @@ const ExportMenu: React.FC = () => {
           fullWidth
           gap={12}
         >
-          <Checkbox label='Include Video'/>
+          <Checkbox label='Include Video' checked />
           <FlexContainer gap={12}>
             <TextInput
               width={50}
               label='Width'
+              inputRef={outputWidthRef}
               placeholder='1920'
             />
             <TextInput
               width={50}
               label='Height'
+              inputRef={outputHeightRef}
               placeholder='1080'
             />
           </FlexContainer>
           <TextInput
             width={50}
             label='Frame Rate'
+            inputRef={frameRateRef}
             placeholder='60'
           />
           <FlexContainer
@@ -139,7 +181,7 @@ const ExportMenu: React.FC = () => {
           fullWidth
           gap={12}
         >
-          <Checkbox label='Include Audio' />
+          <Checkbox label='Include Audio' checked />
           <DropdownMenu
             label='Sample Rate (Hz)'
             selectedIndex={4}
@@ -178,6 +220,7 @@ const ExportMenu: React.FC = () => {
             showIcon={false}
             showLabel
             label='Render'
+            onClick={renderVideo}
           />
         </FlexContainer>
       </StyledExportMenu>
