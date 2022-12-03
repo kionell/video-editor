@@ -1,20 +1,21 @@
 import { useEffect, Ref } from 'react';
+import Sister, { SisterEventListener } from 'sister';
 import {
   createPositionTracker,
   IPositionTrackerState,
   PositionEvent,
 } from '../core/Utils/Position';
-import { unitsToTimeMs } from '../core/Utils/Timeline';
-import { selectCurrentZoom } from '../store/Selectors';
-import { setCurrentTimeMs } from '../store/Reducers/TimelineSlice';
-import { useAppDispatch } from './useAppDispatch';
-import { useAppSelector } from './useAppSelector';
 
-export function useSeekerMove(ref: Ref<HTMLElement>): void {
-  const dispatch = useAppDispatch();
-  const currentZoom = useAppSelector(selectCurrentZoom);
+export interface SeekerMoveState {
+  target: HTMLElement;
+  seekerX: number;
+}
 
-  const makeMovableX = (element: HTMLElement) => {
+export type SeekerMoveCallback = (state: SeekerMoveState) => void;
+
+export function useSeekerMove(ref: Ref<HTMLElement>, cb?: SeekerMoveCallback): void {
+  const makeMovableX = (element: HTMLElement, cb?: SeekerMoveCallback) => {
+    const emitter = new Sister();
     const tracker = createPositionTracker();
 
     let position: IPositionTrackerState;
@@ -34,10 +35,10 @@ export function useSeekerMove(ref: Ref<HTMLElement>): void {
     const moveElement = (event: PositionEvent) => {
       position = tracker.update(event);
 
-      const seekerX = position.pageX + startOffsetX;
-      const timeMs = unitsToTimeMs(seekerX, currentZoom.zoom);
-
-      dispatch(setCurrentTimeMs(timeMs));
+      emitter.trigger<'seeker-move', SeekerMoveState>('seeker-move', {
+        target: element,
+        seekerX: position.pageX + startOffsetX,
+      });
     };
 
     const stopMoving = () => {
@@ -50,9 +51,15 @@ export function useSeekerMove(ref: Ref<HTMLElement>): void {
     element.addEventListener('touchstart', startMoving);
     element.addEventListener('mousedown', startMoving);
 
+    let seekerMoveListener: SisterEventListener | null = null;
+
+    if (cb) seekerMoveListener = emitter.on('seeker-move', cb);
+
     return () => {
       element.removeEventListener('touchstart', startMoving);
       element.removeEventListener('mousedown', startMoving);
+
+      if (seekerMoveListener) emitter.off(seekerMoveListener);
 
       stopMoving();
     };
@@ -61,6 +68,6 @@ export function useSeekerMove(ref: Ref<HTMLElement>): void {
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    return makeMovableX(ref.current);
+    return makeMovableX(ref.current, cb);
   }, []);
 }

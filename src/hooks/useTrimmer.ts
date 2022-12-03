@@ -1,9 +1,10 @@
 import { Ref, useEffect } from 'react';
 import Sister, { SisterEventListener } from 'sister';
 import { createPositionTracker, IPositionTrackerState } from '../core/Utils/Position';
-import { useAppSelector } from './useAppSelector';
 import { selectCurrentZoom } from '../store/Selectors';
 import { clamp } from '../core/Utils/Math';
+import { unitsToTimeMs } from '../core/Utils/Timeline';
+import { useAppSelector } from './useAppSelector';
 
 type TrimmableEventType = 'start-trim' | 'end-trim';
 
@@ -22,8 +23,8 @@ export interface TrimmableProps {
 }
 
 export function useTrimmer(ref: Ref<HTMLElement>, props?: TrimmableProps): void {
-  const currentZoom = useAppSelect(selectCurrentZoom);
-  
+  const currentZoom = useAppSelector(selectCurrentZoom);
+
   const makeTrimmable = (element: HTMLElement, props?: TrimmableProps) => {
     const emitter = new Sister();
     const tracker = createPositionTracker();
@@ -39,19 +40,22 @@ export function useTrimmer(ref: Ref<HTMLElement>, props?: TrimmableProps): void 
     let startTrimMs = 0;
     let endTrimMs = 0;
 
-    element.style.position = 'absolute';
+    let isLeftTrimmer = false;
+    let isRightTrimmer = false;
 
     const startTrimming = (event: MouseEvent) => {
       targetElement = event.target as HTMLElement;
 
-      if (!targetElement.className.includes('trimmer-left')) return;
-      if (!targetElement.className.includes('trimmer-right')) return;
-      
+      isLeftTrimmer = targetElement.className.includes('trimmer-left');
+      isRightTrimmer = targetElement.className.includes('trimmer-right');
+
+      if (!isLeftTrimmer && !isRightTrimmer) return;
+
       event.preventDefault();
       event.stopPropagation();
-      
+
       const startingStyle = window.getComputedStyle(element);
-      
+
       startingLeft = parseFloat(startingStyle.left);
       startingWidth = parseFloat(startingStyle.width);
       position = tracker.start(event);
@@ -63,18 +67,18 @@ export function useTrimmer(ref: Ref<HTMLElement>, props?: TrimmableProps): void 
     const trimElement = (event: MouseEvent) => {
       position = tracker.update(event);
 
-      if (targetElement.classList.contains('trimmer-left')) {
+      if (isLeftTrimmer) {
         const currentLeft = startingLeft + position.relativeX;
         const currentWidth = startingWidth - position.relativeX;
 
         const clampedWidth = clamp(currentWidth, 0, initialWidth);
-        const clampedLeft = currentLeft - Math.max(0, currentWidth - clampedWidth);
-        
-        element.style.left = startingLeft + position.relativeX + 'px';
-        element.style.width = startingWidth - position.relativeX + 'px';
+        const clampedLeft = currentLeft - (currentWidth - initialWidth);
 
-        const trimUnits = Math.max(0, clampedWidth - currentWidth);
-        
+        element.style.left = clampedLeft + 'px';
+        element.style.width = clampedWidth + 'px';
+
+        const trimUnits = Math.max(0, initialWidth - currentWidth);
+
         startTrimMs = unitsToTimeMs(trimUnits, currentZoom.zoom);
 
         emitter.trigger<TrimmableEventType, TrimmableState>('start-trim', {
@@ -85,13 +89,13 @@ export function useTrimmer(ref: Ref<HTMLElement>, props?: TrimmableProps): void 
         });
       }
 
-      if (targetElement.classList.contains('trimmer-right')) {
+      if (isRightTrimmer) {
         const currentWidth = startingWidth + position.relativeX;
         const clampedWidth = clamp(currentWidth, 0, initialWidth);
-        
-        element.style.width = startingWidth + position.relativeX + 'px';
-      
-        const trimUnits = Math.max(0, clampedWidth - currentWidth);
+
+        element.style.width = clampedWidth + 'px';
+
+        const trimUnits = initialWidth - clampedWidth;
 
         endTrimMs = unitsToTimeMs(trimUnits, currentZoom.zoom);
 
@@ -109,6 +113,9 @@ export function useTrimmer(ref: Ref<HTMLElement>, props?: TrimmableProps): void 
 
       document.removeEventListener('mousemove', trimElement);
       document.removeEventListener('mouseup', stopTrimming);
+
+      isLeftTrimmer = false;
+      isRightTrimmer = false;
     };
 
     element.addEventListener('mousedown', startTrimming);
