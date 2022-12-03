@@ -2,14 +2,14 @@ import { forwardRef, ForwardedRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '../Icon';
 import { BaseElement } from '../../core/Elements/BaseElement';
+import { useTrimmer, TrimmableState } from '../../hooks/useTrimmer';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useDraggable } from '../../hooks/useDraggable';
 import { useFocusable } from '../../hooks/useFocusable';
-import { useTrimmer } from '../../hooks/useTrimmer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { selectCurrentZoom } from '../../store/Selectors';
 import { timeMsToUnits } from '../../core/Utils/Timeline';
-import { TrimmableState } from '../../hooks/useTrimmer';
 import {
   focusElement,
   unfocusElement,
@@ -130,11 +130,17 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     if (ref instanceof Function || !ref?.current) return;
 
     const leftUnits = timeMsToUnits(element.startTimeMs, currentZoom.zoom);
-    const widthUnits = timeMsToUnits(element.durationMs, currentZoom.zoom);
 
     ref.current.style.left = leftUnits + 'px';
+  }, [element.startTimeMs]);
+
+  useEffect(() => {
+    if (ref instanceof Function || !ref?.current) return;
+
+    const widthUnits = timeMsToUnits(element.durationMs, currentZoom.zoom);
+
     ref.current.style.width = widthUnits + 'px';
-  }, [element.startTimeMs, element.durationMs]);
+  }, [element.durationMs]);
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
@@ -164,21 +170,23 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ],
   });
 
-  const startTrimCallback = useDebounce((data: TrimmableState) => {
+  const onStartTrim = useDebounce((data: TrimmableState) => {
     dispatch(updateElement({
       startTrimMs: data.startTrimMs,
+      element,
     }));
   });
 
-  const endTrimCallback = useDebounce((data: TrimmableState) => {
+  const onEndTrim = useDebounce((data: TrimmableState) => {
     dispatch(updateElement({
       endTrimMs: data.endTrimMs,
+      element,
     }));
   });
 
   useTrimmer(ref, {
-    startTrimCallback,
-    endTrimCallback,
+    startTrimCallback: onStartTrim,
+    endTrimCallback: onEndTrim,
   });
 
   useDraggable(ref);
