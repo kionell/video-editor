@@ -1,15 +1,17 @@
 import React, { MouseEvent, RefObject, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useSeekerMove } from '../../hooks/useSeekerMove';
+import { SeekerMoveState, useSeekerMove } from '../../hooks/useSeekerMove';
 import { Icon } from '../Icon';
 import { TIMELINE_OFFSET_X } from '../../constants';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { timeMsToUnits } from '../../core/Utils/Timeline';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { timeMsToUnits, unitsToTimeMs } from '../../core/Utils/Timeline';
+import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
 import {
   selectScrollLeft,
   selectCurrentTimeMs,
   selectCurrentZoom,
-} from '../../store';
+} from '../../store/Selectors';
 
 interface SeekerProps {
   seekerRef?: RefObject<HTMLDivElement>;
@@ -55,9 +57,12 @@ const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
 const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
   const seekerRef = props.seekerRef ?? useRef<HTMLDivElement>(null);
 
+  const dispatch = useAppDispatch();
   const scrollX = useAppSelector(selectScrollLeft);
   const currentZoom = useAppSelector(selectCurrentZoom);
   const currentTimeMs = useAppSelector(selectCurrentTimeMs);
+
+  console.log('Seeker render');
 
   const updatePosByTime = () => {
     if (!seekerRef.current) return;
@@ -67,7 +72,14 @@ const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
     seekerRef.current.style.left = seekerX - scrollX + 'px';
   };
 
-  useSeekerMove(seekerRef);
+  const onSeekerMove = (state: SeekerMoveState) => {
+    const seekerX = state.seekerX;
+    const timeMs = unitsToTimeMs(seekerX, currentZoom.zoom);
+
+    dispatch(setCurrentTimeMs(timeMs));
+  };
+
+  useSeekerMove(seekerRef, onSeekerMove);
 
   /**
    * 1) Updates seeker position relatively to the current zoom.
