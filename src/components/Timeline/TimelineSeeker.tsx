@@ -6,11 +6,13 @@ import { TIMELINE_OFFSET_X } from '../../constants';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { timeMsToUnits, unitsToTimeMs } from '../../core/Utils/Timeline';
-import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
+import { clamp } from '../../core/Utils/Math';
+import { setLastSeekTimeMs } from '../../store/Reducers/TimelineSlice';
 import {
   selectScrollLeft,
   selectCurrentTimeMs,
   selectCurrentZoom,
+  selectTotalLengthMs,
 } from '../../store/Selectors';
 
 interface SeekerProps {
@@ -61,6 +63,7 @@ const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
   const scrollX = useAppSelector(selectScrollLeft);
   const currentZoom = useAppSelector(selectCurrentZoom);
   const currentTimeMs = useAppSelector(selectCurrentTimeMs);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
 
   console.log('Seeker render');
 
@@ -75,8 +78,9 @@ const TimelineSeeker: React.FC<SeekerProps> = (props: SeekerProps) => {
   const onSeekerMove = (state: SeekerMoveState) => {
     const seekerX = state.seekerX;
     const timeMs = unitsToTimeMs(seekerX, currentZoom.zoom);
+    const clampedTimeMs = clamp(timeMs, 0, totalLengthMs);
 
-    dispatch(setCurrentTimeMs(timeMs));
+    dispatch(setLastSeekTimeMs(clampedTimeMs));
   };
 
   useSeekerMove(seekerRef, onSeekerMove);

@@ -12,7 +12,6 @@ import { unitsToTimeMs } from '../../core/Utils/Timeline';
 import { clamp } from '../../core/Utils/Math';
 import {
   setCurrentScroll,
-  setCurrentTimeMs,
   setLastSeekTimeMs,
 } from '../../store/Reducers/TimelineSlice';
 
@@ -50,7 +49,6 @@ const TimelineTrackpad: React.FC = () => {
 
     lastClampedTimeMs.current = clampedTimeMs;
 
-    dispatch(setCurrentTimeMs(clampedTimeMs));
     dispatch(setLastSeekTimeMs(clampedTimeMs));
   };
 

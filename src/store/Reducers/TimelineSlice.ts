@@ -43,6 +43,7 @@ const TimelineSlice = createSlice({
 
     setLastSeekTimeMs(state, action: CurrentTimeAction) {
       state.lastSeekTimeMs = action.payload;
+      state.currentTimeMs = action.payload;
     },
 
     setCurrentTimeMs(state, action: CurrentTimeAction) {
