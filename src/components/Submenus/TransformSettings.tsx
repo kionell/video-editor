@@ -13,6 +13,11 @@ import { useEffect, useRef } from 'react';
 import { updateElement } from '../../store/Reducers/TimelineSlice';
 import { useDebounce } from '../../hooks/useDebounce';
 import { FlexContainer } from '../Containers/FlexContainer';
+import {
+  DEFAULT_FLIP_X,
+  DEFAULT_FLIP_Y,
+  DEFAULT_ROTATION,
+} from '../../constants';
 
 const StyledTransformSettings = styled.div`
   width: 100%;
@@ -91,9 +96,9 @@ const TransformSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      flipX: false,
-      flipY: false,
-      rotation: 0,
+      flipX: DEFAULT_FLIP_X,
+      flipY: DEFAULT_FLIP_Y,
+      rotation: DEFAULT_ROTATION,
       element: targetElement,
     }));
   };

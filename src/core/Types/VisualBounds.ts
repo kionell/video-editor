@@ -52,4 +52,11 @@ export class VisualBounds {
     this.top = options?.top ?? 0;
     this.bottom = options?.bottom ?? 0;
   }
+
+  get isChanged(): boolean {
+    return this.left !== 0
+      || this.top !== 0
+      || this.right !== 0
+      || this.bottom !== 0;
+  }
 }

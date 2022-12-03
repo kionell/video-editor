@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
+import { DEFAULT_VOLUME } from '../../constants';
 
 const StyledVolumeSettings = styled.div`
   width: 100%;
@@ -42,7 +43,7 @@ const VolumeSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      volume: 1,
+      volume: DEFAULT_VOLUME,
       element: targetElement,
     }));
   };

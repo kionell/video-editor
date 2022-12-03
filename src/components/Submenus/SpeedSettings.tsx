@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
+import { DEFAULT_SPEED } from '../../constants';
 
 const StyledSpeedSettings = styled.div`
   width: 100%;
@@ -42,7 +43,7 @@ const SpeedSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      speed: 1,
+      speed: DEFAULT_SPEED,
       element: targetElement,
     }));
   };

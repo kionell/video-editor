@@ -4,6 +4,12 @@ import { IFileElement } from './Types/IFileElement';
 import { IHasAudio } from './Types/IHasAudio';
 import { IPlayableElement } from './Types/IPlayableElement';
 import { VisibleElement } from './VisibleElement';
+import {
+  DEFAULT_FADE_IN,
+  DEFAULT_FADE_OUT,
+  DEFAULT_SPEED,
+  DEFAULT_VOLUME,
+} from '../../constants';
 
 /**
  * A video element that can be placed on a timeline track.
@@ -40,5 +46,13 @@ export class VideoElement extends VisibleElement
     const fileDurationMs = this.file.duration * 1000;
 
     this._totalDurationMs = Math.max(0, Math.min(value, fileDurationMs));
+  }
+
+  get isChanged(): boolean {
+    return super.isChanged
+      || this.volume !== DEFAULT_VOLUME
+      || this.speed !== DEFAULT_SPEED
+      || this.fadeInTimeMs !== DEFAULT_FADE_IN
+      || this.fadeOutTimeMs !== DEFAULT_FADE_OUT;
   }
 }

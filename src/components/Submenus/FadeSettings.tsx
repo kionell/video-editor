@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
+import { DEFAULT_FADE_IN, DEFAULT_FADE_OUT } from '../../constants';
 
 const StyledFadeSettings = styled.div`
   width: 100%;
@@ -52,8 +53,8 @@ const FadeSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      fadeInTimeMs: 0,
-      fadeOutTimeMs: 0,
+      fadeInTimeMs: DEFAULT_FADE_IN,
+      fadeOutTimeMs: DEFAULT_FADE_OUT,
       element: targetElement,
     }));
   };

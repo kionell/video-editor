@@ -78,3 +78,16 @@ export function formatTimelineUnit(units?: number): string {
 
   return `${formattedTime}.${formattedFrames}`;
 }
+
+export function formatTimestamp(timeMs?: number): string {
+  const formatted = formatTimeMs(timeMs);
+
+  const [time, fps] = formatted.split('.');
+
+  const framerate = Number(fps);
+  const frameInterval = 1000 / 60;
+
+  const milliseconds = Math.round(framerate * frameInterval);
+
+  return `${time}.${milliseconds}`;
+}

@@ -34,3 +34,17 @@ export const DEFAULT_MEDIA_PANEL_WIDTH = 348;
 export const MAX_MEDIA_PANEL_WIDTH = 512;
 
 export const DEFAULT_SETTINGS_PANEL_WIDTH = 300;
+
+export const DEFAULT_FADE_IN = 0;
+export const DEFAULT_FADE_OUT = 0;
+export const DEFAULT_ROTATION = 0;
+export const DEFAULT_FLIP_X = false;
+export const DEFAULT_FLIP_Y = false;
+export const DEFAULT_EXPOSURE = 0.5;
+export const DEFAULT_SATURATION = 0.5;
+export const DEFAULT_TEMPERATURE = 0.5;
+export const DEFAULT_CONTRAST = 1;
+export const DEFAULT_OPACITY = 1;
+export const DEFAULT_BLUR = 0;
+export const DEFAULT_SPEED = 1;
+export const DEFAULT_VOLUME = 1;

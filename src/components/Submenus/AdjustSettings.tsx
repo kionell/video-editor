@@ -10,6 +10,14 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
+import {
+  DEFAULT_BLUR,
+  DEFAULT_CONTRAST,
+  DEFAULT_EXPOSURE,
+  DEFAULT_OPACITY,
+  DEFAULT_SATURATION,
+  DEFAULT_TEMPERATURE,
+} from '../../constants';
 
 const StyledAdjustSettings = styled.div`
   width: 100%;
@@ -92,12 +100,12 @@ const AdjustSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      exposure: 0.5,
-      saturation: 0.5,
-      temperature: 0.5,
-      contrast: 1,
-      opacity: 1,
-      blur: 0,
+      exposure: DEFAULT_EXPOSURE,
+      saturation: DEFAULT_SATURATION,
+      temperature: DEFAULT_TEMPERATURE,
+      contrast: DEFAULT_CONTRAST,
+      opacity: DEFAULT_OPACITY,
+      blur: DEFAULT_BLUR,
       element: targetElement,
     }));
   };

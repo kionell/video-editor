@@ -77,4 +77,10 @@ export abstract class BaseElement {
   equals(other: BaseElement): boolean {
     return this.uniqueId === other.uniqueId;
   }
+
+  get isChanged(): boolean {
+    return this.offsetMs !== 0
+      || this.startTrimMs !== 0
+      || this.endTrimMs !== 0;
+  }
 }
