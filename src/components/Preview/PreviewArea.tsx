@@ -13,8 +13,25 @@ const StyledPreviewArea = styled(FlexContainer)`
   width: 100%;
   min-width: 200px;
   height: 100%;
-  padding: 0px;
-  gap: 0px;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow: hidden;
+`;
+
+const StyledButtonArea = styled(FlexContainer)`
+  padding: 20px;
+  width: 100%;
+  justify-content: right;
+  align-items: center;
+`;
+
+const StyledPlayerArea = styled(FlexContainer)`
+  flex: 1 1 0%;
+  width: 100%;
+  height: 100%;
+  min-width: 200px;
   justify-content: center;
   align-content: center;
   overflow: hidden;
@@ -23,16 +40,14 @@ const StyledPreviewArea = styled(FlexContainer)`
 const StyledExportButton = styled(PrimaryButton)`
   width: 100px;
   height: 35px;
-  position: absolute;
-  right: 20px;
-  top: 20px;
+  position: relative;
 `;
 
 const PreviewArea: React.FC = () => {
   const dispatch = useAppDispatch();
   const totalLengthMs = useAppSelector(selectTotalLengthMs);
 
-  const previewAreaRef = useRef<HTMLDivElement>(null);
+  const playerAreaRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const onExportClick = () => dispatch(setExportMenuVisible(true));
@@ -61,35 +76,39 @@ const PreviewArea: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!previewAreaRef.current || !canvasRef.current) return;
+    if (!playerAreaRef.current || !canvasRef.current) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        if (entry.target !== previewAreaRef.current) return;
+        if (entry.target !== playerAreaRef.current) return;
 
         onPlayerResize(entry.contentRect);
       }
     });
 
-    resizeObserver.observe(previewAreaRef.current);
+    resizeObserver.observe(playerAreaRef.current);
 
     return () => {
-      resizeObserver.unobserve(previewAreaRef.current);
+      resizeObserver.unobserve(playerAreaRef.current);
       resizeObserver.disconnect();
     };
   }, []);
 
   return (
-    <StyledPreviewArea className='preview-area' ref={previewAreaRef}>
-      <Player canvasRef={canvasRef} />
+    <StyledPreviewArea className='preview-area'>
+      <StyledButtonArea>
+        <StyledExportButton
+          label='Export'
+          iconType='Export'
+          disabled={totalLengthMs <= 0}
+          onClick={onExportClick}
+          showLabel
+        />
+      </StyledButtonArea>
 
-      <StyledExportButton
-        label='Export'
-        iconType='Export'
-        disabled={totalLengthMs <= 0}
-        onClick={onExportClick}
-        showLabel
-      />
+      <StyledPlayerArea ref={playerAreaRef}>
+        <Player canvasRef={canvasRef} />
+      </StyledPlayerArea>
     </StyledPreviewArea>
   );
 };
