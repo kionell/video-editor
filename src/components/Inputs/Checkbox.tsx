@@ -34,6 +34,7 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
   align-items: center;
   position: relative;
   gap: 8px;
+  margin: 8px 0px;
 
   flex-direction: ${(props) => {
     return props.labelPosition === 'left' ? 'row-reverse' : 'row';
