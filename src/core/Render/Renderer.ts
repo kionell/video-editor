@@ -1,10 +1,19 @@
 import { createFFmpeg, FFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import {
+  DEFAULT_VIDEO_WIDTH,
+  DEFAULT_VIDEO_HEIGHT,
+  DEFAULT_FRAMERATE,
+  DEFAULT_VIDEO_MIN_BITRATE,
+  DEFAULT_VIDEO_MAX_BITRATE,
+  DEFAULT_AUDIO_SAMPLE_RATE,
+  DEFAULT_AUDIO_BITRATE,
+} from '../../constants';
 import { MediaElement } from '../Elements';
-
 import { UploadedFile } from '../Files/UploadedFile';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
+import { BitrateEncoding } from './Enums/BitrateEncoding';
 import { IOutputSettings, RequiredSettings } from './Interfaces/IOutputSettings';
-import { getFilterComplex } from './Utils/Filters';
+import { FilterFlagGenerator } from './FilterFlagGenerator';
 
 export class Renderer {
   private _ffmpeg: FFmpeg;
@@ -23,9 +32,18 @@ export class Renderer {
 
     this._outputSettings = {
       fileName: outputName,
-      width: settings?.width || 1920,
-      height: settings?.height || 1080,
-      frameRate: settings?.frameRate || 60,
+      includeVideo: settings?.includeVideo ?? true,
+      width: settings?.width || DEFAULT_VIDEO_WIDTH,
+      height: settings?.height || DEFAULT_VIDEO_HEIGHT,
+      forceAspectRatio: settings?.forceAspectRatio ?? false,
+      frameRate: settings?.frameRate || DEFAULT_FRAMERATE,
+      bitrateEncoding: settings?.bitrateEncoding ?? BitrateEncoding.VBR,
+      bitrateMin: settings?.bitrateMin || DEFAULT_VIDEO_MIN_BITRATE,
+      bitrateMax: settings?.bitrateMax || DEFAULT_VIDEO_MAX_BITRATE,
+      twoPass: settings?.twoPass ?? false,
+      includeAudio: settings?.includeAudio ?? true,
+      sampleRate: settings?.sampleRate || DEFAULT_AUDIO_SAMPLE_RATE,
+      audioBitrate: settings?.audioBitrate || DEFAULT_AUDIO_BITRATE,
     };
   }
 
@@ -76,10 +94,9 @@ export class Renderer {
   _generateCommand(): string[] {
     const command: string[][] = [];
 
-    command.push(this._getFileInputs());
-    command.push(getFilterComplex(this._tracks, this._files));
-    command.push(this._getOutputFormat());
-    command.push(this._getFileOutput());
+    command.push(this._getInputSettings());
+    command.push(this._getOtherSettings());
+    command.push(this._getOutputSettings());
 
     return command.flat();
   }
@@ -102,7 +119,7 @@ export class Renderer {
     return [...uniqueFiles];
   }
 
-  _getFileInputs(): string[] {
+  _getInputSettings(): string[] {
     const inputs = this._files.flatMap((file) => ['-i', file.name]);
 
     const blankWidth = this._outputSettings.width;
@@ -121,14 +138,46 @@ export class Renderer {
     return inputs;
   }
 
-  _getFileOutput(): string[] {
-    return [this._outputSettings.fileName];
+  _getOtherSettings(): string[] {
+    const filterGenerator = new FilterFlagGenerator(
+      this._tracks,
+      this._files,
+      this._outputSettings,
+    );
+
+    return filterGenerator.generateFlag();
   }
 
-  _getOutputFormat(): string[] {
+  _getOutputSettings(): string[] {
     /**
-     * Currently libx264 is the only available codec.
+     * Currently libx264 is the most "stable" codec.
      */
-    return ['-c:v', 'libx264', '-preset', 'ultrafast'];
+    const outputSettings: string[][] = [];
+
+    outputSettings.push(['-c:v', 'libx264']);
+    outputSettings.push(['-preset', 'ultrafast']);
+
+    if (!this._outputSettings.includeVideo) {
+      outputSettings.push(['-vn']);
+    }
+
+    if (!this._outputSettings.includeAudio) {
+      outputSettings.push(['-an']);
+    }
+
+    if (this._outputSettings.includeVideo) {
+      const width = this._outputSettings.width;
+      const height = this._outputSettings.height;
+      const forceAspectRatio = this._outputSettings.forceAspectRatio;
+
+      const outputWidth = width;
+      const outputHeight = forceAspectRatio ? -1 : height;
+
+      outputSettings.push(['-filter:v', `scale=${outputWidth}:${outputHeight}`]);
+    }
+
+    outputSettings.push([this._outputSettings.fileName]);
+
+    return outputSettings.flat();
   }
 }
