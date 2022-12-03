@@ -56,7 +56,6 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
 
   const canvasRef = props.canvasRef ?? useRef<HTMLCanvasElement>(null);
   const playerRef = useRef<VideoPlayer>();
-  const playPromise = useRef<Promise<void>>(null);
 
   const subscribeToEvents = () => {
     if (!playerRef.current) return;
@@ -95,7 +94,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   };
 
   const play = () => {
-    if (!canvasRef.current || playPromise.current) return;
+    if (!canvasRef.current) return;
 
     checkOrCreatePlayer();
 
@@ -104,11 +103,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
         playerRef.current.currentTime = 0;
       }
 
-      playPromise.current = playerRef.current.play();
-
-      playPromise.current.then(() => {
-        playPromise.current = null;
-      });
+      playerRef.current.play();
     }
   };
 
