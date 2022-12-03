@@ -10,8 +10,8 @@ import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
 import { setCurrentTimeMs, setLastSeekTimeMs } from '../../store/Reducers/TimelineSlice';
 import { setPlaying } from '../../store/Reducers/PreviewSlice';
 import {
-  DEFAULT_SCALED_PREVIEW_HEIGHT,
-  DEFAULT_SCALED_PREVIEW_WIDTH,
+  DEFAULT_PREVIEW_HEIGHT,
+  DEFAULT_PREVIEW_WIDTH,
 } from '../../constants';
 import {
   selectIsEnded,
@@ -154,8 +154,8 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     <StyledPlayerWrapper className='preview-player-wrapper'>
       <StyledPlayerCanvas
         className='preview-player-canvas'
-        width={DEFAULT_SCALED_PREVIEW_WIDTH}
-        height={DEFAULT_SCALED_PREVIEW_HEIGHT}
+        width={DEFAULT_PREVIEW_WIDTH}
+        height={DEFAULT_PREVIEW_HEIGHT}
         ref={canvasRef}
       />
 
