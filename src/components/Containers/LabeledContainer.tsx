@@ -14,7 +14,7 @@ const StyledLabeledContainerWrapper = styled.div<LabeledFlexProps>`
   display: flex;
   flex-direction: column;
   padding: ${(props) => props.padding ?? 0}px;
-  gap: 12px;
+  gap: 16px;
 
   ${(props) => {
     if (!props.fullWidth) return;
