@@ -14,6 +14,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   padding?: number;
   gap?: number;
   wrapElements?: boolean;
+  hideOverflow?: boolean;
   coverArea?: boolean;
   onClick?: MouseEventHandler<HTMLElement>;
 }
@@ -24,7 +25,8 @@ const StyledFlexContainer = styled.div<FlexProps>`
   background: transparent;
   padding: ${(props) => props.padding}px;
   gap: ${(props) => props.gap}px;
-  flex-wrap: ${(props) => props.wrapElements ? 'wrap' : 'inherit'};
+  flex-wrap: ${(props) => props.wrapElements ? 'wrap' : 'nowrap'};
+  overflow: ${(props) => props.hideOverflow ? 'hidden' : 'visible'};
 
   flex-direction: ${(props) => {
     return props.direction + (props.reversed ? '-reverse' : '');
