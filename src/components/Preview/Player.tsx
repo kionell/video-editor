@@ -7,7 +7,7 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import { VideoPlayer } from '../../core/Render/VideoPlayer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useTimelineUpdate } from '../../hooks/useTimelineUpdate';
-import { setCurrentTimeMs } from '../../store/Reducers/TimelineSlice';
+import { setCurrentTimeMs, setLastSeekTimeMs } from '../../store/Reducers/TimelineSlice';
 import { setPlaying } from '../../store/Reducers/PreviewSlice';
 import {
   DEFAULT_SCALED_PREVIEW_HEIGHT,
@@ -17,6 +17,7 @@ import {
   selectIsEnded,
   selectIsPlaying,
   selectLastSeekTimeMs,
+  selectTotalLengthMs,
   selectTracks,
 } from '../../store';
 
@@ -50,6 +51,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const dispatch = useAppDispatch();
 
   const lastSeekTimeMs = useAppSelector(selectLastSeekTimeMs);
+  const totalLengthMs = useAppSelector(selectTotalLengthMs);
   const ended = useAppSelector(selectIsEnded);
   const tracks = useAppSelector(selectTracks);
   const isPlaying = useAppSelector(selectIsPlaying);
@@ -73,6 +75,10 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
 
     subscribe(movie, 'movie.ended', () => {
       dispatch(setPlaying(false));
+    });
+
+    subscribe(movie, 'movie.seek', () => {
+      dispatch(setLastSeekTimeMs(movie.currentTime * 1000));
     });
 
     subscribe(movie, 'movie.timeupdate', () => {
@@ -115,6 +121,18 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     }
   };
 
+  const seekToStart = () => {
+    checkOrCreatePlayer();
+
+    playerRef.current.currentTime = 0;
+  };
+
+  const seekToEnd = () => {
+    checkOrCreatePlayer();
+
+    playerRef.current.currentTime = totalLengthMs;
+  };
+
   useTimelineUpdate(() => {
     checkOrCreatePlayer();
 
@@ -146,17 +164,19 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
           className='preview-player-buttons__backwards'
           iconType='Backward'
           showLabel={false}
+          onClick={seekToStart}
         />
         <StyledPlayerButton
           className='preview-player-buttons__play'
-          onClick={isPlaying ? pause : play}
           iconType={isPlaying ? 'Pause' : 'Play'}
           showLabel={false}
+          onClick={isPlaying ? pause : play}
         />
         <StyledPlayerButton
           className='preview-player-buttons__forward'
           iconType='Forward'
           showLabel={false}
+          onClick={seekToEnd}
         />
       </StyledPlayerButtonWrapper>
     </StyledPlayerWrapper>
