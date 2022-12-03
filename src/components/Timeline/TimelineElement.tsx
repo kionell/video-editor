@@ -7,12 +7,14 @@ import { useDraggable } from '../../hooks/useDraggable';
 import { useFocusable } from '../../hooks/useFocusable';
 import { useTrimmer } from '../../hooks/useTrimmer';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { selectCurrentZoom } from '../../store/Selectors';
+import { timeMsToUnits } from '../../core/Utils/Timeline';
+import { TrimmableState } from '../../hooks/useTrimmer';
 import {
   focusElement,
   unfocusElement,
+  updateElement,
 } from '../../store/Reducers/TimelineSlice';
-import { selectCurrentZoom } from '../../store';
-import { timeMsToUnits } from '../../core/Utils/Timeline';
 
 interface ElementProps {
   element: BaseElement;
@@ -127,10 +129,12 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    const units = timeMsToUnits(element.startTimeMs, currentZoom.zoom);
+    const leftUnits = timeMsToUnits(element.startTimeMs, currentZoom.zoom);
+    const widthUnits = timeMsToUnits(element.durationMs, currentZoom.zoom);
 
-    ref.current.style.left = units + 'px';
-  }, [element.startTimeMs]);
+    ref.current.style.left = leftUnits + 'px';
+    ref.current.style.width = widthUnits + 'px';
+  }, [element.startTimeMs, element.durationMs]);
 
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
@@ -160,12 +164,28 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
     ],
   });
 
-  useTrimmer(ref);
+  const startTrimCallback = useDebounce((data: TrimmableState) => {
+    dispatch(updateElement({
+      startTrimMs: data.startTrimMs,
+    }));
+  });
+
+  const endTrimCallback = useDebounce((data: TrimmableState) => {
+    dispatch(updateElement({
+      endTrimMs: data.endTrimMs,
+    }));
+  });
+
+  useTrimmer(ref, {
+    startTrimCallback,
+    endTrimCallback,
+  });
+
   useDraggable(ref);
 
   return (
     <StyledTimelineElementWrapper className='timeline-element' ref={ref} {...props}>
-      <StyledTimelineElementLeftEdge className='timeline-element__edges resizer-left'>
+      <StyledTimelineElementLeftEdge className='timeline-element__edges trimmer-left'>
         <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementLeftEdge>
 
@@ -173,7 +193,7 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
 
       </StyledTimelineElementPreview>
 
-      <StyledTimelineElementRightEdge className='timeline-element__edges resizer-right'>
+      <StyledTimelineElementRightEdge className='timeline-element__edges trimmer-right'>
         <StyledTimelineElementEdgeIcon variant='Edge' />
       </StyledTimelineElementRightEdge>
     </StyledTimelineElementWrapper>

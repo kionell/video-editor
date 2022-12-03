@@ -1,11 +1,12 @@
 import { immerable } from 'immer';
 import { BASE_TIMELINE_ELEMENT_DURATION_MS } from '../../constants';
 import { MediaType } from '../Enums/MediaType';
+import { IBaseElement } from './Types/IBaseElement';
 
 /**
  * Any media instance that can be placed on a timeline track.
  */
-export abstract class BaseElement {
+export abstract class BaseElement implements IBaseElement {
   [immerable] = true;
 
   /**
