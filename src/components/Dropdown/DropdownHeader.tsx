@@ -16,7 +16,7 @@ const StyledDropdownHeader = styled.div<DropdownHeaderProps>`
   align-items: center;
   position: relative;
   width: 100%;
-  height: 30px;
+  height: 35px;
   outline: none;
   padding-left: 5px;
   outline: 1px solid;
