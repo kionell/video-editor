@@ -97,19 +97,19 @@ const FadeSettings: React.FC = () => {
       >
         <Slider
           minValue={0}
-          maxValue={2}
-          step={0.1}
+          maxValue={5000}
+          step={1}
           defaultValue={targetElement?.fadeInTimeMs ?? 0}
-          label='Fade In'
+          label='Fade In (ms)'
           showLabel
           sliderRef={fadeInRef}
         />
         <Slider
           minValue={0}
-          maxValue={2}
-          step={0.1}
+          maxValue={5000}
+          step={1}
           defaultValue={targetElement?.fadeOutTimeMs ?? 0}
-          label='Fade Out'
+          label='Fade Out (ms)'
           showLabel
           sliderRef={fadeOutRef}
         />
