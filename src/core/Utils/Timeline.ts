@@ -1,4 +1,4 @@
-import { BASE_TIMELINE_ELEMENT_DURATION_MS, PREVIEW_FRAME_WIDTH, TIMELINE_OFFSET_X } from '../../constants';
+import { BASE_TIMELINE_ELEMENT_DURATION_MS, FRAME_INTERVAL, PREVIEW_FRAME_WIDTH, TIMELINE_OFFSET_X } from '../../constants';
 import { BaseElement } from '../Elements/BaseElement';
 import { CategoryName } from '../Enums/Category';
 import { MediaType } from '../Enums/MediaType';
@@ -171,9 +171,8 @@ export function unitsToTimeMs(units: number, zoom = 1): number {
   const zoomedFrameWidth = PREVIEW_FRAME_WIDTH * zoom;
 
   const frames = units / zoomedFrameWidth;
-  const frameInterval = 1000 / 60;
 
-  return frames * frameInterval;
+  return frames * FRAME_INTERVAL;
 }
 
 export function calculateTimelineWidth(totalLengthMs: number, zoom = 1): number {

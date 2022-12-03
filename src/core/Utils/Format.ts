@@ -1,4 +1,4 @@
-import { PREVIEW_FRAME_WIDTH } from '../../constants';
+import { FRAME_INTERVAL, PREVIEW_FRAME_WIDTH } from '../../constants';
 
 /**
  * Converts raw time value to the readable format.
@@ -46,8 +46,7 @@ export function formatTimeMs(timeMs?: number) {
     seconds.toString().padStart(2, '0'),
   ].join(':');
 
-  const frameInterval = 1000 / 60;
-  const frames = Math.floor(milliseconds / frameInterval);
+  const frames = Math.floor(milliseconds / FRAME_INTERVAL);
   const formattedFrames = `${frames}`.padStart(2, '0');
 
   return `${formattedTime}.${formattedFrames}`;
@@ -85,9 +84,8 @@ export function formatTimestamp(timeMs?: number): string {
   const [time, fps] = formatted.split('.');
 
   const framerate = Number(fps);
-  const frameInterval = 1000 / 60;
 
-  const milliseconds = Math.round(framerate * frameInterval);
+  const milliseconds = Math.round(framerate * FRAME_INTERVAL);
 
   return `${time}.${milliseconds}`;
 }
