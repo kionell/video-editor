@@ -196,6 +196,7 @@ export const GeneralItem = forwardRef<HTMLDivElement, GeneralItemProps>((
         <StyledGeneralItemButtonWrapper
           className='general-item__buttons'
           padding={0}
+          gap={6}
         >
           <PrimaryButton
             buttonRef={addButtonRef}
