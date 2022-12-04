@@ -138,6 +138,7 @@ export class Renderer {
     inputs.push('5');
     inputs.push('-i');
     inputs.push(`color=c=black:s=${blankWidth}x${blankHeight}`);
+    inputs.push('-y');
 
     return inputs;
   }
