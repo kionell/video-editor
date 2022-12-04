@@ -14,6 +14,8 @@ export interface CheckboxProps {
   label?: string;
   labelPosition?: 'left' | 'right';
   checkboxRef?: RefObject<HTMLInputElement>;
+  onCheck?: () => void;
+  onUncheck?: () => void;
 }
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -87,7 +89,14 @@ const StyledCheckboxLabel = styled(Text)`
 `;
 
 const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
-  const { showLabel, label, labelPosition, disabled } = props;
+  const {
+    showLabel,
+    label,
+    labelPosition,
+    disabled,
+    onCheck,
+    onUncheck,
+  } = props;
 
   const [checked, setChecked] = useState(props.checked);
   const checkboxRef = props.checkboxRef ?? useRef<HTMLInputElement>(null);
@@ -95,7 +104,11 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
   const changeState = () => {
     if (disabled) return;
 
-    setChecked(!checked);
+    const nextState = !checked;
+
+    setChecked(nextState);
+
+    nextState ? onCheck?.() : onUncheck?.();
   };
 
   return (
