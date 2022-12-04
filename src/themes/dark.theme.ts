@@ -18,5 +18,6 @@ export const DarkTheme: ITheme = {
     lighter: '#D5D5DD',
     darker: '#797986',
   },
+  danger: '#F72A2A',
   background: '#13131B',
 };

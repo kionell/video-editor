@@ -15,6 +15,7 @@ export interface ITheme {
   primary: INormalColors;
   secondary: INormalColors;
   text: ITextColors;
+  danger: string;
   background: string;
 }
 
