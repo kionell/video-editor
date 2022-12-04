@@ -13,7 +13,7 @@ import { UploadedFile } from '../Files/UploadedFile';
 import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { BitrateEncoding } from './Enums/BitrateEncoding';
 import { IOutputSettings, RequiredSettings } from './Interfaces/IOutputSettings';
-import { FilterFlagGenerator } from './FilterFlagGenerator';
+import { FilterFlagGenerator } from './Filters/FilterFlagGenerator';
 import { FileFormat } from './Enums/FileFormat';
 import { FileType } from './Enums/FileType';
 
@@ -23,20 +23,20 @@ export class Renderer {
   private _tracks: TimelineTrack[];
   private _outputSettings: RequiredSettings;
   private _customLogger: LogCallback;
+  private _totalLengthMs: number;
 
   constructor(settings?: IOutputSettings) {
     this._ffmpeg = createFFmpeg({ log: true });
 
-    let outputName = settings?.fileName || 'Untitled';
+    const outputFormat = settings?.outputFormat || FileFormat.Video;
 
-    if (!outputName.endsWith('.mp4')) {
-      outputName += '.mp4';
+    let fileName = settings?.fileName || 'Untitled';
+
+    if (!fileName.endsWith(outputFormat)) {
+      fileName += outputFormat;
     }
 
     this._outputSettings = {
-      fileName: outputName,
-      fileType: settings?.fileType ?? FileType.Video,
-      outputFormat: settings?.outputFormat ?? FileFormat.Video,
       includeVideo: settings?.includeVideo ?? true,
       width: settings?.width || DEFAULT_VIDEO_WIDTH,
       height: settings?.height || DEFAULT_VIDEO_HEIGHT,
@@ -49,6 +49,9 @@ export class Renderer {
       includeAudio: settings?.includeAudio ?? true,
       sampleRate: settings?.sampleRate || DEFAULT_AUDIO_SAMPLE_RATE,
       audioBitrate: settings?.audioBitrate || DEFAULT_AUDIO_BITRATE,
+      fileType: settings?.fileType ?? FileType.Video,
+      outputFormat,
+      fileName,
     };
   }
 
@@ -135,23 +138,7 @@ export class Renderer {
   }
 
   _getInputSettings(): string[] {
-    const inputs = this._files.flatMap((file) => ['-i', file.name]);
-
-    const blankWidth = this._outputSettings.width;
-    const blankHeight = this._outputSettings.height;
-
-    /**
-     * Reserved input for blank space.
-     */
-    inputs.push('-f');
-    inputs.push('lavfi');
-    inputs.push('-t');
-    inputs.push('5');
-    inputs.push('-i');
-    inputs.push(`color=c=black:s=${blankWidth}x${blankHeight}`);
-    inputs.push('-y');
-
-    return inputs;
+    return ['-y', ...this._files.flatMap((file) => ['-i', file.name])];
   }
 
   _getOtherSettings(): string[] {
@@ -161,7 +148,7 @@ export class Renderer {
       this._outputSettings,
     );
 
-    return filterGenerator.generateFlag();
+    return filterGenerator.generate();
   }
 
   _getOutputSettings(): string[] {
