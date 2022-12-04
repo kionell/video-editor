@@ -67,13 +67,13 @@ export class Renderer {
 
     await this._ffmpeg.run(...this._generateCommand());
 
-    const buffer = this._ffmpeg.FS('readFile', 'Untitled.mp4');
+    const buffer = this._ffmpeg.FS('readFile', this._outputSettings.fileName);
 
     const link = document.createElement('a');
 
     link.type = 'download';
     link.href = URL.createObjectURL(new Blob([buffer]));
-    link.download = 'Untitled.mp4';
+    link.download = this._outputSettings.fileName;
     link.click();
   }
 
