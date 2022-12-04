@@ -14,6 +14,8 @@ import { TimelineTrack } from '../Timeline/TimelineTrack';
 import { BitrateEncoding } from './Enums/BitrateEncoding';
 import { IOutputSettings, RequiredSettings } from './Interfaces/IOutputSettings';
 import { FilterFlagGenerator } from './FilterFlagGenerator';
+import { FileFormat } from './Enums/FileFormat';
+import { FileType } from './Enums/FileType';
 
 export class Renderer {
   private _ffmpeg: FFmpeg;
@@ -32,6 +34,8 @@ export class Renderer {
 
     this._outputSettings = {
       fileName: outputName,
+      fileType: settings?.fileType ?? FileType.Video,
+      outputFormat: settings?.outputFormat ?? FileFormat.Video,
       includeVideo: settings?.includeVideo ?? true,
       width: settings?.width || DEFAULT_VIDEO_WIDTH,
       height: settings?.height || DEFAULT_VIDEO_HEIGHT,

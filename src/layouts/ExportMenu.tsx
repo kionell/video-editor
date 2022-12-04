@@ -19,6 +19,7 @@ import {
   DEFAULT_VIDEO_HEIGHT,
   DEFAULT_VIDEO_WIDTH,
 } from '../constants';
+import { getFileFormat, getFileType } from '../core/Render/Utils/Formats';
 
 const StyledExportMenuArea = styled(FlexContainer)`
   visibility: hidden;
@@ -68,6 +69,8 @@ const ExportMenu: React.FC = () => {
   const renderer = useRef<Renderer>();
 
   const fileNameRef = useRef<HTMLInputElement>(null);
+  const outputFormatRef = useRef<DropdownMenu>(null);
+
   const outputWidthRef = useRef<HTMLInputElement>(null);
   const outputHeightRef = useRef<HTMLInputElement>(null);
   const frameRateRef = useRef<HTMLInputElement>(null);
@@ -85,6 +88,8 @@ const ExportMenu: React.FC = () => {
     if (!renderer.current) {
       renderer.current = new Renderer({
         fileName: fileNameRef.current?.value,
+        fileType: getFileType(outputFormatRef.current?.selected),
+        outputFormat: getFileFormat(outputFormatRef.current?.selected),
         includeVideo: includeVideoRef.current?.checked,
         width: outputWidthRef.current?.valueAsNumber,
         height: outputHeightRef.current?.valueAsNumber,
@@ -130,10 +135,20 @@ const ExportMenu: React.FC = () => {
           gap={12}
         >
           <TextInput
-            label='File name'
+            label='File Name'
             placeholder='Untitled'
             inputRef={fileNameRef}
             showLabel
+          />
+          <DropdownMenu
+            label='Output Format'
+            selectedIndex={0}
+            ref={outputFormatRef}
+            options={[
+              'mp4 (x264)',
+              'wav (AAC)',
+            ]}
+            disabled={!includeVideoRef.current?.checked}
           />
         </LabeledContainer>
 
@@ -243,6 +258,10 @@ const ExportMenu: React.FC = () => {
             showLabel
             label='Render'
             onClick={renderVideo}
+            disabled={
+              !includeVideoRef.current.checked
+                && !includeAudioRef.current.checked
+            }
           />
         </FlexContainer>
       </StyledExportMenu>
