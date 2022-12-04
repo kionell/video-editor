@@ -145,10 +145,10 @@ const ExportMenu: React.FC = () => {
         // fileType: getFileType(outputFormatRef.current?.selected),
         // outputFormat: getFileFormat(outputFormatRef.current?.selected),
         includeVideo: includeVideoRef.current?.checked,
-        width: outputWidthRef.current?.valueAsNumber,
-        height: outputHeightRef.current?.valueAsNumber,
+        width: Number(outputWidthRef.current?.value),
+        height: Number(outputHeightRef.current?.value),
         forceAspectRatio: forceAspectRatioRef.current?.checked,
-        frameRate: frameRateRef.current?.valueAsNumber,
+        frameRate: Number(frameRateRef.current?.value),
         includeAudio: includeAudioRef.current?.checked,
       });
     }
