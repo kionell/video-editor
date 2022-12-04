@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { DEFAULT_VOLUME } from '../../constants';
+import { DEFAULT_MAX_VOLUME, DEFAULT_MIN_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME_STEP } from '../../constants';
 
 const StyledVolumeSettings = styled.div`
   width: 100%;
@@ -77,10 +77,10 @@ const VolumeSettings: React.FC = () => {
         align='start'
       >
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.volume ?? 1}
+          minValue={DEFAULT_MIN_VOLUME}
+          maxValue={DEFAULT_MAX_VOLUME}
+          step={DEFAULT_VOLUME_STEP}
+          defaultValue={targetElement?.volume ?? DEFAULT_VOLUME}
           label='Volume'
           showLabel
           sliderRef={volumeRef}

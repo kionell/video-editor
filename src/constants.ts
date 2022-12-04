@@ -43,40 +43,56 @@ export const MAX_MEDIA_PANEL_WIDTH = 512;
 
 export const DEFAULT_SETTINGS_PANEL_WIDTH = 300;
 
+export const DEFAULT_MIN_FADE = 0;
+export const DEFAULT_MAX_FADE = 5000;
+export const DEFAULT_FADE_STEP = 1;
 export const DEFAULT_FADE_IN = 0;
 export const DEFAULT_FADE_OUT = 0;
+
+export const DEFAULT_MIN_ROTATION = 0;
+export const DEFAULT_MAX_ROTATION = 359;
+export const DEFAULT_ROTATION_STEP = 1;
 export const DEFAULT_ROTATION = 0;
+
 export const DEFAULT_FLIP_X = false;
 export const DEFAULT_FLIP_Y = false;
 
 export const DEFAULT_MIN_BRIGHTNESS = 0;
 export const DEFAULT_MAX_BRIGHTNESS = 1;
+export const DEFAULT_BRIGHTNESS_STEP = 0.01;
 export const DEFAULT_BRIGHTNESS = 0.5;
 
 export const DEFAULT_MIN_SATURATION = 0;
 export const DEFAULT_MAX_SATURATION = 1;
+export const DEFAULT_SATURATION_STEP = 0.01;
 export const DEFAULT_SATURATION = 0.5;
 
 export const DEFAULT_MIN_TEMPERATURE = 0;
 export const DEFAULT_MAX_TEMPERATURE = 1;
+export const DEFAULT_TEMPERATURE_STEP = 0.01;
 export const DEFAULT_TEMPERATURE = 0.5;
 
 export const DEFAULT_MIN_CONTRAST = -1000;
 export const DEFAULT_MAX_CONTRAST = 1000;
+export const DEFAULT_CONTRAST_STEP = 1;
 export const DEFAULT_CONTRAST = 1;
 
 export const DEFAULT_MIN_OPACITY = 0;
 export const DEFAULT_MAX_OPACITY = 1;
+export const DEFAULT_OPACITY_STEP = 0.01;
 export const DEFAULT_OPACITY = 1;
 
 export const DEFAULT_MIN_BLUR = 0;
 export const DEFAULT_MAX_BLUR = 1;
+export const DEFAULT_BLUR_STEP = 0.01;
 export const DEFAULT_BLUR = 0;
 
 export const DEFAULT_MIN_SPEED = 0.5;
 export const DEFAULT_MAX_SPEED = 10;
+export const DEFAULT_SPEED_STEP = 0.01;
 export const DEFAULT_SPEED = 1;
 
 export const DEFAULT_MIN_VOLUME = 0;
 export const DEFAULT_MAX_VOLUME = 1;
+export const DEFAULT_VOLUME_STEP = 0.01;
 export const DEFAULT_VOLUME = 1;

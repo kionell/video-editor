@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { DEFAULT_FADE_IN, DEFAULT_FADE_OUT } from '../../constants';
+import { DEFAULT_FADE_IN, DEFAULT_FADE_OUT, DEFAULT_FADE_STEP, DEFAULT_MAX_FADE, DEFAULT_MIN_FADE } from '../../constants';
 
 const StyledFadeSettings = styled.div`
   width: 100%;
@@ -96,19 +96,19 @@ const FadeSettings: React.FC = () => {
         align='start'
       >
         <Slider
-          minValue={0}
-          maxValue={5000}
-          step={1}
-          defaultValue={targetElement?.fadeInTimeMs ?? 0}
+          minValue={DEFAULT_MIN_FADE}
+          maxValue={DEFAULT_MAX_FADE}
+          step={DEFAULT_FADE_STEP}
+          defaultValue={targetElement?.fadeInTimeMs ?? DEFAULT_FADE_IN}
           label='Fade In (ms)'
           showLabel
           sliderRef={fadeInRef}
         />
         <Slider
-          minValue={0}
-          maxValue={5000}
-          step={1}
-          defaultValue={targetElement?.fadeOutTimeMs ?? 0}
+          minValue={DEFAULT_MIN_FADE}
+          maxValue={DEFAULT_MAX_FADE}
+          step={DEFAULT_FADE_STEP}
+          defaultValue={targetElement?.fadeOutTimeMs ?? DEFAULT_FADE_IN}
           label='Fade Out (ms)'
           showLabel
           sliderRef={fadeOutRef}

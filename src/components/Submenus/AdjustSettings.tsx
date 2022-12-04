@@ -17,6 +17,24 @@ import {
   DEFAULT_OPACITY,
   DEFAULT_SATURATION,
   DEFAULT_TEMPERATURE,
+  DEFAULT_MIN_BRIGHTNESS,
+  DEFAULT_MAX_BRIGHTNESS,
+  DEFAULT_BRIGHTNESS_STEP,
+  DEFAULT_MIN_SATURATION,
+  DEFAULT_MAX_SATURATION,
+  DEFAULT_SATURATION_STEP,
+  DEFAULT_MIN_TEMPERATURE,
+  DEFAULT_MAX_TEMPERATURE,
+  DEFAULT_TEMPERATURE_STEP,
+  DEFAULT_MIN_CONTRAST,
+  DEFAULT_MAX_CONTRAST,
+  DEFAULT_CONTRAST_STEP,
+  DEFAULT_MIN_OPACITY,
+  DEFAULT_MAX_OPACITY,
+  DEFAULT_OPACITY_STEP,
+  DEFAULT_MIN_BLUR,
+  DEFAULT_MAX_BLUR,
+  DEFAULT_BLUR_STEP,
 } from '../../constants';
 
 const StyledAdjustSettings = styled.div`
@@ -179,55 +197,55 @@ const AdjustSettings: React.FC = () => {
         align='start'
       >
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.brightness ?? 0.5}
+          minValue={DEFAULT_MIN_BRIGHTNESS}
+          maxValue={DEFAULT_MAX_BRIGHTNESS}
+          step={DEFAULT_BRIGHTNESS_STEP}
+          defaultValue={targetElement?.brightness ?? DEFAULT_BRIGHTNESS}
           label='Brightness'
           showLabel
           sliderRef={brightnessRef}
         />
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.saturation ?? 0.5}
+          minValue={DEFAULT_MIN_SATURATION}
+          maxValue={DEFAULT_MAX_SATURATION}
+          step={DEFAULT_SATURATION_STEP}
+          defaultValue={targetElement?.saturation ?? DEFAULT_SATURATION}
           label='Saturation'
           showLabel
           sliderRef={saturationRef}
         />
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.temperature ?? 0.5}
+          minValue={DEFAULT_MIN_TEMPERATURE}
+          maxValue={DEFAULT_MAX_TEMPERATURE}
+          step={DEFAULT_TEMPERATURE_STEP}
+          defaultValue={targetElement?.temperature ?? DEFAULT_TEMPERATURE_STEP}
           label='Temperature'
           showLabel
           sliderRef={temperatureRef}
         />
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.contrast ?? 1}
+          minValue={DEFAULT_MIN_CONTRAST}
+          maxValue={DEFAULT_MAX_CONTRAST}
+          step={DEFAULT_CONTRAST_STEP}
+          defaultValue={targetElement?.contrast ?? DEFAULT_CONTRAST}
           label='Contrast'
           showLabel
           sliderRef={contrastRef}
         />
         <Slider
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-          defaultValue={targetElement?.opacity ?? 1}
+          minValue={DEFAULT_MIN_OPACITY}
+          maxValue={DEFAULT_MAX_OPACITY}
+          step={DEFAULT_OPACITY_STEP}
+          defaultValue={targetElement?.opacity ?? DEFAULT_OPACITY}
           label='Opacity'
           showLabel
           sliderRef={opacityRef}
         />
         <Slider
-          minValue={0}
-          maxValue={20}
-          step={0.1}
-          defaultValue={targetElement?.blur ?? 0}
+          minValue={DEFAULT_MIN_BLUR}
+          maxValue={DEFAULT_MAX_BLUR}
+          step={DEFAULT_BLUR_STEP}
+          defaultValue={targetElement?.blur ?? DEFAULT_BLUR}
           label='Blur'
           showLabel
           sliderRef={blurRef}

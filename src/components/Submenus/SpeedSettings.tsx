@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectFocusedElement } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { DEFAULT_SPEED } from '../../constants';
+import { DEFAULT_MAX_SPEED, DEFAULT_MIN_SPEED, DEFAULT_SPEED, DEFAULT_SPEED_STEP } from '../../constants';
 
 const StyledSpeedSettings = styled.div`
   width: 100%;
@@ -76,11 +76,11 @@ const SpeedSettings: React.FC = () => {
         align='start'
       >
         <NumberInput
-          min={0.5}
-          max={10.00}
-          step={0.01}
+          min={DEFAULT_MIN_SPEED}
+          max={DEFAULT_MAX_SPEED}
+          step={DEFAULT_SPEED_STEP}
           loop={false}
-          defaultValue={targetElement?.speed ?? 1}
+          defaultValue={targetElement?.speed ?? DEFAULT_SPEED}
           label='Speed'
           showLabel
           inputRef={speedRef}

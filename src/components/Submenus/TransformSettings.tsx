@@ -16,7 +16,10 @@ import { FlexContainer } from '../Containers/FlexContainer';
 import {
   DEFAULT_FLIP_X,
   DEFAULT_FLIP_Y,
+  DEFAULT_MAX_ROTATION,
+  DEFAULT_MIN_ROTATION,
   DEFAULT_ROTATION,
+  DEFAULT_ROTATION_STEP,
 } from '../../constants';
 
 const StyledTransformSettings = styled.div`
@@ -150,7 +153,13 @@ const TransformSettings: React.FC = () => {
             <SecondaryButton iconType='RotateLeft' buttonRef={rotateLeftRef} />
             <SecondaryButton iconType='RotateRight' buttonRef={rotateRightRef} />
           </FlexContainer>
-          <NumberInput max={359} inputRef={customRotateRef} />
+          <NumberInput
+            min={DEFAULT_MIN_ROTATION}
+            max={DEFAULT_MAX_ROTATION}
+            step={DEFAULT_ROTATION_STEP}
+            defaultValue={targetElement?.rotation ?? DEFAULT_ROTATION}
+            inputRef={customRotateRef}
+          />
         </LabeledContainer>
 
         <PrimaryButton
