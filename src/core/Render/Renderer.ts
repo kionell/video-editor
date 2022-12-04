@@ -26,7 +26,7 @@ export class Renderer {
   constructor(settings?: IOutputSettings) {
     this._ffmpeg = createFFmpeg({ log: true });
 
-    let outputName = settings?.fileName ?? 'Untitled';
+    let outputName = settings?.fileName || 'Untitled';
 
     if (!outputName.endsWith('.mp4')) {
       outputName += '.mp4';
