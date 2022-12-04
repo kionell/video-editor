@@ -76,8 +76,8 @@ const SpeedSettings: React.FC = () => {
         align='start'
       >
         <NumberInput
-          min={0.25}
-          max={3.00}
+          min={0.5}
+          max={10.00}
           step={0.01}
           loop={false}
           defaultValue={targetElement?.speed ?? 1}
