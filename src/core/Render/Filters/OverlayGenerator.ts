@@ -2,14 +2,11 @@ import { BaseElement } from '../../Elements';
 import { IFileElement } from '../../Elements/Types/IFileElement';
 import { UploadedFile } from '../../Files/UploadedFile';
 import { TimelineTrack } from '../../Timeline/TimelineTrack';
-import { RequiredSettings } from '../Interfaces/IOutputSettings';
 
 export class OverlayGenerator {
   constructor(
     private _tracks: TimelineTrack[],
     private _files: UploadedFile[],
-    private _outputSettings: RequiredSettings,
-    private _totalLengthMs: number,
   ) {}
 
   generate(): string {
@@ -17,7 +14,7 @@ export class OverlayGenerator {
      * Overlay generator should be used as the latest of all 3 video generators.
      * We will use predetermined variable names as they are already processed.
      */
-    const output: string[] = [];
+    const overlays: string[] = [];
 
     /**
      * We are starting from background layer.
@@ -29,21 +26,47 @@ export class OverlayGenerator {
 
       for (let ei = 0; ei < totalElements; ++ei) {
         const element = this._tracks[ti].elements[ei];
-        const streamIndex = this._getStreamIndex(element as any);
+        const streamIndex = this._getStreamIndex(element);
 
-        // This element doesn't match any file input.
+        /**
+         * This element doesn't match any file input.
+         * Most likely that we are dealing with text element.
+         * TODO: Add text element processing.
+         */
         if (streamIndex === -1) continue;
 
-        output.push(filteredElement);
-      }
+        const start = element.startTimeMs * 1000;
+        const end = element.endTimeMs * 1000;
 
-      /**
-       * Switch base video stream to the next layer.
-       */
-      base = `[track${ti}]`;
+        const commands = [
+          'x=0',
+          'y=0',
+          `enable='between(t,${start},${end})'`,
+        ];
+
+        /**
+         * 0 = current layer.
+         * 1 = current element.
+         */
+        const input = base + `[track${ti}_element${ei}]`;
+        const overlay = `overlay=${commands.join(':')}`;
+
+        /**
+         * track0_0 = temporary state of the track0 after overlaying first element.
+         * track0   = full track0 that is ready to became next layer.
+         */
+        const output = ei < totalElements - 1 ? `[track${ti}_${ei}]` : `[track${ti}]`;
+
+        overlays.push(input + overlay + output);
+
+        /**
+         * Switch base video stream to the next state.
+         */
+        base = output;
+      }
     }
 
-    return output.join(';');
+    return overlays.join(';');
   }
 
   private _getStreamIndex(element: BaseElement): number {

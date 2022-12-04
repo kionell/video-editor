@@ -34,8 +34,6 @@ export class FilterFlagGenerator {
     this._overlayGenerator = new OverlayGenerator(
       _tracks,
       _files,
-      _outputSettings,
-      totalLengthMs,
     );
   }
 
