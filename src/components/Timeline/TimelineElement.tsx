@@ -145,13 +145,9 @@ const TimelineElement = forwardRef<HTMLDivElement, ElementProps>((
   useEffect(() => {
     if (ref instanceof Function || !ref?.current) return;
 
-    if (element.isFocused && !ref.current.classList.contains('focused')) {
-      ref.current.classList.add('focused');
-    }
-
-    if (!element.isFocused && ref.current.classList.contains('focused')) {
-      ref.current.classList.remove('focused');
-    }
+    element.isFocused
+      ? ref.current.classList.add('focused')
+      : ref.current.classList.remove('focused');
   }, [element.isFocused]);
 
   useFocusable(ref, {

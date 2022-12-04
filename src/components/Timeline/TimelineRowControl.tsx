@@ -114,9 +114,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     rowElement.style.top = '';
     seekerRef.current.style.pointerEvents = 'all';
 
-    if (rowElement.classList.contains('grabbing')) {
-      rowElement.classList.remove('grabbing');
-    }
+    rowElement.classList.remove('grabbing');
 
     rowContainer.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
@@ -134,9 +132,7 @@ const TimelineRowControl: React.FC<TimelineRowProps> = ((props: TimelineRowProps
     seekerRef.current.style.pointerEvents = 'none';
     scrollTop = currentScroll.top;
 
-    if (!rowElement.classList.contains('grabbing')) {
-      rowElement.classList.add('grabbing');
-    }
+    rowElement.classList.add('grabbing');
 
     rowContainer.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);

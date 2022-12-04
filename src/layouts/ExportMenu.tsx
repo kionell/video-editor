@@ -109,13 +109,9 @@ const ExportMenu: React.FC = () => {
   useEffect(() => {
     if (!exportRef.current) return;
 
-    if (isVisible && !exportRef.current.classList.contains('visible')) {
-      exportRef.current.classList.add('visible');
-    }
-
-    if (!isVisible && exportRef.current.classList.contains('visible')) {
-      exportRef.current.classList.remove('visible');
-    }
+    isVisible
+      ? exportRef.current.classList.add('visible')
+      : exportRef.current.classList.remove('visible');
   }, [isVisible]);
 
   return (
