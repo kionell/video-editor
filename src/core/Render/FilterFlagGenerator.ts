@@ -13,8 +13,16 @@ import {
 import { IFileElement } from '../Elements/Types/IFileElement';
 import { IVideo } from '../Elements/Types/IVideo';
 import { IAudio } from '../Elements/Types/IAudio';
-import { IImage } from '../Elements/Types/IImage';
 import { IText } from '../Elements/Types/IText';
+import { IVisible } from '../Elements/Types/IVisible';
+import { map } from '../Utils/Math';
+import {
+  DEFAULT_BRIGHTNESS,
+  DEFAULT_CONTRAST,
+  DEFAULT_MAX_BRIGHTNESS,
+  DEFAULT_MIN_BRIGHTNESS,
+  DEFAULT_SATURATION,
+} from '../../constants';
 
 export class FilterFlagGenerator {
   private _tracks: TimelineTrack[];
@@ -79,11 +87,11 @@ export class FilterFlagGenerator {
     return this._getVisualFilters(element as ImageElement, timing);
   }
 
-  private _getVisualFilters(element: IImage | null, timing: RenderTiming): string {
+  private _getVisualFilters(element: IVisible | null, timing: RenderTiming): string {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
-    const streamIndex = this._getStreamIndex(element);
+    const streamIndex = this._getStreamIndex(element as IVisible & IFileElement);
 
     const startTimeMs = timing.startTimeMs;
     const endTimeMs = timing.endTimeMs;
@@ -104,6 +112,10 @@ export class FilterFlagGenerator {
 
       filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
     }
+
+    const eqFilter = this._getEqFilter(element);
+
+    if (eqFilter.length > 0) filters.push(eqFilter);
 
     if (element.startTrimMs !== 0 || element.endTrimMs !== 0) {
       filters.push(`trim=${startTimeMs}:${endTimeMs}`);
@@ -159,6 +171,34 @@ export class FilterFlagGenerator {
     if (!this._outputSettings.includeVideo) return '';
 
     return '';
+  }
+
+  private _getEqFilter(element: IVisible): string {
+    const commands: string[] = [];
+
+    if (element.brightness !== DEFAULT_BRIGHTNESS) {
+      const brightness = map(
+        element.brightness,
+        DEFAULT_MIN_BRIGHTNESS,
+        DEFAULT_MAX_BRIGHTNESS,
+        -1,
+        1,
+      );
+
+      commands.push(`brightness=${brightness}`);
+    }
+
+    if (element.contrast !== DEFAULT_CONTRAST) {
+      commands.push(`contrast=${element.contrast}`);
+    }
+
+    if (element.saturation !== DEFAULT_SATURATION) {
+      commands.push(`saturation=${element.saturation}`);
+    }
+
+    if (!commands.length) return '';
+
+    return `eq=${commands.join(':')}`;
   }
 
   private _getConcatFilter(): string {

@@ -58,14 +58,14 @@ export const DEFAULT_FLIP_X = false;
 export const DEFAULT_FLIP_Y = false;
 
 export const DEFAULT_MIN_BRIGHTNESS = 0;
-export const DEFAULT_MAX_BRIGHTNESS = 1;
+export const DEFAULT_MAX_BRIGHTNESS = 2;
 export const DEFAULT_BRIGHTNESS_STEP = 0.01;
-export const DEFAULT_BRIGHTNESS = 0.5;
+export const DEFAULT_BRIGHTNESS = 1;
 
 export const DEFAULT_MIN_SATURATION = 0;
-export const DEFAULT_MAX_SATURATION = 1;
+export const DEFAULT_MAX_SATURATION = 3;
 export const DEFAULT_SATURATION_STEP = 0.01;
-export const DEFAULT_SATURATION = 0.5;
+export const DEFAULT_SATURATION = 1;
 
 export const DEFAULT_MIN_TEMPERATURE = 0;
 export const DEFAULT_MAX_TEMPERATURE = 1;
