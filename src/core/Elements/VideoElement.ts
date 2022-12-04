@@ -1,6 +1,5 @@
 import { MediaType } from '../Enums/MediaType';
 import { VideoFile } from '../Files/VideoFile';
-import { IFileElement } from './Types/IFileElement';
 import { VisibleElement } from './VisibleElement';
 import {
   DEFAULT_FADE_IN,
@@ -13,8 +12,7 @@ import { IVideo } from './Types/IVideo';
 /**
  * A video element that can be placed on a timeline track.
  */
-export class VideoElement extends VisibleElement implements IFileElement, IVideo {
-
+export class VideoElement extends VisibleElement implements IVideo {
   volume = 1;
   speed = 1;
 

@@ -1,4 +1,3 @@
-import { IFileElement } from './Types/IFileElement';
 import { AudioFile } from '../Files/AudioFile';
 import { BaseElement } from './BaseElement';
 import { MediaType } from '../Enums/MediaType';
@@ -13,11 +12,7 @@ import { IAudio } from './Types/IAudio';
 /**
  * An audio element that can be placed on a timeline track.
  */
-export class AudioElement extends BaseElement implements IFileElement, IAudio {
-
-  /**
-   * Volume of this audio element.
-   */
+export class AudioElement extends BaseElement implements IAudio {
   volume = 1;
   speed = 1;
 

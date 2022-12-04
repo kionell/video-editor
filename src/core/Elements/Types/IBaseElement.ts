@@ -16,4 +16,19 @@ export interface IBaseElement {
    * Length of the segment trimmed from the end of this element.
    */
   endTrimMs: number;
+
+  /**
+   * Start time of this element including starting trim and offset.
+   */
+  startTimeMs: number;
+
+  /**
+   * Ending time of this element including end trim.
+   */
+  endTimeMs: number;
+
+  /**
+   * Trimmed duration of the element.
+   */
+  durationMs: number;
 }

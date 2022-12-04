@@ -169,16 +169,16 @@ export class Renderer {
       outputSettings.push(['-an']);
     }
 
-    if (this._outputSettings.includeVideo) {
-      const width = this._outputSettings.width;
-      const height = this._outputSettings.height;
-      const forceAspectRatio = this._outputSettings.forceAspectRatio;
+    // if (this._outputSettings.includeVideo) {
+    //   const width = this._outputSettings.width;
+    //   const height = this._outputSettings.height;
+    //   const forceAspectRatio = this._outputSettings.forceAspectRatio;
 
-      const outputWidth = width;
-      const outputHeight = forceAspectRatio ? -1 : height;
+    //   const outputWidth = width;
+    //   const outputHeight = forceAspectRatio ? -1 : height;
 
-      outputSettings.push(['-filter:v', `scale=${outputWidth}:${outputHeight}`]);
-    }
+    //   outputSettings.push(['-filter:v', `scale=${outputWidth}:${outputHeight}`]);
+    // }
 
     outputSettings.push([this._outputSettings.fileName]);
 

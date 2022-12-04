@@ -4,17 +4,23 @@ import { getTimingState, RenderTiming } from './Utils/Timings';
 import { UploadedFile } from '../Files/UploadedFile';
 import { RequiredSettings } from './Interfaces/IOutputSettings';
 import {
-  BaseElement,
-  VideoElement,
   AudioElement,
+  BaseElement,
+  ImageElement,
   TextElement,
-  MediaElement,
+  VideoElement,
 } from '../Elements';
+import { IFileElement } from '../Elements/Types/IFileElement';
+import { IVideo } from '../Elements/Types/IVideo';
+import { IAudio } from '../Elements/Types/IAudio';
+import { IImage } from '../Elements/Types/IImage';
+import { IText } from '../Elements/Types/IText';
 
 export class FilterFlagGenerator {
   private _tracks: TimelineTrack[];
   private _files: UploadedFile[];
   private _outputSettings: RequiredSettings;
+  private _tempVariables: Set<string>;
 
   constructor(tracks: TimelineTrack[], files: UploadedFile[], settings: RequiredSettings) {
     this._tracks = tracks;
@@ -26,12 +32,17 @@ export class FilterFlagGenerator {
     if (!this._shouldAddFilters()) return [];
 
     const filters: string[] = [];
+    const timings = getTimingState(this._tracks);
 
-    const state = getTimingState(this._tracks);
+    this._tempVariables = new Set();
 
-    state.forEach((element, timing) => {
+    timings.forEach((element, timing) => {
       filters.push(this._getFilter(element, timing));
     });
+
+    if (timings.size > 1) {
+      filters.push(this._getConcatFilter());
+    }
 
     const stringifiedFilters = filters.filter((x) => x).join(';');
 
@@ -53,6 +64,10 @@ export class FilterFlagGenerator {
   }
 
   private _getFilter(element: BaseElement | null, timing: RenderTiming): string {
+    if (element.type === MediaType.Video) {
+      return this._getVideoFilters(element as VideoElement, timing);
+    }
+
     if (element.type === MediaType.Audio) {
       return this._getAudioFilters(element as AudioElement);
     }
@@ -61,10 +76,10 @@ export class FilterFlagGenerator {
       return this._getTextFilters(element as TextElement, timing);
     }
 
-    return this._getVideoFilters(element as VideoElement, timing);
+    return this._getVisualFilters(element as ImageElement, timing);
   }
 
-  private _getVideoFilters(element: VideoElement | null, timing: RenderTiming): string {
+  private _getVisualFilters(element: IImage | null, timing: RenderTiming): string {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
@@ -100,30 +115,67 @@ export class FilterFlagGenerator {
     return `[${streamIndex}:v]${filters.join(',')}`;
   }
 
-  private _getAudioFilters(element: AudioElement | null): string {
-    if (!this._outputSettings.includeAudio) return '';
+  private _getVideoFilters(element: IVideo | null, timing: RenderTiming): string {
+    if (!this._outputSettings.includeVideo) return '';
 
-    // const filters: string[] = [];
-    // const streamIndex = getStreamIndex(element);
+    const filters: string[] = [];
 
-    return '';
+    const visualFilters: string[] = [];
+    const baseFilters = this._getVisualFilters(element, timing);
+
+    if (baseFilters.length > 0) {
+      visualFilters.push(baseFilters);
+    }
+
+    // ...
+
+    const videoFilters = visualFilters.filter((x) => x).join(',');
+    const audioFilters = this._getAudioFilters(element);
+
+    if (videoFilters.length > 0) filters.push(videoFilters);
+    if (audioFilters.length > 0) filters.push(audioFilters);
+
+    return filters.join(';');
   }
 
-  private _getTextFilters(element: TextElement | null, timing: RenderTiming): string {
+  private _getAudioFilters(element: IAudio | null): string {
+    if (!this._outputSettings.includeAudio) return '';
+
+    const filters: string[] = [];
+    const streamIndex = this._getStreamIndex(element);
+
+    if (element.volume !== 1) {
+      filters.push(`volume=${element.volume}`);
+    }
+
+    return `[${streamIndex}:a]${filters.join(',')}`;
+  }
+
+  private _getTextFilters(element: IText | null, timing: RenderTiming): string {
     if (!this._outputSettings.includeVideo) return '';
 
     return '';
   }
 
-  private _getStreamIndex(element: MediaElement | null): number {
+  private _getConcatFilter(): string {
+    const input = [...this._tempVariables].join('');
+    const includeVideo = this._outputSettings.includeVideo;
+    const includeAudio = this._outputSettings.includeAudio;
+
+    return `${input}concat=v=${includeVideo}:a=${includeAudio}[out]`;
+  }
+
+  private _getStreamIndex(element: IFileElement | null): number {
+    const mediaElement = element as IFileElement;
+
     /**
      * Reserved index for blank space input.
      */
-    if (!element) return this._files.length;
+    if (!mediaElement?.file) return this._files.length;
 
     /**
      * We already know that our index will never be -1.
      */
-    return this._files.findIndex((file) => file.equals(element.file));
+    return this._files.findIndex((file) => file.equals(mediaElement.file));
   }
 }

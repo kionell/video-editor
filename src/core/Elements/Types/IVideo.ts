@@ -1,5 +1,10 @@
+import { IFileElement } from './IFileElement';
 import { IHasAudio } from './IHasAudio';
 import { IPlayableElement } from './IPlayableElement';
 import { IVisible } from './IVisible';
 
-export interface IVideo extends IVisible, IHasAudio, IPlayableElement {}
+export interface IVideo extends
+  IPlayableElement,
+  IVisible,
+  IHasAudio,
+  IFileElement {}
