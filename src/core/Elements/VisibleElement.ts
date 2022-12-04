@@ -3,7 +3,7 @@ import { BaseElement } from './BaseElement';
 import {
   DEFAULT_BLUR,
   DEFAULT_CONTRAST,
-  DEFAULT_EXPOSURE,
+  DEFAULT_BRIGHTNESS,
   DEFAULT_FADE_IN,
   DEFAULT_FADE_OUT,
   DEFAULT_FLIP_X,
@@ -26,7 +26,7 @@ export abstract class VisibleElement extends BaseElement implements IVisible {
   flipX = DEFAULT_FLIP_X;
   flipY = DEFAULT_FLIP_Y;
 
-  exposure = DEFAULT_EXPOSURE;
+  brightness = DEFAULT_BRIGHTNESS;
   saturation = DEFAULT_SATURATION;
   temperature = DEFAULT_TEMPERATURE;
   contrast = DEFAULT_CONTRAST;
@@ -42,7 +42,7 @@ export abstract class VisibleElement extends BaseElement implements IVisible {
       || this.rotation !== DEFAULT_ROTATION
       || this.flipX !== DEFAULT_FLIP_X
       || this.flipY !== DEFAULT_FLIP_Y
-      || this.exposure !== DEFAULT_EXPOSURE
+      || this.brightness !== DEFAULT_BRIGHTNESS
       || this.saturation !== DEFAULT_SATURATION
       || this.temperature !== DEFAULT_TEMPERATURE
       || this.contrast !== DEFAULT_CONTRAST

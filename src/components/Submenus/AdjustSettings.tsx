@@ -13,7 +13,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import {
   DEFAULT_BLUR,
   DEFAULT_CONTRAST,
-  DEFAULT_EXPOSURE,
+  DEFAULT_BRIGHTNESS,
   DEFAULT_OPACITY,
   DEFAULT_SATURATION,
   DEFAULT_TEMPERATURE,
@@ -36,7 +36,7 @@ const AdjustSettings: React.FC = () => {
   const focusedElement = useAppSelector(selectFocusedElement);
   const targetElement = focusedElement as BaseElement & IHasColorAdjustments;
 
-  const exposureRef = useRef<HTMLInputElement>(null);
+  const brightnessRef = useRef<HTMLInputElement>(null);
   const saturationRef = useRef<HTMLInputElement>(null);
   const temperatureRef = useRef<HTMLInputElement>(null);
   const contrastRef = useRef<HTMLInputElement>(null);
@@ -44,11 +44,11 @@ const AdjustSettings: React.FC = () => {
   const blurRef = useRef<HTMLInputElement>(null);
   const resetRef = useRef<HTMLButtonElement>(null);
 
-  const onExposureInput = useDebounce((event: Event) => {
+  const onBrightnessInput = useDebounce((event: Event) => {
     const slider = event.target as HTMLInputElement;
 
     disptach(updateElement({
-      exposure: slider.valueAsNumber,
+      brightness: slider.valueAsNumber,
       element: targetElement,
     }));
   });
@@ -100,7 +100,7 @@ const AdjustSettings: React.FC = () => {
 
   const onReset = () => {
     disptach(updateElement({
-      exposure: DEFAULT_EXPOSURE,
+      brightness: DEFAULT_BRIGHTNESS,
       saturation: DEFAULT_SATURATION,
       temperature: DEFAULT_TEMPERATURE,
       contrast: DEFAULT_CONTRAST,
@@ -113,9 +113,9 @@ const AdjustSettings: React.FC = () => {
   useEffect(() => {
     if (!targetElement) return;
 
-    if (exposureRef.current) {
-      exposureRef.current.valueAsNumber = targetElement.exposure;
-      exposureRef.current.dispatchEvent(new Event('input'));
+    if (brightnessRef.current) {
+      brightnessRef.current.valueAsNumber = targetElement.brightness;
+      brightnessRef.current.dispatchEvent(new Event('input'));
     }
 
     if (saturationRef.current) {
@@ -143,7 +143,7 @@ const AdjustSettings: React.FC = () => {
       blurRef.current.dispatchEvent(new Event('input'));
     }
 
-    exposureRef.current?.addEventListener('input', onExposureInput);
+    brightnessRef.current?.addEventListener('input', onBrightnessInput);
     saturationRef.current?.addEventListener('input', onSaturationInput);
     temperatureRef.current?.addEventListener('input', onTemperatureInput);
     contrastRef.current?.addEventListener('input', onContrastInput);
@@ -152,7 +152,7 @@ const AdjustSettings: React.FC = () => {
     resetRef.current?.addEventListener('click', onReset);
 
     return () => {
-      exposureRef.current?.removeEventListener('input', onExposureInput);
+      brightnessRef.current?.removeEventListener('input', onBrightnessInput);
       saturationRef.current?.removeEventListener('input', onSaturationInput);
       temperatureRef.current?.removeEventListener('input', onTemperatureInput);
       contrastRef.current?.removeEventListener('input', onContrastInput);
@@ -162,7 +162,7 @@ const AdjustSettings: React.FC = () => {
     };
   }, [
     targetElement?.uniqueId,
-    targetElement?.exposure,
+    targetElement?.brightness,
     targetElement?.saturation,
     targetElement?.temperature,
     targetElement?.contrast,
@@ -182,10 +182,10 @@ const AdjustSettings: React.FC = () => {
           minValue={0}
           maxValue={1}
           step={0.01}
-          defaultValue={targetElement?.exposure ?? 0.5}
-          label='Exposure'
+          defaultValue={targetElement?.brightness ?? 0.5}
+          label='Brightness'
           showLabel
-          sliderRef={exposureRef}
+          sliderRef={brightnessRef}
         />
         <Slider
           minValue={0}

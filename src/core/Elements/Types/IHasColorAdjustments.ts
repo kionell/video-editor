@@ -3,9 +3,9 @@
  */
 export interface IHasColorAdjustments {
   /**
-   * Element exposure.
+   * Element brightness.
    */
-  exposure: number;
+  brightness: number;
 
   /**
    * Element saturation. 
