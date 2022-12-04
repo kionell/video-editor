@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { MouseEvent, useEffect, useRef } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { FlexContainer } from '../components/Containers/FlexContainer';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { selectShowExportMenu, selectTracks } from '../store/Selectors';
@@ -12,6 +12,7 @@ import { Checkbox } from '../components/Inputs/Checkbox';
 import { SecondaryButton } from '../components/Buttons/SecondaryButton';
 import { PrimaryButton } from '../components/Buttons/PrimaryButton';
 import { Renderer } from '../core/Render/Renderer';
+import { getFileFormat, getFileType } from '../core/Render/Utils/Formats';
 import {
   DEFAULT_AUDIO_BITRATE,
   DEFAULT_AUDIO_SAMPLE_RATE,
@@ -19,7 +20,6 @@ import {
   DEFAULT_VIDEO_HEIGHT,
   DEFAULT_VIDEO_WIDTH,
 } from '../constants';
-import { getFileFormat, getFileType } from '../core/Render/Utils/Formats';
 
 const StyledExportMenuArea = styled(FlexContainer)`
   visibility: hidden;
@@ -66,10 +66,14 @@ const ExportMenu: React.FC = () => {
   const isVisible = useAppSelector(selectShowExportMenu);
   const tracks = useAppSelector(selectTracks);
 
+  const [isVideoIncluded, setVideoIncluded] = useState(true);
+  const [isAudioIncluded, setAudioIncluded] = useState(true);
+  const [currentAspectRatio, setApectRatio] = useState(1);
+
   const renderer = useRef<Renderer>();
 
   const fileNameRef = useRef<HTMLInputElement>(null);
-  const outputFormatRef = useRef<DropdownMenu>(null);
+  // const outputFormatRef = useRef<DropdownMenu>(null);
 
   const outputWidthRef = useRef<HTMLInputElement>(null);
   const outputHeightRef = useRef<HTMLInputElement>(null);
@@ -84,12 +88,62 @@ const ExportMenu: React.FC = () => {
   const closeMenu = () => dispatch(setExportMenuVisible(false));
   const onMenuClick = (e: MouseEvent) => e.stopPropagation();
 
+  const updateAspectRatio = () => {
+    const width = parseFloat(
+      outputWidthRef.current?.value || outputWidthRef.current?.placeholder,
+    );
+
+    if (!width) return;
+
+    const height = parseFloat(
+      outputHeightRef.current?.value || outputHeightRef.current?.placeholder,
+    );
+
+    setApectRatio(width / height);
+  };
+
+  const syncOutputWidth = () => {
+    if (!forceAspectRatioRef.current?.checked) return;
+
+    if (!outputWidthRef.current || !outputHeightRef.current) return;
+
+    if (!outputHeightRef.current?.value && outputWidthRef.current) {
+      outputWidthRef.current.value = '';
+
+      return;
+    }
+
+    const height = parseFloat(
+      outputHeightRef.current?.value || outputHeightRef.current?.placeholder,
+    );
+
+    outputWidthRef.current.value = (height * currentAspectRatio).toFixed(0);
+  };
+
+  const syncOutputHeight = () => {
+    if (!forceAspectRatioRef.current?.checked) return;
+
+    if (!outputWidthRef.current || !outputHeightRef.current) return;
+
+    if (!outputWidthRef.current?.value && outputHeightRef.current) {
+      outputHeightRef.current.value = '';
+
+      return;
+    }
+
+    const width = parseFloat(
+      outputWidthRef.current?.value || outputWidthRef.current?.placeholder,
+    );
+
+    outputHeightRef.current.value = (width / currentAspectRatio).toFixed(0);
+  };
+
   const renderVideo = async () => {
     if (!renderer.current) {
       renderer.current = new Renderer({
         fileName: fileNameRef.current?.value,
-        fileType: getFileType(outputFormatRef.current?.selected),
-        outputFormat: getFileFormat(outputFormatRef.current?.selected),
+        // fileType: getFileType(outputFormatRef.current?.selected),
+        // outputFormat: getFileFormat(outputFormatRef.current?.selected),
         includeVideo: includeVideoRef.current?.checked,
         width: outputWidthRef.current?.valueAsNumber,
         height: outputHeightRef.current?.valueAsNumber,
@@ -100,10 +154,7 @@ const ExportMenu: React.FC = () => {
     }
 
     await renderer.current.load();
-
-    const output = await renderer.current.render(tracks);
-
-    console.log(output);
+    await renderer.current.render(tracks);
   };
 
   useEffect(() => {
@@ -139,12 +190,11 @@ const ExportMenu: React.FC = () => {
           <DropdownMenu
             label='Output Format'
             selectedIndex={0}
-            ref={outputFormatRef}
+            // ref={outputFormatRef}
             options={[
               'mp4 (x264)',
               'wav (AAC)',
             ]}
-            disabled={!includeVideoRef.current?.checked}
           />
         </LabeledContainer>
 
@@ -159,6 +209,8 @@ const ExportMenu: React.FC = () => {
             label='Include Video'
             checked
             checkboxRef={includeVideoRef}
+            onCheck={() => setVideoIncluded(true)}
+            onUncheck={() => setVideoIncluded(false)}
           />
           <FlexContainer
             gap={12}
@@ -169,24 +221,30 @@ const ExportMenu: React.FC = () => {
               label='Width'
               inputRef={outputWidthRef}
               placeholder={`${DEFAULT_VIDEO_WIDTH}`}
+              disabled={!isVideoIncluded}
+              onChange={syncOutputHeight}
               numbersOnly
             />
             <TextInput
               label='Height'
               inputRef={outputHeightRef}
               placeholder={`${DEFAULT_VIDEO_HEIGHT}`}
+              disabled={!isVideoIncluded}
+              onChange={syncOutputWidth}
               numbersOnly
             />
             <Checkbox
               label='Force Aspect Ratio'
               checkboxRef={forceAspectRatioRef}
-              disabled={!includeVideoRef.current?.checked}
+              onCheck={updateAspectRatio}
+              disabled={!isVideoIncluded}
             />
           </FlexContainer>
           <TextInput
             label='Frame Rate'
             inputRef={frameRateRef}
             placeholder={`${DEFAULT_FRAMERATE}`}
+            disabled={!isVideoIncluded}
             numbersOnly
           />
           <FlexContainer
@@ -202,11 +260,11 @@ const ExportMenu: React.FC = () => {
                 'VBR',
                 'CBR',
               ]}
-              disabled={!includeVideoRef.current?.checked}
+              disabled={!isVideoIncluded}
             />
             <Checkbox
               label='Two Pass'
-              disabled={!includeVideoRef.current?.checked}
+              disabled={!isVideoIncluded}
             />
           </FlexContainer>
         </LabeledContainer>
@@ -222,16 +280,18 @@ const ExportMenu: React.FC = () => {
             label='Include Audio'
             checked
             checkboxRef={includeAudioRef}
+            onCheck={() => setAudioIncluded(true)}
+            onUncheck={() => setAudioIncluded(false)}
           />
           <DropdownMenu
             label='Sample Rate (Hz)'
             placeholder={DEFAULT_AUDIO_SAMPLE_RATE.toLocaleString()}
-            disabled={!includeAudioRef.current?.checked}
+            disabled={!isAudioIncluded}
           />
           <DropdownMenu
             label='Birtrate (Mbps)'
             placeholder={DEFAULT_AUDIO_BITRATE.toLocaleString()}
-            disabled={!includeAudioRef.current?.checked}
+            disabled={!isAudioIncluded}
           />
         </LabeledContainer>
 
@@ -254,10 +314,7 @@ const ExportMenu: React.FC = () => {
             showLabel
             label='Render'
             onClick={renderVideo}
-            disabled={
-              !includeVideoRef.current.checked
-                && !includeAudioRef.current.checked
-            }
+            disabled={!isVideoIncluded && !isAudioIncluded}
           />
         </FlexContainer>
       </StyledExportMenu>

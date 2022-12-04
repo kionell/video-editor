@@ -1,9 +1,11 @@
 import { BitrateEncoding } from '../Enums/BitrateEncoding';
+import { FileType } from '../Enums/FileType';
 import { FileFormat } from '../Enums/FileFormat';
 
 export interface IOutputSettings {
   fileName?: string;
-  fileFormat?: FileFormat;
+  fileType?: FileType;
+  outputFormat?: FileFormat,
   includeVideo?: boolean;
   width?: number;
   height?: number;
