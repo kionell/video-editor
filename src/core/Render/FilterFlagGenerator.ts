@@ -10,19 +10,24 @@ import {
   TextElement,
   VideoElement,
 } from '../Elements';
-import { IFileElement } from '../Elements/Types/IFileElement';
-import { IVideo } from '../Elements/Types/IVideo';
-import { IAudio } from '../Elements/Types/IAudio';
-import { IText } from '../Elements/Types/IText';
-import { IVisible } from '../Elements/Types/IVisible';
-import { map } from '../Utils/Math';
 import {
   DEFAULT_BRIGHTNESS,
   DEFAULT_CONTRAST,
+  DEFAULT_FADE_IN,
+  DEFAULT_FADE_OUT,
   DEFAULT_MAX_BRIGHTNESS,
   DEFAULT_MIN_BRIGHTNESS,
+  DEFAULT_ROTATION,
   DEFAULT_SATURATION,
+  DEFAULT_SPEED,
+  DEFAULT_VOLUME,
 } from '../../constants';
+import { IFileElement } from '../Elements/Types/IFileElement';
+import { IVisible } from '../Elements/Types/IVisible';
+import { IVideo } from '../Elements/Types/IVideo';
+import { IAudio } from '../Elements/Types/IAudio';
+import { IText } from '../Elements/Types/IText';
+import { map } from '../Utils/Math';
 
 export class FilterFlagGenerator {
   private _tracks: TimelineTrack[];
@@ -99,15 +104,15 @@ export class FilterFlagGenerator {
     if (element.flipX) filters.push('hflip');
     if (element.flipY) filters.push('vflip');
 
-    if (element.rotation) {
+    if (element.rotation !== DEFAULT_ROTATION) {
       filters.push(`rotate=a=${element.rotation}*PI/180`);
     }
 
-    if (element.fadeInTimeMs) {
+    if (element.fadeInTimeMs !== DEFAULT_FADE_IN) {
       filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
     }
 
-    if (element.fadeOutTimeMs) {
+    if (element.fadeOutTimeMs !== DEFAULT_FADE_OUT) {
       const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
 
       filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
@@ -135,7 +140,7 @@ export class FilterFlagGenerator {
       this._getVisualFilters(element, timing),
     ];
 
-    if (element.speed !== 1) {
+    if (element.speed !== DEFAULT_SPEED) {
       visualFilters.push(`setpts=PTS/${element.speed}`);
     }
 
@@ -156,11 +161,11 @@ export class FilterFlagGenerator {
     const filters: string[] = [];
     const streamIndex = this._getStreamIndex(element);
 
-    if (element.volume !== 1) {
+    if (element.volume !== DEFAULT_VOLUME) {
       filters.push(`volume=${element.volume}`);
     }
 
-    if (element.speed !== 1) {
+    if (element.speed !== DEFAULT_SPEED) {
       filters.push(`atempo=${element.speed}`);
     }
 
@@ -178,7 +183,12 @@ export class FilterFlagGenerator {
   private _getEqFilter(element: IVisible): string {
     const commands: string[] = [];
 
+    if (element.contrast !== DEFAULT_CONTRAST) {
+      commands.push(`contrast=${element.contrast}`);
+    }
+
     if (element.brightness !== DEFAULT_BRIGHTNESS) {
+      // 0 ... value ... 2 -> -1 ... value ... 1
       const brightness = map(
         element.brightness,
         DEFAULT_MIN_BRIGHTNESS,
@@ -188,10 +198,6 @@ export class FilterFlagGenerator {
       );
 
       commands.push(`brightness=${brightness}`);
-    }
-
-    if (element.contrast !== DEFAULT_CONTRAST) {
-      commands.push(`contrast=${element.contrast}`);
     }
 
     if (element.saturation !== DEFAULT_SATURATION) {
