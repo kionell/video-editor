@@ -164,6 +164,8 @@ export class FilterFlagGenerator {
       filters.push(`atempo=${element.speed}`);
     }
 
+    if (!filters.length) return '';
+
     return `[${streamIndex}:a]${filters.join(',')}`;
   }
 
