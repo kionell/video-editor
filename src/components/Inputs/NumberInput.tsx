@@ -61,6 +61,7 @@ const StyledNumberInput = styled(StyledTextInput).attrs({ type: 'number' })<Numb
   border-left: none;
   border-right: none;
   text-align: center;
+  transition: opacity 150ms;
 
   width: ${(props) => {
     const max = props.max?.toString().length ?? 1;

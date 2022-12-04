@@ -33,7 +33,8 @@ const StyledDropdownWrapper = styled.div<DropdownProps>`
   display: flex;
   justify-content: left;
   gap: 8px;
-
+  transition: opacity 150ms;
+  
   ${(props) => {
     if (props.width) return;
 

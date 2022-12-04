@@ -25,7 +25,8 @@ const StyledSliderContainer = styled.div<SliderProps>`
   gap: 18px;
   user-select: none;
   margin-bottom: 16px;
-
+  transition: opacity 150ms;
+  
   opacity: ${(props) => props.disabled ? 0.25 : 1};
 `;
 

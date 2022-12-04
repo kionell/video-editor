@@ -8,7 +8,7 @@ const StyledSecondaryButton = styled(StyledBaseButton)`
   background: ${(props) => props.theme.secondary.accent};
   border: 1px solid;
   border-color: transparent;
-  transition: border 100ms ease-in-out;
+  transition: border, opacity 150ms;
 
   &:hover:enabled {
     background: ${(props) => props.theme.secondary.hover};
@@ -46,14 +46,9 @@ const SecondaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
   useEffect(() => {
     if (!buttonRef.current) return;
 
-    const hasToggled = buttonRef.current.classList.contains('toggled');
-
-    if (toggled && !hasToggled) {
-      buttonRef.current.classList.add('toggled');
-    }
-    else if (!toggled && hasToggled) {
-      buttonRef.current.classList.remove('toggled');
-    }
+    toggled
+      ? buttonRef.current.classList.add('toggled')
+      : buttonRef.current.classList.remove('toggled');
   }, [toggled]);
 
   return (

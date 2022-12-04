@@ -22,6 +22,7 @@ const StyledTextInputWrapper = styled.div<TextInputProps>`
   justify-content: left;
   position: relative;
   gap: 8px;
+  transition: opacity 150ms;
 
   ${(props) => {
     if (props.width) return;

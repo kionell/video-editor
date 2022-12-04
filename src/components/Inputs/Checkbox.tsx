@@ -36,6 +36,7 @@ const StyledCheckboxWrapper = styled.div<CheckboxProps>`
   position: relative;
   gap: 8px;
   margin: 8px 0px;
+  transition: opacity 150ms;
 
   flex-direction: ${(props) => {
     return props.labelPosition === 'left' ? 'row-reverse' : 'row';
@@ -67,7 +68,7 @@ const StyledCheckbox = styled.div<CheckboxProps>`
   width: ${NORMAL_ICON_SIZE}px;
   outline: 1px solid;
   border-radius: 3px;
-  transition: 100ms;
+  transition: 150ms;
   background: ${(props) => props.theme.background};
   fill: ${(props) => props.theme.primary.accent};
   outline-color: ${({ checked, theme }) => {

@@ -19,7 +19,7 @@ const DropdownItemWrapper = styled.div<DropdownItemWrapperProps>`
   overflow: hidden;
   outline: none;
   z-index: 10;
-  transition: opacity 100ms;
+  transition: opacity 150ms;
 `;
 
 export interface DropdownItemProps {
