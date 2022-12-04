@@ -44,11 +44,11 @@ export class FilterFlagGenerator {
       filters.push(this._getConcatFilter());
     }
 
-    const stringifiedFilters = filters.filter((x) => x).join(';');
+    const output = filters.filter((x) => x).join(';');
 
-    if (!stringifiedFilters.length) return [];
+    if (!output.length) return [];
 
-    return `-filter_complex ${stringifiedFilters}`.split(' ');
+    return `-filter_complex ${output}`.split(' ');
   }
 
   private _shouldAddFilters(): boolean {
@@ -119,20 +119,20 @@ export class FilterFlagGenerator {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
+    const visualFilters = [
+      this._getVisualFilters(element, timing),
+    ];
 
-    const visualFilters: string[] = [];
-    const baseFilters = this._getVisualFilters(element, timing);
-
-    if (baseFilters.length > 0) {
-      visualFilters.push(baseFilters);
+    if (element.speed !== 1) {
+      visualFilters.push(`setpts=PTS/${element.speed}`);
     }
 
-    // ...
-
     const videoFilters = visualFilters.filter((x) => x).join(',');
-    const audioFilters = this._getAudioFilters(element);
 
     if (videoFilters.length > 0) filters.push(videoFilters);
+
+    const audioFilters = this._getAudioFilters(element);
+
     if (audioFilters.length > 0) filters.push(audioFilters);
 
     return filters.join(';');
@@ -148,6 +148,10 @@ export class FilterFlagGenerator {
       filters.push(`volume=${element.volume}`);
     }
 
+    if (element.speed !== 1) {
+      filters.push(`atempo=${element.speed}`);
+    }
+
     return `[${streamIndex}:a]${filters.join(',')}`;
   }
 
@@ -158,11 +162,28 @@ export class FilterFlagGenerator {
   }
 
   private _getConcatFilter(): string {
-    const input = [...this._tempVariables].join('');
+    const inputVariables = [...this._tempVariables];
+    const outputVariables = [];
+
     const includeVideo = this._outputSettings.includeVideo;
     const includeAudio = this._outputSettings.includeAudio;
 
-    return `${input}concat=v=${includeVideo}:a=${includeAudio}[out]`;
+    const n = this._files.length;
+    const v = includeVideo ? 1 : 0;
+    const a = includeAudio ? 1 : 0;
+
+    const input = inputVariables.join('');
+
+    for (let i = 0; i < v; ++i) outputVariables.push(`[outv${i}]`);
+    for (let i = 0; i < a; ++i) outputVariables.push(`[outa${i}]`);
+
+    const output = outputVariables.join('');
+
+    const mappings = outputVariables
+      .map((variable) => `-map ${variable}`)
+      .join(' ');
+
+    return `${input}concat=n=${n}v=${v}:a=${a}${output} ${mappings}`;
   }
 
   private _getStreamIndex(element: IFileElement | null): number {
