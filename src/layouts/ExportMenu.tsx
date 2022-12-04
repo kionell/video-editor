@@ -84,6 +84,7 @@ const ExportMenu: React.FC = () => {
   const forceAspectRatioRef = useRef<HTMLInputElement>(null);
 
   const exportRef = useRef<HTMLDivElement>(null);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   const closeMenu = () => dispatch(setExportMenuVisible(false));
   const onMenuClick = (e: MouseEvent) => e.stopPropagation();
@@ -139,22 +140,40 @@ const ExportMenu: React.FC = () => {
   };
 
   const renderVideo = async () => {
-    if (!renderer.current) {
-      renderer.current = new Renderer({
-        fileName: fileNameRef.current?.value,
-        // fileType: getFileType(outputFormatRef.current?.selected),
-        // outputFormat: getFileFormat(outputFormatRef.current?.selected),
-        includeVideo: includeVideoRef.current?.checked,
-        width: Number(outputWidthRef.current?.value),
-        height: Number(outputHeightRef.current?.value),
-        forceAspectRatio: forceAspectRatioRef.current?.checked,
-        frameRate: Number(frameRateRef.current?.value),
-        includeAudio: includeAudioRef.current?.checked,
-      });
+    const span = document.createElement('span');
+
+    if (exportMenuRef.current) {
+      span.style.fontSize = '14px';
+      span.style.color = 'white';
+
+      exportMenuRef.current.appendChild(span);
     }
 
-    await renderer.current.load();
-    await renderer.current.render(tracks);
+    try {
+      if (!renderer.current) {
+        renderer.current = new Renderer({
+          fileName: fileNameRef.current?.value,
+          // fileType: getFileType(outputFormatRef.current?.selected),
+          // outputFormat: getFileFormat(outputFormatRef.current?.selected),
+          includeVideo: includeVideoRef.current?.checked,
+          width: Number(outputWidthRef.current?.value),
+          height: Number(outputHeightRef.current?.value),
+          forceAspectRatio: forceAspectRatioRef.current?.checked,
+          frameRate: Number(frameRateRef.current?.value),
+          includeAudio: includeAudioRef.current?.checked,
+        });
+      }
+
+      renderer.current.setLogger((logParams) => {
+        span.innerText += `[${logParams.type}]: ${logParams.message}\n`;
+      });
+
+      await renderer.current.load();
+      await renderer.current.render(tracks);
+    }
+    catch (err: unknown) {
+      span.innerText += err as string;
+    }
   };
 
   useEffect(() => {
@@ -172,6 +191,7 @@ const ExportMenu: React.FC = () => {
     >
       <StyledExportMenu
         className='export-menu'
+        ref={exportMenuRef}
         onClick={onMenuClick}
       >
         <LabeledContainer

@@ -1,4 +1,4 @@
-import { createFFmpeg, FFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { createFFmpeg, FFmpeg, fetchFile, LogCallback } from '@ffmpeg/ffmpeg';
 import {
   DEFAULT_VIDEO_WIDTH,
   DEFAULT_VIDEO_HEIGHT,
@@ -22,6 +22,7 @@ export class Renderer {
   private _files: UploadedFile[];
   private _tracks: TimelineTrack[];
   private _outputSettings: RequiredSettings;
+  private _customLogger: LogCallback;
 
   constructor(settings?: IOutputSettings) {
     this._ffmpeg = createFFmpeg({ log: true });
@@ -49,6 +50,11 @@ export class Renderer {
       sampleRate: settings?.sampleRate || DEFAULT_AUDIO_SAMPLE_RATE,
       audioBitrate: settings?.audioBitrate || DEFAULT_AUDIO_BITRATE,
     };
+  }
+
+  setLogger(log: LogCallback): void {
+    this._customLogger = log;
+    this._ffmpeg.setLogger(log);
   }
 
   async load(): Promise<void> {
@@ -101,6 +107,11 @@ export class Renderer {
     command.push(this._getInputSettings());
     command.push(this._getOtherSettings());
     command.push(this._getOutputSettings());
+
+    this._customLogger({
+      type: 'custom',
+      message: command.flat().join(' '),
+    });
 
     return command.flat();
   }
