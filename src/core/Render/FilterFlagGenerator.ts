@@ -95,6 +95,8 @@ export class FilterFlagGenerator {
       filters.push('setpts=PTS-STARTPTS');
     }
 
+    if (!filters.length) return '';
+
     return `[${streamIndex}:v]${filters.join(',')}`;
   }
 
