@@ -33,11 +33,10 @@ export class FilteredElementGenerator {
     private _tracks: TimelineTrack[],
     private _files: UploadedFile[],
     private _outputSettings: RequiredSettings,
-    private _totalLengthMs: number,
   ) {}
 
   generate(): string {
-    const filteredElements: string[] = [];
+    const output: string[] = [];
 
     /**
      * We need to start from the last track 
@@ -51,39 +50,37 @@ export class FilteredElementGenerator {
 
       for (let ei = 0; ei < totalElements; ++ei) {
         const element = this._tracks[ti].elements[ei];
-        const filteredElement = this._getFilteredElement(element, ti, ei);
+        const filteredElement = this._getFilteredElement(element);
 
-        filteredElements.push(filteredElement);
+        output.push(filteredElement + `[track${ti}_element${ei}]`);
       }
     }
 
-    return filteredElements.join(';');
+    return output.join(';');
   }
 
   /**
    * Converts timeline element to FFmpeg filter complex command.
    * @param element Current timeline element.
-   * @param ti Current track index.
-   * @param ei Current element index in this track.
    * @returns Stringified filtered element.
    */
-  private _getFilteredElement(element: BaseElement, ti: number, ei: number): string {
+  private _getFilteredElement(element: BaseElement): string {
     if (element.type === MediaType.Video) {
-      return this._getFilteredVideo(element as VideoElement, ti, ei);
+      return this._getFilteredVideo(element as VideoElement);
     }
 
     if (element.type === MediaType.Audio) {
-      return this._getFilteredAudio(element as AudioElement, ti, ei);
+      return this._getFilteredAudio(element as AudioElement);
     }
 
     if (element.type === MediaType.Text) {
-      return this._getFilteredText(element as TextElement, ti, ei);
+      return this._getFilteredText(element as TextElement);
     }
 
-    return this._getFilteredVisual(element as ImageElement, ti, ei);
+    return this._getFilteredVisual(element as ImageElement);
   }
 
-  private _getFilteredVisual(element: IVisible, ti: number, ei: number): string {
+  private _getFilteredVisual(element: IVisible): string {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
@@ -111,7 +108,7 @@ export class FilteredElementGenerator {
     if (eqFilter.length > 0) filters.push(eqFilter);
 
     if (element.startTrimMs !== 0 || element.endTrimMs !== 0) {
-      filters.push(`trim=${startTimeMs}:${endTimeMs}`);
+      filters.push(`trim=${element.startTrimMs}:${element.durationMs}`);
       filters.push('setpts=PTS-STARTPTS');
     }
 
@@ -120,11 +117,11 @@ export class FilteredElementGenerator {
     return `[${streamIndex}:v]${filters.join(',')}`;
   }
 
-  private _getFilteredVideo(element: IVideo, ti: number, ei: number): string {
+  private _getFilteredVideo(element: IVideo): string {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
-    const visualFilters = [this._getFilteredVisual(element, ti, ei)];
+    const visualFilters = [this._getFilteredVisual(element)];
 
     if (element.speed !== DEFAULT_SPEED) {
       visualFilters.push(`setpts=PTS/${element.speed}`);
@@ -141,7 +138,7 @@ export class FilteredElementGenerator {
     return filters.join(';');
   }
 
-  private _getFilteredAudio(element: IAudio, ti: number, ei: number): string {
+  private _getFilteredAudio(element: IAudio): string {
     if (!this._outputSettings.includeAudio) return '';
 
     const filters: string[] = [];
@@ -160,10 +157,10 @@ export class FilteredElementGenerator {
     return `[${streamIndex}:a]${filters.join(',')}`;
   }
 
-  private _getFilteredText(element: IText, ti: number, ei: number): string {
+  private _getFilteredText(element: IText): string {
     if (!this._outputSettings.includeVideo) return '';
 
-    return '';
+    return element && '';
   }
 
   private _getEqFilter(element: IVisible): string {
