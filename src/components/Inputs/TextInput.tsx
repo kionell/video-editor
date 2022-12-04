@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { FormEventHandler, RefObject } from 'react';
+import { FormEventHandler, RefObject, useEffect } from 'react';
 import { Text } from '../Text';
 import { DEFAULT_FONT, NORMAL_FONT_SIZE } from '../../constants';
 
@@ -102,6 +102,14 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
     inputRef.current.value = inputRef.current.value.replace(/[^\d]*/g, '');
   };
 
+  useEffect(() => {
+    inputRef.current?.addEventListener('input', removeWrongValue);
+
+    return () => {
+      inputRef.current?.removeEventListener('input', removeWrongValue);
+    };
+  }, []);
+
   return (
     <StyledTextInputWrapper
       width={width}
@@ -117,8 +125,9 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
       />
       <StyledTextInput
         {...other}
+        onChange={other.onChange}
+        onInput={other.onChange}
         ref={inputRef}
-        onChange={removeWrongValue}
       />
     </StyledTextInputWrapper>
   );
