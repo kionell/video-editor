@@ -12,7 +12,7 @@ export interface TextInputProps {
   labelPosition?: 'top' | 'left' | 'right';
   labelWeight?: 'Regular' | 'Medium';
   placeholder?: string;
-  className?: string;
+  numbersOnly?: boolean;
   inputRef?: RefObject<HTMLInputElement>;
   onChange?: FormEventHandler<HTMLInputElement>;
 }
@@ -56,7 +56,7 @@ export const StyledTextInput = styled.input<TextInputProps>`
   pointer-events: ${(props) => props.disabled ? 'none' : 'all'};
   font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;
-  transition: 100ms;
+  transition: 150ms;
 
   width: ${(props) => props.width ? props.width + 'px' : '100%'};
   height: ${(props) => props.height ?? 35}px; 
@@ -92,7 +92,14 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
     labelPosition,
     labelWeight,
     disabled,
+    numbersOnly,
   } = other;
+
+  const removeWrongValue = () => {
+    if (!inputRef.current || !numbersOnly) return;
+
+    inputRef.current.value = inputRef.current.value.replace(/[^\d]*/g, '');
+  };
 
   return (
     <StyledTextInputWrapper
@@ -107,7 +114,11 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
         overflow='visible'
         size={NORMAL_FONT_SIZE}
       />
-      <StyledTextInput {...other} ref={inputRef} />
+      <StyledTextInput
+        {...other}
+        ref={inputRef}
+        onChange={removeWrongValue}
+      />
     </StyledTextInputWrapper>
   );
 };

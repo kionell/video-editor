@@ -173,13 +173,13 @@ const ExportMenu: React.FC = () => {
               label='Width'
               inputRef={outputWidthRef}
               placeholder={`${DEFAULT_VIDEO_WIDTH}`}
-              disabled={!includeVideoRef.current?.checked}
+              numbersOnly
             />
             <TextInput
               label='Height'
               inputRef={outputHeightRef}
               placeholder={`${DEFAULT_VIDEO_HEIGHT}`}
-              disabled={!includeVideoRef.current?.checked}
+              numbersOnly
             />
             <Checkbox
               label='Force Aspect Ratio'
@@ -191,7 +191,7 @@ const ExportMenu: React.FC = () => {
             label='Frame Rate'
             inputRef={frameRateRef}
             placeholder={`${DEFAULT_FRAMERATE}`}
-            disabled={!includeVideoRef.current?.checked}
+            numbersOnly
           />
           <FlexContainer
             align='center'
