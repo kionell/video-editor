@@ -9,16 +9,8 @@ import { IAudio } from '../../Elements/Types/IAudio';
 import { IText } from '../../Elements/Types/IText';
 import { map } from '../../Utils/Math';
 import {
-  DEFAULT_BRIGHTNESS,
-  DEFAULT_CONTRAST,
-  DEFAULT_FADE_IN,
-  DEFAULT_FADE_OUT,
   DEFAULT_MAX_BRIGHTNESS,
   DEFAULT_MIN_BRIGHTNESS,
-  DEFAULT_ROTATION,
-  DEFAULT_SATURATION,
-  DEFAULT_SPEED,
-  DEFAULT_VOLUME,
 } from '../../../constants';
 import {
   AudioElement,
@@ -89,30 +81,18 @@ export class FilteredElementGenerator {
     if (element.flipX) filters.push('hflip');
     if (element.flipY) filters.push('vflip');
 
-    if (element.rotation !== DEFAULT_ROTATION) {
-      filters.push(`rotate=a=${element.rotation}*PI/180`);
-    }
+    filters.push(`rotate=a=${element.rotation}*PI/180`);
+    filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
 
-    if (element.fadeInTimeMs !== DEFAULT_FADE_IN) {
-      filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
-    }
+    const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
 
-    if (element.fadeOutTimeMs !== DEFAULT_FADE_OUT) {
-      const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
-
-      filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
-    }
+    filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
 
     const eqFilter = this._getEqFilter(element);
 
-    if (eqFilter.length > 0) filters.push(eqFilter);
-
-    if (element.startTrimMs !== 0 || element.endTrimMs !== 0) {
-      filters.push(`trim=${element.startTrimMs}:${element.durationMs}`);
-      filters.push('setpts=PTS-STARTPTS');
-    }
-
-    if (!filters.length) return '';
+    filters.push(eqFilter);
+    filters.push(`trim=${element.startTrimMs}:${element.durationMs}`);
+    filters.push('setpts=PTS-STARTPTS');
 
     return `[${streamIndex}:v]${filters.join(',')}`;
   }
@@ -123,17 +103,15 @@ export class FilteredElementGenerator {
     const filters: string[] = [];
     const visualFilters = [this._getFilteredVisual(element)];
 
-    if (element.speed !== DEFAULT_SPEED) {
-      visualFilters.push(`setpts=PTS/${element.speed}`);
-    }
+    visualFilters.push(`setpts=PTS/${element.speed}`);
 
-    const videoFilters = visualFilters.filter((x) => x).join(',');
+    const videoFilters = visualFilters.join(',');
 
-    if (videoFilters.length > 0) filters.push(videoFilters);
+    filters.push(videoFilters);
 
     const audioFilters = this._getFilteredAudio(element);
 
-    if (audioFilters.length > 0) filters.push(audioFilters);
+    filters.push(audioFilters);
 
     return filters.join(';');
   }
@@ -144,15 +122,8 @@ export class FilteredElementGenerator {
     const filters: string[] = [];
     const streamIndex = this._getStreamIndex(element);
 
-    if (element.volume !== DEFAULT_VOLUME) {
-      filters.push(`volume=${element.volume}`);
-    }
-
-    if (element.speed !== DEFAULT_SPEED) {
-      filters.push(`atempo=${element.speed}`);
-    }
-
-    if (!filters.length) return '';
+    filters.push(`volume=${element.volume}`);
+    filters.push(`atempo=${element.speed}`);
 
     return `[${streamIndex}:a]${filters.join(',')}`;
   }
@@ -166,28 +137,19 @@ export class FilteredElementGenerator {
   private _getEqFilter(element: IVisible): string {
     const commands: string[] = [];
 
-    if (element.contrast !== DEFAULT_CONTRAST) {
-      commands.push(`contrast=${element.contrast}`);
-    }
+    commands.push(`contrast=${element.contrast}`);
 
-    if (element.brightness !== DEFAULT_BRIGHTNESS) {
-      // 0 ... value ... 2 -> -1 ... value ... 1
-      const brightness = map(
-        element.brightness,
-        DEFAULT_MIN_BRIGHTNESS,
-        DEFAULT_MAX_BRIGHTNESS,
-        -1,
-        1,
-      );
+    // 0 ... value ... 2 -> -1 ... value ... 1
+    const brightness = map(
+      element.brightness,
+      DEFAULT_MIN_BRIGHTNESS,
+      DEFAULT_MAX_BRIGHTNESS,
+      -1,
+      1,
+    );
 
-      commands.push(`brightness=${brightness}`);
-    }
-
-    if (element.saturation !== DEFAULT_SATURATION) {
-      commands.push(`saturation=${element.saturation}`);
-    }
-
-    if (!commands.length) return '';
+    commands.push(`brightness=${brightness}`);
+    commands.push(`saturation=${element.saturation}`);
 
     return `eq=${commands.join(':')}`;
   }
