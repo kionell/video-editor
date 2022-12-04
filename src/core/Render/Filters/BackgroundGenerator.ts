@@ -18,6 +18,6 @@ export class BackgroundGenerator {
       `d=${this._totalLengthMs * 1000}`,
     ];
 
-    return `color=${backgroundCommands.join(':')}`;
+    return `color=${backgroundCommands.join(':')}[background]`;
   }
 }
