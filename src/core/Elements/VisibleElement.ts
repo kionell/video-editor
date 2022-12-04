@@ -1,9 +1,5 @@
 import { Filter } from '../Enums/Filter';
 import { BaseElement } from './BaseElement';
-import { IFadeableElement } from './Types/IFadeableElement';
-import { IHasColorAdjustments } from './Types/IHasColorAdjustments';
-import { IHasFilters } from './Types/IHasFilters';
-import { ITransformableElement } from './Types/ITransformableElement';
 import {
   DEFAULT_BLUR,
   DEFAULT_CONTRAST,
@@ -17,13 +13,12 @@ import {
   DEFAULT_SATURATION,
   DEFAULT_TEMPERATURE,
 } from '../../constants';
+import { IVisible } from './Types/IVisible';
 
 /**
  * A visible element that can be placed on a timeline track.
  */
-export abstract class VisibleElement extends BaseElement implements
-  ITransformableElement, IFadeableElement, IHasFilters, IHasColorAdjustments {
-
+export abstract class VisibleElement extends BaseElement implements IVisible {
   fadeInTimeMs = DEFAULT_FADE_IN;
   fadeOutTimeMs = DEFAULT_FADE_OUT;
 

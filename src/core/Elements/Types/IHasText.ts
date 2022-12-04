@@ -1,6 +1,6 @@
 import { TextAlign, TextVerticalAlign } from '../../Enums/TextAlign';
 
-export interface IHasTextSettings {
+export interface IHasText {
   /**
    * Text of this element.
    */

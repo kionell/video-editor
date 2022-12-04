@@ -1,22 +1,19 @@
 import { IFileElement } from './Types/IFileElement';
-import { IFadeableElement } from './Types/IFadeableElement';
-import { IPlayableElement } from './Types/IPlayableElement';
 import { AudioFile } from '../Files/AudioFile';
 import { BaseElement } from './BaseElement';
 import { MediaType } from '../Enums/MediaType';
-import { IHasAudio } from './Types/IHasAudio';
 import {
   DEFAULT_FADE_IN,
   DEFAULT_FADE_OUT,
   DEFAULT_SPEED,
   DEFAULT_VOLUME,
 } from '../../constants';
+import { IAudio } from './Types/IAudio';
 
 /**
  * An audio element that can be placed on a timeline track.
  */
-export class AudioElement extends BaseElement
-  implements IFileElement, IPlayableElement, IFadeableElement, IHasAudio {
+export class AudioElement extends BaseElement implements IFileElement, IAudio {
 
   /**
    * Volume of this audio element.
