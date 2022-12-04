@@ -67,10 +67,10 @@ const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
           align={props.direction === 'bottom' ? 'center' : 'start'}
         >
           {
-            other.categories.map((category, i) => {
+            other.categories.map((category) => {
               return (
                 <StyledNavbarButton
-                  key={i}
+                  key={category}
                   buttonRef={createRef()}
                   disabled={props.disabled}
                   toggled={category === props.selected}
