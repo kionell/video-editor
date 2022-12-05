@@ -9,6 +9,8 @@ import { IAudio } from '../../Elements/Types/IAudio';
 import { IText } from '../../Elements/Types/IText';
 import { map } from '../../Utils/Math';
 import {
+  DEFAULT_FADE_IN,
+  DEFAULT_FADE_OUT,
   DEFAULT_MAX_BRIGHTNESS,
   DEFAULT_MIN_BRIGHTNESS,
 } from '../../../constants';
@@ -116,11 +118,16 @@ export class FilteredElementGenerator {
     if (element.flipY) filters.push('vflip');
 
     filters.push(`rotate=a=${element.rotation}*PI/180`);
-    filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
 
-    const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
+    if (element.fadeInTimeMs !== DEFAULT_FADE_IN) {
+      filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
+    }
 
-    filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
+    if (element.fadeOutTimeMs !== DEFAULT_FADE_OUT) {
+      const fadeStartTimeMs = element.durationMs - element.fadeOutTimeMs;
+
+      filters.push(`fade=out:st=${fadeStartTimeMs}ms:d=${element.fadeOutTimeMs}ms`);
+    }
 
     const eqFilter = this._getEqFilter(element);
 
