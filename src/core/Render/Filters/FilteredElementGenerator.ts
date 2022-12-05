@@ -101,14 +101,10 @@ export class FilteredElementGenerator {
   }
 
   private _getFilteredText(element: IText): string {
-    if (!this._outputSettings.includeVideo) return '';
-
     return element && '';
   }
 
   private _getVisualFilters(element: IVisible): string {
-    if (!this._outputSettings.includeVideo) return '';
-
     const filters: string[] = [];
     const streamIndex = this._getStreamIndex(element as IVisible & IFileElement);
 
@@ -152,8 +148,6 @@ export class FilteredElementGenerator {
   }
 
   private _getAudioFilters(element: IAudio): string {
-    if (!this._outputSettings.includeAudio) return '';
-
     const filters: string[] = [];
     const streamIndex = this._getStreamIndex(element);
 
