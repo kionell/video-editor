@@ -142,7 +142,16 @@ export class Renderer {
       this._outputSettings,
     );
 
-    return filterGenerator.generate();
+    const filters = filterGenerator.generate();
+
+    if (filters.length) {
+      filters.push('-map');
+      filters.push('[track0_v]');
+      // filters.push('-map');
+      // filters.push('[track0_a]');
+    }
+
+    return filters;
   }
 
   _getOutputSettings(): string[] {
@@ -150,9 +159,6 @@ export class Renderer {
      * Currently libx264 is the most "stable" codec.
      */
     const outputSettings: string[][] = [];
-
-    outputSettings.push(['-map', '[track0_v]']);
-    // outputSettings.push(['-map', '[track0_a]']);
 
     outputSettings.push(['-c:v', 'libx264']);
     outputSettings.push(['-preset', 'ultrafast']);
