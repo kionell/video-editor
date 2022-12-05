@@ -170,6 +170,8 @@ const ExportMenu: React.FC = () => {
 
       await renderer.current.load();
       await renderer.current.render(tracks);
+
+      renderer.current.finish();
     }
     catch (err: unknown) {
       span.innerText += err as string;
