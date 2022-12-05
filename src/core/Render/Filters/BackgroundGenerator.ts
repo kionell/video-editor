@@ -15,7 +15,7 @@ export class BackgroundGenerator {
       'c=black',
       `s=${this._outputSettings.width}x${this._outputSettings.height}`,
       `r=${this._outputSettings.frameRate}`,
-      `d=${this._totalLengthMs * 1000}`,
+      `d=${this._totalLengthMs / 1000}`,
     ];
 
     return `color=${backgroundCommands.join(':')}[background]`;
