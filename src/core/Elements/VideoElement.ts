@@ -13,9 +13,6 @@ import { IVideo } from './Types/IVideo';
  * A video element that can be placed on a timeline track.
  */
 export class VideoElement extends VisibleElement implements IVideo {
-  volume = 1;
-  speed = 1;
-
   file: VideoFile;
 
   /**
@@ -29,19 +26,33 @@ export class VideoElement extends VisibleElement implements IVideo {
     this.file = file;
   }
 
+  get speed(): number {
+    return this.file.source.playbackRate;
+  }
+
+  set speed(value: number) {
+    this.file.source.playbackRate = value;
+  }
+
+  get volume(): number {
+    return this.file.source.volume;
+  }
+
+  set volume(value: number) {
+    this.file.source.volume = value;
+  }
+
   /**
    * Duration of this video element.
    */
   get totalDurationMs(): number {
-    const fileDurationMs = this.file.duration * 1000;
+    const fileDurationMs = this._totalDurationMs ?? this.file.duration * 1000;
 
-    return Math.max(0, this._totalDurationMs ?? fileDurationMs);
+    return fileDurationMs / this.file.source.playbackRate;
   }
 
   set totalDurationMs(value: number) {
-    const fileDurationMs = this.file.duration * 1000;
-
-    this._totalDurationMs = Math.max(0, Math.min(value, fileDurationMs));
+    this._totalDurationMs = Math.max(value, 0);
   }
 
   get isChanged(): boolean {
