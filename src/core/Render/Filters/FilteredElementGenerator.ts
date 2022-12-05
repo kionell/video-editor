@@ -42,9 +42,9 @@ export class FilteredElementGenerator {
 
       for (let ei = 0; ei < totalElements; ++ei) {
         const element = this._tracks[ti].elements[ei];
-        const filteredElement = this._getFilteredElement(element);
+        const filteredElement = this._getFilteredElement(element, ti, ei);
 
-        output.push(filteredElement + `[track${ti}_element${ei}]`);
+        output.push(filteredElement);
       }
     }
 
@@ -56,23 +56,62 @@ export class FilteredElementGenerator {
    * @param element Current timeline element.
    * @returns Stringified filtered element.
    */
-  private _getFilteredElement(element: BaseElement): string {
+  private _getFilteredElement(element: BaseElement, ti: number, ei: number): string {
     if (element.type === MediaType.Video) {
-      return this._getFilteredVideo(element as VideoElement);
+      return this._getFilteredVideo(element as VideoElement, ti, ei);
     }
 
     if (element.type === MediaType.Audio) {
-      return this._getFilteredAudio(element as AudioElement);
+      return this._getFilteredAudio(element as AudioElement, ti, ei);
     }
 
     if (element.type === MediaType.Text) {
       return this._getFilteredText(element as TextElement);
     }
 
-    return this._getFilteredVisual(element as ImageElement);
+    return this._getFilteredVisual(element as ImageElement, ti, ei);
   }
 
-  private _getFilteredVisual(element: IVisible): string {
+  private _getFilteredVisual(element: IVisible, ti: number, ei: number): string {
+    return this._getVisualFilters(element) + `[track${ti}_element${ei}_v]`;
+  }
+
+  private _getFilteredVideo(element: IVideo, ti: number, ei: number): string {
+    if (!this._outputSettings.includeVideo) return '';
+
+    const filters: string[] = [];
+
+    const visualFilters = this._getVisualFilters(element);
+
+    const videoFilters = [
+      ...visualFilters,
+      `setpts=PTS/${element.speed}`,
+      `[track${ti}_element${ei}_v]`,
+    ].join(',');
+
+    filters.push(videoFilters);
+
+    const audioFilters = [
+      ...this._getAudioFilters(element),
+      `[track${ti}_element${ei}_a]`,
+    ].join(',');
+
+    filters.push(audioFilters);
+
+    return filters.join(';');
+  }
+
+  private _getFilteredAudio(element: IAudio, ti: number, ei: number): string {
+    return this._getAudioFilters(element) + `[track${ti}_element${ei}_a]`;
+  }
+
+  private _getFilteredText(element: IText): string {
+    if (!this._outputSettings.includeVideo) return '';
+
+    return element && '';
+  }
+
+  private _getVisualFilters(element: IVisible): string {
     if (!this._outputSettings.includeVideo) return '';
 
     const filters: string[] = [];
@@ -91,47 +130,10 @@ export class FilteredElementGenerator {
     const eqFilter = this._getEqFilter(element);
 
     filters.push(eqFilter);
-    filters.push(`trim=${element.startTrimMs}:${element.durationMs}`);
+    filters.push(`trim=${element.startTrimMs / 1000}:${element.durationMs / 1000}`);
     filters.push('setpts=PTS-STARTPTS');
 
     return `[${streamIndex}:v]${filters.join(',')}`;
-  }
-
-  private _getFilteredVideo(element: IVideo): string {
-    if (!this._outputSettings.includeVideo) return '';
-
-    const filters: string[] = [];
-    const visualFilters = [this._getFilteredVisual(element)];
-
-    visualFilters.push(`setpts=PTS/${element.speed}`);
-
-    const videoFilters = visualFilters.join(',');
-
-    filters.push(videoFilters);
-
-    const audioFilters = this._getFilteredAudio(element);
-
-    filters.push(audioFilters);
-
-    return filters.join(';');
-  }
-
-  private _getFilteredAudio(element: IAudio): string {
-    if (!this._outputSettings.includeAudio) return '';
-
-    const filters: string[] = [];
-    const streamIndex = this._getStreamIndex(element);
-
-    filters.push(`volume=${element.volume}`);
-    filters.push(`atempo=${element.speed}`);
-
-    return `[${streamIndex}:a]${filters.join(',')}`;
-  }
-
-  private _getFilteredText(element: IText): string {
-    if (!this._outputSettings.includeVideo) return '';
-
-    return element && '';
   }
 
   private _getEqFilter(element: IVisible): string {
@@ -152,6 +154,18 @@ export class FilteredElementGenerator {
     commands.push(`saturation=${element.saturation}`);
 
     return `eq=${commands.join(':')}`;
+  }
+
+  private _getAudioFilters(element: IAudio): string {
+    if (!this._outputSettings.includeAudio) return '';
+
+    const filters: string[] = [];
+    const streamIndex = this._getStreamIndex(element);
+
+    filters.push(`volume=${element.volume}`);
+    filters.push(`atempo=${element.speed}`);
+
+    return `[${streamIndex}:a]${filters.join(',')}`;
   }
 
   private _getStreamIndex(element: IFileElement): number {
