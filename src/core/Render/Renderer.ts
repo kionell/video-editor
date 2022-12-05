@@ -23,7 +23,6 @@ export class Renderer {
   private _tracks: TimelineTrack[];
   private _outputSettings: RequiredSettings;
   private _customLogger: LogCallback;
-  private _totalLengthMs: number;
 
   constructor(settings?: IOutputSettings) {
     this._ffmpeg = createFFmpeg({ log: true });
