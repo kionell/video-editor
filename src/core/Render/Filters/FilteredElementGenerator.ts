@@ -83,20 +83,15 @@ export class FilteredElementGenerator {
 
     const visualFilters = this._getVisualFilters(element);
 
-    const videoFilters = [
-      ...visualFilters,
-      `setpts=PTS/${element.speed}`,
-      `[track${ti}_element${ei}_v]`,
-    ].join(',');
+    const videoFilters = [visualFilters, `setpts=PTS/${element.speed}`];
 
-    filters.push(videoFilters);
+    const filteredVideo = videoFilters.join(',') + `[track${ti}_element${ei}_v]`;
 
-    const audioFilters = [
-      ...this._getAudioFilters(element),
-      `[track${ti}_element${ei}_a]`,
-    ].join(',');
+    filters.push(filteredVideo);
 
-    filters.push(audioFilters);
+    const filteredAudio = this._getFilteredAudio(element, ti, ei);
+
+    filters.push(filteredAudio);
 
     return filters.join(';');
   }
