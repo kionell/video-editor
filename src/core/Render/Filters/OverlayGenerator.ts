@@ -46,9 +46,9 @@ export class OverlayGenerator {
 
         /**
          * 0 = current layer.
-         * 1 = current element.
+         * 1 = current element (video).
          */
-        const input = base + `[track${ti}_element${ei}]`;
+        const input = base + `[track${ti}_element${ei}_v]`;
         const overlay = `overlay=${commands.join(':')}`;
 
         /**
