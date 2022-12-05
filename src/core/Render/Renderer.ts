@@ -110,11 +110,6 @@ export class Renderer {
     command.push(this._getOtherSettings());
     command.push(this._getOutputSettings());
 
-    this._customLogger({
-      type: 'custom',
-      message: command.flat().join(' '),
-    });
-
     return command.flat();
   }
 
