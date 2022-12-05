@@ -55,7 +55,7 @@ export class OverlayGenerator {
          * track0_0 = temporary state of the track0 after overlaying first element.
          * track0   = full track0 that is ready to became next layer.
          */
-        const output = ei < totalElements - 1 ? `[track${ti}_${ei}]` : `[track${ti}]`;
+        const output = ei < totalElements - 1 ? `[track${ti}_${ei}_v]` : `[track${ti}_v]`;
 
         overlays.push(input + overlay + output);
 

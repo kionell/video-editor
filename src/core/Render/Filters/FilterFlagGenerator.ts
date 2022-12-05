@@ -21,19 +21,19 @@ export class FilterFlagGenerator {
     }, 0);
 
     this._backgroundGenerator = new BackgroundGenerator(
-      _outputSettings,
+      this._outputSettings,
       totalLengthMs,
     );
 
     this._elementGenerator = new FilteredElementGenerator(
-      _tracks,
-      _files,
-      _outputSettings,
+      this._tracks,
+      this._files,
+      this._outputSettings,
     );
 
     this._overlayGenerator = new OverlayGenerator(
-      _tracks,
-      _files,
+      this._tracks,
+      this._files,
     );
   }
 
