@@ -35,8 +35,8 @@ export class OverlayGenerator {
          */
         if (streamIndex === -1) continue;
 
-        const start = element.startTimeMs * 1000;
-        const end = element.endTimeMs * 1000;
+        const start = element.startTimeMs / 1000;
+        const end = element.endTimeMs / 1000;
 
         const commands = [
           'x=0',
