@@ -157,8 +157,8 @@ export class Renderer {
      */
     const outputSettings: string[][] = [];
 
-    outputSettings.push(['-map', 'track0_v']);
-    // outputSettings.push(['-map', 'track0_a']);
+    outputSettings.push(['-map', '[track0_v]']);
+    // outputSettings.push(['-map', '[track0_a]']);
 
     outputSettings.push(['-c:v', 'libx264']);
     outputSettings.push(['-preset', 'ultrafast']);
