@@ -83,7 +83,11 @@ export class FilteredElementGenerator {
 
     const visualFilters = this._getVisualFilters(element);
 
-    const videoFilters = [visualFilters, `setpts=PTS/${element.speed}`];
+    const videoFilters = [
+      visualFilters,
+      `scale=${this._outputSettings.width}x${this._outputSettings.height}`,
+      `setpts=PTS/${element.speed}`,
+    ];
 
     const filteredVideo = videoFilters.join(',') + `[track${ti}_element${ei}_v]`;
 
