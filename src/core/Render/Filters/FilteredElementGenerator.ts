@@ -61,9 +61,9 @@ export class FilteredElementGenerator {
       return this._getFilteredVideo(element as VideoElement, ti, ei);
     }
 
-    if (element.type === MediaType.Audio) {
-      return this._getFilteredAudio(element as AudioElement, ti, ei);
-    }
+    // if (element.type === MediaType.Audio) {
+    //   return this._getFilteredAudio(element as AudioElement, ti, ei);
+    // }
 
     if (element.type === MediaType.Text) {
       return this._getFilteredText(element as TextElement);
@@ -89,9 +89,9 @@ export class FilteredElementGenerator {
 
     filters.push(filteredVideo);
 
-    const filteredAudio = this._getFilteredAudio(element, ti, ei);
+    // const filteredAudio = this._getFilteredAudio(element, ti, ei);
 
-    filters.push(filteredAudio);
+    // filters.push(filteredAudio);
 
     return filters.join(';');
   }
