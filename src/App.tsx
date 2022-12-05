@@ -11,36 +11,18 @@ import './styles/CustomFonts.ts';
 
 export function App() {
   const [theme, setTheme] = useState(DarkTheme);
-  const [ready, setReady] = useState(false);
 
-  const load = async () => {
-    // if (!ffmpeg.isLoaded()) {
-    //   await ffmpeg.load();
-    // }
+  useEffect(() => setTheme(DarkTheme), []);
 
-    setReady(true);
-  };
-
-  useEffect(() => {
-    setTheme(DarkTheme);
-    load();
-  });
-
-  return ready
-    ?
-    (
-      <div style={{ width: '100%', height: '100%' }}>
-        <BaseGlobalStyle />
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-              <MainPage />
-              {/* <DebugPage /> */}
-          </ThemeProvider>
-        </Provider>
-      </div>
-    )
-    :
-    (
-      <div>Loading...</div>
-    );
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      <BaseGlobalStyle />
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <MainPage />
+          {/* <DebugPage /> */}
+        </ThemeProvider>
+      </Provider>
+    </div>
+  );
 }
