@@ -44,7 +44,9 @@ export class FilterFlagGenerator {
     const filteredElements = this._elementGenerator.generate();
     const overlays = this._overlayGenerator.generate(filteredElements);
 
-    const commands = [background, filteredElements, overlays].join(';');
+    const commands = [background, filteredElements, overlays]
+      .filter((x) => x)
+      .join(';');
 
     return `-filter_complex ${commands}`.split(' ');
   }
