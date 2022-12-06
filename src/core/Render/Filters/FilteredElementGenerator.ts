@@ -9,10 +9,15 @@ import { IAudio } from '../../Elements/Types/IAudio';
 import { IText } from '../../Elements/Types/IText';
 import { map } from '../../Utils/Math';
 import {
+  DEFAULT_BRIGHTNESS,
+  DEFAULT_CONTRAST,
   DEFAULT_FADE_IN,
   DEFAULT_FADE_OUT,
   DEFAULT_MAX_BRIGHTNESS,
   DEFAULT_MIN_BRIGHTNESS,
+  DEFAULT_ROTATION,
+  DEFAULT_SATURATION,
+  DEFAULT_SPEED,
 } from '../../../constants';
 import {
   AudioElement,
@@ -46,7 +51,7 @@ export class FilteredElementGenerator {
         const element = this._tracks[ti].elements[ei];
         const filteredElement = this._getFilteredElement(element, ti, ei);
 
-        output.push(filteredElement);
+        if (filteredElement) output.push(filteredElement);
       }
     }
 
@@ -75,7 +80,13 @@ export class FilteredElementGenerator {
   }
 
   private _getFilteredVisual(element: IVisible, ti: number, ei: number): string {
-    return this._getVisualFilters(element) + `[track${ti}_element${ei}_v]`;
+    if (!this._outputSettings.includeVideo) return '';
+
+    const filters = this._getVisualFilters(element);
+
+    if (!filters.length) return '';
+
+    return filters + `[track${ti}_element${ei}_v]`;
   }
 
   private _getFilteredVideo(element: IVideo, ti: number, ei: number): string {
@@ -87,26 +98,50 @@ export class FilteredElementGenerator {
 
     const videoFilters = [
       visualFilters,
-      `scale=${this._outputSettings.width}x${this._outputSettings.height}`,
-      `setpts=PTS/${element.speed}`,
     ];
 
-    const filteredVideo = videoFilters.join(',') + `[track${ti}_element${ei}_v]`;
+    const outputWidth = this._outputSettings.width;
+    const outputHeight = this._outputSettings.height;
+    const sameWidth = element.file.source.width === outputWidth;
+    const sameHeight = element.file.source.height === outputHeight;
 
-    filters.push(filteredVideo);
+    if (!sameWidth || !sameHeight) {
+      videoFilters.push(`scale=${outputWidth}x${outputHeight}`);
+    }
 
-    // const filteredAudio = this._getFilteredAudio(element, ti, ei);
+    if (element.speed !== DEFAULT_SPEED) {
+      videoFilters.push(`setpts=PTS/${element.speed}`);
+    }
 
-    // filters.push(filteredAudio);
+    if (videoFilters.length) {
+      const filteredVideo = videoFilters.join(',') + `[track${ti}_element${ei}_v]`;
+
+      filters.push(filteredVideo);
+    }
+
+    const audioElement = element as unknown as IAudio;
+    const filteredAudio = this._getFilteredAudio(audioElement, ti, ei);
+
+    if (filteredAudio.length) {
+      filters.push(filteredAudio);
+    }
 
     return filters.join(';');
   }
 
   private _getFilteredAudio(element: IAudio, ti: number, ei: number): string {
-    return this._getAudioFilters(element) + `[track${ti}_element${ei}_a]`;
+    if (!this._outputSettings.includeAudio) return '';
+
+    const filters = this._getAudioFilters(element);
+
+    if (!filters.length) return '';
+
+    return filters + `[track${ti}_element${ei}_a]`;
   }
 
   private _getFilteredText(element: IText): string {
+    if (!this._outputSettings.includeVideo) return '';
+
     return element && '';
   }
 
@@ -117,7 +152,9 @@ export class FilteredElementGenerator {
     if (element.flipX) filters.push('hflip');
     if (element.flipY) filters.push('vflip');
 
-    filters.push(`rotate=a=${element.rotation}*PI/180`);
+    if (element.rotation !== DEFAULT_ROTATION) {
+      filters.push(`rotate=a=${element.rotation}*PI/180`);
+    }
 
     if (element.fadeInTimeMs !== DEFAULT_FADE_IN) {
       filters.push(`fade=in:0:d=${element.fadeInTimeMs}ms`);
@@ -131,9 +168,14 @@ export class FilteredElementGenerator {
 
     const eqFilter = this._getEqFilter(element);
 
-    filters.push(eqFilter);
-    filters.push(`trim=${element.startTrimMs / 1000}:${element.durationMs / 1000}`);
-    filters.push('setpts=PTS-STARTPTS');
+    if (eqFilter.length) filters.push(eqFilter);
+
+    if (element.startTrimMs !== 0 || element.endTrimMs !== 0) {
+      filters.push(`trim=${element.startTrimMs / 1000}:${element.durationMs / 1000}`);
+      filters.push('setpts=PTS-STARTPTS');
+    }
+
+    if (!filters.length) return '';
 
     return `[${streamIndex}:v]${filters.join(',')}`;
   }
@@ -141,19 +183,28 @@ export class FilteredElementGenerator {
   private _getEqFilter(element: IVisible): string {
     const commands: string[] = [];
 
-    commands.push(`contrast=${element.contrast}`);
+    if (element.contrast !== DEFAULT_CONTRAST) {
+      commands.push(`contrast=${element.contrast}`);
+    }
 
-    // 0 ... value ... 2 -> -1 ... value ... 1
-    const brightness = map(
-      element.brightness,
-      DEFAULT_MIN_BRIGHTNESS,
-      DEFAULT_MAX_BRIGHTNESS,
-      -1,
-      1,
-    );
+    if (element.brightness !== DEFAULT_BRIGHTNESS) {
+      // 0 ... value ... 2 -> -1 ... value ... 1
+      const brightness = map(
+        element.brightness,
+        DEFAULT_MIN_BRIGHTNESS,
+        DEFAULT_MAX_BRIGHTNESS,
+        -1,
+        1,
+      );
 
-    commands.push(`brightness=${brightness}`);
-    commands.push(`saturation=${element.saturation}`);
+      commands.push(`brightness=${brightness}`);
+    }
+
+    if (element.saturation !== DEFAULT_SATURATION) {
+      commands.push(`saturation=${element.saturation}`);
+    }
+
+    if (!commands.length) return '';
 
     return `eq=${commands.join(':')}`;
   }
