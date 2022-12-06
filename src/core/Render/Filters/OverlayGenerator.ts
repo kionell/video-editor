@@ -9,7 +9,7 @@ export class OverlayGenerator {
     private _files: UploadedFile[],
   ) {}
 
-  generate(): string {
+  generate(filteredElements: string): string {
     /**
      * Overlay generator should be used as the latest of all 3 video generators.
      * We will use predetermined variable names as they are already processed.
@@ -48,7 +48,14 @@ export class OverlayGenerator {
          * 0 = current layer.
          * 1 = current element (video).
          */
-        const input = base + `[track${ti}_element${ei}_v]`;
+        const currentLayer = base;
+
+        let currentTrack = `[track${ti}_element${ei}_v]`;
+
+        if (!filteredElements.includes(currentTrack)) {
+          currentTrack = `[${streamIndex}:v]`;
+        }
+
         const overlay = `overlay=${commands.join(':')}`;
 
         /**
@@ -57,7 +64,7 @@ export class OverlayGenerator {
          */
         const output = ei < totalElements - 1 ? `[track${ti}_${ei}_v]` : `[track${ti}_v]`;
 
-        overlays.push(input + overlay + output);
+        overlays.push(currentLayer + currentTrack + overlay + output);
 
         /**
          * Switch base video stream to the next state.

@@ -42,7 +42,7 @@ export class FilterFlagGenerator {
 
     const background = this._backgroundGenerator.generate();
     const filteredElements = this._elementGenerator.generate();
-    const overlays = this._overlayGenerator.generate();
+    const overlays = this._overlayGenerator.generate(filteredElements);
 
     const commands = [background, filteredElements, overlays].join(';');
 
