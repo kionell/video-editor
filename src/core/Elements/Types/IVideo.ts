@@ -1,3 +1,4 @@
+import { VideoFile } from '../../Files/VideoFile';
 import { IFileElement } from './IFileElement';
 import { IHasAudio } from './IHasAudio';
 import { IPlayableElement } from './IPlayableElement';
@@ -7,4 +8,4 @@ export interface IVideo extends
   IPlayableElement,
   IVisible,
   IHasAudio,
-  IFileElement {}
+  IFileElement<VideoFile> {}
