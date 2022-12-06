@@ -95,10 +95,9 @@ export class FilteredElementGenerator {
     const filters: string[] = [];
 
     const visualFilters = this._getVisualFilters(element);
+    const videoFilters = [];
 
-    const videoFilters = [
-      visualFilters,
-    ];
+    if (visualFilters.length) videoFilters.push(visualFilters);
 
     const outputWidth = this._outputSettings.width;
     const outputHeight = this._outputSettings.height;
