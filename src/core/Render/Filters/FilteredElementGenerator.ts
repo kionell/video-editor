@@ -102,8 +102,8 @@ export class FilteredElementGenerator {
 
     const outputWidth = this._outputSettings.width;
     const outputHeight = this._outputSettings.height;
-    const sameWidth = element.file.source.width === outputWidth;
-    const sameHeight = element.file.source.height === outputHeight;
+    const sameWidth = element.file.source.videoWidth === outputWidth;
+    const sameHeight = element.file.source.videoHeight === outputHeight;
 
     if (!sameWidth || !sameHeight) {
       videoFilters.push(`scale=${outputWidth}x${outputHeight}`);
