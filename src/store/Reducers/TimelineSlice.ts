@@ -242,7 +242,7 @@ const TimelineSlice = createSlice({
       const toTrack = getTrackByIndex(state.tracks as TimelineTrack[], toIndex) ?? fromTrack;
 
       // There are no elements outside of track's total length.
-      if (fromMs < 0 || fromMs > fromTrack.totalLength) return;
+      if (fromMs < 0 || fromMs > fromTrack.totalLengthMs) return;
 
       const element = getElementAtTime(fromTrack, fromMs);
 

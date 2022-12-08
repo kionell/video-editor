@@ -17,7 +17,7 @@ export class FilterFlagGenerator {
     private _outputSettings: RequiredSettings,
   ) {
     const totalLengthMs = _tracks.reduce((total, track) => {
-      return Math.max(total, track.totalLength);
+      return Math.max(total, track.totalLengthMs);
     }, 0);
 
     this._backgroundGenerator = new BackgroundGenerator(

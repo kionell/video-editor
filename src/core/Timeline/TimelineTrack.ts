@@ -61,7 +61,7 @@ export class TimelineTrack<T extends BaseElement = BaseElement> {
     return this.endTimeMs - this.startTimeMs;
   }
 
-  get totalLength(): number {
+  get totalLengthMs(): number {
     return this.endTimeMs;
   }
 }
