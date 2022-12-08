@@ -3,8 +3,6 @@ import React, { forwardRef, Ref, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { addFile } from '../../store/Reducers/FileSlice';
 import { loadFile } from '../../core/Utils/Files';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { selectFiles } from '../../store';
 
 interface FileInputProps {
   disabled?: boolean;
@@ -41,32 +39,8 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>((
       dispatch(addFile(loaded));
     }
 
-    // const file = input.files[0];
-
-    // ffmpeg.FS('writeFile', file.name, await fetchFile(file));
-
     // Reset input files to allow repeated upload.
     input.value = '';
-
-    // // if (files.list.length < 3) return;
-
-    // await ffmpeg.run(
-    //   '-i', file.name, 
-    //   '-c:v', 'copy', 
-    //   '-preset', 'ultrafast',
-    //   // '-vf', 'scale=88:50',
-    //   // '-crf', '50',
-    //   'output.mp4'
-    // );
-
-    // const buffer = ffmpeg.FS('readFile', 'output.mp4');
-
-    // const link = document.createElement('a');
-
-    // link.type = 'download';
-    // link.href = URL.createObjectURL(new Blob([buffer]));
-    // link.download = 'output.mp4';
-    // link.click();
   };
 
   return <StyledFileInput
