@@ -4,9 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { DarkTheme } from './themes/dark.theme';
 import { BaseGlobalStyle } from './styles/BaseGlobalStyle';
-import { ffmpeg } from './lib/FFmpeg';
 import { MainPage } from './pages/Main';
-import { DebugPage } from './pages/Debug';
+
 import './styles/CustomFonts.ts';
 
 export function App() {
@@ -20,7 +19,6 @@ export function App() {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <MainPage />
-          {/* <DebugPage /> */}
         </ThemeProvider>
       </Provider>
     </div>
