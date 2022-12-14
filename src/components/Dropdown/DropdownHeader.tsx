@@ -38,7 +38,7 @@ const StyledDropdownHeader = styled.div<DropdownHeaderProps>`
 `;
 
 const StyledDropdownHeaderText = styled(Text)<DropdownHeaderProps>`
-  color: ${(props) => props.empty ? props.theme.text.darker : props.theme.text.lighter};
+  color: ${(props) => props.empty ? props.theme.text.darker : props.theme.text.accent};
 `;
 
 const StyledDropdownHeaderIcon = styled(Icon)<DropdownHeaderProps>`

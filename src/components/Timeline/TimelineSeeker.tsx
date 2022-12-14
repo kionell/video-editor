@@ -48,11 +48,11 @@ const StyledTimelineSeekerWrapper = styled.div<SeekerProps>`
   }
 
   & > ${StyledTimelineSeekerLine} {
-    background: ${(props) => props.theme.text.lighter};
+    background: ${(props) => props.theme.text.accent};
   }
 
   & > * > svg {
-    fill: ${(props) => props.theme.text.lighter};
+    fill: ${(props) => props.theme.text.accent};
   }
 `;
 

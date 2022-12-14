@@ -25,14 +25,14 @@ const StyledUploadItemWrapper = styled.div`
 
   &:hover {
     background: ${(props) => props.theme.text.darker + '40'};
-    border: 2px dashed ${(props) => props.theme.text.lighter};
+    border: 2px dashed ${(props) => props.theme.text.accent};
 
     .message-icons {
-      fill: ${(props) => props.theme.text.lighter};
+      fill: ${(props) => props.theme.text.accent};
     }
 
     .message-labels {
-      color: ${(props) => props.theme.text.lighter};
+      color: ${(props) => props.theme.text.accent};
     }
   }
 `;

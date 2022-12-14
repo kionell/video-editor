@@ -51,7 +51,7 @@ const StyledDropdownItem = styled.div<DropdownItemProps>`
 
     return css`
       &:hover {
-        color: ${(props) => props.theme.text.lighter};
+        color: ${(props) => props.theme.text.accent};
         background: ${(props) => props.theme.secondary.accent}
       }
     `;

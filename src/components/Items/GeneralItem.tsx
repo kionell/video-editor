@@ -55,7 +55,7 @@ const StyledGeneralItemWrapper = styled.div`
   }
 
   &:hover .general-item__label {
-    color: ${(props) => props.theme.text.lighter};
+    color: ${(props) => props.theme.text.accent};
   }
 `;
 

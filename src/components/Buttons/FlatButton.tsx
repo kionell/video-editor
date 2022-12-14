@@ -39,10 +39,10 @@ const StyledFlatButton = styled(StyledBaseButton)<FlatButtonProps>`
 
   &.toggled {
     background: ${(props) => props.theme.secondary.accent};
-    color: ${(props) => props.theme.text.lighter};
+    color: ${(props) => props.theme.text.accent};
 
     & > * > * {
-      fill: ${(props) => props.theme.text.lighter};
+      fill: ${(props) => props.theme.text.accent};
     }
   }
 `;

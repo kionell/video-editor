@@ -142,7 +142,7 @@ const StyledSliderWrapper = styled.div<SliderProps>`
         user-select: none;
         pointer-events: none;
         background-color: ${(props) => props.theme.background};
-        color: ${(props) => props.theme.text.lighter};
+        color: ${(props) => props.theme.text.accent};
         text-align: center;
         border-radius: 6px;
         padding: 10px;

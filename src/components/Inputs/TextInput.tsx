@@ -53,7 +53,7 @@ export const StyledTextInput = styled.input<TextInputProps>`
   border-color: ${(props) => props.theme.secondary.accent};
   background: ${(props) => props.theme.background};
   caret-color: ${(props) => props.theme.text.darker};
-  color: ${(props) => props.theme.text.lighter};
+  color: ${(props) => props.theme.text.accent};
   pointer-events: ${(props) => props.disabled ? 'none' : 'all'};
   font-family: ${DEFAULT_FONT};
   font-size: ${NORMAL_FONT_SIZE}px;

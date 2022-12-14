@@ -66,18 +66,18 @@ const StyledBaseButton = styled.button<ButtonProps>`
   }
 
   &:hover:enabled {
-    color: ${(props) => props.theme.text.lighter};
+    color: ${(props) => props.theme.text.accent};
 
     & > * > * {
-      fill: ${(props) => props.theme.text.lighter};
+      fill: ${(props) => props.theme.text.accent};
     }
   }
 
   &:active:enabled {
-    color: ${(props) => props.theme.text.lighter};
+    color: ${(props) => props.theme.text.accent};
 
     & > * > * {
-      fill: ${(props) => props.theme.text.lighter};
+      fill: ${(props) => props.theme.text.accent};
     }
   }
 `;

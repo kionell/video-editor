@@ -15,7 +15,7 @@ const StyledTimecodeContainer = styled(FlexContainer)`
 `;
 
 const StyledTimecodeLabel = styled(Text)`
-  color: ${(props) => props.theme.text.lighter};
+  color: ${(props) => props.theme.text.accent};
 `;
 
 const TimelineTimecode: React.FC = () => {
