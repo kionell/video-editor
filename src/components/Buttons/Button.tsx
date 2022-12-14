@@ -56,7 +56,7 @@ const StyledBaseButton = styled.button<ButtonProps>`
   }
 
   &:disabled {
-    opacity: 0.25;
+    opacity: 0.35;
   }
 
   color: ${(props) => props.theme.text.normal};
