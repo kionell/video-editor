@@ -14,6 +14,28 @@ const StyledPrimaryButton = styled(StyledBaseButton)`
   &:active:enabled {
     background: ${(props) => props.theme.primary.press};
   }
+
+  color: ${(props) => props.theme.text.lighter};
+
+  & > * {
+    fill: ${(props) => props.theme.text.lighter};
+  }
+
+  &:hover:enabled {
+    color: ${(props) => props.theme.text.lighter};
+
+    & > * > * {
+      fill: ${(props) => props.theme.text.lighter};
+    }
+  }
+
+  &:active:enabled {
+    color: ${(props) => props.theme.text.lighter};
+
+    & > * > * {
+      fill: ${(props) => props.theme.text.lighter};
+    }
+  }
 `;
 
 const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
