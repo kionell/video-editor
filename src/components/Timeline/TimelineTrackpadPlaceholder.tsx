@@ -14,7 +14,7 @@ const StyledTimelineTrackpadPlaceholderContainer = styled(FlexContainer)`
 const StyledTimelineTrackpadPlaceholder = styled(Text)`
   align-self: center;
   color: ${(props) => props.theme.text.darker};
-  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.6);
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
 `;
 
 const TimelineTrackpadPlaceholder: React.FC = () => {
