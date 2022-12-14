@@ -2,9 +2,9 @@ import { ITheme } from './theme.interface';
 
 export const DarkTheme: ITheme = {
   primary: {
-    accent: '#4040BF',
-    hover: '#5353C6',
-    press: '#4B4BC3',
+    accent: '#4D4DCB',
+    hover: '#7575D7',
+    press: '#6161D1',
     surface: '#1E1E29',
   },
   secondary: {

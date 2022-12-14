@@ -2,23 +2,23 @@ import { ITheme } from './theme.interface';
 
 export const LightTheme: ITheme = {
   primary: {
-    accent: '#4040BF',
-    hover: '#5353C6',
-    press: '#4B4BC3',
-    surface: '#e0e0e0',
+    accent: '#6161D1',
+    hover: '#9C9CE3',
+    press: '#7575D7',
+    surface: '#E0E0E0',
   },
   secondary: {
-    accent: '#c9c9c9',
-    hover: '#b8b8b8',
-    press: '#c2c2c2',
-    surface: '#ececec',
+    accent: '#C9C9C9',
+    hover: '#B8B8B8',
+    press: '#C2C2C2',
+    surface: '#ECECEC',
   },
   text: {
     normal: '#262626',
-    accent: '#1a1a1a',
+    accent: '#1A1A1A',
     lighter: '#F0F0F4',
-    darker: '#4d4d4d',
+    darker: '#4D4D4D',
   },
   danger: '#F72A2A',
-  background: '#f5f5f5',
+  background: '#F5F5F5',
 };
