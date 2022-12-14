@@ -15,6 +15,7 @@ export const DarkTheme: ITheme = {
   },
   text: {
     normal: '#ABABBA',
+    accent: '#D5D5DD',
     lighter: '#D5D5DD',
     darker: '#797986',
   },

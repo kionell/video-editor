@@ -7,6 +7,7 @@ interface INormalColors {
 
 interface ITextColors {
   normal: string;
+  accent: string;
   lighter: string;
   darker: string;
 }
