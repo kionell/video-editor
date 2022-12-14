@@ -27,7 +27,6 @@ const StyledText = styled.label<TextProps>`
   font-family: ${(props) => props.font};
   font-size: ${(props) => props.size}px;
   display: ${(props) => props.visible ? 'inline-block' : 'none'};
-  opacity: ${(props) => props.disabled ? 0.25 : 1};
   overflow: ${(props) => props.overflow};
   white-space: nowrap;
   text-overflow: ellipsis;
