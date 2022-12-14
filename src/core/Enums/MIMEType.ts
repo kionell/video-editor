@@ -11,6 +11,7 @@ export enum MIMEType {
   JPEG = 'image/jpeg',
   MP3 = 'audio/mpeg',
   MP4 = 'video/mp4',
+  MVK = 'video/x-matroska',
   MPEG = 'video/mpeg',
   OGG = 'audio/ogg',
   PNG = 'image/png',

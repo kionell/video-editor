@@ -32,6 +32,7 @@ export function convertMIMEToMediaType(type: MIMEType): MediaType {
     case MIMEType.AVI2:
     case MIMEType.AVI3:
     case MIMEType.MP4:
+    case MIMEType.MVK:
     case MIMEType.WEBM:
     case MIMEType.MPEG:
       return MediaType.Video;
